@@ -18,7 +18,7 @@ Route::post('/login', [LoginController::class, 'autentikasi'])->name('login.aute
 
 /**
  * Penyesuaian: Middleware 'auth' dimatikan sementara.
- * Alasan: LoginController saat ini hanya melakukan pengecekan teks biasa 
+ * Alasan: LoginController saat ini hanya melakukan pengecekan teks biasa
  * dan belum mendaftarkan session ke sistem Auth Laravel.
  */
 

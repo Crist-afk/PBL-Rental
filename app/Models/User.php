@@ -16,6 +16,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role', // Penting untuk Single Table Inheritance
+        'avatar',
+        'bio', // Kolom tambahan untuk profil
     ];
 
     // HIDDEN: Menyembunyikan atribut sensitif agar tidak bocor saat data diubah ke array/JSON

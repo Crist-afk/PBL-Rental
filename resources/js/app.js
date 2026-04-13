@@ -3,31 +3,35 @@ import '../css/app.css';
 import 'flowbite';
 // public/js/app.js
 
+// --- LOGIKA TOGGLE PASSWORD COSRENT ---
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // --- FITUR: TOGGLE LIHAT PASSWORD (Halaman Login) ---
-    const togglePassword = document.querySelector('#togglePassword');
-    const password = document.querySelector('#password');
-    const eyeIcon = document.querySelector('#eyeIcon');
 
-    // Hanya jalankan logika ini jika tombol toggle password ditemukan di halaman
-    if (togglePassword && password && eyeIcon) {
-        togglePassword.addEventListener('click', function (e) {
-            // Cek apakah tipe saat ini adalah password, jika ya ubah jadi text
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            
-            // Ganti ikon mata (FontAwesome)
-            if (type === 'password') {
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-            } else {
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
-            }
-        });
+    // Fungsi dinamis untuk mengubah tipe input dan ikon
+    function setupPasswordToggle(btnId, inputId, iconId) {
+        const toggleBtn = document.getElementById(btnId);
+        const passwordInput = document.getElementById(inputId);
+        const eyeIcon = document.getElementById(iconId);
+
+        if (toggleBtn && passwordInput && eyeIcon) {
+            toggleBtn.addEventListener('click', function () {
+                // Toggle tipe input
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+
+                // Toggle ikon FontAwesome
+                eyeIcon.classList.toggle('fa-eye');
+                eyeIcon.classList.toggle('fa-eye-slash');
+
+                // Beri warna 'sakura' (#EC9C9D) saat mata terbuka (password terlihat)
+                eyeIcon.classList.toggle('text-sakura');
+            });
+        }
     }
 
-    // --- Anda bisa menambahkan fungsi JavaScript lainnya di bawah sini nanti ---
-    // console.log('CosRent Frontend Scripts Loaded!');
+    // Eksekusi untuk Halaman Login & Kolom Pertama Register
+    setupPasswordToggle('togglePassword', 'password', 'eyeIcon');
+
+    // Eksekusi khusus untuk Kolom Konfirmasi Password di Halaman Register
+    setupPasswordToggle('togglePasswordConfirm', 'password_confirmation', 'eyeIconConfirm');
+
 });

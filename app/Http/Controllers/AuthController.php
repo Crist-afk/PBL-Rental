@@ -17,25 +17,23 @@ class AuthController extends Controller
 
     public function processRegister(Request $request)
     {
-        // 1. Validasi Input Brutal (Wajib sebelum menyentuh database)
+        // Validasi ketat
         $request->validate([
-            'nama'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed', // Harus ada input 'password_confirmation' di view
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed', // 'confirmed' otomatis mengecek kolom password_confirmation
         ]);
 
-        // 2. Simpan Data dengan Enkripsi Hash
-        $user = User::create([
-            'nama'     => $request->nama,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password), // Enkripsi Bcrypt standar industri
-            'role'     => 'pelanggan', // Default role untuk registrasi publik
+        // Simpan ke Database
+        User::create([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // INI WAJIB AGAR BISA LOGIN
+            'role' => 'pelanggan', // Default role untuk pendaftar baru
         ]);
 
-        // 3. (Opsional) Langsung login setelah register
-        Auth::login($user);
-
-        return redirect()->route('home')->with('success', 'Registrasi berhasil, selamat datang!');
+        // Lempar ke halaman login dengan pesan sukses
+        return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silakan Login.');
     }
 
     // === BAGIAN LOGIN ===
@@ -46,27 +44,22 @@ class AuthController extends Controller
 
     public function processLogin(Request $request)
     {
-        // 1. Validasi input
+        // Validasi input
         $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required'
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        // 2. Autentikasi dan Regenerasi Session (Mencegah pencurian sesi)
+        // Coba cocokkan dengan database
         if (Auth::attempt($credentials)) {
+            // Jika berhasil, perbarui sesi (keamanan anti-hijacking)
             $request->session()->regenerate();
 
-            // 3. Routing Berdasarkan Role (Single Table Inheritance)
-            $role = Auth::user()->role;
-
-            if ($role === 'admin') {
-                return redirect()->intended('dashboard'); // Arahkan ke back-office
-            }
-
-            return redirect()->intended('/'); // Arahkan pelanggan ke front-office
+            // Arahkan ke halaman profile atau home
+            return redirect()->route('profile');
         }
 
-        // 4. Jika Gagal Login
+        // Jika gagal, tendang kembali ke halaman login bawa pesan error
         return back()->withErrors([
             'email' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
         ])->onlyInput('email');

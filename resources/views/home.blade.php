@@ -17,8 +17,8 @@
                         'dark-chocolate': '#443025',
                         'sakura': '#EC9C9D',
                         'misty-rose': '#FFE4E1', /* Diperbarui: Menjadi Soft Pink */
-                        'aloewood': '#8B5A2B',   
-                        'milk-tea': '#D2B48C',   
+                        'aloewood': '#8B5A2B',
+                        'milk-tea': '#D2B48C',
                     },
                     backgroundImage: {
                         'dotted-pattern': 'radial-gradient(#443025 1px, transparent 1px)',
@@ -30,7 +30,7 @@
     <style>
         body {
             /* Menerapkan dotted pattern dengan background Soft Pink */
-            background-color: #FFE4E1; 
+            background-color: #FFE4E1;
             background-image: radial-gradient(#443025 10%, transparent 10%);
             background-size: 20px 20px;
         }
@@ -50,15 +50,15 @@
                 CosRent
             </div>
             <nav class="hidden md:flex gap-6 font-medium text-sm">
-                <a href="#" class="text-sakura hover:text-misty-rose transition">Home</a>
-                <a href="#" class="hover:text-sakura transition">About</a>
-                <a href="#" class="hover:text-sakura transition">Product</a>
-                <a href="#" class="hover:text-sakura transition">Forum</a>
-                <a href="#" class="hover:text-sakura transition">Contact</a>
+                <a href="{{ route('home') }}" class="text-sakura hover:text-misty-rose transition">Home</a>
+                <a href="{{ route('about') }}" class="hover:text-sakura transition">About</a>
+                <a href="{{ route('products') }}" class="hover:text-sakura transition">Product</a>
+                <a href="{{ route('forum') }}" class="hover:text-sakura transition">Forum</a>
+                <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
             </nav>
             <div class="flex gap-4 items-center text-sm font-medium">
-                <a href="#" class="hover:text-sakura transition">Login</a>
-                <a href="#" class="bg-sakura text-dark-chocolate px-5 py-2 rounded-full hover:bg-opacity-80 transition shadow">Register</a>
+                <a href="{{ route('login') }}" class="hover:text-sakura transition">Login</a>
+                <a href="{{ route('register') }}" class="bg-sakura text-dark-chocolate px-5 py-2 rounded-full hover:bg-opacity-80 transition shadow">Register</a>
             </div>
         </header>
     </div>
@@ -75,7 +75,7 @@
             <a href="#" class="bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition shadow-md">Jelajahi Katalog</a>
             <a href="#" class="border-2 border-dark-chocolate text-dark-chocolate px-8 py-3 rounded-full font-semibold hover:bg-dark-chocolate hover:text-misty-rose transition shadow-md">Cari Produk</a>
         </div>
-        
+
         <div class="mt-16 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border-4 border-dark-chocolate bg-dark-chocolate">
             <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80" alt="Cosplay Landscape" class="w-full h-auto object-cover opacity-80">
         </div>
@@ -84,7 +84,7 @@
     <section class="py-20 px-6 max-w-7xl mx-auto text-center">
         <h2 class="text-4xl font-bold mb-2">Kategori Kostum</h2>
         <p class="text-dark-chocolate/80 mb-12">Temukan kostum berdasarkan genre favoritmu</p>
-        
+
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div class="bg-sakura p-6 rounded-2xl shadow-md hover:-translate-y-1 transition border-2 border-dark-chocolate/10 cursor-pointer">
                 <div class="text-3xl mb-3">🎭</div>
@@ -113,7 +113,7 @@
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl font-bold mb-2">Proses Sewa Mudah</h2>
             <p class="text-sakura mb-16">Hanya butuh 4 langkah untuk mendapatkan kostum impianmu</p>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
                 <div class="hidden md:block absolute top-8 left-[12%] right-[12%] h-[2px] bg-sakura/30 border-dashed border-b-2 border-sakura/50 z-0"></div>
 
@@ -308,7 +308,7 @@
 
     <footer class="bg-dark-chocolate text-misty-rose py-16 border-t-[16px] border-sakura">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
-            
+
             <div>
                 <div class="flex items-center gap-2 font-bold text-2xl mb-6">
                     <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-10 h-10 flex items-center justify-center">🛍️</span>

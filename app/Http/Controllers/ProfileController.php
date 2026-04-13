@@ -20,11 +20,13 @@ class ProfileController extends Controller
         // 1. Validasi input
         $request->validate([
             'nama' => 'required|string|max:255',
+            'bio' => 'nullable|string|max:500', // Tambahkan validasi bio
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Maksimal 2MB
         ]);
 
         $user = \App\Models\User::find(Auth::id());
         $user->nama = $request->nama; // Menggunakan 'nama' sesuai form registermu sebelumnya
+        $user->bio = $request->bio; // Menyimpan bio yang diinputkan
 
         // 2. Logika Upload File
         if ($request->hasFile('avatar')) {

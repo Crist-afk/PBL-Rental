@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Akun - CosRent</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }-
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -27,7 +27,7 @@
                 <div class="flex-shrink-0 flex items-center cursor-pointer">
                     <a href="{{ route('home') }}" class="text-2xl font-bold text-indigo-600 tracking-tight">CosRent<span class="text-rose-500">.</span></a>
                 </div>
-                
+
                 <div class="hidden md:flex space-x-6 lg:space-x-8 items-center text-sm md:text-base ml-auto">
                     <a href="{{ route('home') }}" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Home</a>
                     <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Cari Kostum</a>
@@ -35,7 +35,7 @@
                     <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Forum</a>
                     <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Jadwal Event</a>
                     <a href="{{ route('contact') }}" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Contact</a>
-                    
+
                     <a href="{{ route('login') }}" class="text-indigo-600 font-semibold transition duration-200 ml-4">
                         Masuk
                     </a>
@@ -46,7 +46,7 @@
 
     <div class="flex-grow flex items-center justify-center p-4 py-10">
         <div class="w-full max-w-5xl bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden border border-slate-100">
-            
+
             <div class="w-full md:w-1/2 p-8 sm:p-12">
                 <div class="mb-8">
                     <h2 class="text-3xl font-bold text-slate-900 tracking-tight mb-2">Gabung CosRent </h2>
@@ -54,7 +54,7 @@
                 </div>
 
                 <form action="{{ route('register.process') }}" method="POST" class="space-y-5">
-                    @csrf 
+                    @csrf
 
                     <div>
                         <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
@@ -62,8 +62,8 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-regular fa-user text-slate-400"></i>
                             </div>
-                            <input type="text" id="name" name="nama" value="{{ old('nama') }}" required 
-                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors duration-200" 
+                            <input type="text" id="name" name="nama" value="{{ old('nama') }}" required
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors duration-200"
                                 placeholder="Misal: Crist">
                         </div>
                     </div>
@@ -74,8 +74,8 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-regular fa-envelope text-slate-400"></i>
                             </div>
-                            <input type="email" id="email" name="email" value="{{ old('email') }}" required 
-                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors duration-200" 
+                            <input type="email" id="email" name="email" value="{{ old('email') }}" required
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors duration-200"
                                 placeholder="crist@example.com">
                         </div>
                     </div>
@@ -86,8 +86,8 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none border-r border-slate-200 pr-3 my-1">
                                 <i class="fa-solid fa-lock text-slate-400"></i>
                             </div>
-                            <input type="password" id="password" name="password" required 
-                                class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors duration-200" 
+                            <input type="password" id="password" name="password" required
+                                class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors duration-200"
                                 placeholder="Minimal 8 karakter">
                         </div>
                     </div>
@@ -98,8 +98,8 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none border-r border-slate-200 pr-3 my-1">
                                 <i class="fa-solid fa-shield-check text-slate-400"></i>
                             </div>
-                            <input type="password" id="password_confirmation" name="password_confirmation" required 
-                                class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors duration-200" 
+                            <input type="password" id="password_confirmation" name="password_confirmation" required
+                                class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-colors duration-200"
                                 placeholder="Ulangi password">
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                 </form>
 
                 <p class="mt-6 text-center text-sm text-slate-600">
-                    Sudah punya akun? 
+                    Sudah punya akun?
                     <a href="{{ route('login') }}" class="font-semibold text-indigo-600 hover:text-indigo-800 transition duration-200">Masuk di sini</a>
                 </p>
             </div>
@@ -129,7 +129,7 @@
                 <div class="absolute inset-0 opacity-30 mix-blend-overlay transition-transform duration-700 group-hover:scale-110">
                     <img src="https://images.unsplash.com/photo-1541959833400-049d37f98ccd?q=80&w=1000&auto=format&fit=crop" alt="Cosplay" class="object-cover w-full h-full">
                 </div>
-                
+
                 <div class="absolute inset-0 flex flex-col justify-end p-12 text-white">
                     <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
                         <h3 class="text-2xl font-bold mb-2">Eksplorasi Karaktermu</h3>

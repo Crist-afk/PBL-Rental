@@ -49,7 +49,7 @@
             
             <div class="w-full md:w-1/2 p-8 sm:p-12">
                 <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight mb-2">Gabung CosRent 🎭</h2>
+                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight mb-2">Gabung CosRent </h2>
                     <p class="text-slate-500 text-sm">Buat akun untuk mulai menyewa atau menyewakan kostum cosplay impianmu.</p>
                 </div>
 

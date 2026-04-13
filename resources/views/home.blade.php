@@ -3,218 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CosRent - Platform Sewa Kostum Cosplay</title>
-    
+    <title>CosRent - Wujudkan Karakter Impianmu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'dark-chocolate': '#443025',
+                        'sakura': '#EC9C9D',
+                        'misty-rose': '#FFE4E1', /* Diperbarui: Menjadi Soft Pink */
+                        'aloewood': '#8B5A2B',   
+                        'milk-tea': '#D2B48C',   
+                    },
+                    backgroundImage: {
+                        'dotted-pattern': 'radial-gradient(#443025 1px, transparent 1px)',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        /* Kustomisasi scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        body {
+            /* Menerapkan dotted pattern dengan background Soft Pink */
+            background-color: #FFE4E1; 
+            background-image: radial-gradient(#443025 10%, transparent 10%);
+            background-size: 20px 20px;
+        }
+        /* Menghindari background transparan menjadi putih */
+        .glass-card {
+            background-color: rgba(68, 48, 37, 0.05); /* Dark chocolate transparan sbg ganti putih */
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="text-dark-chocolate antialiased">
 
-<nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0 flex items-center cursor-pointer">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold text-indigo-600 tracking-tight">CosRent<span class="text-rose-500">.</span></a>
-                </div>
-                
-                <div class="hidden md:flex space-x-6 lg:space-x-8 items-center text-sm md:text-base">
-                    <a href="{{ route('home') }}" class="text-indigo-600 font-medium transition duration-200">Home</a>
-                    
-                    <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Cari Kostum</a>
-                    <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">List Cosrent</a>
-                    <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Forum</a>
-                    <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Jadwal Event</a>
-                    
-                    <a href="{{ route('contact') }}" class="text-slate-600 hover:text-indigo-600 font-medium transition duration-200">Contact</a>
-                </div>
-
-                <div class="flex items-center space-x-3">
-                    <a href="{{ route('login') }}" class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition duration-200">Masuk</a>
-                    <a href="{{ route('register') }}" class="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-full transition duration-200 shadow-sm">
-                        Buat Akun
-                    </a>
-                </div>
+    <div class="fixed w-full top-0 z-50 px-6 py-4">
+        <header class="bg-dark-chocolate text-misty-rose rounded-full shadow-lg max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2 font-bold text-xl">
+                <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-8 h-8 flex items-center justify-center">🛍️</span>
+                CosRent
             </div>
-        </div>
-    </nav>
+            <nav class="hidden md:flex gap-6 font-medium text-sm">
+                <a href="#" class="text-sakura hover:text-misty-rose transition">Home</a>
+                <a href="#" class="hover:text-sakura transition">About</a>
+                <a href="#" class="hover:text-sakura transition">Product</a>
+                <a href="#" class="hover:text-sakura transition">Forum</a>
+                <a href="#" class="hover:text-sakura transition">Contact</a>
+            </nav>
+            <div class="flex gap-4 items-center text-sm font-medium">
+                <a href="#" class="hover:text-sakura transition">Login</a>
+                <a href="#" class="bg-sakura text-dark-chocolate px-5 py-2 rounded-full hover:bg-opacity-80 transition shadow">Register</a>
+            </div>
+        </header>
+    </div>
 
-    <header class="max-w-5xl mx-auto px-4 pt-16 pb-12 text-center">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
-            Platform Sewa Kostum Cosplay
+    <section class="min-h-screen flex flex-col items-center justify-center pt-32 px-6 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-4 tracking-tight">
+            Wujudkan Karakter <br>
+            <span class="text-sakura">Impianmu Jadi Nyata</span>
         </h1>
+        <p class="mt-4 max-w-2xl text-dark-chocolate/80 text-lg">
+            Sewa kostum cosplay kualitas premium dengan harga terjangkau. Ribuan pilihan karakter dari anime, game, hingga film favoritmu.
+        </p>
+        <div class="mt-8 flex gap-4">
+            <a href="#" class="bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition shadow-md">Jelajahi Katalog</a>
+            <a href="#" class="border-2 border-dark-chocolate text-dark-chocolate px-8 py-3 rounded-full font-semibold hover:bg-dark-chocolate hover:text-misty-rose transition shadow-md">Cari Produk</a>
+        </div>
         
-        <div class="flex flex-wrap justify-center items-center gap-6 text-sm md:text-base text-slate-500 mb-10 font-medium">
-            <div class="flex items-center gap-2">
-                <i class="fa-regular fa-file-lines text-indigo-500"></i>
-                <span>12.495 Katalog</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-users text-rose-500"></i>
-                <span>616 Cosrent</span>
-            </div>
-        </div>
-
-        <div class="max-w-3xl mx-auto relative group">
-            <input type="text" 
-                class="w-full bg-white border border-slate-300 text-slate-900 text-base rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block p-4 pl-6 pr-12 shadow-sm transition duration-300" 
-                placeholder="Cari karakter, anime, atau game...">
-            <button class="absolute right-2 top-2 bottom-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition duration-200">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </div>
-
-        <div class="max-w-4xl mx-auto mt-6 flex flex-wrap justify-center gap-3">
-            <select class="bg-white border border-slate-200 text-slate-600 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5 px-4 shadow-sm hover:border-slate-300 cursor-pointer transition">
-                <option selected>Semua Provinsi</option>
-                <option value="Jawa Barat">Jawa Barat</option>
-            </select>
-            <select class="bg-white border border-slate-200 text-slate-600 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5 px-4 shadow-sm hover:border-slate-300 cursor-pointer transition">
-                <option selected>Semua Kota</option>
-                <option value="Batam">Batam</option>
-            </select>
-        </div>
-    </header>
-
-<section class="max-w-7xl mx-auto px-4 pb-20">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-slate-800">Trending </h2>
-            <a href="{{ route('produk') }}" class="px-4 py-2 text-sm font-semibold text-indigo-600 bg-transparent border border-indigo-600 rounded-lg hover:bg-indigo-50 transition duration-200">
-                Selengkapnya
-            </a>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            
-            <x-card-kostum />
-            <x-card-kostum />
-            <x-card-kostum />
-            <x-card-kostum />
-            <x-card-kostum />
-            <x-card-kostum />
-            <x-card-kostum />
-            <x-card-kostum />
-
+        <div class="mt-16 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border-4 border-dark-chocolate bg-dark-chocolate">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80" alt="Cosplay Landscape" class="w-full h-auto object-cover opacity-80">
         </div>
     </section>
 
-<section id="contact" class="bg-white py-20 border-t border-slate-100 relative overflow-hidden">
+    <section class="py-20 px-6 max-w-7xl mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-2">Kategori Kostum</h2>
+        <p class="text-dark-chocolate/80 mb-12">Temukan kostum berdasarkan genre favoritmu</p>
         
-        <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 transform translate-x-1/2 -translate-y-1/2"></div>
-        <div class="absolute bottom-0 left-0 w-72 h-72 bg-rose-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 transform -translate-x-1/2 translate-y-1/2"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-slate-800 mb-4">Hubungi Kami 💌</h2>
-                <p class="text-slate-500 max-w-2xl mx-auto">Punya pertanyaan seputar sewa kostum, kemitraan vendor, atau kendala teknis? Jangan ragu untuk mengirimkan pesan kepada tim CosRent.</p>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="bg-sakura p-6 rounded-2xl shadow-md hover:-translate-y-1 transition border-2 border-dark-chocolate/10 cursor-pointer">
+                <div class="text-3xl mb-3">🎭</div>
+                <h3 class="font-semibold text-dark-chocolate">Anime & Manga</h3>
             </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-                
-                <div class="flex flex-col space-y-8 p-8 sm:p-10 bg-indigo-50/50 backdrop-blur-sm rounded-3xl border border-indigo-100 shadow-sm">
-                    
-                    <div class="flex items-start gap-5">
-                        <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xl shadow-md">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-bold text-slate-800 mb-1">Kantor Pusat</h4>
-                            <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                                Batam Centre, Kota Batam<br>
-                                Kepulauan Riau, Indonesia
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start gap-5">
-                        <div class="w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xl shadow-md">
-                            <i class="fa-solid fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-bold text-slate-800 mb-1">Alamat Email</h4>
-                            <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                                support@cosrent.id<br>
-                                partnership@cosrent.id
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-5">
-                        <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xl shadow-md">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-bold text-slate-800 mb-1">WhatsApp (Fast Response)</h4>
-                            <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                                +62 896-2346-7477<br>
-                                <span class="text-xs text-slate-500 font-medium bg-white px-2 py-1 rounded border border-slate-200 mt-2 inline-block">Senin - Jumat (09:00 - 17:00)</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-slate-100">
-                    <form action="#" method="POST" class="space-y-5">
-                        @csrf
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                            <div>
-                                <label for="contact_name" class="block text-sm font-medium text-slate-700 mb-1">Nama Anda</label>
-                                <input type="text" id="contact_name" name="name" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm" placeholder="Misal: Crist">
-                            </div>
-                            <div>
-                                <label for="contact_email" class="block text-sm font-medium text-slate-700 mb-1">Email Anda</label>
-                                <input type="email" id="contact_email" name="email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm" placeholder="crist@example.com">
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label for="subject" class="block text-sm font-medium text-slate-700 mb-1">Subjek</label>
-                            <input type="text" id="subject" name="subject" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm" placeholder="Contoh: Info Kemitraan Vendor">
-                        </div>
-                        
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-slate-700 mb-1">Pesan</label>
-                            <textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors resize-none text-sm" placeholder="Tuliskan detail pertanyaan atau keluhan Anda di sini..."></textarea>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-semibold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex justify-center items-center gap-2 mt-2">
-                            <span>Kirim Pesan</span>
-                            <i class="fa-regular fa-paper-plane text-sm"></i>
-                        </button>
-                    </form>
-                </div>
-                
+            <div class="bg-dark-chocolate text-misty-rose p-6 rounded-2xl shadow-md hover:-translate-y-1 transition cursor-pointer">
+                <div class="text-3xl mb-3">🎮</div>
+                <h3 class="font-semibold">Video Games</h3>
+            </div>
+            <div class="bg-milk-tea p-6 rounded-2xl shadow-md hover:-translate-y-1 transition border-2 border-dark-chocolate/10 cursor-pointer">
+                <div class="text-3xl mb-3">🎬</div>
+                <h3 class="font-semibold text-dark-chocolate">Film & Tokusatsu</h3>
+            </div>
+            <div class="bg-sakura p-6 rounded-2xl shadow-md hover:-translate-y-1 transition border-2 border-dark-chocolate/10 cursor-pointer">
+                <div class="text-3xl mb-3">✨</div>
+                <h3 class="font-semibold text-dark-chocolate">Original Character</h3>
+            </div>
+            <div class="bg-aloewood text-misty-rose p-6 rounded-2xl shadow-md hover:-translate-y-1 transition cursor-pointer">
+                <div class="text-3xl mb-3">💇‍♀️</div>
+                <h3 class="font-semibold">Accessories & Wigs</h3>
             </div>
         </div>
     </section>
 
-    <footer class="w-full py-8 text-center border-t border-slate-200 bg-slate-50 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2">
-                <span class="text-xl font-bold text-slate-400 tracking-tight">CosRent<span class="text-slate-300">.</span></span>
-                <p class="text-sm text-slate-500 border-l border-slate-300 pl-2 ml-2">&copy; 2026 Hak Cipta Dilindungi</p>
-            </div>
+    <section class="bg-dark-chocolate text-misty-rose py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-2">Proses Sewa Mudah</h2>
+            <p class="text-sakura mb-16">Hanya butuh 4 langkah untuk mendapatkan kostum impianmu</p>
             
-            <div class="flex space-x-6 text-sm font-medium">
-                <a href="#" class="text-slate-500 hover:text-indigo-600 transition-colors">@CosRent_ID</a>
-                <a href="#" class="text-slate-500 hover:text-indigo-600 transition-colors">Syarat & Ketentuan</a>
-                <a href="#" class="text-slate-500 hover:text-indigo-600 transition-colors">Kebijakan Privasi</a>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+                <div class="hidden md:block absolute top-8 left-[12%] right-[12%] h-[2px] bg-sakura/30 border-dashed border-b-2 border-sakura/50 z-0"></div>
+
+                <div class="flex flex-col items-center relative z-10">
+                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg">🔍</div>
+                    <h4 class="font-bold text-lg mb-2">Pilih & Jadwal</h4>
+                    <p class="text-sm opacity-80">Pilih kostum favoritmu dan tentukan tanggal sewa.</p>
+                </div>
+                <div class="flex flex-col items-center relative z-10">
+                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg">💳</div>
+                    <h4 class="font-bold text-lg mb-2">Bayar & Deposit</h4>
+                    <p class="text-sm opacity-80">Lakukan pembayaran sewa dan deposit keamanan.</p>
+                </div>
+                <div class="flex flex-col items-center relative z-10">
+                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg">📦</div>
+                    <h4 class="font-bold text-lg mb-2">Kirim / Ambil</h4>
+                    <p class="text-sm opacity-80">Kostum dikirim ke alamatmu atau ambil di toko.</p>
+                </div>
+                <div class="flex flex-col items-center relative z-10">
+                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg">🔄</div>
+                    <h4 class="font-bold text-lg mb-2">Kembalikan</h4>
+                    <p class="text-sm opacity-80">Kembalikan kostum setelah masa sewa berakhir.</p>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h2 class="text-4xl font-bold mb-2">Produk Unggulan</h2>
+                <p class="text-dark-chocolate/80">Kostum paling populer minggu ini</p>
+            </div>
+            <a href="#" class="text-dark-chocolate font-medium hover:text-sakura transition hidden md:block">Lihat Semua →</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-64 bg-dark-chocolate relative">
+                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full">Populer</span>
+                    <div class="w-full h-full bg-aloewood opacity-50"></div>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-wider mb-1">GENSHIN IMPACT</span>
+                    <h3 class="font-bold text-xl mb-4">Raiden Shogun</h3>
+                    <div class="flex justify-between items-center mb-6 mt-auto">
+                        <span class="font-bold text-lg">Rp 180.000</span>
+                        <span class="text-xs font-medium text-dark-chocolate/60">Size: M, L</span>
+                    </div>
+                    <button class="w-full bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</button>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-64 bg-dark-chocolate relative">
+                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full">Populer</span>
+                    <div class="w-full h-full bg-milk-tea opacity-50"></div>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-wider mb-1">ONE PIECE</span>
+                    <h3 class="font-bold text-xl mb-4">Monkey D. Luffy</h3>
+                    <div class="flex justify-between items-center mb-6 mt-auto">
+                        <span class="font-bold text-lg">Rp 120.000</span>
+                        <span class="text-xs font-medium text-dark-chocolate/60">Size: All Size</span>
+                    </div>
+                    <button class="w-full bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</button>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-64 bg-dark-chocolate relative">
+                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full">Populer</span>
+                    <div class="w-full h-full bg-aloewood opacity-80"></div>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-wider mb-1">HONKAI: STAR RAIL</span>
+                    <h3 class="font-bold text-xl mb-4">Kafka</h3>
+                    <div class="flex justify-between items-center mb-6 mt-auto">
+                        <span class="font-bold text-lg">Rp 200.000</span>
+                        <span class="text-xs font-medium text-dark-chocolate/60">Size: S, M, L</span>
+                    </div>
+                    <button class="w-full bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</button>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-64 bg-dark-chocolate relative">
+                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full">Populer</span>
+                    <div class="w-full h-full bg-sakura opacity-50"></div>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-wider mb-1">MARVEL</span>
+                    <h3 class="font-bold text-xl mb-4">Spider-Man</h3>
+                    <div class="flex justify-between items-center mb-6 mt-auto">
+                        <span class="font-bold text-lg">Rp 150.000</span>
+                        <span class="text-xs font-medium text-dark-chocolate/60">Size: L, XL</span>
+                    </div>
+                    <button class="w-full bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-10 px-6 max-w-7xl mx-auto">
+        <div class="glass-card rounded-[3rem] p-8 md:p-16 border-2 border-dark-chocolate/10 flex flex-col md:flex-row items-center gap-12 shadow-xl">
+            <div class="md:w-1/2">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Kenapa Memilih <br><span class="text-sakura">CosRent?</span></h2>
+                <p class="text-dark-chocolate/80 mb-10 text-lg">
+                    Kami memahami kebutuhan cosplayer. Kenyamanan, kebersihan, dan akurasi adalah prioritas utama kami.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-sakura/50 p-3 rounded-full text-dark-chocolate">✨</div>
+                        <div>
+                            <h4 class="font-bold">Premium Fabric</h4>
+                            <p class="text-sm opacity-80">Kualitas kain terbaik untuk kenyamanan maksimal.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="bg-sakura/50 p-3 rounded-full text-dark-chocolate">🛡️</div>
+                        <div>
+                            <h4 class="font-bold">Hygienic</h4>
+                            <p class="text-sm opacity-80">Setiap kostum dicuci bersih dan disterilkan.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="bg-sakura/50 p-3 rounded-full text-dark-chocolate">📏</div>
+                        <div>
+                            <h4 class="font-bold">Fitting Available</h4>
+                            <p class="text-sm opacity-80">Bisa fitting langsung di offline store kami.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="bg-sakura/50 p-3 rounded-full text-dark-chocolate">👕</div>
+                        <div>
+                            <h4 class="font-bold">Full Size Options</h4>
+                            <p class="text-sm opacity-80">Tersedia ukuran lengkap dari XS hingga XXXL.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <div class="rounded-[2rem] overflow-hidden shadow-2xl h-[500px] bg-dark-chocolate">
+                     <img src="https://images.unsplash.com/photo-1519750783826-e2420f4d687f?auto=format&fit=crop&w=800&q=80" alt="Cosplay Event" class="w-full h-full object-cover opacity-80">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 max-w-7xl mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-2">Apa Kata Mereka?</h2>
+        <p class="text-dark-chocolate/80 mb-12">Pengalaman nyata dari para cosplayer</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
+                <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
+                <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga pas banget sesuai deskripsi. Adminnya ramah dan prosesnya cepet banget. Pasti bakal sewa di sini lagi!"</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-aloewood rounded-full"></div>
+                    <div>
+                        <h4 class="font-bold">Customer #1</h4>
+                        <p class="text-xs opacity-70">Verified Cosplayer</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
+                <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
+                <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga pas banget sesuai deskripsi. Adminnya ramah dan prosesnya cepet banget. Pasti bakal sewa di sini lagi!"</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-aloewood rounded-full"></div>
+                    <div>
+                        <h4 class="font-bold">Customer #2</h4>
+                        <p class="text-xs opacity-70">Verified Cosplayer</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
+                <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
+                <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga pas banget sesuai deskripsi. Adminnya ramah dan prosesnya cepet banget. Pasti bakal sewa di sini lagi!"</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-aloewood rounded-full"></div>
+                    <div>
+                        <h4 class="font-bold">Customer #3</h4>
+                        <p class="text-xs opacity-70">Verified Cosplayer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark-chocolate text-misty-rose py-16 border-t-[16px] border-sakura">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+            
+            <div>
+                <div class="flex items-center gap-2 font-bold text-2xl mb-6">
+                    <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-10 h-10 flex items-center justify-center">🛍️</span>
+                    CosRent
+                </div>
+                <p class="text-sm opacity-80 mb-6 leading-relaxed">
+                    Platform sewa kostum cosplay premium terlengkap di Indonesia. Kualitas kain terbaik, higienis, dan pilihan ukuran lengkap.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full border border-misty-rose/30 flex items-center justify-center hover:bg-sakura hover:text-dark-chocolate transition">IG</a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-misty-rose/30 flex items-center justify-center hover:bg-sakura hover:text-dark-chocolate transition">FB</a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-misty-rose/30 flex items-center justify-center hover:bg-sakura hover:text-dark-chocolate transition">TW</a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-sakura mb-6 text-lg">Layanan Kami</h4>
+                <ul class="space-y-4 text-sm opacity-90">
+                    <li><a href="#" class="hover:text-sakura transition">Katalog Kostum</a></li>
+                    <li><a href="#" class="hover:text-sakura transition">Tentang Kami</a></li>
+                    <li><a href="#" class="hover:text-sakura transition">FAQ</a></li>
+                    <li><a href="#" class="hover:text-sakura transition">Syarat & Ketentuan</a></li>
+                    <li><a href="#" class="hover:text-sakura transition">Kebijakan Pengembalian</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-sakura mb-6 text-lg">Hubungi Kami</h4>
+                <ul class="space-y-4 text-sm opacity-90">
+                    <li class="flex items-start gap-3">
+                        <span class="mt-1">📍</span>
+                        <span>Jl. Cosplay No. 123, Jakarta Selatan, Indonesia</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span>📞</span>
+                        <span>+62 812-3456-7890</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span>✉️</span>
+                        <span>support@cosrent.id</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-sakura mb-6 text-lg">Lokasi Toko</h4>
+                <div class="w-full h-32 bg-aloewood rounded-xl border border-misty-rose/20 relative overflow-hidden flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=400&q=80" alt="Map" class="absolute inset-0 w-full h-full object-cover opacity-40">
+                    <button class="relative z-10 bg-dark-chocolate/80 text-misty-rose px-4 py-2 rounded border border-misty-rose/50 text-sm hover:bg-sakura hover:text-dark-chocolate transition">Buka Maps</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-misty-rose/10 text-center text-sm opacity-60">
+            © 2024 CosRent. All rights reserved. Crafted with ❤️ for Cosplayers.
         </div>
     </footer>
 
-    <script src="{{ asset('js/app.js') }}"></script>
-    
 </body>
 </html>

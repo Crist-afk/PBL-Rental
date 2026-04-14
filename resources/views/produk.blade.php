@@ -9,6 +9,7 @@
 
     <script>
         tailwind.config = {
+            content: [],
             theme: {
                 extend: {
                     fontFamily: {
@@ -41,122 +42,129 @@
 
 <body class="text-dark-chocolate antialiased">
 
-<!-- NAVBAR -->
-<div class="fixed w-full top-0 z-50 px-6 py-4">
-    <header class="bg-dark-chocolate text-misty-rose rounded-full shadow-lg max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-        <div class="flex items-center gap-2 font-bold text-xl">
-            <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-8 h-8 flex items-center justify-center">🛍️</span>
-            CosRent
-        </div>
-        <nav class="hidden md:flex gap-6 font-medium text-sm">
-            <a href="#" class="hover:text-sakura transition">Home</a>
-            <a href="#" class="hover:text-sakura transition">About</a>
-            <a href="#" class="text-sakura">Product</a>
-            <a href="#" class="hover:text-sakura transition">Forum</a>
-            <a href="#" class="hover:text-sakura transition">Contact</a>
-        </nav>
-        <div class="flex gap-4 items-center text-sm font-medium">
-            <a href="#" class="hover:text-sakura transition">Login</a>
-            <a href="#" class="bg-sakura text-dark-chocolate px-5 py-2 rounded-full hover:bg-opacity-80 transition shadow">Register</a>
-        </div>
-    </header>
-</div>
+    <!-- NAVBAR -->
+    <div class="fixed w-full top-0 z-50 px-6 py-4">
+        <header class="bg-dark-chocolate text-misty-rose rounded-full shadow-lg max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2 font-bold text-xl">
+                <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-8 h-8 flex items-center justify-center">🛍️</span>
+                CosRent
+            </div>
+            
+            <nav class="hidden md:flex gap-6 font-medium text-sm">
+                <a href="#" class="hover:text-sakura transition">Home</a>
+                <a href="#" class="hover:text-sakura transition">About</a>
+                <a href="#" class="text-sakura">Product</a>
+                <a href="#" class="hover:text-sakura transition">Forum</a>
+                <a href="#" class="hover:text-sakura transition">Contact</a>
+            </nav>
 
-<!-- HEADER -->
-<section class="pt-32 pb-10 text-center px-6">
-    <h1 class="text-5xl md:text-6xl font-bold mb-4">Katalog Produk</h1>
-    <p class="text-dark-chocolate/80 text-lg">Pilih kostum cosplay favoritmu</p>
-</section>
-
-<!-- FILTER -->
-<section class="max-w-7xl mx-auto px-6 mb-12">
-    <div class="flex flex-col md:flex-row gap-4 justify-between">
-        <input type="text" placeholder="Cari kostum..." 
-            class="px-5 py-3 rounded-full border border-dark-chocolate/20 w-full md:w-1/3">
-
-        <select class="px-5 py-3 rounded-full border border-dark-chocolate/20">
-            <option>Semua Kategori</option>
-            <option>Anime</option>
-            <option>Game</option>
-            <option>Film</option>
-        </select>
-
-        <select class="px-5 py-3 rounded-full border border-dark-chocolate/20">
-            <option>Urutkan</option>
-            <option>Harga Termurah</option>
-            <option>Harga Termahal</option>
-        </select>
+            <div class="flex gap-4 items-center text-sm font-medium">
+                <a href="#" class="hover:text-sakura transition">Login</a>
+                <a href="#" class="bg-sakura text-dark-chocolate px-5 py-2 rounded-full hover:bg-opacity-80 transition shadow">Register</a>
+            </div>
+        </header>
     </div>
-</section>
 
-<!-- PRODUCT GRID -->
-<section class="pb-20 px-6 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <!-- HEADER -->
+    <section class="pt-32 pb-10 text-center px-6">
+        <h1 class="text-5xl md:text-6xl font-bold mb-4">Katalog Produk</h1>
+        <p class="text-dark-chocolate/80 text-lg">Pilih kostum cosplay favoritmu</p>
+    </section>
 
-        <!-- CARD -->
-        <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-            <div class="h-60 bg-dark-chocolate"></div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-sakura text-xs font-bold">GENSHIN IMPACT</span>
-                <h3 class="font-bold text-xl mb-2">Raiden Shogun</h3>
-                <div class="mt-auto flex justify-between items-center">
-                    <span class="font-bold text-lg">Rp 180.000</span>
-                    <button class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm">Detail</button>
+    <!-- FILTER -->
+    <section class="max-w-7xl mx-auto px-6 mb-12">
+        <div class="flex flex-col md:flex-row gap-4 justify-between">
+            <input type="text" placeholder="Cari kostum..." 
+                class="px-5 py-3 rounded-full border border-dark-chocolate/20 w-full md:w-1/3 focus:outline-none focus:border-sakura transition">
+
+            <select class="px-5 py-3 rounded-full border border-dark-chocolate/20 focus:outline-none focus:border-sakura transition">
+                <option>Semua Kategori</option>
+                <option>Anime</option>
+                <option>Game</option>
+                <option>Film</option>
+            </select>
+
+            <select class="px-5 py-3 rounded-full border border-dark-chocolate/20 focus:outline-none focus:border-sakura transition">
+                <option>Urutkan</option>
+                <option>Harga Termurah</option>
+                <option>Harga Termahal</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- PRODUCT GRID -->
+    <section class="pb-20 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+            <!-- Product Card 1 -->
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-60 bg-dark-chocolate"></div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-widest">GENSHIN IMPACT</span>
+                    <h3 class="font-bold text-xl mb-2">Raiden Shogun</h3>
+                    <div class="mt-auto flex justify-between items-center">
+                        <span class="font-bold text-lg">Rp 180.000</span>
+                        <button class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm hover:bg-sakura hover:text-dark-chocolate transition">Detail</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-            <div class="h-60 bg-aloewood"></div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-sakura text-xs font-bold">ONE PIECE</span>
-                <h3 class="font-bold text-xl mb-2">Monkey D. Luffy</h3>
-                <div class="mt-auto flex justify-between items-center">
-                    <span class="font-bold text-lg">Rp 120.000</span>
-                    <button class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm">Detail</button>
+            <!-- Product Card 2 -->
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-60 bg-aloewood"></div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-widest">ONE PIECE</span>
+                    <h3 class="font-bold text-xl mb-2">Monkey D. Luffy</h3>
+                    <div class="mt-auto flex justify-between items-center">
+                        <span class="font-bold text-lg">Rp 120.000</span>
+                        <button class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm hover:bg-sakura hover:text-dark-chocolate transition">Detail</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-            <div class="h-60 bg-milk-tea"></div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-sakura text-xs font-bold">HONKAI</span>
-                <h3 class="font-bold text-xl mb-2">Kafka</h3>
-                <div class="mt-auto flex justify-between items-center">
-                    <span class="font-bold text-lg">Rp 200.000</span>
-                    <button class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm">Detail</button>
+            <!-- Product Card 3 -->
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-60 bg-milk-tea"></div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-widest">HONKAI</span>
+                    <h3 class="font-bold text-xl mb-2">Kafka</h3>
+                    <div class="mt-auto flex justify-between items-center">
+                        <span class="font-bold text-lg">Rp 200.000</span>
+                        <button class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm hover:bg-sakura hover:text-dark-chocolate transition">Detail</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-            <div class="h-60 bg-sakura"></div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-sakura text-xs font-bold">MARVEL</span>
-                <h3 class="font-bold text-xl mb-2">Spider-Man</h3>
-                <div class="mt-auto flex justify-between items-center">
-                    <span class="font-bold text-lg">Rp 150.000</span>
-                    <button class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm">Detail</button>
+            <!-- Product Card 4 -->
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-60 bg-sakura"></div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-widest">MARVEL</span>
+                    <h3 class="font-bold text-xl mb-2">Spider-Man</h3>
+                    <div class="mt-auto flex justify-between items-center">
+                        <span class="font-bold text-lg">Rp 150.000</span>
+                        <button class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm hover:bg-sakura hover:text-dark-chocolate transition">Detail</button>
+                    </div>
                 </div>
             </div>
+
         </div>
+    </section>
 
-    </div>
-</section>
+    <!-- PAGINATION -->
+    <section class="pb-20 text-center">
+        <div class="flex justify-center gap-3">
+            <button class="px-4 py-2 border border-dark-chocolate/30 rounded-full hover:bg-sakura hover:text-dark-chocolate hover:border-sakura transition">1</button>
+            <button class="px-4 py-2 border border-dark-chocolate/30 rounded-full hover:bg-sakura hover:text-dark-chocolate hover:border-sakura transition">2</button>
+            <button class="px-4 py-2 border border-dark-chocolate/30 rounded-full hover:bg-sakura hover:text-dark-chocolate hover:border-sakura transition">3</button>
+        </div>
+    </section>
 
-<!-- PAGINATION -->
-<section class="pb-20 text-center">
-    <div class="flex justify-center gap-3">
-        <button class="px-4 py-2 border rounded-full">1</button>
-        <button class="px-4 py-2 border rounded-full">2</button>
-        <button class="px-4 py-2 border rounded-full">3</button>
-    </div>
-</section>
-
-<footer class="bg-dark-chocolate text-misty-rose py-16 border-t-[16px] border-sakura">
+    <!-- FOOTER -->
+    <footer class="bg-dark-chocolate text-misty-rose py-16 border-t-[16px] border-sakura">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
             
+            <!-- Brand -->
             <div>
                 <div class="flex items-center gap-2 font-bold text-2xl mb-6">
                     <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-10 h-10 flex items-center justify-center">🛍️</span>
@@ -172,6 +180,7 @@
                 </div>
             </div>
 
+            <!-- Layanan Kami -->
             <div>
                 <h4 class="font-bold text-sakura mb-6 text-lg">Layanan Kami</h4>
                 <ul class="space-y-4 text-sm opacity-90">
@@ -183,6 +192,7 @@
                 </ul>
             </div>
 
+            <!-- Hubungi Kami -->
             <div>
                 <h4 class="font-bold text-sakura mb-6 text-lg">Hubungi Kami</h4>
                 <ul class="space-y-4 text-sm opacity-90">
@@ -201,17 +211,22 @@
                 </ul>
             </div>
 
+            <!-- Lokasi Toko -->
             <div>
                 <h4 class="font-bold text-sakura mb-6 text-lg">Lokasi Toko</h4>
                 <div class="w-full h-32 bg-aloewood rounded-xl border border-misty-rose/20 relative overflow-hidden flex items-center justify-center">
-                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=400&q=80" alt="Map" class="absolute inset-0 w-full h-full object-cover opacity-40">
-                    <button class="relative z-10 bg-dark-chocolate/80 text-misty-rose px-4 py-2 rounded border border-misty-rose/50 text-sm hover:bg-sakura hover:text-dark-chocolate transition">Buka Maps</button>
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=400&q=80" 
+                         alt="Map" 
+                         class="absolute inset-0 w-full h-full object-cover opacity-40">
+                    <button class="relative z-10 bg-dark-chocolate/80 text-misty-rose px-4 py-2 rounded border border-misty-rose/50 text-sm hover:bg-sakura hover:text-dark-chocolate transition">
+                        Buka Maps
+                    </button>
                 </div>
             </div>
         </div>
 
         <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-misty-rose/10 text-center text-sm opacity-60">
-            © 2024 CosRent. All rights reserved. Crafted with ❤️ for Cosplayers.
+            © 2026 CosRent. All rights reserved. Crafted with ❤️ for Cosplayers.
         </div>
     </footer>
 

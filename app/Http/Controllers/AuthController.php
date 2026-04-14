@@ -7,24 +7,29 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+// [STANDAR PENAMAAN] Class menggunakan Pascal Case (diawali huruf kapital)
 class AuthController extends Controller
 {
     // === BAGIAN REGISTER ===
+    // Menampilkan form register
     public function showRegisterForm()
     {
-        return view('auth.register'); // View form register dari Rangga
+        return view('auth.register');
     }
 
+    // Fungsi (Method) menggunakan Camel Case
     public function processRegister(Request $request)
     {
-        // Validasi ketat
+        // Validasi input dari pengguna sebelum data dimasukkan ke database untuk keamanan.
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed', // 'confirmed' otomatis mengecek kolom password_confirmation
+            // 'confirmed' otomatis mengecek kolom password_confirmation
+            'password' => 'required|min:8|confirmed',
         ]);
 
-        // Simpan ke Database
+        // Membuat user baru di database. Pastikan password di-hash agar aman
+        // (tidak disimpan dalam bentuk teks biasa).
         User::create([
             'nama' => $request->nama,
             'email' => $request->email,

@@ -15,7 +15,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 // Route untuk halaman produk
-Route::get('/products', [HomeController::class, 'products'])->name('products');
+Route::get('/product', [HomeController::class, 'product'])->name('product');
 
 // Route untuk halaman forum
 Route::get('/forum', [HomeController::class, 'forum'])->name('forum');

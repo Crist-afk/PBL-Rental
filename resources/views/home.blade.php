@@ -52,7 +52,7 @@
             <nav class="hidden md:flex gap-6 font-medium text-sm">
                 <a href="{{ route('home') }}" class="text-sakura hover:text-misty-rose transition">Home</a>
                 <a href="{{ route('about') }}" class="hover:text-sakura transition">About</a>
-                <a href="{{ route('products') }}" class="hover:text-sakura transition">Product</a>
+                <a href="{{ route('product') }}" class="hover:text-sakura transition">Product</a>
                 <a href="{{ route('forum') }}" class="hover:text-sakura transition">Forum</a>
                 <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
             </nav>

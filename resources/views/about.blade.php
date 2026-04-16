@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang Kami - CosRent</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+@extends('layouts.app')
+
+@section('title', 'Tentang Kami - CosRent')
+
+@section('content')
+
     <style>
-        /* Animasi kustom untuk blob cahaya */
         @keyframes blob {
             0% { transform: translate(0px, 0px) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.1); }
@@ -17,43 +14,8 @@
         .animate-blob { animation: blob 7s infinite; }
         .animation-delay-2000 { animation-delay: 2s; }
     </style>
-</head>
-<body class="antialiased flex flex-col min-h-screen">
-
-    <div class="fixed w-full top-0 z-50 px-6 py-4">
-        <header class="bg-dark-chocolate text-misty-rose rounded-full shadow-lg max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2 font-bold text-xl">
-                <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-8 h-8 flex items-center justify-center">🛍️</span>
-                <a href="{{ route('home') }}">CosRent</a>
-            </div>
-            <nav class="hidden md:flex gap-6 font-medium text-sm">
-                <a href="{{ route('home') }}" class="hover:text-sakura transition">Home</a>
-                <a href="{{ route('about') }}" class="text-sakura transition">About</a>
-                <a href="{{ route('product') }}" class="hover:text-sakura transition">Product</a>
-                <a href="{{ route('forum') }}" class="hover:text-sakura transition">Forum</a>
-                <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
-            </nav>
-            <div class="flex gap-4 items-center text-sm font-medium">
-                @auth
-                    <a href="{{ route('profile') }}" class="text-sakura font-bold hover:underline transition">
-                        <i class="fa-solid fa-user-circle mr-1"></i> {{ Auth::user()->nama }}
-                    </a>
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="bg-misty-rose/20 text-misty-rose px-3 py-1.5 rounded-full hover:bg-sakura hover:text-dark-chocolate transition text-[10px] font-bold shadow-sm">
-                            Keluar
-                        </button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="hover:text-sakura transition">Login</a>
-                    <a href="{{ route('register') }}" class="bg-sakura text-dark-chocolate px-5 py-2 rounded-full hover:bg-opacity-80 transition shadow">Register</a>
-                @endauth
-            </div>
-        </header>
-    </div>
 
     <main class="flex-grow w-full overflow-hidden">
-
         <section class="relative pt-40 pb-20 px-6 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
             <div class="absolute top-20 left-10 w-72 h-72 bg-sakura rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob"></div>
             <div class="absolute top-40 right-20 w-72 h-72 bg-aloewood rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
@@ -92,7 +54,6 @@
 
         <section class="py-24 px-6 relative">
             <div class="max-w-7xl mx-auto space-y-24">
-
                 <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
                     <div class="md:w-1/2 order-2 md:order-1">
                         <div class="glass-card p-10 md:p-14 rounded-[3rem] border-2 border-dark-chocolate/10 shadow-xl relative group">
@@ -144,13 +105,10 @@
                 <span class="text-sakura font-bold tracking-widest uppercase text-sm mb-4 block">Arsitek CosRent</span>
                 <h2 class="text-4xl md:text-5xl font-extrabold text-dark-chocolate">Pikiran di Balik Sistem</h2>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-
                 <div class="group relative rounded-[2.5rem] overflow-hidden h-[400px] md:h-[500px] shadow-xl border-4 border-misty-rose cursor-pointer">
                     <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-dark-chocolate via-dark-chocolate/50 to-transparent opacity-80 group-hover:opacity-95 transition duration-500"></div>
-
                     <div class="absolute bottom-0 left-0 right-0 p-8 translate-y-12 group-hover:translate-y-0 transition duration-500">
                         <div class="w-12 h-12 bg-sakura text-dark-chocolate rounded-full flex items-center justify-center mb-4 opacity-0 group-hover:opacity-100 transition duration-500 delay-100 shadow-lg">
                             <i class="fa-solid fa-server"></i>
@@ -166,7 +124,6 @@
                 <div class="group relative rounded-[2.5rem] overflow-hidden h-[400px] md:h-[500px] shadow-xl border-4 border-misty-rose cursor-pointer mt-0 md:mt-12">
                     <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-dark-chocolate via-dark-chocolate/50 to-transparent opacity-80 group-hover:opacity-95 transition duration-500"></div>
-
                     <div class="absolute bottom-0 left-0 right-0 p-8 translate-y-12 group-hover:translate-y-0 transition duration-500">
                         <div class="w-12 h-12 bg-aloewood text-misty-rose rounded-full flex items-center justify-center mb-4 opacity-0 group-hover:opacity-100 transition duration-500 delay-100 shadow-lg">
                             <i class="fa-solid fa-layer-group"></i>
@@ -182,7 +139,6 @@
                 <div class="group relative rounded-[2.5rem] overflow-hidden h-[400px] md:h-[500px] shadow-xl border-4 border-misty-rose cursor-pointer mt-0 md:mt-24">
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-dark-chocolate via-dark-chocolate/50 to-transparent opacity-80 group-hover:opacity-95 transition duration-500"></div>
-
                     <div class="absolute bottom-0 left-0 right-0 p-8 translate-y-12 group-hover:translate-y-0 transition duration-500">
                         <div class="w-12 h-12 bg-milk-tea text-dark-chocolate rounded-full flex items-center justify-center mb-4 opacity-0 group-hover:opacity-100 transition duration-500 delay-100 shadow-lg">
                             <i class="fa-solid fa-list-check"></i>
@@ -194,7 +150,6 @@
                         </p>
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -204,7 +159,6 @@
                 <div class="relative z-10">
                     <h2 class="text-3xl md:text-4xl font-bold text-dark-chocolate mb-6">Siap Memulai Petualangan Barumu?</h2>
                     <p class="text-dark-chocolate/80 mb-10 max-w-2xl mx-auto font-medium text-lg">Bergabunglah dengan CosRent hari ini. Ribuan kostum menunggu untuk dihidupkan oleh imajinasimu.</p>
-
                     @guest
                         <a href="{{ route('register') }}" class="inline-block bg-sakura text-dark-chocolate px-10 py-4 rounded-full font-bold text-lg hover:bg-dark-chocolate hover:text-sakura transition duration-300 shadow-xl">
                             Buat Akun Sekarang
@@ -217,12 +171,5 @@
                 </div>
             </div>
         </section>
-
     </main>
-
-    <footer class="bg-dark-chocolate text-misty-rose py-10 mt-auto border-t-[8px] border-sakura text-center">
-        <p class="text-sm opacity-60 font-medium">© 2026 CosRent. Dibuat dengan ❤️ oleh Tim PBL IF-2B Pagi.</p>
-    </footer>
-
-</body>
-</html>
+@endsection

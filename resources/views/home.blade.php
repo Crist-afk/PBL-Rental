@@ -69,75 +69,138 @@
             </div>
         </section>
 
-        <section class="py-20 px-6 max-w-7xl mx-auto text-center">
-            <div class="glass-card inline-block px-8 py-4 rounded-3xl border-2 border-dark-chocolate/10 shadow-sm mb-12">
-                <h2 class="text-4xl font-bold mb-2">Kategori Kostum</h2>
-                <p class="text-dark-chocolate/80">Temukan kostum berdasarkan genre favoritmu</p>
+        <section class="relative py-24 px-6 overflow-hidden">
+            <!-- Background Kanji Decor -->
+            <div class="absolute top-20 right-10 text-[12rem] font-bold text-dark-chocolate/5 select-none pointer-events-none leading-none">
+                カテゴリー
             </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div class="bg-sakura p-6 rounded-2xl shadow-md hover:-translate-y-1 transition border-2 border-dark-chocolate/10 cursor-pointer">
-                    <div class="text-3xl mb-3">🎭</div>
-                    <h3 class="font-semibold text-dark-chocolate">Anime & Manga</h3>
-                </div>
-                <div class="bg-dark-chocolate text-misty-rose p-6 rounded-2xl shadow-md hover:-translate-y-1 transition cursor-pointer">
-                    <div class="text-3xl mb-3">🎮</div>
-                    <h3 class="font-semibold">Video Games</h3>
-                </div>
-                <div class="bg-milk-tea p-6 rounded-2xl shadow-md hover:-translate-y-1 transition border-2 border-dark-chocolate/10 cursor-pointer">
-                    <div class="text-3xl mb-3">🎬</div>
-                    <h3 class="font-semibold text-dark-chocolate">Film & Tokusatsu</h3>
-                </div>
-                <div class="bg-sakura p-6 rounded-2xl shadow-md hover:-translate-y-1 transition border-2 border-dark-chocolate/10 cursor-pointer">
-                    <div class="text-3xl mb-3">✨</div>
-                    <h3 class="font-semibold text-dark-chocolate">Original Character</h3>
-                </div>
-                <div class="bg-aloewood text-misty-rose p-6 rounded-2xl shadow-md hover:-translate-y-1 transition cursor-pointer">
-                    <div class="text-3xl mb-3">💇‍♀️</div>
-                    <h3 class="font-semibold">Accessories & Wigs</h3>
-                </div>
+            <div class="absolute bottom-20 left-10 text-[12rem] font-bold text-sakura/5 select-none pointer-events-none leading-none vertical-text">
+                コスプレ
             </div>
-        </section>
+            
+            <div class="max-w-7xl mx-auto text-center relative z-10">
+                <div class="inline-block mb-16">
+                    <span class="text-sakura font-bold tracking-[0.3em] uppercase text-sm block mb-2">— Kategori Kostum —</span>
+                    <h2 class="text-5xl md:text-6xl font-bold text-dark-chocolate">Pilih Karaktermu</h2>
+                </div>
 
-        <section class="glass-card text-dark-chocolate py-20 px-6">
-            <div class="max-w-7xl mx-auto text-center">
-                <h2 class="text-4xl font-bold mb-2">Proses Sewa Mudah</h2>
-                <p class="text-dark-chocolate/80 mb-16">Hanya butuh 4 langkah untuk mendapatkan kostum impianmu</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-                    <div class="hidden md:block absolute top-8 left-[12%] right-[12%] h-[2px] bg-dark-chocolate/10 border-dashed border-b-2 border-dark-chocolate/20 z-0"></div>
-
-                    <div class="flex flex-col items-center relative z-10">
-                        <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg border-2 border-dark-chocolate/10">🔍</div>
-                        <h4 class="font-bold text-lg mb-2">Pilih & Jadwal</h4>
-                        <p class="text-sm opacity-80">Pilih kostum favoritmu dan tentukan tanggal sewa.</p>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+                    <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">アニメ</div>
+                        <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">🎭</div>
+                        <h3 class="font-bold text-lg text-dark-chocolate mb-1">Anime & Manga</h3>
+                        <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">A-N-I-M-E</p>
                     </div>
-                    <div class="flex flex-col items-center relative z-10">
-                        <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg border-2 border-dark-chocolate/10">💳</div>
-                        <h4 class="font-bold text-lg mb-2">Bayar & Deposit</h4>
-                        <p class="text-sm opacity-80">Lakukan pembayaran sewa dan deposit keamanan.</p>
+                    <div class="group relative bg-dark-chocolate p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">ゲーム</div>
+                        <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">🎮</div>
+                        <h3 class="font-bold text-lg text-misty-rose mb-1">Video Games</h3>
+                        <p class="text-xs text-misty-rose/40 uppercase tracking-widest">G-A-M-E</p>
                     </div>
-                    <div class="flex flex-col items-center relative z-10">
-                        <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg border-2 border-dark-chocolate/10">📦</div>
-                        <h4 class="font-bold text-lg mb-2">Kirim / Ambil</h4>
-                        <p class="text-sm opacity-80">Kostum dikirim ke alamatmu atau ambil di toko.</p>
+                    <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">映画</div>
+                        <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">🎬</div>
+                        <h3 class="font-bold text-lg text-dark-chocolate mb-1">Film & Toku</h3>
+                        <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">M-O-V-I-E</p>
                     </div>
-                    <div class="flex flex-col items-center relative z-10">
-                        <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg border-2 border-dark-chocolate/10">🔄</div>
-                        <h4 class="font-bold text-lg mb-2">Kembalikan</h4>
-                        <p class="text-sm opacity-80">Kembalikan kostum setelah masa sewa berakhir.</p>
+                    <div class="group relative bg-sakura p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-dark-chocolate cursor-pointer overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 text-xs font-bold text-dark-chocolate/10 group-hover:text-dark-chocolate/20 transition-colors">オリジナル</div>
+                        <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">✨</div>
+                        <h3 class="font-bold text-lg text-dark-chocolate mb-1">Original</h3>
+                        <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">O-R-I-G-I-N-A-L</p>
+                    </div>
+                    <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">道具</div>
+                        <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">💇‍♀️</div>
+                        <h3 class="font-bold text-lg text-dark-chocolate mb-1">Accessories</h3>
+                        <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">W-I-G-S</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="py-20 px-6 max-w-7xl mx-auto">
-            <div class="flex justify-between items-center mb-10">
-                <div class="glass-card px-8 py-4 rounded-3xl border-2 border-dark-chocolate/10 shadow-sm">
-                    <h2 class="text-4xl font-bold mb-2">Produk Unggulan</h2>
-                    <p class="text-dark-chocolate/80">Kostum paling populer minggu ini</p>
+        <!-- Process Section with Torii Background -->
+        <section class="relative py-32 bg-misty-rose overflow-hidden">
+            <img src="{{ asset('images/torii.png') }}" class="absolute -bottom-20 -right-20 w-96 opacity-10 pointer-events-none transform rotate-12" alt="Torii Decor">
+            
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="text-center mb-24">
+                    <span class="text-sakura font-bold tracking-[0.3em] uppercase text-sm block mb-2">— TATA CARA —</span>
+                    <h2 class="text-5xl font-bold text-dark-chocolate">Proses Sewa Mudah</h2>
                 </div>
-                <a href="#" class="glass-card px-6 py-3 rounded-full border-2 border-dark-chocolate/10 shadow-sm text-dark-chocolate font-medium hover:text-sakura transition hidden md:block">Lihat Semua →</a>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
+                    <!-- Steps with Japanese numbers -->
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="relative mb-8">
+                            <div class="w-24 h-24 bg-dark-chocolate text-sakura rounded-full flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform border-4 border-sakura/20">
+                                一
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-10 h-10 bg-sakura text-dark-chocolate rounded-lg flex items-center justify-center font-bold text-xl shadow-lg border-2 border-dark-chocolate">
+                                1
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-2xl mb-3">Pilih & Jadwal</h4>
+                        <p class="text-dark-chocolate/60 leading-relaxed">Pilih kostum favoritmu dan tentukan tanggal sewa di kalender kami.</p>
+                    </div>
+
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="relative mb-8">
+                            <div class="w-24 h-24 bg-dark-chocolate text-sakura rounded-full flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform border-4 border-sakura/20">
+                                二
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-10 h-10 bg-sakura text-dark-chocolate rounded-lg flex items-center justify-center font-bold text-xl shadow-lg border-2 border-dark-chocolate">
+                                2
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-2xl mb-3">Pembayaran</h4>
+                        <p class="text-dark-chocolate/60 leading-relaxed">Lakukan pembayaran melalui transfer atau e-wallet dengan deposit keamanan.</p>
+                    </div>
+
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="relative mb-8">
+                            <div class="w-24 h-24 bg-dark-chocolate text-sakura rounded-full flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform border-4 border-sakura/20">
+                                三
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-10 h-10 bg-sakura text-dark-chocolate rounded-lg flex items-center justify-center font-bold text-xl shadow-lg border-2 border-dark-chocolate">
+                                3
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-2xl mb-3">Kirim / Ambil</h4>
+                        <p class="text-dark-chocolate/60 leading-relaxed">Kostum akan dikirimkan ke alamat Anda atau dapat diambil di galeri kami.</p>
+                    </div>
+
+                    <div class="flex flex-col items-center text-center group">
+                        <div class="relative mb-8">
+                            <div class="w-24 h-24 bg-dark-chocolate text-sakura rounded-full flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform border-4 border-sakura/20">
+                                四
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-10 h-10 bg-sakura text-dark-chocolate rounded-lg flex items-center justify-center font-bold text-xl shadow-lg border-2 border-dark-chocolate">
+                                4
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-2xl mb-3">Kembalikan</h4>
+                        <p class="text-dark-chocolate/60 leading-relaxed">Setelah selesai, kembalikan kostum tepat waktu agar dapat dinikmati yang lain.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 px-6 max-w-7xl mx-auto relative overflow-hidden">
+            <!-- Decorative Kanji for Products -->
+            <div class="absolute -top-10 left-0 text-[15rem] font-bold text-dark-chocolate/5 select-none pointer-events-none leading-none vertical-text">
+                注目
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 relative z-10">
+                <div class="max-w-xl">
+                    <span class="text-sakura font-bold tracking-[0.3em] uppercase text-sm block mb-2">— KOLEKSI UNGGULAN —</span>
+                    <h2 class="text-5xl font-bold text-dark-chocolate">Pilihan Populer</h2>
+                </div>
+                <a href="#" class="group flex items-center gap-3 text-dark-chocolate font-bold mt-6 md:mt-0 transition-all hover:text-sakura">
+                    <span>Lihat Semua Katalog</span>
+                    <span class="w-12 h-12 bg-dark-chocolate text-white rounded-full flex items-center justify-center group-hover:bg-sakura transition-colors">→</span>
+                </a>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">

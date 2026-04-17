@@ -52,7 +52,7 @@
             <nav class="hidden md:flex gap-6 font-medium text-sm">
                 <a href="{{ route('home') }}" class="text-sakura hover:text-misty-rose transition">Home</a>
                 <a href="{{ route('about') }}" class="hover:text-sakura transition">About</a>
-                <a href="{{ route('product') }}" class="hover:text-sakura transition">Product</a>
+                <a href="{{ route('products.index') }}" class="hover:text-sakura transition">Product</a>
                 <a href="{{ route('forum') }}" class="hover:text-sakura transition">Forum</a>
                 <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
             </nav>
@@ -72,10 +72,16 @@
             <p class="mt-4 max-w-2xl text-dark-chocolate font-medium text-lg">
                 Sewa kostum cosplay kualitas premium dengan harga terjangkau. Ribuan pilihan karakter dari anime, game, hingga film favoritmu.
             </p>
-            <div class="mt-8 flex gap-4">
-                <a href="#" class="bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition shadow-md">Jelajahi Katalog</a>
-                <a href="#" class="border-2 border-dark-chocolate text-dark-chocolate px-8 py-3 rounded-full font-semibold hover:bg-dark-chocolate hover:text-misty-rose transition shadow-md">Cari Produk</a>
-            </div>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+            <a href="{{ route('products.index') }}" 
+            class="bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition shadow-md">
+                Jelajahi Katalog
+            </a>
+            <a href="{{ route('products.index') }}" 
+            class="border-2 border-dark-chocolate text-dark-chocolate px-8 py-3 rounded-full font-semibold hover:bg-dark-chocolate hover:text-misty-rose transition shadow-md">
+                Cari Produk
+            </a>
+        </div>
         </div>
 
         <div class="mt-16 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border-4 border-dark-chocolate bg-dark-chocolate">

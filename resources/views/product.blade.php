@@ -29,9 +29,8 @@
 
     <style>
         body {
-            background-color: #FFE4E1;
-            background-image: radial-gradient(#443025 10%, transparent 10%);
-            background-size: 20px 20px;
+            background-color: #FFE4E1;   /* Warna misty-rose */
+            /* Background titik dihilangkan */
         }
         .glass-card {
             background-color: rgba(68, 48, 37, 0.05);
@@ -96,22 +95,69 @@
     <section class="pb-20 px-6 max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-            @foreach($products as $product)
+            <!-- Product Card 1 -->
             <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-                <div class="h-60 {{ $product['color'] }}"></div>
+                <div class="h-60 bg-dark-chocolate"></div>
                 <div class="p-6 flex flex-col flex-grow">
-                    <span class="text-sakura text-xs font-bold tracking-widest">{{ $product['category'] }}</span>
-                    <h3 class="font-bold text-xl mb-2">{{ $product['title'] }}</h3>
+                    <span class="text-sakura text-xs font-bold tracking-widest">GENSHIN IMPACT</span>
+                    <h3 class="font-bold text-xl mb-2">Raiden Shogun</h3>
                     <div class="mt-auto flex justify-between items-center">
-                        <span class="font-bold text-lg">Rp {{ number_format($product['price'], 0, ',', '.') }}</span>
-                        <a href="{{ route('products.show', $product['id']) }}" 
+                        <span class="font-bold text-lg">Rp 180.000</span>
+                        <a href="{{ route('products.show', 1) }}" 
                            class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm hover:bg-sakura hover:text-dark-chocolate transition">
                             Detail
                         </a>
                     </div>
                 </div>
             </div>
-            @endforeach
+
+            <!-- Product Card 2 -->
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-60 bg-aloewood"></div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-widest">ONE PIECE</span>
+                    <h3 class="font-bold text-xl mb-2">Monkey D. Luffy</h3>
+                    <div class="mt-auto flex justify-between items-center">
+                        <span class="font-bold text-lg">Rp 120.000</span>
+                        <a href="{{ route('products.show', 2) }}" 
+                           class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm hover:bg-sakura hover:text-dark-chocolate transition">
+                            Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-60 bg-milk-tea"></div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-widest">HONKAI</span>
+                    <h3 class="font-bold text-xl mb-2">Kafka</h3>
+                    <div class="mt-auto flex justify-between items-center">
+                        <span class="font-bold text-lg">Rp 200.000</span>
+                        <a href="{{ route('products.show', 3) }}" 
+                           class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm hover:bg-sakura hover:text-dark-chocolate transition">
+                            Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                <div class="h-60 bg-sakura"></div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-sakura text-xs font-bold tracking-widest">MARVEL</span>
+                    <h3 class="font-bold text-xl mb-2">Spider-Man</h3>
+                    <div class="mt-auto flex justify-between items-center">
+                        <span class="font-bold text-lg">Rp 150.000</span>
+                        <a href="{{ route('products.show', 4) }}" 
+                           class="bg-dark-chocolate text-misty-rose px-4 py-2 rounded-lg text-sm hover:bg-sakura hover:text-dark-chocolate transition">
+                            Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </section>

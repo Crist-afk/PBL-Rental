@@ -64,16 +64,18 @@
     </div>
 
     <section class="min-h-screen flex flex-col items-center justify-center pt-32 px-6 text-center">
-        <h1 class="text-5xl md:text-6xl font-bold mb-4 tracking-tight">
-            Wujudkan Karakter <br>
-            <span class="text-sakura">Impianmu Jadi Nyata</span>
-        </h1>
-        <p class="mt-4 max-w-2xl text-dark-chocolate/80 text-lg">
-            Sewa kostum cosplay kualitas premium dengan harga terjangkau. Ribuan pilihan karakter dari anime, game, hingga film favoritmu.
-        </p>
-        <div class="mt-8 flex gap-4">
-            <a href="#" class="bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition shadow-md">Jelajahi Katalog</a>
-            <a href="#" class="border-2 border-dark-chocolate text-dark-chocolate px-8 py-3 rounded-full font-semibold hover:bg-dark-chocolate hover:text-misty-rose transition shadow-md">Cari Produk</a>
+        <div class="glass-card p-8 md:p-12 rounded-[2.5rem] shadow-sm inline-flex flex-col items-center border-2 border-dark-chocolate/10">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4 tracking-tight">
+                Wujudkan Karakter <br>
+                <span class="text-sakura">Impianmu Jadi Nyata</span>
+            </h1>
+            <p class="mt-4 max-w-2xl text-dark-chocolate font-medium text-lg">
+                Sewa kostum cosplay kualitas premium dengan harga terjangkau. Ribuan pilihan karakter dari anime, game, hingga film favoritmu.
+            </p>
+            <div class="mt-8 flex gap-4">
+                <a href="#" class="bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition shadow-md">Jelajahi Katalog</a>
+                <a href="#" class="border-2 border-dark-chocolate text-dark-chocolate px-8 py-3 rounded-full font-semibold hover:bg-dark-chocolate hover:text-misty-rose transition shadow-md">Cari Produk</a>
+            </div>
         </div>
 
         <div class="mt-16 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border-4 border-dark-chocolate bg-dark-chocolate">
@@ -82,8 +84,10 @@
     </section>
 
     <section class="py-20 px-6 max-w-7xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-2">Kategori Kostum</h2>
-        <p class="text-dark-chocolate/80 mb-12">Temukan kostum berdasarkan genre favoritmu</p>
+        <div class="glass-card inline-block px-8 py-4 rounded-3xl border-2 border-dark-chocolate/10 shadow-sm mb-12">
+            <h2 class="text-4xl font-bold mb-2">Kategori Kostum</h2>
+            <p class="text-dark-chocolate/80">Temukan kostum berdasarkan genre favoritmu</p>
+        </div>
 
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div class="bg-sakura p-6 rounded-2xl shadow-md hover:-translate-y-1 transition border-2 border-dark-chocolate/10 cursor-pointer">
@@ -109,31 +113,31 @@
         </div>
     </section>
 
-    <section class="bg-dark-chocolate text-misty-rose py-20 px-6">
+    <section class="glass-card text-dark-chocolate py-20 px-6">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-4xl font-bold mb-2">Proses Sewa Mudah</h2>
-            <p class="text-sakura mb-16">Hanya butuh 4 langkah untuk mendapatkan kostum impianmu</p>
+            <p class="text-dark-chocolate/80 mb-16">Hanya butuh 4 langkah untuk mendapatkan kostum impianmu</p>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-                <div class="hidden md:block absolute top-8 left-[12%] right-[12%] h-[2px] bg-sakura/30 border-dashed border-b-2 border-sakura/50 z-0"></div>
+                <div class="hidden md:block absolute top-8 left-[12%] right-[12%] h-[2px] bg-dark-chocolate/10 border-dashed border-b-2 border-dark-chocolate/20 z-0"></div>
 
                 <div class="flex flex-col items-center relative z-10">
-                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg">🔍</div>
+                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg border-2 border-dark-chocolate/10">🔍</div>
                     <h4 class="font-bold text-lg mb-2">Pilih & Jadwal</h4>
                     <p class="text-sm opacity-80">Pilih kostum favoritmu dan tentukan tanggal sewa.</p>
                 </div>
                 <div class="flex flex-col items-center relative z-10">
-                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg">💳</div>
+                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg border-2 border-dark-chocolate/10">💳</div>
                     <h4 class="font-bold text-lg mb-2">Bayar & Deposit</h4>
                     <p class="text-sm opacity-80">Lakukan pembayaran sewa dan deposit keamanan.</p>
                 </div>
                 <div class="flex flex-col items-center relative z-10">
-                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg">📦</div>
+                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg border-2 border-dark-chocolate/10">📦</div>
                     <h4 class="font-bold text-lg mb-2">Kirim / Ambil</h4>
                     <p class="text-sm opacity-80">Kostum dikirim ke alamatmu atau ambil di toko.</p>
                 </div>
                 <div class="flex flex-col items-center relative z-10">
-                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg">🔄</div>
+                    <div class="bg-sakura text-dark-chocolate w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg border-2 border-dark-chocolate/10">🔄</div>
                     <h4 class="font-bold text-lg mb-2">Kembalikan</h4>
                     <p class="text-sm opacity-80">Kembalikan kostum setelah masa sewa berakhir.</p>
                 </div>
@@ -142,12 +146,12 @@
     </section>
 
     <section class="py-20 px-6 max-w-7xl mx-auto">
-        <div class="flex justify-between items-end mb-10">
-            <div>
+        <div class="flex justify-between items-center mb-10">
+            <div class="glass-card px-8 py-4 rounded-3xl border-2 border-dark-chocolate/10 shadow-sm">
                 <h2 class="text-4xl font-bold mb-2">Produk Unggulan</h2>
                 <p class="text-dark-chocolate/80">Kostum paling populer minggu ini</p>
             </div>
-            <a href="#" class="text-dark-chocolate font-medium hover:text-sakura transition hidden md:block">Lihat Semua →</a>
+            <a href="#" class="glass-card px-6 py-3 rounded-full border-2 border-dark-chocolate/10 shadow-sm text-dark-chocolate font-medium hover:text-sakura transition hidden md:block">Lihat Semua →</a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -264,8 +268,10 @@
     </section>
 
     <section class="py-20 px-6 max-w-7xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-2">Apa Kata Mereka?</h2>
-        <p class="text-dark-chocolate/80 mb-12">Pengalaman nyata dari para cosplayer</p>
+        <div class="glass-card inline-block px-8 py-4 rounded-3xl border-2 border-dark-chocolate/10 shadow-sm mb-12">
+            <h2 class="text-4xl font-bold mb-2">Apa Kata Mereka?</h2>
+            <p class="text-dark-chocolate/80">Pengalaman nyata dari para cosplayer</p>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
             <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">

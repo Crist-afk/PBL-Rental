@@ -144,7 +144,7 @@
                     <i class="fa-solid fa-box-open text-4xl text-sakura mb-3"></i>
                     <p class="font-bold text-dark-chocolate">Belum ada transaksi aktif.</p>
                     <p class="text-sm text-dark-chocolate/60 mt-1">Ayo mulai cari kostum impianmu di katalog!</p>
-                    <a href="{{ route('product') }}" class="mt-4 inline-block bg-dark-chocolate text-misty-rose px-6 py-2 rounded-full text-sm font-bold hover:bg-aloewood transition">Mulai Jelajah</a>
+                    <a href="{{ route('products.index') }}" class="mt-4 inline-block bg-dark-chocolate text-misty-rose px-6 py-2 rounded-full text-sm font-bold hover:bg-aloewood transition">Mulai Jelajah</a>
                 </div>
             </div>
 

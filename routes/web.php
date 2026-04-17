@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,13 @@ use App\Http\Controllers\ProfileController;
 // [1] ROUTE PUBLIK (Bisa diakses siapa saja)
 Route::view('/', 'home')->name('home');
 Route::view('/about', 'about')->name('about');
-Route::view('/product', 'product')->name('product');
+
+// ==================== ROUTE PRODUK ====================
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+// Route detail produk (siap digunakan untuk tombol "Detail")
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+// ======================================================
+
 Route::view('/contact', 'contact')->name('contact');
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 Route::get('/forum/{forumPost}', [ForumController::class, 'show'])->name('forum.show');
@@ -24,12 +31,12 @@ Route::get('/forum/{forumPost}', [ForumController::class, 'show'])->name('forum.
 Route::middleware('guest')->group(function () {
     // Menampilkan form login
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    // Memproses data login (NAMA RUTE DITAMBAHKAN DI SINI)
+    // Memproses data login
     Route::post('/login', [AuthController::class, 'processLogin'])->name('login.process');
 
     // Menampilkan form register
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-    // Memproses data register (NAMA RUTE DITAMBAHKAN DI SINI)
+    // Memproses data register
     Route::post('/register', [AuthController::class, 'processRegister'])->name('register.process');
 });
 

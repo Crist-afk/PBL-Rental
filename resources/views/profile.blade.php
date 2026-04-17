@@ -12,11 +12,22 @@
             </div>
         @endif
 
+        @if($errors->any())
+            <div class="mb-6 rounded-2xl border-2 border-red-200 bg-red-50 p-4 text-red-700 shadow-sm">
+                <p class="font-bold">Perubahan profil belum tersimpan.</p>
+                <ul class="mt-2 space-y-1 text-sm font-medium">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 shadow-xl overflow-hidden mb-8">
             <div class="h-48 md:h-64 w-full relative group">
                 <img src="https://images.unsplash.com/photo-1541959833400-049d37f98ccd?q=80&w=1200&auto=format&fit=crop" alt="Cover" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-dark-chocolate/30 group-hover:bg-dark-chocolate/10 transition duration-300"></div>
-                <button class="absolute top-4 right-4 bg-dark-chocolate/60 backdrop-blur-sm text-misty-rose px-4 py-2 rounded-full text-xs font-bold hover:bg-sakura hover:text-dark-chocolate transition border border-white/20">
+                <button type="button" class="absolute top-4 right-4 bg-dark-chocolate/60 backdrop-blur-sm text-misty-rose px-4 py-2 rounded-full text-xs font-bold hover:bg-sakura hover:text-dark-chocolate transition border border-white/20">
                     <i class="fa-solid fa-camera mr-2"></i> Ubah Sampul
                 </button>
             </div>
@@ -25,27 +36,27 @@
                 <div class="flex flex-col md:flex-row md:items-end justify-between -mt-16 md:-mt-20 mb-6 gap-4">
                     <div class="flex flex-col md:flex-row md:items-end gap-5">
                         <div class="relative inline-block z-10">
-                            @if(Auth::check() && Auth::user()->avatar)
-                                <img class="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-2xl border-4 border-[#FFE4E1] object-cover bg-white" src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Foto Profil"/>
+                            @if($user->avatar)
+                                <img class="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-2xl border-4 border-[#FFE4E1] object-cover bg-white" src="{{ asset('storage/' . $user->avatar) }}" alt="Foto Profil {{ $user->nama }}"/>
                             @else
                                 <div class="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-2xl border-4 border-[#FFE4E1] bg-sakura text-dark-chocolate flex items-center justify-center text-6xl font-bold">
-                                    {{ Auth::check() ? substr(Auth::user()->nama, 0, 1) : 'U' }}
+                                    {{ substr($user->nama, 0, 1) }}
                                 </div>
                             @endif
                         </div>
                         <div class="mb-2 md:mb-4">
-                            <h1 class="text-3xl font-bold text-dark-chocolate">{{ Auth::user()->nama ?? 'Nama User' }}</h1>
+                            <h1 class="text-3xl font-bold text-dark-chocolate">{{ $user->nama }}</h1>
                             <p class="text-dark-chocolate/70 font-medium flex items-center gap-2">
-                                <i class="fa-solid fa-envelope text-sm text-aloewood"></i> {{ Auth::user()->email ?? 'user@email.com' }}
+                                <i class="fa-solid fa-envelope text-sm text-aloewood"></i> {{ $user->email }}
                             </p>
                         </div>
                     </div>
 
                     <div class="flex gap-3 mb-2 md:mb-4">
-                        <button data-modal-target="edit-profile-modal" data-modal-toggle="edit-profile-modal" class="bg-dark-chocolate text-misty-rose px-6 py-2.5 rounded-full font-bold hover:bg-black transition shadow-md text-sm border-2 border-dark-chocolate flex items-center gap-2">
+                        <button type="button" data-modal-target="edit-profile-modal" data-modal-toggle="edit-profile-modal" class="bg-dark-chocolate text-misty-rose px-6 py-2.5 rounded-full font-bold hover:bg-black transition shadow-md text-sm border-2 border-dark-chocolate flex items-center gap-2">
                             <i class="fa-solid fa-pen-to-square"></i> Edit Profil
                         </button>
-                        <button class="bg-white/50 text-dark-chocolate px-4 py-2.5 rounded-full font-bold hover:bg-sakura transition shadow-sm text-sm border-2 border-dark-chocolate/20">
+                        <button type="button" class="bg-white/50 text-dark-chocolate px-4 py-2.5 rounded-full font-bold hover:bg-sakura transition shadow-sm text-sm border-2 border-dark-chocolate/20">
                             <i class="fa-solid fa-share-nodes"></i>
                         </button>
                     </div>
@@ -53,12 +64,12 @@
 
                 <div class="mt-4">
                     <p class="text-dark-chocolate/80 text-sm md:text-base leading-relaxed max-w-3xl font-medium mb-6">
-                        {{ Auth::user()->bio ?? 'Belum ada deskripsi profil. Klik "Edit Profil" untuk menceritakan siapa kamu! ✨' }}
+                        {{ filled($user->bio) ? $user->bio : 'Belum ada deskripsi profil. Klik "Edit Profil" untuk menceritakan siapa kamu! ✨' }}
                     </p>
 
                     <div class="flex gap-6 border-y border-dark-chocolate/10 py-4">
                         <div class="text-center">
-                            <span class="block text-2xl font-bold text-dark-chocolate">12</span>
+                            <span class="block text-2xl font-bold text-dark-chocolate">{{ $user->forum_posts_count }}</span>
                             <span class="text-xs font-bold text-aloewood uppercase tracking-wide">Postingan Forum</span>
                         </div>
                         <div class="text-center">
@@ -97,23 +108,34 @@
         <div id="profile-tab-content">
             <div class="p-6 rounded-3xl bg-white border-2 border-dark-chocolate/10 shadow-sm" id="aktivitas" role="tabpanel" aria-labelledby="aktivitas-tab">
                 <h3 class="text-xl font-bold text-dark-chocolate mb-6">Postingan Terakhir</h3>
-                <div class="border-b border-dark-chocolate/10 pb-6 mb-6">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 rounded-full bg-sakura text-dark-chocolate flex items-center justify-center font-bold">{{ Auth::check() ? substr(Auth::user()->nama, 0, 1) : 'U' }}</div>
-                        <div>
-                            <p class="font-bold text-dark-chocolate text-sm">{{ Auth::user()->nama ?? 'User' }} <span class="text-aloewood font-normal text-xs ml-2">2 hari yang lalu</span></p>
-                            <p class="text-xs text-sakura font-bold">Topik: Tips & Trik</p>
+                @forelse($latestForumPosts as $post)
+                    <div class="border-b border-dark-chocolate/10 pb-6 mb-6 last:mb-0 last:border-b-0 last:pb-0">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-full bg-sakura text-dark-chocolate flex items-center justify-center font-bold">{{ substr($user->nama, 0, 1) }}</div>
+                            <div>
+                                <p class="font-bold text-dark-chocolate text-sm">{{ $user->nama }} <span class="text-aloewood font-normal text-xs ml-2">{{ $post->created_at->diffForHumans() }}</span></p>
+                                <p class="text-xs text-sakura font-bold">Topik: {{ $post->category->name }}</p>
+                            </div>
                         </div>
+                        <p class="font-bold text-dark-chocolate mb-2">{{ $post->title }}</p>
+                        <p class="text-dark-chocolate/80 text-sm font-medium mb-3">{{ \Illuminate\Support\Str::limit($post->content, 140) }}</p>
                     </div>
-                    <p class="text-dark-chocolate/80 text-sm font-medium mb-3">Ada yang punya rekomendasi tempat sewa wig murah di sekitar Batam Centre? Lagi butuh buat event minggu depan nih!</p>
-                    <div class="flex gap-4 text-sm font-bold text-aloewood">
-                        <button class="hover:text-sakura transition"><i class="fa-regular fa-heart mr-1"></i> 12 Suka</button>
-                        <button class="hover:text-sakura transition"><i class="fa-regular fa-comment mr-1"></i> 5 Balasan</button>
+                @empty
+                    <div class="rounded-2xl border-2 border-dashed border-dark-chocolate/10 bg-misty-rose/20 px-6 py-10 text-center">
+                        <i class="fa-regular fa-comments text-4xl text-sakura"></i>
+                        <p class="mt-4 font-bold text-dark-chocolate">Kamu belum punya aktivitas forum.</p>
+                        <p class="mt-1 text-sm font-medium text-dark-chocolate/60">Mulai diskusi pertama supaya profile-mu terasa lebih hidup.</p>
+                        <a href="{{ route('forum') }}" class="mt-4 inline-block rounded-full bg-dark-chocolate px-5 py-2 text-sm font-bold text-misty-rose transition hover:bg-black">
+                            Buka Forum
+                        </a>
                     </div>
-                </div>
-                <div class="text-center">
-                    <button class="text-sm font-bold text-sakura hover:text-aloewood transition">Lihat Semua Aktivitas <i class="fa-solid fa-arrow-right ml-1"></i></button>
-                </div>
+                @endforelse
+
+                @if($latestForumPosts->isNotEmpty())
+                    <div class="text-center">
+                        <a href="{{ route('forum') }}" class="text-sm font-bold text-sakura hover:text-aloewood transition">Lihat Semua Aktivitas <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                    </div>
+                @endif
             </div>
 
             <div class="hidden p-6 rounded-3xl bg-white border-2 border-dark-chocolate/10 shadow-sm" id="sewa" role="tabpanel" aria-labelledby="sewa-tab">
@@ -122,7 +144,7 @@
                     <i class="fa-solid fa-box-open text-4xl text-sakura mb-3"></i>
                     <p class="font-bold text-dark-chocolate">Belum ada transaksi aktif.</p>
                     <p class="text-sm text-dark-chocolate/60 mt-1">Ayo mulai cari kostum impianmu di katalog!</p>
-                    <a href="#" class="mt-4 inline-block bg-dark-chocolate text-misty-rose px-6 py-2 rounded-full text-sm font-bold hover:bg-aloewood transition">Mulai Jelajah</a>
+                    <a href="{{ route('product') }}" class="mt-4 inline-block bg-dark-chocolate text-misty-rose px-6 py-2 rounded-full text-sm font-bold hover:bg-aloewood transition">Mulai Jelajah</a>
                 </div>
             </div>
 
@@ -134,21 +156,21 @@
                             <p class="font-bold text-dark-chocolate">Ubah Password</p>
                             <p class="text-xs text-dark-chocolate/60 mt-1">Terakhir diubah: Belum pernah</p>
                         </div>
-                        <button class="bg-white text-dark-chocolate px-4 py-2 rounded-lg text-sm font-bold border border-dark-chocolate/20 hover:bg-sakura transition">Ubah</button>
+                        <button type="button" class="bg-white text-dark-chocolate px-4 py-2 rounded-lg text-sm font-bold border border-dark-chocolate/20 hover:bg-sakura transition">Ubah</button>
                     </div>
                     <div class="flex justify-between items-center p-4 bg-misty-rose/20 rounded-xl border border-dark-chocolate/10">
                         <div>
                             <p class="font-bold text-dark-chocolate">Autentikasi Dua Langkah (2FA)</p>
                             <p class="text-xs text-dark-chocolate/60 mt-1">Amankan akun dari akses tidak sah.</p>
                         </div>
-                        <button class="bg-sakura text-dark-chocolate px-4 py-2 rounded-lg text-sm font-bold shadow-sm hover:bg-dark-chocolate hover:text-sakura transition">Aktifkan</button>
+                        <button type="button" class="bg-sakura text-dark-chocolate px-4 py-2 rounded-lg text-sm font-bold shadow-sm hover:bg-dark-chocolate hover:text-sakura transition">Aktifkan</button>
                     </div>
                     <div class="flex justify-between items-center p-4 bg-red-50 rounded-xl border border-red-100 mt-8">
                         <div>
                             <p class="font-bold text-red-700">Hapus Akun</p>
                             <p class="text-xs text-red-500/80 mt-1">Tindakan ini tidak dapat dibatalkan.</p>
                         </div>
-                        <button class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm hover:bg-red-700 transition">Hapus Permanen</button>
+                        <button type="button" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm hover:bg-red-700 transition">Hapus Permanen</button>
                     </div>
                 </div>
             </div>
@@ -167,11 +189,11 @@
                         @csrf
                         <div>
                             <label class="block mb-1 text-sm font-bold text-dark-chocolate">Nama Tampilan</label>
-                            <input type="text" name="nama" class="bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-sakura focus:border-sakura block w-full p-2.5 font-medium" value="{{ Auth::user()->nama ?? '' }}" required />
+                            <input type="text" name="nama" class="bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-sakura focus:border-sakura block w-full p-2.5 font-medium" value="{{ old('nama', $user->nama) }}" required />
                         </div>
                         <div>
                             <label class="block mb-1 text-sm font-bold text-dark-chocolate">Deskripsi Profil (Bio)</label>
-                            <textarea name="bio" rows="3" class="bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-sakura focus:border-sakura block w-full p-2.5 font-medium resize-none" placeholder="Ceritakan hobimu atau spesialisasi cosplay-mu...">{{ Auth::user()->bio ?? '' }}</textarea>
+                            <textarea name="bio" rows="3" class="bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-sakura focus:border-sakura block w-full p-2.5 font-medium resize-none" placeholder="Ceritakan hobimu atau spesialisasi cosplay-mu...">{{ old('bio', $user->bio) }}</textarea>
                         </div>
                         <div>
                             <label class="block mb-1 text-sm font-bold text-dark-chocolate">Foto Profil Baru</label>

@@ -3,15 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
     // Menampilkan halaman profil
-    public function index()
+    public function index(Request $request)
     {
-        return view('profile');
+        $user = $request->user()->loadCount('forumPosts');
+        $latestForumPosts = $user->forumPosts()
+            ->with('category')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('profile', [
+            'user' => $user,
+            'latestForumPosts' => $latestForumPosts,
+        ]);
     }
 
     // Memproses update nama dan foto
@@ -24,7 +33,7 @@ class ProfileController extends Controller
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Maksimal 2MB
         ]);
 
-        $user = \App\Models\User::find(Auth::id());
+        $user = $request->user();
         $user->nama = $request->nama; // Menggunakan 'nama' sesuai form registermu sebelumnya
         $user->bio = $request->bio; // Menyimpan bio yang diinputkan
 
@@ -43,6 +52,6 @@ class ProfileController extends Controller
         // 3. Simpan ke database
         $user->save();
 
-        return back()->with('success', 'Profil berhasil diperbarui!');
+        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui!');
     }
 }

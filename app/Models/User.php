@@ -25,4 +25,14 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function forumPosts()
+    {
+        return $this->hasMany(ForumPost::class, 'user_id');
+    }
+
+    public function forumComments()
+    {
+        return $this->hasMany(ForumComment::class, 'user_id');
+    }
 }

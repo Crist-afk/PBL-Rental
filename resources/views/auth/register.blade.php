@@ -18,8 +18,8 @@
             <nav class="hidden md:flex gap-6 font-medium text-sm">
                 <a href="{{ route('home') }}" class="hover:text-sakura transition">Home</a>
                 <a href="{{ route('about') }}" class="hover:text-sakura transition">About</a>
-                <a href="#" class="hover:text-sakura transition">Product</a>
-                <a href="#" class="hover:text-sakura transition">Forum</a>
+                <a href="{{ route('product') }}" class="hover:text-sakura transition">Product</a>
+                <a href="{{ route('forum') }}" class="hover:text-sakura transition">Forum</a>
                 <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
             </nav>
             <div class="flex gap-4 items-center text-sm font-medium">

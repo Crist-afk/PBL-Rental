@@ -164,7 +164,7 @@
                             Buat Akun Sekarang
                         </a>
                     @else
-                        <a href="#" class="inline-block bg-dark-chocolate text-misty-rose px-10 py-4 rounded-full font-bold text-lg hover:bg-black transition duration-300 shadow-xl">
+                        <a href="{{ route('product') }}" class="inline-block bg-dark-chocolate text-misty-rose px-10 py-4 rounded-full font-bold text-lg hover:bg-black transition duration-300 shadow-xl">
                             Jelajahi Katalog
                         </a>
                     @endguest

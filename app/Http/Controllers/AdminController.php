@@ -8,26 +8,26 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+        return view('admin.dashboard-admin');
     }
 
     public function kostum()
     {
-        return view('admin.kostum');
+        return view('admin.kostum-admin');
     }
 
     public function pembayaran()
     {
-        return view('admin.pembayaran');
+        return view('admin.pembayaran-admin');
     }
 
     public function pengembalian()
     {
-        return view('admin.pengembalian');
+        return view('admin.pengembalian-admin');
     }
 
     public function riwayat()
     {
-        return view('admin.riwayat');
+        return view('admin.riwayat-admin');
     }
 }

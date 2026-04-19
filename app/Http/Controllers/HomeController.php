@@ -9,27 +9,27 @@ class HomeController extends Controller
     public function index()
     {
         // Memanggil file view resources/views/home.blade.php
-        return view('home');
+        return view('pages.home');
     }
 
     public function product()
     {
-        return view('product');
+        return view('pages.product');
     }
 
     public function forum()
     {
-        return view('forum');
+        return view('pages.forum');
     }
 
     public function contact()
     {
-        return view('contact');
+        return view('pages.contact');
     }
 
     public function about()
     {
-        return view('about');
+        return view('pages.about');
     }
 
 }

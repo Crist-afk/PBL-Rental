@@ -19,6 +19,6 @@ class DashboardController extends Controller
         $kostums = Kostum::with('kategori')->get();
 
         // Lempar data ke view dashboard pelanggan
-        return view('dashboard', compact('kostums'));
+        return view('pages.dashboard', compact('kostums'));
     }
 }

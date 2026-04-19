@@ -43,7 +43,7 @@ class ProductController extends Controller
         ];
 
         // Karena file view kamu bernama product.blade.php (langsung di folder views/)
-        return view('product', compact('products'));
+        return view('pages.product', compact('products'));
     }
 
     /**

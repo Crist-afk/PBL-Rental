@@ -14,9 +14,9 @@ use App\Http\Controllers\DashboardPelangganController;   // ← Tambahkan ini
 */
 
 // [1] ROUTE PUBLIK
-Route::view('/', 'home')->name('home');
-Route::view('/about', 'about')->name('about');
-Route::view('/contact', 'contact')->name('contact');
+Route::view('/', 'pages.home')->name('home');
+Route::view('/about', 'pages.about')->name('about');
+Route::view('/contact', 'pages.contact')->name('contact');
 
 // ==================== ROUTE PRODUK ====================
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

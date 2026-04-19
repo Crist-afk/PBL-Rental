@@ -50,7 +50,7 @@ class ForumController extends Controller
             ->take(3)
             ->get();
 
-        return view('forum', [
+        return view('pages.forum', [
             'categories' => $categories,
             'posts' => $posts,
             'trendingPosts' => $trendingPosts,
@@ -153,7 +153,7 @@ class ForumController extends Controller
             ->take(3)
             ->get();
 
-        return view('forum-detail', [
+        return view('pages.forum-detail', [
             'post' => $forumPost,
             'comments' => $comments,
             'relatedPosts' => $relatedPosts,

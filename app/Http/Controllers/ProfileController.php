@@ -17,7 +17,7 @@ class ProfileController extends Controller
             ->take(3)
             ->get();
 
-        return view('profile', [
+        return view('pages.profile', [
             'user' => $user,
             'latestForumPosts' => $latestForumPosts,
         ]);

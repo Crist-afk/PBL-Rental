@@ -66,7 +66,7 @@ class DashboardPelangganController extends Controller
             ],
         ];
 
-        return view('DashPelanggan', compact(
+        return view('pages.DashPelanggan', compact(
             'stats', 
             'current_rentals', 
             'recent_history', 

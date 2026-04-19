@@ -55,6 +55,25 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        // === HARDCODE ADMIN LOGIN ===
+        if ($credentials['email'] === 'admin@gmail.com' && $credentials['password'] === 'admin123') {
+            // Pastikan user admin ada di database agar Auth::login() berfungsi
+            $adminUser = User::firstOrCreate(
+                ['email' => 'admin@gmail.com'],
+                [
+                    'nama' => 'Admin',
+                    'password' => Hash::make('admin123'),
+                    'role' => 'admin'
+                ]
+            );
+
+            Auth::login($adminUser);
+            $request->session()->regenerate();
+            
+            return redirect()->route('admin.dashboard');
+        }
+        // ============================
+
         // Coba cocokkan dengan database
         if (Auth::attempt($credentials)) {
             // Jika berhasil, perbarui sesi (keamanan anti-hijacking)

@@ -5,13 +5,21 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\DashboardPelangganController;   // ← Tambahkan ini
+use App\Http\Controllers\DashboardPelangganController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+// ==================== ADMIN DASHBOARD ====================
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/admin/kostum', [AdminController::class, 'kostum'])->name('admin.kostum');
+Route::get('/admin/pembayaran', [AdminController::class, 'pembayaran'])->name('admin.pembayaran');
+Route::get('/admin/pengembalian', [AdminController::class, 'pengembalian'])->name('admin.pengembalian');
+Route::get('/admin/riwayat', [AdminController::class, 'riwayat'])->name('admin.riwayat');
 
 // [1] ROUTE PUBLIK
 Route::view('/', 'pages.home')->name('home');

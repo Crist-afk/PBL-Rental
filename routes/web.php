@@ -16,10 +16,15 @@ use App\Http\Controllers\DashboardPelangganController;   // ← Tambahkan ini
 // [1] ROUTE PUBLIK
 Route::view('/', 'home')->name('home');
 Route::view('/about', 'about')->name('about');
+Route::view('/contact', 'contact')->name('contact');
 
 // ==================== ROUTE PRODUK ====================
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+// ==================== ROUTE FORUM (PUBLIK) ====================
+Route::get('/forum', [ForumController::class, 'index'])->name('forum');
+Route::get('/forum/{forumPost}', [ForumController::class, 'show'])->name('forum.show');
 
 // ==================== DASHBOARD PELANGGAN ====================
 Route::middleware('auth')->group(function () {

@@ -135,3 +135,13 @@
 .modal-footer { padding: 18px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: rgba(0,0,0,0.08); }
 .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-2); border-radius: var(--radius-sm); padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Sora', sans-serif; transition: all var(--tr); }
 .btn-ghost:hover { border-color: var(--border-hov); color: var(--text-1); background: var(--bg-hover); }
+.tabs { animation: fadeUp 0.5s ease both; animation-delay: 0.1s; }
+.toolbar { animation: fadeUp 0.5s ease both; animation-delay: 0.15s; }
+.costume-card { animation: fadeUp 0.5s ease both; }
+.costume-card:nth-child(1) { animation-delay: 0.2s; }
+.costume-card:nth-child(2) { animation-delay: 0.25s; }
+.costume-card:nth-child(3) { animation-delay: 0.3s; }
+.costume-card:nth-child(4) { animation-delay: 0.35s; }
+.costume-card:nth-child(5) { animation-delay: 0.4s; }
+.costume-card:nth-child(6) { animation-delay: 0.45s; }
+.pagination-bar { animation: fadeUp 0.5s ease both; animation-delay: 0.5s; }

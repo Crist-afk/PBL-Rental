@@ -3,19 +3,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-deep:    #0f172a;
-  --bg-base:    #0f172a;
-  --bg-card:    #1e293b;
-  --bg-card2:   #1e293b;
-  --bg-hover:   #334155;
-  --bg-active:  #3b82f6;
-  --border:     rgba(255,255,255,0.08);
-  --border-hov: rgba(255,255,255,0.15);
-  --text-1:     #f8fafc;
-  --text-2:     #94a3b8;
-  --text-3:     #64748b;
+  --bg-deep:    #FFE4E1; /* Misty Rose */
+  --bg-base:    #FFE4E1;
+  --bg-card:    #ffffff;
+  --bg-card2:   #ffffff;
+  --bg-hover:   rgba(68, 48, 37, 0.05);
+  --bg-active:  #443025; /* Dark Chocolate */
+  --border:     rgba(68, 48, 37, 0.1);
+  --border-hov: rgba(68, 48, 37, 0.15);
+  --text-1:     #443025; /* Dark Chocolate */
+  --text-2:     #8B5A2B; /* Aloewood */
+  --text-3:     #A68B7C; /* Muted brown */
   --green:      #10b981;
-  --blue:       #3b82f6;
+  --blue:       #EC9C9D; /* Sakura */
   --purple:     #8b5cf6;
   --orange:     #f97316;
   --red:        #ef4444;
@@ -55,8 +55,8 @@ html, body {
 .sidebar {
   width: var(--sidebar-w);
   min-width: var(--sidebar-w);
-  background: var(--bg-base);
-  border-right: 1px solid var(--border);
+  background: #443025; /* Dark Chocolate */
+  border-right: 1px solid rgba(255,255,255,0.05);
   display: flex;
   flex-direction: column;
   padding: 28px 16px 24px;
@@ -77,11 +77,11 @@ html, body {
 }
 .brand-icon {
   width: 36px; height: 36px;
-  background: #1d4ed8;
+  background: var(--blue); /* Sakura */
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+  color: #443025; /* Dark Chocolate Text on Sakura */
+  box-shadow: 0 4px 12px rgba(236, 156, 157, 0.4);
   transition: transform var(--transition), box-shadow var(--transition);
 }
 .brand-icon svg { width: 20px; height: 20px; }
@@ -101,15 +101,15 @@ html, body {
 .user-card:hover { border-color: var(--border-hov); background: var(--bg-hover); }
 .avatar {
   width: 38px; height: 38px; border-radius: 50%;
-  background: #2a364a;
+  background: rgba(255,255,255,0.05);
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 14px; color: #fff;
+  font-weight: 700; font-size: 14px; color: var(--blue);
   flex-shrink: 0;
 }
-.user-name { font-size: 14px; font-weight: 600; color: #f8fafc; margin-bottom: 4px; line-height: 1; }
+.user-name { font-size: 14px; font-weight: 600; color: #ffffff; margin-bottom: 4px; line-height: 1; }
 .user-role {
   font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
-  color: #60a5fa; background: rgba(59, 130, 246, 0.15);
+  color: var(--blue); background: rgba(236, 156, 157, 0.15);
   padding: 3px 8px; border-radius: 12px;
   text-transform: uppercase; display: inline-block;
 }
@@ -122,7 +122,7 @@ html, body {
   gap: 12px;
   padding: 10px 14px;
   border-radius: 10px;
-  color: var(--text-2);
+  color: rgba(255,255,255,0.6);
   font-size: 13.5px;
   font-weight: 500;
   cursor: pointer;
@@ -132,20 +132,21 @@ html, body {
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
-  /* agar badge tetap di kanan */
 }
-.nav-item > svg { flex-shrink: 0; width: 17px; height: 17px; opacity: 0.75; transition: opacity var(--transition); }
+.nav-item > svg { flex-shrink: 0; width: 17px; height: 17px; opacity: 0.6; transition: opacity var(--transition); }
 .nav-item:hover {
   background: rgba(255,255,255,0.05);
-  color: var(--text-1);
+  color: #fff;
 }
 .nav-item:hover > svg { opacity: 1; }
 .nav-item.active {
-  background: #1d4ed8;
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(29,78,216,0.35);
+  background: var(--blue); /* Sakura */
+  color: #443025; /* Dark Chocolate */
+  box-shadow: 0 4px 14px rgba(236,156,157,0.3);
+  font-weight: 700;
 }
-.nav-item.active > svg { opacity: 1; }
+.nav-item.active > svg { opacity: 1; color: #443025; }
+
 .badge {
   margin-left: auto;
   background: var(--red);
@@ -158,12 +159,12 @@ html, body {
   flex-shrink: 0;
 }
 
-.nav-item.logout { color: var(--red); }
-.nav-item.logout:hover { background: rgba(239,68,68,0.1); color: var(--red); }
+.nav-item.logout { color: #fca5a5; }
+.nav-item.logout:hover { background: rgba(239,68,68,0.1); color: #ef4444; }
 
 .nav-bottom {
   margin-top: auto;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255,255,255,0.1);
   padding-top: 16px;
 }
 
@@ -205,29 +206,29 @@ html, body {
   background: var(--bg-hover);
   border-color: var(--border-hov);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 .icon-btn svg { width: 17px; height: 17px; color: var(--text-2); }
 .notif-dot {
   position: absolute; top: 6px; right: 6px;
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--red);
-  border: 2px solid var(--bg-deep);
+  border: 2px solid var(--bg-card);
 }
 .user-avatar {
   width: 38px; height: 38px; border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  border: 2px solid var(--border-hov);
+  background: linear-gradient(135deg, #443025, #8B5A2B);
+  border: 2px solid #ffffff;
   cursor: pointer;
   transition: all var(--transition);
   display: flex; align-items: center; justify-content: center;
   font-size: 14px; font-weight: 700; color: #fff;
 }
-.user-avatar:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(139,92,246,0.4); }
+.user-avatar:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(68,48,37,0.2); }
 
 .header-btns { display:flex; gap:10px; }
 .btn { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:var(--radius-sm); font-size:13px; font-weight:600; cursor:pointer; border:none; transition:all var(--tr); font-family:'Sora',sans-serif; }
-.btn-primary { background:var(--blue); color:#fff; box-shadow:0 4px 14px rgba(59,130,246,.35); }
-.btn-primary:hover { background:#2563eb; transform:translateY(-2px); box-shadow:0 8px 20px rgba(59,130,246,.45); }
-.btn-secondary { background:var(--bg-card); color:var(--text-2); border:1px solid var(--border); }
-.btn-secondary:hover { background:var(--bg-hover); color:var(--text-1); border-color:var(--border-hov); transform:translateY(-2px); }
+.btn-primary { background: #443025; color: #FFE4E1; box-shadow: 0 4px 14px rgba(68,48,37,0.2); }
+.btn-primary:hover { background:#2d1f18; transform:translateY(-2px); box-shadow: 0 8px 20px rgba(68,48,37,0.3); }
+.btn-secondary { background: #ffffff; color: #443025; border: 1px solid rgba(68,48,37,0.15); }
+.btn-secondary:hover { background: #fdfdfd; border-color: #443025; transform:translateY(-2px); }

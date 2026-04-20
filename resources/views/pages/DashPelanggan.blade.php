@@ -1,136 +1,67 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - CosRent</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+@extends('layouts.app')
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        'dark-chocolate': '#443025',
-                        'sakura': '#EC9C9D',
-                        'misty-rose': '#FFE4E1',
-                        'aloewood': '#8B5A2B',
-                        'milk-tea': '#D2B48C',
-                    }
-                }
-            }
-        }
-    </script>
+@section('title', 'Dashboard Pelanggan - CosRent')
 
-    <style>
-        body {
-            background-color: #FFE4E1;
-            background-image: radial-gradient(#443025 10%, transparent 10%);
-            background-size: 20px 20px;
-        }
-        .glass-card {
-            background-color: rgba(68, 48, 37, 0.06);
-            backdrop-filter: blur(12px);
-        }
-    </style>
-</head>
-
-<body class="text-dark-chocolate antialiased flex flex-col min-h-screen">
-
-    <!-- NAVBAR -->
-    <div class="fixed w-full top-0 z-50 px-6 py-4">
-        <header class="bg-dark-chocolate text-misty-rose rounded-full shadow-lg max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2 font-bold text-xl">
-                <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-8 h-8 flex items-center justify-center">🛍️</span>
-                <a href="{{ route('home') }}">CosRent</a>
-            </div>
-
-            <nav class="hidden md:flex gap-6 font-medium text-sm">
-                <a href="{{ route('home') }}" class="hover:text-sakura transition">Home</a>
-                <a href="#" class="text-sakura font-semibold">Dashboard</a>
-                <a href="{{ route('products.index') }}" class="hover:text-sakura transition">Product</a>
-                <a href="{{ route('forum') }}" class="hover:text-sakura transition">Forum</a>
-                <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
-            </nav>
-
-            <div class="flex items-center gap-4 text-sm font-medium">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-user-circle text-2xl"></i>
-                    <span class="hidden md:inline font-medium">Masamune</span>
-                </div>
-                <form action="{{ route('logout') }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" class="bg-misty-rose/20 hover:bg-sakura hover:text-dark-chocolate transition text-xs font-bold px-5 py-2 rounded-full flex items-center gap-2">
-                        <i class="fa-solid fa-right-from-bracket"></i> 
-                        Keluar
-                    </button>
-                </form>
-            </div>
-        </header>
-    </div>
-
-    <main class="flex-grow pt-28 pb-12 px-4 sm:px-6 max-w-7xl mx-auto w-full">
+@section('content')
+    <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full flex flex-col gap-8">
 
         <!-- Greeting -->
-        <div class="mb-10">
-            <h1 class="text-4xl font-bold">Selamat Datang, Masamune! 👋</h1>
-            <p class="text-dark-chocolate/70 mt-2">Ini adalah dashboard pelangganmu. Lihat aktivitas sewa dan kostum favoritmu.</p>
+        <div class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 px-6 py-8 md:px-10 md:py-10 shadow-xl text-center md:text-left">
+            <span class="mb-4 block text-sm font-black uppercase tracking-[0.35em] text-aloewood">Dashboard Area</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-dark-chocolate">Selamat Datang, {{ auth()->user()->nama ?? 'Pelanggan' }}! 👋</h1>
+            <p class="mt-4 text-base font-medium leading-relaxed text-dark-chocolate/75 md:text-lg max-w-3xl">Ini adalah pusat kendali akunmu. Lihat status persewaan aktif, riwayat transaksi, dan temukan kostum incaranmu berikutnya.</p>
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <div class="glass-card rounded-3xl p-6 border border-dark-chocolate/20 shadow-lg">
+            <div class="glass-card rounded-[2rem] p-6 border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm font-medium text-aloewood">Kostum Sedang Disewa</p>
-                        <p class="text-4xl font-bold mt-3">3</p>
+                        <p class="text-sm font-bold uppercase tracking-wide text-aloewood">Sedang Disewa</p>
+                        <p class="text-4xl font-extrabold mt-3 text-dark-chocolate">{{ $stats['active_rentals'] ?? 3 }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-sakura/10 rounded-2xl flex items-center justify-center text-3xl">🛍️</div>
+                    <div class="w-14 h-14 bg-sakura/20 rounded-[1.2rem] flex items-center justify-center text-2xl text-sakura"><i class="fa-solid fa-bag-shopping"></i></div>
                 </div>
-                <p class="text-xs text-green-600 mt-4 flex items-center gap-1">
+                <p class="text-xs font-bold text-green-600 mt-5 flex items-center gap-1">
                     <i class="fa-solid fa-arrow-trend-up"></i> +1 minggu ini
                 </p>
             </div>
 
-            <div class="glass-card rounded-3xl p-6 border border-dark-chocolate/20 shadow-lg">
+            <div class="glass-card rounded-[2rem] p-6 border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm font-medium text-aloewood">Total Sewa</p>
-                        <p class="text-4xl font-bold mt-3">17</p>
+                        <p class="text-sm font-bold uppercase tracking-wide text-aloewood">Total Sewa</p>
+                        <p class="text-4xl font-extrabold mt-3 text-dark-chocolate">{{ $stats['total_rentals'] ?? 17 }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-aloewood/10 rounded-2xl flex items-center justify-center text-3xl">📦</div>
+                    <div class="w-14 h-14 bg-aloewood/20 rounded-[1.2rem] flex items-center justify-center text-2xl text-aloewood"><i class="fa-solid fa-box-open"></i></div>
                 </div>
-                <p class="text-xs text-dark-chocolate/60 mt-4">Sejak bergabung</p>
+                <p class="text-xs font-bold text-dark-chocolate/60 mt-5">Sejak bergabung</p>
             </div>
 
-            <div class="glass-card rounded-3xl p-6 border border-dark-chocolate/20 shadow-lg">
+            <div class="glass-card rounded-[2rem] p-6 border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm font-medium text-aloewood">Poin Reward</p>
-                        <p class="text-4xl font-bold mt-3 text-sakura">450</p>
+                        <p class="text-sm font-bold uppercase tracking-wide text-aloewood">Poin Reward</p>
+                        <p class="text-4xl font-extrabold mt-3 text-sakura">{{ $stats['reward_points'] ?? 450 }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-milk-tea/20 rounded-2xl flex items-center justify-center text-3xl">⭐</div>
+                    <div class="w-14 h-14 bg-milk-tea/30 rounded-[1.2rem] flex items-center justify-center text-2xl text-aloewood"><i class="fa-solid fa-star"></i></div>
                 </div>
-                <p class="text-xs text-aloewood mt-4">Bisa ditukar diskon</p>
+                <p class="text-xs font-bold text-aloewood mt-5">Bisa ditukar diskon</p>
             </div>
 
-            <div class="glass-card rounded-3xl p-6 border border-dark-chocolate/20 shadow-lg">
+            <div class="glass-card rounded-[2rem] p-6 border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm font-medium text-aloewood">Rating Kamu</p>
-                        <p class="text-4xl font-bold mt-3">4.9 <span class="text-2xl">⭐</span></p>
+                        <p class="text-sm font-bold uppercase tracking-wide text-aloewood">Rating Kamu</p>
+                        <p class="text-4xl font-extrabold mt-3 text-dark-chocolate flex items-center gap-2">
+                            {{ $stats['rating'] ?? 4.9 }} 
+                            <i class="fa-solid fa-star text-2xl text-yellow-500"></i>
+                        </p>
                     </div>
-                    <div class="w-12 h-12 bg-yellow-400/10 rounded-2xl flex items-center justify-center text-3xl">🌟</div>
+                    <div class="w-14 h-14 bg-yellow-400/20 rounded-[1.2rem] flex items-center justify-center text-2xl text-yellow-600"><i class="fa-solid fa-ranking-star"></i></div>
                 </div>
-                <p class="text-xs text-dark-chocolate/60 mt-4">Dari 12 penyewaan</p>
+                <p class="text-xs font-bold text-dark-chocolate/60 mt-5">Dari 12 penyewaan</p>
             </div>
 
         </div>
@@ -138,48 +69,45 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
             <!-- Kostum Sedang Disewa -->
-            <div class="lg:col-span-7">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold">Kostum Sedang Disewa</h2>
-                    <a href="#" class="text-sakura hover:text-aloewood font-medium text-sm flex items-center gap-2">
-                        Lihat Semua <i class="fa-solid fa-arrow-right"></i>
+            <div class="lg:col-span-7 space-y-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-dark-chocolate">Kostum Sedang Disewa</h2>
+                    <a href="{{ route('products.index') }}" class="text-sm font-bold text-sakura hover:text-aloewood transition flex items-center gap-2">
+                        Sewa Kostum Lain <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>
 
                 <div class="space-y-4">
-
-                    <!-- Item 1 -->
-                    <div class="glass-card rounded-3xl p-5 flex gap-5 items-center border border-dark-chocolate/20">
-                        <div class="w-20 h-20 bg-dark-chocolate rounded-2xl flex-shrink-0"></div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-bold text-lg">Raiden Shogun - Genshin Impact</h3>
-                            <p class="text-sm text-aloewood">Ukuran M • Kembali 18 April 2026</p>
+                    @forelse($current_rentals ?? [] as $rental)
+                    <article class="glass-card rounded-[2rem] p-5 flex flex-col sm:flex-row gap-5 items-start sm:items-center border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
+                        <div class="w-full sm:w-24 h-40 sm:h-24 {{ $rental['color'] ?? 'bg-dark-chocolate' }} rounded-[1.5rem] flex-shrink-0"></div>
+                        <div class="flex-1 min-w-0 w-full">
+                            <h3 class="font-bold text-xl text-dark-chocolate line-clamp-1">{{ $rental['title'] }}</h3>
+                            <p class="text-sm font-bold text-aloewood mt-1 uppercase tracking-wide">Ukuran {{ $rental['size'] }}</p>
+                            <p class="text-xs font-medium text-dark-chocolate/70 mt-1"><i class="fa-regular fa-clock mr-1"></i> Kembali {{ $rental['return_date'] }}</p>
                         </div>
-                        <div class="text-right">
-                            <span class="block text-xs text-dark-chocolate/60">Total</span>
-                            <span class="font-bold text-lg">Rp 180.000</span>
+                        <div class="text-left sm:text-right w-full sm:w-auto flex justify-between sm:block border-t sm:border-0 border-dark-chocolate/10 pt-4 sm:pt-0 mt-4 sm:mt-0 gap-4">
+                            <div>
+                                <span class="block text-[10px] font-bold text-dark-chocolate/60 uppercase tracking-widest">Total Harga</span>
+                                <span class="font-bold text-xl text-dark-chocolate">Rp {{ number_format($rental['price'], 0, ',', '.') }}</span>
+                            </div>
+                            <button class="bg-dark-chocolate text-misty-rose px-6 py-2.5 rounded-full text-sm font-bold hover:bg-black transition sm:mt-3 whitespace-nowrap">
+                                <i class="fa-solid fa-receipt mr-1"></i> Detail
+                            </button>
                         </div>
-                        <button class="bg-sakura text-dark-chocolate px-6 py-2.5 rounded-2xl text-sm font-bold hover:bg-dark-chocolate hover:text-misty-rose transition">
-                            Detail
-                        </button>
-                    </div>
-
-                    <!-- Item 2 -->
-                    <div class="glass-card rounded-3xl p-5 flex gap-5 items-center border border-dark-chocolate/20">
-                        <div class="w-20 h-20 bg-aloewood rounded-2xl flex-shrink-0"></div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-bold text-lg">Monkey D. Luffy - One Piece</h3>
-                            <p class="text-sm text-aloewood">Ukuran L • Kembali 20 April 2026</p>
+                    </article>
+                    @empty
+                        <div class="rounded-[2.5rem] border-2 border-dashed border-dark-chocolate/15 bg-white/50 px-6 py-12 text-center shadow-sm">
+                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-sakura/20 text-2xl text-dark-chocolate mb-4">
+                                <i class="fa-solid fa-box-open"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-chocolate">Belum ada kostum yang disewa.</h3>
+                            <p class="mt-2 text-sm font-medium text-dark-chocolate/70">Mulai petualangan cosplay-mu dengan menyewa kostum sekarang!</p>
+                            <a href="{{ route('products.index') }}" class="inline-block mt-6 bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full text-sm font-bold hover:bg-black transition">
+                                Lihat Katalog
+                            </a>
                         </div>
-                        <div class="text-right">
-                            <span class="block text-xs text-dark-chocolate/60">Total</span>
-                            <span class="font-bold text-lg">Rp 120.000</span>
-                        </div>
-                        <button class="bg-sakura text-dark-chocolate px-6 py-2.5 rounded-2xl text-sm font-bold hover:bg-dark-chocolate hover:text-misty-rose transition">
-                            Detail
-                        </button>
-                    </div>
-
+                    @endforelse
                 </div>
             </div>
 
@@ -187,67 +115,57 @@
             <div class="lg:col-span-5 space-y-8">
 
                 <!-- Quick Actions -->
-                <div class="glass-card rounded-3xl p-7 border border-dark-chocolate/20">
-                    <h3 class="font-bold text-xl mb-6">Aksi Cepat</h3>
+                <div class="glass-card rounded-[2rem] p-6 md:p-8 border-2 border-dark-chocolate/10 shadow-xl">
+                    <h3 class="font-bold text-xl mb-6 text-dark-chocolate"><i class="fa-solid fa-bolt text-sakura mr-2"></i>Aksi Cepat</h3>
                     <div class="grid grid-cols-2 gap-4">
-                        <a href="{{ route('products.index') }}" class="bg-white/60 hover:bg-sakura hover:text-dark-chocolate transition p-6 rounded-3xl text-center border border-dark-chocolate/10">
-                            <i class="fa-solid fa-magnifying-glass text-3xl mb-3 block"></i>
-                            <p class="font-semibold">Cari Kostum</p>
+                        <a href="{{ route('products.index') }}" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-6 rounded-[1.5rem] text-center border-2 border-dark-chocolate/10 group">
+                            <i class="fa-solid fa-magnifying-glass text-3xl mb-3 block text-dark-chocolate group-hover:text-misty-rose transition"></i>
+                            <p class="font-bold text-sm">Cari Kostum</p>
                         </a>
-                        <a href="#" class="bg-white/60 hover:bg-sakura hover:text-dark-chocolate transition p-6 rounded-3xl text-center border border-dark-chocolate/10">
-                            <i class="fa-solid fa-calendar-days text-3xl mb-3 block"></i>
-                            <p class="font-semibold">Perpanjang Sewa</p>
+                        <a href="#" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-6 rounded-[1.5rem] text-center border-2 border-dark-chocolate/10 group">
+                            <i class="fa-solid fa-calendar-days text-3xl mb-3 block text-dark-chocolate group-hover:text-misty-rose transition"></i>
+                            <p class="font-bold text-sm">Perpanjang</p>
                         </a>
                     </div>
                 </div>
 
                 <!-- Riwayat Terbaru -->
-                <div class="glass-card rounded-3xl p-7 border border-dark-chocolate/20">
-                    <h3 class="font-bold text-xl mb-5">Riwayat Sewa Terbaru</h3>
+                <div class="glass-card rounded-[2rem] p-6 md:p-8 border-2 border-dark-chocolate/10 shadow-xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-bold text-xl text-dark-chocolate"><i class="fa-solid fa-clock-rotate-left text-aloewood mr-2"></i>Riwayat</h3>
+                        <a href="#" class="text-xs font-bold text-sakura hover:text-dark-chocolate transition">Lihat Semua</a>
+                    </div>
                     
-                    <div class="space-y-6 text-sm">
-                        <div class="flex justify-between items-start">
+                    <div class="space-y-4">
+                        @foreach($recent_history ?? [] as $history)
+                        <div class="flex justify-between items-start border-b border-dark-chocolate/10 pb-4 last:border-0 last:pb-0">
                             <div>
-                                <p class="font-medium">Kafka - Honkai: Star Rail</p>
-                                <p class="text-xs text-dark-chocolate/60">5 April 2026 • Rp 200.000</p>
+                                <p class="font-bold text-sm text-dark-chocolate">{{ $history['title'] }}</p>
+                                <p class="text-xs font-medium text-dark-chocolate/60 mt-1">{{ $history['date'] }} • Rp {{ number_format($history['price'], 0, ',', '.') }}</p>
                             </div>
-                            <span class="text-green-600 text-xs font-bold">Selesai</span>
+                            <span class="bg-green-100 border border-green-200 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">{{ $history['status'] }}</span>
                         </div>
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-medium">Spider-Man (Marvel)</p>
-                                <p class="text-xs text-dark-chocolate/60">28 Maret 2026 • Rp 150.000</p>
-                            </div>
-                            <span class="text-green-600 text-xs font-bold">Selesai</span>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
                 <!-- Rekomendasi -->
-                <div class="glass-card rounded-3xl p-7 border border-dark-chocolate/20">
-                    <h3 class="font-bold text-xl mb-5">Rekomendasi Untukmu</h3>
-                    <div class="flex gap-4 overflow-x-auto pb-4">
-                        <div class="min-w-[145px] bg-white/70 rounded-2xl overflow-hidden border border-dark-chocolate/10">
-                            <div class="h-32 bg-milk-tea"></div>
-                            <div class="p-3">
-                                <p class="font-bold text-sm">Yae Miko</p>
-                                <p class="text-xs text-aloewood">Genshin Impact</p>
+                <div class="glass-card rounded-[2rem] p-6 md:p-8 border-2 border-dark-chocolate/10 shadow-xl">
+                    <h3 class="font-bold text-xl mb-6 text-dark-chocolate"><i class="fa-solid fa-star text-yellow-500 mr-2"></i>Rekomendasi</h3>
+                    <div class="flex gap-4 overflow-x-auto pb-2 snap-x">
+                        @foreach($recommendations ?? [] as $rec)
+                        <div class="min-w-[150px] snap-start bg-white/50 rounded-[1.5rem] overflow-hidden border-2 border-dark-chocolate/10 transition hover:-translate-y-1 hover:shadow-lg">
+                            <div class="h-28 {{ $rec['color'] }}"></div>
+                            <div class="p-4">
+                                <p class="font-bold text-sm text-dark-chocolate line-clamp-1">{{ $rec['title'] }}</p>
+                                <p class="text-[10px] font-bold uppercase tracking-wide text-aloewood mt-1">{{ $rec['category'] }}</p>
                             </div>
                         </div>
-                        <div class="min-w-[145px] bg-white/70 rounded-2xl overflow-hidden border border-dark-chocolate/10">
-                            <div class="h-32 bg-sakura"></div>
-                            <div class="p-3">
-                                <p class="font-bold text-sm">Gojo Satoru</p>
-                                <p class="text-xs text-aloewood">Jujutsu Kaisen</p>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
             </div>
         </div>
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-</body>
-</html>
+@endsection

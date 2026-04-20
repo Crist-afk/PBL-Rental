@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hubungi Kami - CosRent</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="antialiased flex flex-col min-h-screen">
+@extends('layouts.app')
 
-    <x-navbar />
+@section('title', 'Hubungi Kami - CosRent')
 
+@section('content')
     <main class="flex-grow pt-32 pb-20 px-6 max-w-7xl mx-auto w-full">
         <div class="text-center mb-16">
             <h1 class="text-5xl font-bold mb-4 tracking-tight text-dark-chocolate">Hubungi <span class="text-sakura">CosRent</span></h1>
@@ -105,6 +97,4 @@
 
         </div>
     </main>
-
-</body>
-</html>
+@endsection

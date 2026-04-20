@@ -269,13 +269,13 @@
       <div class="pagination-bar">
         <span class="pagination-info">Menampilkan 1-6 dari 89 kostum</span>
         <div class="page-btns">
-          <button class="page-btn arrow">← Prev</button>
+          <button class="page-btn arrow">Prev</button>
           <button class="page-btn active">1</button>
           <button class="page-btn">2</button>
           <button class="page-btn">3</button>
           <span class="page-dots">…</span>
           <button class="page-btn">15</button>
-          <button class="page-btn arrow">Next →</button>
+          <button class="page-btn arrow">Next</button>
         </div>
       </div>
       

@@ -2,8 +2,7 @@
 
 @section('title', 'Tentang Kami - CosRent')
 
-@section('content')
-
+@push('styles')
     <style>
         .reveal {
             opacity: 0;
@@ -20,7 +19,9 @@
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
     </style>
+@endpush
 
+@section('content')
     <main class="flex-grow w-full overflow-hidden bg-misty-rose relative">
 
         <div class="absolute inset-0 z-0 opacity-[0.15] mix-blend-color-burn pointer-events-none" style="background-image: url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
@@ -170,7 +171,9 @@
         </section>
 
     </main>
+@endsection
 
+@push('scripts')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Mengambil semua elemen dengan class 'reveal'
@@ -195,4 +198,4 @@
             });
         });
     </script>
-@endsection
+@endpush

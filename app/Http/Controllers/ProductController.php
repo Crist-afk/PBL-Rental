@@ -93,6 +93,11 @@ class ProductController extends Controller
             abort(404, 'Produk tidak ditemukan');
         }
 
+        // Khusus untuk Raiden Shogun (ID 1), tampilkan halaman kustom
+        if ($id == 1) {
+            return view('pages.Kostum.RaidenShogun', compact('product'));
+        }
+
         return view('product-detail', compact('product'));
     }
 }

@@ -66,7 +66,9 @@
 
                 <!-- Product Card 1 -->
                 <article class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-4 shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col">
-                    <div class="h-60 bg-dark-chocolate rounded-[1.5rem] mb-4"></div>
+                    <div class="h-60 rounded-[1.5rem] mb-4 overflow-hidden bg-dark-chocolate/10">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s" alt="Raiden Shogun" class="w-full h-full object-cover">
+                    </div>
                     <div class="flex flex-col flex-grow px-2 pb-2">
                         <span class="mb-2 text-xs font-bold uppercase tracking-wide text-aloewood">GENSHIN IMPACT</span>
                         <h3 class="font-bold text-xl text-dark-chocolate mb-2 line-clamp-2">Raiden Shogun</h3>

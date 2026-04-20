@@ -79,8 +79,13 @@ class AuthController extends Controller
             // Jika berhasil, perbarui sesi (keamanan anti-hijacking)
             $request->session()->regenerate();
 
-            // Arahkan ke halaman profile atau home
-            return redirect()->route('profile');
+            // Cek role user untuk menentukan arah halaman (redirect)
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            // Arahkan pelanggan ke halaman Dashboard Pelanggan
+            return redirect()->route('dashboard.pelanggan');
         }
 
         // Jika gagal, tendang kembali ke halaman login bawa pesan error

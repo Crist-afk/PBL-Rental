@@ -98,6 +98,6 @@ class ProductController extends Controller
             return view('pages.Kostum.RaidenShogun', compact('product'));
         }
 
-        return view('product-detail', compact('product'));
+        return view('pages.product-detail', compact('product'));
     }
 }

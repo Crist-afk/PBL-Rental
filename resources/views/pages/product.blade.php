@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
-<<<<<<< HEAD
-@section('title', 'CosRent - Produk')
+@section('title', 'Katalog Produk - CosRent')
 
 @push('styles')
     <style>
@@ -14,15 +13,6 @@
         }
     </style>
 @endpush
-
-@section('content')
-    <!-- HEADER -->
-    <section class="pt-32 pb-10 text-center px-6">
-        <h1 class="text-5xl md:text-6xl font-bold mb-4">Katalog Produk</h1>
-        <p class="text-dark-chocolate/80 text-lg">Pilih kostum cosplay favoritmu</p>
-    </section>
-=======
-@section('title', 'Katalog Produk - CosRent')
 
 @section('content')
     <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full flex flex-col gap-8">
@@ -58,7 +48,6 @@
                 </div>
             </div>
         </section>
->>>>>>> 49fc9d240a1c55db3c3942691ad5c51d8a634eca
 
         <!-- PRODUCT GRID -->
         <section>
@@ -140,16 +129,5 @@
             <button class="flex h-11 w-11 items-center justify-center rounded-full border-2 border-dark-chocolate/20 font-bold text-dark-chocolate bg-white/50 transition hover:border-sakura hover:bg-sakura hover:text-dark-chocolate shadow-sm">3</button>
         </section>
 
-<<<<<<< HEAD
-    <!-- PAGINATION -->
-    <section class="pb-20 text-center">
-        <div class="flex justify-center gap-3">
-            <button class="px-4 py-2 border border-dark-chocolate/30 rounded-full hover:bg-sakura hover:text-dark-chocolate hover:border-sakura transition">1</button>
-            <button class="px-4 py-2 border border-dark-chocolate/30 rounded-full hover:bg-sakura hover:text-dark-chocolate hover:border-sakura transition">2</button>
-            <button class="px-4 py-2 border border-dark-chocolate/30 rounded-full hover:bg-sakura hover:text-dark-chocolate hover:border-sakura transition">3</button>
-        </div>
-    </section>
-=======
     </main>
->>>>>>> 49fc9d240a1c55db3c3942691ad5c51d8a634eca
 @endsection

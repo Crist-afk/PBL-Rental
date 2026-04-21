@@ -27,11 +27,11 @@
                 Sewa kostum cosplay kualitas premium dengan harga terjangkau. Ribuan pilihan karakter dari anime, game, hingga film favoritmu.
             </p>
             <div class="mt-8 flex flex-col sm:flex-row gap-4">
-                <a href="{{ route('products.index') }}" 
+                <a href="{{ Auth::check() ? route('products.index') : route('login') }}" 
                 class="bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition shadow-md">
                     Jelajahi Katalog
                 </a>
-                <a href="{{ route('products.index') }}" 
+                <a href="{{ Auth::check() ? route('products.index') : route('login') }}" 
                 class="border-2 border-dark-chocolate text-dark-chocolate px-8 py-3 rounded-full font-semibold hover:bg-dark-chocolate hover:text-misty-rose transition shadow-md">
                     Cari Produk
                 </a>
@@ -171,7 +171,7 @@
                 <span class="text-sakura font-bold tracking-[0.3em] uppercase text-sm block mb-2">— KOLEKSI UNGGULAN —</span>
                 <h2 class="text-5xl font-bold text-dark-chocolate">Pilihan Populer</h2>
             </div>
-            <a href="{{ route('products.index') }}" class="group flex items-center gap-3 text-dark-chocolate font-bold mt-6 md:mt-0 transition-all hover:text-sakura">
+            <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="group flex items-center gap-3 text-dark-chocolate font-bold mt-6 md:mt-0 transition-all hover:text-sakura">
                 <span>Lihat Semua Katalog</span>
                 <span class="w-12 h-12 bg-dark-chocolate text-white rounded-full flex items-center justify-center group-hover:bg-sakura transition-colors">→</span>
             </a>
@@ -190,7 +190,7 @@
                         <span class="font-bold text-lg">Rp 180.000</span>
                         <span class="text-xs font-medium text-dark-chocolate/60">Size: M, L</span>
                     </div>
-                    <button class="w-full bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</button>
+                    <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</a>
                 </div>
             </div>
 
@@ -206,7 +206,7 @@
                         <span class="font-bold text-lg">Rp 120.000</span>
                         <span class="text-xs font-medium text-dark-chocolate/60">Size: All Size</span>
                     </div>
-                    <button class="w-full bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</button>
+                    <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</a>
                 </div>
             </div>
 
@@ -222,7 +222,7 @@
                         <span class="font-bold text-lg">Rp 200.000</span>
                         <span class="text-xs font-medium text-dark-chocolate/60">Size: S, M, L</span>
                     </div>
-                    <button class="w-full bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</button>
+                    <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</a>
                 </div>
             </div>
 
@@ -238,7 +238,7 @@
                         <span class="font-bold text-lg">Rp 150.000</span>
                         <span class="text-xs font-medium text-dark-chocolate/60">Size: L, XL</span>
                     </div>
-                    <button class="w-full bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</button>
+                    <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Detail Kostum</a>
                 </div>
             </div>
         </div>

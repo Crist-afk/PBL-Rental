@@ -6,10 +6,10 @@
         </div>
         <nav class="hidden md:flex gap-6 font-medium text-sm">
             <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Home</a>
-            <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About</a>
-            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Product</a>
-            <a href="{{ route('forum') }}" class="{{ request()->routeIs('forum') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
-            <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact</a>
+            <a href="{{ Auth::check() ? route('about') : route('login') }}" class="{{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About</a>
+            <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="{{ request()->routeIs('products.index') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Product</a>
+            <a href="{{ Auth::check() ? route('forum') : route('login') }}" class="{{ request()->routeIs('forum') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
+            <a href="{{ Auth::check() ? route('contact') : route('login') }}" class="{{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact</a>
         </nav>
         <div class="flex gap-4 items-center text-sm font-medium">
             @auth

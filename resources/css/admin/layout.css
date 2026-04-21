@@ -27,6 +27,21 @@
   --tr:         0.22s cubic-bezier(.4,0,.2,1);
 }
 
+/* ─── DARK MODE VARIABLES ─── */
+.dark-mode {
+  --bg-deep:    #1a1513;
+  --bg-base:    #1a1513;
+  --bg-card:    #251f1c;
+  --bg-card2:   #2d2622;
+  --bg-hover:   rgba(255, 255, 255, 0.05);
+  --bg-deep-rgb: 26, 21, 19;
+  --border:     rgba(255, 255, 255, 0.08);
+  --border-hov: rgba(255, 255, 255, 0.12);
+  --text-1:     #FFE4E1;
+  --text-2:     #d1b8a7;
+  --text-3:     #8b7366;
+}
+
 html, body {
   height: 100%; min-height: 100vh;
   background: var(--bg-deep);

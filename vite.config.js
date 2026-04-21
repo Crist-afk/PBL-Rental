@@ -13,11 +13,14 @@ export default defineConfig({
                 'resources/css/admin/pembayaran.css',
                 'resources/css/admin/pengembalian.css',
                 'resources/css/admin/riwayat.css',
+                'resources/css/admin/pengguna.css',
                 'resources/js/admin/dashboard.js',
                 'resources/js/admin/kostum.js',
                 'resources/js/admin/pembayaran.js',
                 'resources/js/admin/pengembalian.js',
-                'resources/js/admin/riwayat.js'
+                'resources/js/admin/riwayat.js',
+                'resources/js/admin/pengguna.js',
+                'resources/js/admin/theme.js'
             ],
             refresh: true,
         }),

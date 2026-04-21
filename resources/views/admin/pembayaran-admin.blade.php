@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>CostumeRent — Validasi Pembayaran</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-    @vite(['resources/css/admin/layout.css', 'resources/css/admin/pembayaran.css', 'resources/js/admin/pembayaran.js'])
+    @vite(['resources/css/admin/layout.css', 'resources/css/admin/pembayaran.css', 'resources/js/admin/pembayaran.js', 'resources/js/admin/theme.js'])
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
 </head>
 <body>
 <div class="layout">
@@ -54,13 +59,9 @@
     </a>
 
     <div class="nav-bottom">
-      <a class="nav-item" href="#">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 1 1 4.93 19.07"/></svg>
-        Pengaturan
-      </a>
-      <a class="nav-item" href="#">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        Bantuan &amp; Dukungan
+      <a class="nav-item" id="themeToggle" href="#">
+        <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeLabel">Mode Gelap</span>
       </a>
       <a class="nav-item logout" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>

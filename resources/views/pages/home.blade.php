@@ -128,7 +128,7 @@
                         </div>
                     </div>
                     <h4 class="font-bold text-2xl mb-3">Pembayaran</h4>
-                    <p class="text-dark-chocolate/60 leading-relaxed">Lakukan pembayaran melalui transfer atau e-wallet dengan deposit keamanan.</p>
+                    <p class="text-dark-chocolate/60 leading-relaxed">Lakukan pembayaran melalui transfer atau e-wallet dengan bayar di tempat kami</p>
                 </div>
 
                 <div class="flex flex-col items-center text-center group">
@@ -140,8 +140,8 @@
                             3
                         </div>
                     </div>
-                    <h4 class="font-bold text-2xl mb-3">Kirim / Ambil</h4>
-                    <p class="text-dark-chocolate/60 leading-relaxed">Kostum akan dikirimkan ke alamat Anda atau dapat diambil di galeri kami.</p>
+                    <h4 class="font-bold text-2xl mb-3">Ambil</h4>
+                    <p class="text-dark-chocolate/60 leading-relaxed">Kostum dapat diambil di tempat kami.</p>
                 </div>
 
                 <div class="flex flex-col items-center text-center group">

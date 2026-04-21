@@ -144,7 +144,7 @@
 }
 .stat-bar-header strong { color: var(--text-1); }
 .bar-track {
-  height: 5px; background: var(--bg-deep);
+  height: 5px; background: var(--brand-surface-strong);
   border-radius: 99px; overflow: hidden;
 }
 .bar-fill {

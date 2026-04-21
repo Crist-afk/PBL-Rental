@@ -346,42 +346,51 @@
         <div class="modal-order-id" id="mOrderId">#ORD-001</div>
         <div class="modal-sub">Validasi pembayaran oleh: <span id="mCustName">Asep Sulaiman</span></div>
       </div>
-      <div class="modal-close" onclick="closeModal()">✕</div>
+      <div class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
     </div>
     <div class="modal-body">
       <!-- LEFT -->
       <div>
-        <div class="modal-section-title">Rangkuman Pesanan</div>
+        <div class="modal-section-title">RANGKUMAN PESANAN</div>
         <div class="order-item-card">
-          <div class="order-item-icon" id="mItemIcon">🦇</div>
+          <div class="order-item-icon" id="mItemIcon">🎭</div>
           <div>
-            <div class="order-item-name" id="mKostum">Batman + Joker (2 kostum)</div>
+            <div class="order-item-name" id="mKostum">...</div>
             <div class="order-item-date" id="mDate">20 Apr 2026 (3 hari)</div>
           </div>
         </div>
+        
         <div class="total-row">
           <span class="total-lbl">Total Tagihan</span>
-          <span class="total-amt" id="mTotal">Rp 900.000</span>
+          <span class="total-amt" id="mTotal">Rp 0</span>
         </div>
 
-        <div style="margin-top:18px">
-          <div class="modal-section-title">Detail Transfer</div>
-          <div class="detail-grid">
-            <div class="detail-item"><div class="detail-lbl">Nama Bank</div><div class="detail-val" id="mBank">BCA (Bank Central Asia)</div></div>
-            <div class="detail-item"><div class="detail-lbl">Nama Pengirim</div><div class="detail-val" id="mPengirim">ASEP SULAIMAN</div></div>
+        <div class="modal-section-title">DETAIL TRANSFER</div>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <div class="detail-lbl">NAMA BANK</div>
+            <div class="detail-val" id="mBank">...</div>
           </div>
-          <div class="detail-item"><div class="detail-lbl">Nominal Transfer</div><div class="detail-amt" id="mNominal">Rp 900.000</div></div>
+          <div class="detail-item">
+            <div class="detail-lbl">NAMA PENGIRIM</div>
+            <div class="detail-val" id="mPengirim">...</div>
+          </div>
+        </div>
+        
+        <div class="detail-item" style="margin-top: 12px;">
+          <div class="detail-lbl">NOMINAL TRANSFER</div>
+          <div class="detail-amt" id="mNominal">Rp 0</div>
         </div>
 
-        <div style="margin-top:18px">
-          <div class="modal-section-title">Catatan Admin</div>
-          <textarea class="form-textarea" placeholder="Tambahkan catatan jika perlu (Contoh: Bukti buram, mohon upload ulang)..."></textarea>
-        </div>
+        <div class="modal-section-title">CATATAN ADMIN</div>
+        <textarea class="form-textarea" placeholder="Tambahkan catatan jika perlu (Contoh: Bukti buram, mohon upload ulang)..."></textarea>
       </div>
 
       <!-- RIGHT -->
       <div class="bukti-panel">
-        <div class="modal-section-title">Bukti Transfer</div>
+        <div class="modal-section-title">BUKTI TRANSFER</div>
         <div class="bukti-img">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           <span>BuktiTransfer.jpg</span>
@@ -394,14 +403,7 @@
     </div>
 
     <div class="modal-footer" id="mFooter">
-      <button class="btn-tolak-modal" onclick="closeModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        TOLAK PEMBAYARAN
-      </button>
-      <button class="btn-konfirmasi" onclick="closeModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        KONFIRMASI PEMBAYARAN
-      </button>
+      <!-- Dynamically filled by JS -->
     </div>
   </div>
 </div>

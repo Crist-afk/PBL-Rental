@@ -25,6 +25,12 @@
   --radius-sm:  8px;
   --transition: 0.25s cubic-bezier(.4,0,.2,1);
   --tr:         0.22s cubic-bezier(.4,0,.2,1);
+
+  /* Semantic Brand Tokens */
+  --brand-primary: #443025;
+  --brand-surface: rgba(68, 48, 37, 0.03);
+  --brand-surface-strong: rgba(68, 48, 37, 0.08);
+  --text-on-brand: #FFE4E1;
 }
 
 /* ─── DARK MODE VARIABLES ─── */
@@ -40,6 +46,12 @@
   --text-1:     #FFE4E1;
   --text-2:     #d1b8a7;
   --text-3:     #8b7366;
+
+  /* Semantic Brand Tokens - Dark Mode Inversion */
+  --brand-primary: #FFE4E1;
+  --brand-surface: rgba(255, 228, 225, 0.05);
+  --brand-surface-strong: rgba(255, 228, 225, 0.12);
+  --text-on-brand: #443025;
 }
 
 html, body {
@@ -92,7 +104,7 @@ html, body {
 }
 .brand-icon {
   width: 36px; height: 36px;
-  background: var(--blue); /* Sakura */
+  background: #EC9C9D; /* Sakura */
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
   color: #443025; /* Dark Chocolate Text on Sakura */
@@ -101,11 +113,11 @@ html, body {
 }
 .brand-icon svg { width: 20px; height: 20px; }
 .brand-icon:hover { transform: rotate(-8deg) scale(1.1); box-shadow: 0 6px 20px rgba(29, 78, 216, 0.6); }
-.brand-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-1); }
+.sidebar .brand-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; color: #FFE4E1 !important; }
 
 .user-card {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
   padding: 12px 16px;
   display: flex; align-items: center; gap: 12px;
@@ -113,18 +125,18 @@ html, body {
   transition: border-color var(--transition), background var(--transition);
   cursor: pointer;
 }
-.user-card:hover { border-color: var(--border-hov); background: var(--bg-hover); }
+.user-card:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
 .avatar {
   width: 38px; height: 38px; border-radius: 50%;
   background: rgba(255,255,255,0.05);
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 14px; color: var(--blue);
+  font-weight: 700; font-size: 14px; color: #EC9C9D;
   flex-shrink: 0;
 }
-.user-name { font-size: 14px; font-weight: 600; color: #ffffff; margin-bottom: 4px; line-height: 1; }
+.sidebar .user-name { font-size: 14px; font-weight: 600; color: #ffffff !important; margin-bottom: 4px; line-height: 1; }
 .user-role {
   font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
-  color: var(--blue); background: rgba(236, 156, 157, 0.15);
+  color: #EC9C9D; background: rgba(236, 156, 157, 0.15);
   padding: 3px 8px; border-radius: 12px;
   text-transform: uppercase; display: inline-block;
 }
@@ -156,22 +168,21 @@ html, body {
 .nav-item:hover > svg { opacity: 1; }
 .nav-item.active {
   background: var(--blue); /* Sakura */
-  color: #443025; /* Dark Chocolate */
+  color: #443025; /* Fixed Dark Chocolate for contrast */
   box-shadow: 0 4px 14px rgba(236,156,157,0.3);
   font-weight: 700;
 }
-.nav-item.active > svg { opacity: 1; color: #443025; }
+.nav-item.active > svg { opacity: 1; color: var(--brand-primary); }
 
 .badge {
-  margin-left: auto;
   background: var(--red);
   color: #fff;
-  font-size: 10px; font-weight: 700;
-  min-width: 20px; height: 20px;
-  padding: 0 6px;
-  border-radius: 99px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: auto;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
 .nav-item.logout { color: #fca5a5; }
@@ -232,8 +243,8 @@ html, body {
 }
 .user-avatar {
   width: 38px; height: 38px; border-radius: 50%;
-  background: linear-gradient(135deg, #443025, #8B5A2B);
-  border: 2px solid #ffffff;
+  background: linear-gradient(135deg, var(--brand-primary), var(--text-2));
+  border: 2px solid var(--bg-card);
   cursor: pointer;
   transition: all var(--transition);
   display: flex; align-items: center; justify-content: center;
@@ -243,7 +254,9 @@ html, body {
 
 .header-btns { display:flex; gap:10px; }
 .btn { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:var(--radius-sm); font-size:13px; font-weight:600; cursor:pointer; border:none; transition:all var(--tr); font-family:'Sora',sans-serif; }
-.btn-primary { background: #443025; color: #FFE4E1; box-shadow: 0 4px 14px rgba(68,48,37,0.2); }
+.btn-primary { background: var(--brand-primary); color: var(--text-on-brand); box-shadow: 0 4px 14px rgba(68,48,37,0.2); }
 .btn-primary:hover { background:#2d1f18; transform:translateY(-2px); box-shadow: 0 8px 20px rgba(68,48,37,0.3); }
-.btn-secondary { background: #ffffff; color: #443025; border: 1px solid rgba(68,48,37,0.15); }
-.btn-secondary:hover { background: #fdfdfd; border-color: #443025; transform:translateY(-2px); }
+.btn-secondary { background: var(--bg-card); color: var(--text-1); border: 1px solid var(--border-hov); }
+.btn-secondary:hover { background: var(--bg-hover); border-color: var(--brand-primary); transform:translateY(-2px); }
+.btn-ghost { background: transparent; color: var(--text-2); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--bg-hover); color: var(--text-1); }

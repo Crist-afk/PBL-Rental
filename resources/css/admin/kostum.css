@@ -1,8 +1,8 @@
 /* ── TABS ── */
 .tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; position: relative; z-index: 60; }
-.tab { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-2); transition: all var(--tr); background: #1e293b; border: 1px solid var(--border); font-family: 'Sora', sans-serif; white-space: nowrap; }
+.tab { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-2); transition: all var(--tr); background: var(--bg-card); border: 1px solid var(--border); font-family: 'Sora', sans-serif; white-space: nowrap; }
 .tab:hover { color: var(--text-1); background: var(--bg-hover); border-color: var(--border-hov); }
-.tab.active { background: #2563eb; color: #fff; border-color: #2563eb; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+.tab.active { background: var(--brand-primary); color: var(--text-on-brand); border-color: var(--brand-primary); box-shadow: 0 4px 12px rgba(68,48,37,0.2); }
 .tab.add { background: transparent; border-style: dashed; color: var(--text-3); }
 .tab.add:hover { color: var(--blue); border-color: var(--blue); background: rgba(59,130,246,0.08); }
 
@@ -132,7 +132,7 @@
 .toggle-switch input:checked ~ .toggle-thumb { transform: translateX(20px); }
 
 /* MODAL FOOTER */
-.modal-footer { padding: 18px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: rgba(0,0,0,0.08); }
+.modal-footer { padding: 18px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: var(--brand-surface); }
 .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-2); border-radius: var(--radius-sm); padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Sora', sans-serif; transition: all var(--tr); }
 .btn-ghost:hover { border-color: var(--border-hov); color: var(--text-1); background: var(--bg-hover); }
 .tabs { animation: fadeUp 0.5s ease both; animation-delay: 0.1s; }

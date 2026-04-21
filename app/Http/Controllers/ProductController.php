@@ -93,9 +93,16 @@ class ProductController extends Controller
             abort(404, 'Produk tidak ditemukan');
         }
 
-        // Khusus untuk Raiden Shogun (ID 1), tampilkan halaman kustom
-        if ($id == 1) {
-            return view('pages.Kostum.RaidenShogun', compact('product'));
+        // Khusus untuk halaman kostum spesifik
+        $customViews = [
+            1 => 'pages.Kostum.RaidenShogun',
+            2 => 'pages.Kostum.Luffy',
+            3 => 'pages.Kostum.Kafka',
+            4 => 'pages.Kostum.Spiderman',
+        ];
+
+        if (isset($customViews[$id])) {
+            return view($customViews[$id], compact('product'));
         }
 
         return view('pages.product-detail', compact('product'));

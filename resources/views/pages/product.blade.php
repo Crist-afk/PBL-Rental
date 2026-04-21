@@ -73,7 +73,9 @@
 
                 <!-- Product Card 2 -->
                 <article class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-4 shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col">
-                    <div class="h-60 bg-aloewood rounded-[1.5rem] mb-4"></div>
+                    <div class="h-60 rounded-[1.5rem] mb-4 overflow-hidden bg-aloewood">
+                        <img src="https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e" alt="Monkey D. Luffy" class="w-full h-full object-cover">
+                    </div>
                     <div class="flex flex-col flex-grow px-2 pb-2">
                         <span class="mb-2 text-xs font-bold uppercase tracking-wide text-aloewood">ONE PIECE</span>
                         <h3 class="font-bold text-xl text-dark-chocolate mb-2 line-clamp-2">Monkey D. Luffy</h3>
@@ -89,7 +91,9 @@
 
                 <!-- Product Card 3 -->
                 <article class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-4 shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col">
-                    <div class="h-60 bg-milk-tea rounded-[1.5rem] mb-4"></div>
+                    <div class="h-60 rounded-[1.5rem] mb-4 overflow-hidden bg-milk-tea">
+                        <img src="https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg" alt="Kafka" class="w-full h-full object-cover">
+                    </div>
                     <div class="flex flex-col flex-grow px-2 pb-2">
                         <span class="mb-2 text-xs font-bold uppercase tracking-wide text-aloewood">HONKAI</span>
                         <h3 class="font-bold text-xl text-dark-chocolate mb-2 line-clamp-2">Kafka</h3>
@@ -105,7 +109,9 @@
 
                 <!-- Product Card 4 -->
                 <article class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-4 shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col">
-                    <div class="h-60 bg-sakura rounded-[1.5rem] mb-4"></div>
+                    <div class="h-60 rounded-[1.5rem] mb-4 overflow-hidden bg-sakura">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s" alt="Spider-Man" class="w-full h-full object-cover">
+                    </div>
                     <div class="flex flex-col flex-grow px-2 pb-2">
                         <span class="mb-2 text-xs font-bold uppercase tracking-wide text-aloewood">MARVEL</span>
                         <h3 class="font-bold text-xl text-dark-chocolate mb-2 line-clamp-2">Spider-Man</h3>

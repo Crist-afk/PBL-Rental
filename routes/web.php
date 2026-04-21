@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/forum/{forumPost}/comments/{forumComment}', [ForumController::class, 'updateComment'])->name('forum.comments.update');
     Route::delete('/forum/{forumPost}/comments/{forumComment}', [ForumController::class, 'destroyComment'])->name('forum.comments.destroy');
 
+    Route::get('/booking', [DashboardPelangganController::class, 'booking'])->name('booking.index');
+    Route::get('/riwayat', [DashboardPelangganController::class, 'riwayat'])->name('riwayat.index');
+
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

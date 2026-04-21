@@ -73,4 +73,20 @@ class DashboardPelangganController extends Controller
             'recommendations'
         ));
     }
+
+    /**
+     * Menampilkan Halaman Booking
+     */
+    public function booking()
+    {
+        return view('pages.Booking');
+    }
+
+    /**
+     * Menampilkan Halaman Riwayat
+     */
+    public function riwayat()
+    {
+        return view('pages.Riwayat');
+    }
 }

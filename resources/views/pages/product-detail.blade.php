@@ -70,16 +70,25 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="tanggal_sewa" class="block text-sm font-bold text-dark-chocolate mb-2">Tanggal Mulai Sewa</label>
-                            <input type="date" id="tanggal_sewa" name="tanggal_sewa" class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition" required>
+                            <input type="date" id="tanggal_sewa" name="tanggal_sewa" min="{{ date('Y-m-d') }}" class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition" required>
                         </div>
                         <div>
-                            <label for="durasi" class="block text-sm font-bold text-dark-chocolate mb-2">Durasi</label>
-                            <select id="durasi" name="durasi" class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition" required>
-                                <option value="3">3 Hari (Standar)</option>
-                                <option value="7">7 Hari (Diskon 10%)</option>
-                            </select>
+                            <label for="tanggal_kembali" class="block text-sm font-bold text-dark-chocolate mb-2">Tanggal Selesai Sewa</label>
+                            <input type="date" id="tanggal_kembali" name="tanggal_kembali" min="{{ date('Y-m-d') }}" class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition" required>
                         </div>
                     </div>
+
+                    <script>
+                        const tglSewa = document.getElementById('tanggal_sewa');
+                        const tglKembali = document.getElementById('tanggal_kembali');
+
+                        tglSewa.addEventListener('change', function() {
+                            tglKembali.min = this.value;
+                            if (tglKembali.value && tglKembali.value < this.value) {
+                                tglKembali.value = this.value;
+                            }
+                        });
+                    </script>
 
                     <button type="submit" class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
                         <i class="fa-solid fa-cart-shopping"></i> Lanjutkan Penyewaan

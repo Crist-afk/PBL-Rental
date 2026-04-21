@@ -13,7 +13,7 @@
         </nav>
         <div class="flex gap-4 items-center text-sm font-medium">
             @auth
-                <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'text-sakura font-bold hover:underline transition' : 'hover:text-sakura transition' }}">
+                <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard.pelanggan') }}" class="{{ request()->routeIs('profile') || request()->routeIs('admin.dashboard') || request()->routeIs('dashboard.pelanggan') ? 'text-sakura font-bold hover:underline transition' : 'hover:text-sakura transition' }}">
                     <i class="fa-solid fa-user-circle mr-1"></i> {{ Auth::user()->nama ?? 'User' }}
                 </a>
                 <form action="{{ route('logout') }}" method="POST" class="inline">

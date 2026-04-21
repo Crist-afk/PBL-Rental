@@ -10,17 +10,13 @@ class ProfileController extends Controller
     // Menampilkan halaman profil
     public function index(Request $request)
     {
-        $user = $request->user()->loadCount('forumPosts');
-        $latestForumPosts = $user->forumPosts()
-            ->with('category')
-            ->latest()
-            ->take(3)
-            ->get();
-
-        return view('pages.profile', [
-            'user' => $user,
-            'latestForumPosts' => $latestForumPosts,
-        ]);
+        $user = $request->user();
+        
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        
+        return redirect()->route('dashboard.pelanggan');
     }
 
     // Memproses update nama dan foto

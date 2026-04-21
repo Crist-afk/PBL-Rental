@@ -114,19 +114,39 @@
             <!-- Sidebar -->
             <div class="lg:col-span-5 space-y-8">
 
-                <!-- Quick Actions -->
+                <!-- Menu Khusus Pelanggan -->
                 <div class="glass-card rounded-[2rem] p-6 md:p-8 border-2 border-dark-chocolate/10 shadow-xl">
-                    <h3 class="font-bold text-xl mb-6 text-dark-chocolate"><i class="fa-solid fa-bolt text-sakura mr-2"></i>Aksi Cepat</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <a href="{{ route('products.index') }}" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-6 rounded-[1.5rem] text-center border-2 border-dark-chocolate/10 group">
-                            <i class="fa-solid fa-magnifying-glass text-3xl mb-3 block text-dark-chocolate group-hover:text-misty-rose transition"></i>
-                            <p class="font-bold text-sm">Cari Kostum</p>
+                    <h3 class="font-bold text-xl mb-6 text-dark-chocolate"><i class="fa-solid fa-user-gear text-sakura mr-2"></i>Menu Pelanggan</h3>
+                    <div class="grid grid-cols-1 gap-4">
+                        <a href="{{ route('booking.index') }}" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-4 rounded-[1.5rem] flex items-center gap-4 border-2 border-dark-chocolate/10 group">
+                            <div class="w-12 h-12 bg-sakura/20 rounded-xl flex items-center justify-center text-xl text-sakura group-hover:bg-sakura group-hover:text-dark-chocolate transition">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm">Form Booking</p>
+                                <p class="text-[10px] opacity-70">Pesan kostum sekarang</p>
+                            </div>
                         </a>
-                        <a href="#" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-6 rounded-[1.5rem] text-center border-2 border-dark-chocolate/10 group">
-                            <i class="fa-solid fa-calendar-days text-3xl mb-3 block text-dark-chocolate group-hover:text-misty-rose transition"></i>
-                            <p class="font-bold text-sm">Perpanjang</p>
+                        <a href="{{ route('riwayat.index') }}" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-4 rounded-[1.5rem] flex items-center gap-4 border-2 border-dark-chocolate/10 group">
+                            <div class="w-12 h-12 bg-aloewood/20 rounded-xl flex items-center justify-center text-xl text-aloewood group-hover:bg-aloewood group-hover:text-dark-chocolate transition">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm">Riwayat Sewa</p>
+                                <p class="text-[10px] opacity-70">Lihat semua transaksi</p>
+                            </div>
                         </a>
                     </div>
+                </div>
+
+                <!-- Info Denda -->
+                <div class="glass-card rounded-[2rem] p-6 border-2 border-red-500/20 bg-red-500/5 shadow-xl">
+                    <h3 class="font-bold text-lg text-red-600 flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-circle-exclamation"></i> Info Denda Telat
+                    </h3>
+                    <p class="text-sm font-medium text-dark-chocolate/80 leading-relaxed">
+                        Keterlambatan pengembalian kostum akan dikenakan denda sebesar <span class="font-bold text-red-600">Rp 50.000 / hari</span>. Harap kembalikan tepat waktu!
+                    </p>
                 </div>
 
                 <!-- Riwayat Terbaru -->

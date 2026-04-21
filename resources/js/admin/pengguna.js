@@ -116,6 +116,34 @@ function closeModal() {
 closeModalBtn.addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
 
+// ── DELETE MODAL LOGIC ──
+const deleteModalOverlay = document.getElementById('deleteModalOverlay');
+
+function openDeleteModal(userId) {
+    const u = userData[userId];
+    if (!u) return;
+    
+    document.getElementById('deleteUserName').textContent = u.name;
+    deleteModalOverlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+    deleteModalOverlay.classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+function confirmDelete() {
+    // In a real app, this would send an AJAX request to delete the user.
+    // For now, just show an alert and close the modal.
+    alert('Akun pengguna berhasil dihapus (Simulasi).');
+    closeDeleteModal();
+}
+
+deleteModalOverlay.addEventListener('click', (e) => { 
+    if (e.target === deleteModalOverlay) closeDeleteModal(); 
+});
+
 // ── DROPDOWN LOGIC ──
 function toggleDrop(id) {
     const wrap = document.getElementById(id);
@@ -152,3 +180,6 @@ window.openModal  = openModal;
 window.closeModal = closeModal;
 window.toggleDrop = toggleDrop;
 window.selectDrop = selectDrop;
+window.openDeleteModal = openDeleteModal;
+window.closeDeleteModal = closeDeleteModal;
+window.confirmDelete = confirmDelete;

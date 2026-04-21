@@ -133,10 +133,15 @@
               <td>12 Jan 2026</td>
               <td><span class="status-badge active">Aktif</span></td>
               <td>
-                <button class="act-btn katalog" onclick="openModal('usr1')">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                  Katalog Pesanan
-                </button>
+                <div class="action-buttons">
+                  <button class="act-btn katalog" onclick="openModal('usr1')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Katalog
+                  </button>
+                  <button class="act-btn delete" onclick="openDeleteModal('usr1')" title="Hapus Akun">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                  </button>
+                </div>
               </td>
             </tr>
             <!-- Row 2 -->
@@ -155,10 +160,15 @@
               <td>05 Feb 2026</td>
               <td><span class="status-badge active">Aktif</span></td>
               <td>
-                <button class="act-btn katalog" onclick="openModal('usr2')">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                  Katalog Pesanan
-                </button>
+                <div class="action-buttons">
+                  <button class="act-btn katalog" onclick="openModal('usr2')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Katalog
+                  </button>
+                  <button class="act-btn delete" onclick="openDeleteModal('usr2')" title="Hapus Akun">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                  </button>
+                </div>
               </td>
             </tr>
             <!-- Row 3 -->
@@ -177,10 +187,15 @@
               <td>20 Mar 2026</td>
               <td><span class="status-badge suspended">Ditangguhkan</span></td>
               <td>
-                <button class="act-btn katalog" onclick="openModal('usr3')">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                  Katalog Pesanan
-                </button>
+                <div class="action-buttons">
+                  <button class="act-btn katalog" onclick="openModal('usr3')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Katalog
+                  </button>
+                  <button class="act-btn delete" onclick="openDeleteModal('usr3')" title="Hapus Akun">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                  </button>
+                </div>
               </td>
             </tr>
             <!-- Row 4 -->
@@ -199,10 +214,15 @@
               <td>15 Apr 2026</td>
               <td><span class="status-badge active">Aktif</span></td>
               <td>
-                <button class="act-btn katalog" onclick="openModal('usr4')">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                  Katalog Pesanan
-                </button>
+                <div class="action-buttons">
+                  <button class="act-btn katalog" onclick="openModal('usr4')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Katalog
+                  </button>
+                  <button class="act-btn delete" onclick="openDeleteModal('usr4')" title="Hapus Akun">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -297,6 +317,21 @@
         </table>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL KONFIRMASI HAPUS ── -->
+<div class="modal-overlay" id="deleteModalOverlay">
+  <div class="modal delete-modal" id="deleteModalBox">
+    <div class="delete-modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+    </div>
+    <div class="delete-modal-title">Hapus Akun Pengguna?</div>
+    <div class="delete-modal-text">Tindakan ini tidak dapat dibatalkan. Semua data, riwayat pesanan, dan informasi terkait pengguna <strong id="deleteUserName">Nama</strong> akan dihapus secara permanen.</div>
+    <div class="delete-modal-actions">
+      <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+      <button class="btn-confirm-delete" onclick="confirmDelete()">Ya, Hapus Akun</button>
     </div>
   </div>
 </div>

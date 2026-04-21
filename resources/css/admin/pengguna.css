@@ -48,6 +48,10 @@
 .act-btn.katalog { background: rgba(68, 48, 37, 0.08); color: var(--text-1); border: 1px solid rgba(68, 48, 37, 0.2); }
 .act-btn.katalog:hover { background: rgba(68, 48, 37, 0.15); transform: translateY(-1px); }
 
+.action-buttons { display: flex; align-items: center; gap: 8px; }
+.act-btn.delete { background: rgba(239, 68, 68, 0.08); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.2); padding: 6px 8px; }
+.act-btn.delete:hover { background: rgba(239, 68, 68, 0.15); transform: translateY(-1px); }
+
 /* ── PAGINATION ── */
 .pagination-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; animation: fadeUp 0.5s ease both; animation-delay: 0.3s; }
 .pagination-info { font-size: 12.5px; color: var(--text-3); }
@@ -104,3 +108,16 @@
 .rs-badge.selesai { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
 .rs-badge.berjalan { background: rgba(249,115,22,0.1); color: var(--orange); border: 1px solid rgba(249,115,22,0.2); }
 .rs-badge.terlambat { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+
+/* ── DELETE MODAL ── */
+.delete-modal { width: 400px; max-width: 90vw; padding: 32px 24px; align-items: center; text-align: center; }
+.delete-modal-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(239, 68, 68, 0.1); color: var(--red); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.delete-modal-icon svg { width: 32px; height: 32px; }
+.delete-modal-title { font-size: 18px; font-weight: 700; color: var(--text-1); margin-bottom: 12px; }
+.delete-modal-text { font-size: 13.5px; color: var(--text-2); line-height: 1.5; margin-bottom: 24px; }
+.delete-modal-actions { display: flex; align-items: center; gap: 12px; width: 100%; }
+.delete-modal-actions button { flex: 1; padding: 12px; border-radius: var(--radius-sm); font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: 'Sora', sans-serif; transition: all var(--tr); border: none; }
+.btn-cancel { background: var(--bg-hover); color: var(--text-1); border: 1px solid var(--border) !important; }
+.btn-cancel:hover { background: rgba(68, 48, 37, 0.1); }
+.btn-confirm-delete { background: var(--red); color: #fff; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+.btn-confirm-delete:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4); }

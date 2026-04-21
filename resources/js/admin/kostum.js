@@ -58,9 +58,25 @@ window.addEventListener('DOMContentLoaded', () => {
         if (openBtn) openBtn.addEventListener('click', () => overlay.classList.add('show'));
         if (closeBtn) closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
         if (cancelBtn) cancelBtn.addEventListener('click', () => overlay.classList.remove('show'));
-
-        overlay.addEventListener('click', e => { 
-            if (e.target === overlay) overlay.classList.remove('show'); 
-        });
     }
+
+    // Close overlays on click outside
+    document.querySelectorAll('.modal-overlay').forEach(over => {
+        over.addEventListener('click', e => { 
+            if (e.target === over) over.classList.remove('show'); 
+        });
+    });
 });
+
+window.openEditModal = function() {
+    document.getElementById('modalEdit').classList.add('show');
+}
+window.openViewModal = function() {
+    document.getElementById('modalView').classList.add('show');
+}
+window.openDeleteModal = function() {
+    document.getElementById('modalDelete').classList.add('show');
+}
+window.closeModal = function(id) {
+    document.getElementById(id).classList.remove('show');
+}

@@ -93,3 +93,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// ── MODAL DETAIL ──
+window.openModalDetail = function(orderId, penyewa, kostum, tglMulai, tglWajib, tglAktual, status, kondisi, biayaSewa, denda, statusBayar) {
+    // Info Order
+    document.getElementById('detail-order-id').textContent = '#' + orderId;
+    document.getElementById('detail-penyewa').textContent = penyewa;
+    document.getElementById('detail-kostum').textContent = kostum;
+
+    // Status Badge
+    const isTepat = status.toLowerCase().includes('tepat');
+    const statusBadgeEl = document.getElementById('detail-status-badge');
+    if (isTepat) {
+        statusBadgeEl.innerHTML = '<span class="badge-detail-tepat">✅ TEPAT WAKTU</span>';
+    } else {
+        statusBadgeEl.innerHTML = '<span class="badge-detail-terlambat">🔴 TERLAMBAT</span>';
+    }
+
+    // Timeline
+    document.getElementById('detail-tgl-mulai').textContent = tglMulai;
+    document.getElementById('detail-tgl-wajib').textContent = tglWajib;
+    document.getElementById('detail-tgl-aktual').textContent = tglAktual;
+
+    // Kondisi
+    const kondisiEl = document.getElementById('detail-kondisi-badge');
+    const k = kondisi.toLowerCase();
+    kondisiEl.className = 'kondisi-display ' + (k === 'baik' ? 'baik' : k === 'lecet' ? 'lecet' : 'rusak');
+    kondisiEl.textContent = kondisi.toUpperCase();
+
+    // Keterlambatan
+    const terlambatEl = document.getElementById('detail-terlambat');
+    if (isTepat) {
+        terlambatEl.textContent = '✓ Tepat Waktu';
+        terlambatEl.style.color = 'var(--green)';
+    } else {
+        terlambatEl.textContent = status;
+        terlambatEl.style.color = 'var(--red)';
+    }
+
+    // Biaya
+    document.getElementById('detail-biaya-sewa').textContent = biayaSewa;
+    document.getElementById('detail-denda').textContent = denda;
+
+    // Total Tagihan: parse and sum if possible
+    const cleanNum = s => parseInt(s.replace(/[^\d]/g, '')) || 0;
+    const total = cleanNum(biayaSewa) + cleanNum(denda);
+    document.getElementById('detail-total').textContent = 'Rp ' + total.toLocaleString('id-ID');
+
+    // Payment Badge
+    const paymentEl = document.getElementById('detail-payment-badge');
+    if (statusBayar.toLowerCase() === 'lunas') {
+        paymentEl.innerHTML = '<span class="badge-lunas">✅ LUNAS</span>';
+    } else {
+        paymentEl.innerHTML = '<span class="badge-belum-detail">💲 BELUM DIBAYAR</span>';
+    }
+
+    document.getElementById('modalDetail').classList.add('open');
+}

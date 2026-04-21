@@ -149,6 +149,7 @@
               <th>TGL<br>MULAI SEWA</th>
               <th>TGL WAJIB<br>KEMBALI</th>
               <th>TGL AKTUAL<br>KEMBALI</th>
+              <th>KONDISI<br>KOSTUM</th>
               <th>KETERLAMBATAN</th>
               <th>DENDA</th>
               <th>STATUS</th>
@@ -164,6 +165,7 @@
               <td><span class="date-normal">15 Apr</span></td>
               <td><span class="date-warn">18 Apr</span></td>
               <td><span class="date-normal">18 Apr</span></td>
+              <td><span class="kondisi-display baik" style="font-size:9px;padding:4px 8px;border-radius:6px;">BAIK</span></td>
               <td style="color:#4b5a7a">–</td>
               <td><span class="fine-zero">Rp 0</span></td>
               <td>
@@ -171,7 +173,7 @@
                   <span class="bico">✅</span>TEPAT<br>WAKTU
                 </span>
               </td>
-              <td><button class="btn-action detail">LIHAT DETAIL</button></td>
+              <td><button class="btn-action detail" onclick="openModalDetail('ORD-010','Asep Sulaiman','Batman','15/04/2026','18/04/2026','18/04/2026','Tepat Waktu','Baik','Rp 500.000','Rp 0','Lunas')">👁 LIHAT DETAIL</button></td>
             </tr>
 
             <!-- Row 2: Terlambat -->
@@ -182,6 +184,7 @@
               <td><span class="date-normal">16 Apr</span></td>
               <td><span class="date-warn">18 Apr</span></td>
               <td><span class="date-normal">20 Apr</span></td>
+              <td><span class="kondisi-display lecet" style="font-size:9px;padding:4px 8px;border-radius:6px;">LECET</span></td>
               <td><span class="late-days red">2 hari</span></td>
               <td>
                 <div class="fine-amount">
@@ -214,6 +217,7 @@
               <td><span class="date-muted">Belum<br>Kembali</span></td>
               <td style="color:#4b5a7a">–</td>
               <td style="color:#4b5a7a">–</td>
+              <td style="color:#4b5a7a">–</td>
               <td>
                 <span class="badge-status belum">
                   <span class="bico">🟡</span>BELUM<br>KEMBALI
@@ -237,6 +241,7 @@
               <td><span class="date-normal">14 Apr</span></td>
               <td><span class="date-warn">17 Apr</span></td>
               <td><span class="date-normal">17 Apr</span></td>
+              <td><span class="kondisi-display baik" style="font-size:9px;padding:4px 8px;border-radius:6px;">BAIK</span></td>
               <td style="color:#4b5a7a">–</td>
               <td><span class="fine-zero">Rp 0</span></td>
               <td>
@@ -244,7 +249,7 @@
                   <span class="bico">✅</span>TEPAT<br>WAKTU
                 </span>
               </td>
-              <td><button class="btn-action detail">LIHAT DETAIL</button></td>
+              <td><button class="btn-action detail" onclick="openModalDetail('ORD-013','Deni Pratama','Kimono','14/04/2026','17/04/2026','17/04/2026','Tepat Waktu','Baik','Rp 350.000','Rp 0','Lunas')">👁 LIHAT DETAIL</button></td>
             </tr>
 
             <!-- Row 5: Terlambat -->
@@ -255,6 +260,7 @@
               <td><span class="date-normal">15 Apr</span></td>
               <td><span class="date-warn">17 Apr</span></td>
               <td><span class="date-muted">Belum<br>Kembali</span></td>
+              <td style="color:#4b5a7a">–</td>
               <td><span class="late-days red">3 hari</span></td>
               <td>
                 <div class="fine-amount">
@@ -285,6 +291,7 @@
               <td><span class="date-normal">13 Apr</span></td>
               <td><span class="date-warn">16 Apr</span></td>
               <td><span class="date-muted">Belum<br>Kembali</span></td>
+              <td style="color:#4b5a7a">–</td>
               <td style="color:#4b5a7a">–</td>
               <td style="color:#4b5a7a">–</td>
               <td>
@@ -431,6 +438,126 @@
     <div class="modal-footer">
       <button class="btn-batal" onclick="closeModal('modalKembali')">BATAL</button>
       <button class="btn-simpan" onclick="simpanKembali()">SIMPAN PENGEMBALIAN</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL LIHAT DETAIL ===== -->
+<div class="modal-overlay" id="modalDetail">
+  <div class="modal modal-detail">
+    <div class="modal-header detail-header">
+      <div class="detail-header-left">
+        <div class="detail-header-icon">📋</div>
+        <div>
+          <span class="modal-title">Detail Pengembalian Kostum</span>
+          <div class="detail-subtitle">Ringkasan lengkap transaksi sewa</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalDetail')">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- SECTION: Info Order & Penyewa -->
+      <div class="detail-section">
+        <div class="detail-section-title">📌 Informasi Order</div>
+        <div class="field-row">
+          <div class="field">
+            <label>ID Order</label>
+            <div class="field-val highlight" id="detail-order-id">#ORD-010</div>
+          </div>
+          <div class="field">
+            <label>Status Pengembalian</label>
+            <div id="detail-status-badge"></div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Nama Penyewa</label>
+            <div class="field-val" id="detail-penyewa">Asep Sulaiman</div>
+          </div>
+          <div class="field">
+            <label>Kostum Disewa</label>
+            <div class="field-val" id="detail-kostum">Batman</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Timeline Sewa -->
+      <div class="detail-section">
+        <div class="detail-section-title">📅 Timeline Penyewaan</div>
+        <div class="timeline-grid">
+          <div class="timeline-item">
+            <div class="timeline-dot green"></div>
+            <div class="timeline-info">
+              <div class="timeline-label">Tanggal Mulai Sewa</div>
+              <div class="timeline-val" id="detail-tgl-mulai">15/04/2026</div>
+            </div>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-item">
+            <div class="timeline-dot orange"></div>
+            <div class="timeline-info">
+              <div class="timeline-label">Tanggal Wajib Kembali</div>
+              <div class="timeline-val warn" id="detail-tgl-wajib">18/04/2026</div>
+            </div>
+          </div>
+          <div class="timeline-connector"></div>
+          <div class="timeline-item">
+            <div class="timeline-dot blue"></div>
+            <div class="timeline-info">
+              <div class="timeline-label">Tanggal Aktual Kembali</div>
+              <div class="timeline-val" id="detail-tgl-aktual">18/04/2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Kondisi & Denda -->
+      <div class="detail-section">
+        <div class="detail-section-title">🎭 Kondisi &amp; Biaya</div>
+        <div class="field-row">
+          <div class="field">
+            <label>Kondisi Kostum Dikembalikan</label>
+            <div id="detail-kondisi-badge" class="kondisi-display">BAIK</div>
+          </div>
+          <div class="field">
+            <label>Keterlambatan</label>
+            <div class="field-val" id="detail-terlambat" style="color:var(--green);font-weight:700">Tepat Waktu</div>
+          </div>
+        </div>
+        <div class="detail-biaya-grid">
+          <div class="biaya-card">
+            <div class="biaya-label">Biaya Sewa</div>
+            <div class="biaya-val" id="detail-biaya-sewa">Rp 500.000</div>
+          </div>
+          <div class="biaya-card denda">
+            <div class="biaya-label">Total Denda</div>
+            <div class="biaya-val denda" id="detail-denda">Rp 0</div>
+          </div>
+          <div class="biaya-card total">
+            <div class="biaya-label">Total Tagihan</div>
+            <div class="biaya-val total" id="detail-total">Rp 500.000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Status Pembayaran -->
+      <div class="detail-section">
+        <div class="detail-section-title">💳 Status Pembayaran</div>
+        <div class="status-payment-row">
+          <span class="status-payment-label">Status Pembayaran Sewa</span>
+          <div id="detail-payment-badge"></div>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>Catatan Admin</label>
+          <div class="field-val" style="color:var(--text-2);font-style:italic">Kostum dikembalikan dalam kondisi baik, tepat waktu. Tidak ada kerusakan.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-batal" onclick="closeModal('modalDetail')">TUTUP</button>
+      <button class="btn-simpan" style="background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 14px rgba(16,185,129,0.3)" onclick="window.print ? alert('🖨️ Fitur cetak akan segera tersedia!') : null()">🖨️ CETAK BUKTI</button>
     </div>
   </div>
 </div>

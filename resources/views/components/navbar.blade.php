@@ -1,8 +1,12 @@
 <div class="fixed w-full top-0 z-50 px-6 py-4">
     <header class="bg-dark-chocolate text-misty-rose rounded-full shadow-lg max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
         <div class="flex items-center gap-2 font-bold text-xl">
-            <span class="bg-sakura text-dark-chocolate p-2 rounded-full w-8 h-8 flex items-center justify-center">🛍️</span>
-            <a href="{{ route('home') }}">CosRent</a>
+            <a href="{{ route('home') }}" class="flex items-center gap-2">
+                <img src="{{ asset('images/Logo-CosRent.png') }}"
+                     alt="Logo CosRent"
+                     style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: center 20%; border: 2px solid rgba(236,156,157,0.6); box-shadow: 0 2px 10px rgba(236,156,157,0.4); flex-shrink: 0;">
+                CosRent
+            </a>
         </div>
         <nav class="hidden md:flex gap-6 font-medium text-sm">
             <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Home</a>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CostumeRent — Riwayat Penyewaan</title>
+<title>CosRent — Riwayat Penyewaan</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
     @vite(['resources/css/admin/layout.css', 'resources/css/admin/riwayat.css', 'resources/js/admin/riwayat.js', 'resources/js/admin/theme.js'])
     <script>
@@ -21,7 +21,7 @@
       <div class="brand-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
       </div>
-      <span class="brand-name">CostumeRent</span>
+      <span class="brand-name">CosRent</span>
     </div>
 
     <div class="user-card">

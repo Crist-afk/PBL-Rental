@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CostumeRent — Dashboard Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @vite(['resources/css/admin/layout.css', 'resources/css/admin/dashboard.css', 'resources/js/admin/dashboard.js'])
 </head>
 <body>
@@ -137,50 +138,50 @@
           <a class="card-link" href="#">Lihat Semua →</a>
         </div>
 
-        <div class="activity-item">
+        <a href="{{ route('admin.pembayaran') }}" class="activity-item" style="text-decoration: none;">
           <div class="activity-icon" style="background:rgba(34,211,165,0.12)">💵</div>
           <div class="activity-info">
             <div class="activity-title">Pembayaran dikonfirmasi</div>
             <div class="activity-sub">Order #1234 oleh Asep</div>
           </div>
           <div class="activity-time">2 menit lalu</div>
-        </div>
+        </a>
 
-        <div class="activity-item">
+        <a href="{{ route('admin.pengguna') }}" class="activity-item" style="text-decoration: none;">
           <div class="activity-icon" style="background:rgba(59,130,246,0.12)">👤</div>
           <div class="activity-info">
             <div class="activity-title">Pelanggan baru mendaftar</div>
             <div class="activity-sub">budi@email.com bergabung</div>
           </div>
           <div class="activity-time">5 menit lalu</div>
-        </div>
+        </a>
 
-        <div class="activity-item">
+        <a href="{{ route('admin.kostum') }}" class="activity-item" style="text-decoration: none;">
           <div class="activity-icon" style="background:rgba(167,139,250,0.12)">👚</div>
           <div class="activity-info">
             <div class="activity-title">Kostum diperbarui</div>
             <div class="activity-sub">Stok Kostum Superhero diupdate</div>
           </div>
           <div class="activity-time">10 menit lalu</div>
-        </div>
+        </a>
 
-        <div class="activity-item">
+        <a href="{{ route('admin.pengembalian') }}" class="activity-item" style="text-decoration: none;">
           <div class="activity-icon" style="background:rgba(251,146,60,0.12)">↩️</div>
           <div class="activity-info">
             <div class="activity-title">Pengembalian dicatat</div>
             <div class="activity-sub">Order #1230 dikembalikan tepat waktu</div>
           </div>
           <div class="activity-time">1 jam lalu</div>
-        </div>
+        </a>
 
-        <div class="activity-item">
+        <a href="{{ route('admin.pengembalian') }}" class="activity-item" style="text-decoration: none;">
           <div class="activity-icon" style="background:rgba(248,113,113,0.12)">⚠️</div>
           <div class="activity-info">
             <div class="activity-title">Denda dikenakan</div>
             <div class="activity-sub">Order #1228 terlambat 2 hari</div>
           </div>
           <div class="activity-time">2 jam lalu</div>
-        </div>
+        </a>
       </div>
 
       <!-- RIGHT PANEL -->
@@ -223,37 +224,14 @@
           </div>
         </div>
 
-        <!-- POPULAR COSTUMES -->
+        <!-- POPULAR COSTUMES CHART -->
         <div class="card">
           <div class="card-header">
             <span class="card-title">Kostum Terpopuler</span>
           </div>
 
-          <div class="costume-item">
-            <div class="costume-thumb" style="background:rgba(59,130,246,0.15)">🦸</div>
-            <div class="costume-info">
-              <div class="costume-name">Kostum Superhero...</div>
-              <div class="costume-price">Rp 1.106/hari</div>
-            </div>
-            <span class="costume-chevron">›</span>
-          </div>
-
-          <div class="costume-item">
-            <div class="costume-thumb" style="background:rgba(251,146,60,0.15)">👗</div>
-            <div class="costume-info">
-              <div class="costume-name">Gaun Cinderella</div>
-              <div class="costume-price">Rp 582/hari</div>
-            </div>
-            <span class="costume-chevron">›</span>
-          </div>
-
-          <div class="costume-item">
-            <div class="costume-thumb" style="background:rgba(167,139,250,0.15)">⚔️</div>
-            <div class="costume-info">
-              <div class="costume-name">Kostum Samurai</div>
-              <div class="costume-price">Rp 896/hari</div>
-            </div>
-            <span class="costume-chevron">›</span>
+          <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
+            <canvas id="popularCostumesChart"></canvas>
           </div>
         </div>
 

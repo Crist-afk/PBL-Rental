@@ -30,4 +30,9 @@ class AdminController extends Controller
     {
         return view('admin.riwayat-admin');
     }
+
+    public function pengguna()
+    {
+        return view('admin.pengguna-admin');
+    }
 }

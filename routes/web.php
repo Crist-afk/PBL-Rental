@@ -20,6 +20,7 @@ Route::get('/admin/kostum', [AdminController::class, 'kostum'])->name('admin.kos
 Route::get('/admin/pembayaran', [AdminController::class, 'pembayaran'])->name('admin.pembayaran');
 Route::get('/admin/pengembalian', [AdminController::class, 'pengembalian'])->name('admin.pengembalian');
 Route::get('/admin/riwayat', [AdminController::class, 'riwayat'])->name('admin.riwayat');
+Route::get('/admin/pengguna', [AdminController::class, 'pengguna'])->name('admin.pengguna');
 
 // [1] ROUTE PUBLIK
 Route::view('/', 'pages.home')->name('home');

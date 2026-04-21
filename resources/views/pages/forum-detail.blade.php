@@ -14,7 +14,7 @@
             <div>
                 <a href="{{ route('forum') }}" class="inline-flex items-center gap-2 text-sm font-bold text-aloewood transition hover:text-sakura">
                     <i class="fa-solid fa-arrow-left"></i>
-                    Kembali ke Forumm
+                    Kembali ke Forum
                 </a>
                 <h1 class="mt-3 max-w-4xl text-4xl font-extrabold leading-tight text-dark-chocolate md:text-5xl">{{ $post->title }}</h1>
             </div>

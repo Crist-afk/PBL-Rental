@@ -85,10 +85,124 @@
         <p class="page-sub">Selamat datang kembali, Admin 👋</p>
       </div>
       <div class="header-actions">
-        <div class="icon-btn" title="Notifikasi">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <div class="notif-dot"></div>
-        </div>
+        <!-- NOTIFICATION BELL -->
+        <div class="notif-wrap" id="notifWrap">
+          <button class="icon-btn notif-btn" id="notifBtn" title="Notifikasi Pesanan">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-badge" id="notifBadge">5</span>
+          </button>
+
+          <!-- NOTIFICATION DROPDOWN -->
+          <div class="notif-dropdown" id="notifDropdown">
+            <!-- Header -->
+            <div class="notif-header">
+              <div class="notif-header-left">
+                <span class="notif-header-title">Pesanan Masuk</span>
+                <span class="notif-header-count">5 menunggu konfirmasi</span>
+              </div>
+              <a href="{{ route('admin.pembayaran') }}" class="notif-see-all">Lihat Semua →</a>
+            </div>
+
+            <!-- Order List -->
+            <div class="notif-list">
+
+              <!-- Order 1 -->
+              <a href="{{ route('admin.pembayaran') }}" class="notif-item unread">
+                <div class="notif-avatar" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">R</div>
+                <div class="notif-info">
+                  <div class="notif-item-top">
+                    <span class="notif-user">Ridho Pratama</span>
+                    <span class="notif-time">2 mnt lalu</span>
+                  </div>
+                  <div class="notif-kostum">🦸 Kostum Batman</div>
+                  <div class="notif-item-bot">
+                    <span class="notif-id">#ORD-2401</span>
+                    <span class="notif-rp">Rp 150.000</span>
+                  </div>
+                </div>
+                <div class="notif-unread-dot"></div>
+              </a>
+
+              <!-- Order 2 -->
+              <a href="{{ route('admin.pembayaran') }}" class="notif-item unread">
+                <div class="notif-avatar" style="background: linear-gradient(135deg, #f43f5e, #fb7185);">A</div>
+                <div class="notif-info">
+                  <div class="notif-item-top">
+                    <span class="notif-user">Asep Sudrajat</span>
+                    <span class="notif-time">8 mnt lalu</span>
+                  </div>
+                  <div class="notif-kostum">👗 Gaun Cinderella</div>
+                  <div class="notif-item-bot">
+                    <span class="notif-id">#ORD-2400</span>
+                    <span class="notif-rp">Rp 200.000</span>
+                  </div>
+                </div>
+                <div class="notif-unread-dot"></div>
+              </a>
+
+              <!-- Order 3 -->
+              <a href="{{ route('admin.pembayaran') }}" class="notif-item unread">
+                <div class="notif-avatar" style="background: linear-gradient(135deg, #0ea5e9, #38bdf8);">S</div>
+                <div class="notif-info">
+                  <div class="notif-item-top">
+                    <span class="notif-user">Siti Aminah</span>
+                    <span class="notif-time">23 mnt lalu</span>
+                  </div>
+                  <div class="notif-kostum">🥷 Kostum Naruto</div>
+                  <div class="notif-item-bot">
+                    <span class="notif-id">#ORD-2399</span>
+                    <span class="notif-rp">Rp 120.000</span>
+                  </div>
+                </div>
+                <div class="notif-unread-dot"></div>
+              </a>
+
+              <!-- Order 4 -->
+              <a href="{{ route('admin.pembayaran') }}" class="notif-item unread">
+                <div class="notif-avatar" style="background: linear-gradient(135deg, #10b981, #34d399);">B</div>
+                <div class="notif-info">
+                  <div class="notif-item-top">
+                    <span class="notif-user">Budi Santoso</span>
+                    <span class="notif-time">1 jam lalu</span>
+                  </div>
+                  <div class="notif-kostum">🧛 Kostum Drakula</div>
+                  <div class="notif-item-bot">
+                    <span class="notif-id">#ORD-2398</span>
+                    <span class="notif-rp">Rp 130.000</span>
+                  </div>
+                </div>
+                <div class="notif-unread-dot"></div>
+              </a>
+
+              <!-- Order 5 -->
+              <a href="{{ route('admin.pembayaran') }}" class="notif-item unread">
+                <div class="notif-avatar" style="background: linear-gradient(135deg, #f97316, #fb923c);">D</div>
+                <div class="notif-info">
+                  <div class="notif-item-top">
+                    <span class="notif-user">Dewi Lestari</span>
+                    <span class="notif-time">2 jam lalu</span>
+                  </div>
+                  <div class="notif-kostum">🧝 Kostum Elf</div>
+                  <div class="notif-item-bot">
+                    <span class="notif-id">#ORD-2397</span>
+                    <span class="notif-rp">Rp 160.000</span>
+                  </div>
+                </div>
+                <div class="notif-unread-dot"></div>
+              </a>
+
+            </div><!-- /notif-list -->
+
+            <!-- Footer -->
+            <div class="notif-footer">
+              <a href="{{ route('admin.pembayaran') }}" class="notif-footer-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                Validasi Semua Pembayaran
+              </a>
+            </div>
+          </div><!-- /notif-dropdown -->
+        </div><!-- /notif-wrap -->
+
         <div class="user-avatar">A</div>
       </div>
     </div>

@@ -93,3 +93,47 @@ window.addEventListener('load', () => {
         });
     }
 });
+
+// ── NOTIFICATION SYSTEM ──
+document.addEventListener('DOMContentLoaded', () => {
+    const notifBtn      = document.getElementById('notifBtn');
+    const notifDropdown = document.getElementById('notifDropdown');
+    const notifBadge    = document.getElementById('notifBadge');
+
+    if (!notifBtn || !notifDropdown) return;
+
+    // Toggle open/close on bell click
+    notifBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = notifDropdown.classList.contains('open');
+        notifDropdown.classList.toggle('open', !isOpen);
+        notifBtn.classList.toggle('active', !isOpen);
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+            notifDropdown.classList.remove('open');
+            notifBtn.classList.remove('active');
+        }
+    });
+
+    // Mark individual item as read on click (visual feedback before navigation)
+    document.querySelectorAll('.notif-item').forEach(item => {
+        item.addEventListener('click', () => {
+            item.classList.remove('unread');
+            const dot = item.querySelector('.notif-unread-dot');
+            if (dot) dot.style.display = 'none';
+
+            // Decrement badge count
+            if (notifBadge) {
+                const currentCount = parseInt(notifBadge.textContent, 10);
+                if (currentCount > 1) {
+                    notifBadge.textContent = currentCount - 1;
+                } else {
+                    notifBadge.style.display = 'none';
+                }
+            }
+        });
+    });
+});

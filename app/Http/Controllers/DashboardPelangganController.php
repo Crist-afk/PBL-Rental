@@ -77,9 +77,25 @@ class DashboardPelangganController extends Controller
     /**
      * Menampilkan Halaman Booking
      */
-    public function booking()
+    public function booking(Request $request)
     {
-        return view('pages.Booking');
+        return view('pages.Booking', [
+            'kostum_id' => $request->query('kostum_id'),
+            'selected_size' => $request->query('size'),
+            'tanggal_sewa' => $request->query('tanggal_sewa'),
+            'tanggal_kembali' => $request->query('tanggal_kembali'),
+        ]);
+    }
+
+    /**
+     * Menangani Pengiriman Form Booking
+     */
+    public function storeBooking(Request $request)
+    {
+        // Simulasi penyimpanan data
+        // $request->validate([...]);
+        
+        return redirect()->route('booking.index')->with('success', 'Reservasi berhasil!');
     }
 
     /**

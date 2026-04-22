@@ -51,8 +51,8 @@
                     </ul>
                 </div>
 
-                <form action="#" method="POST" class="space-y-6 bg-white/40 p-5 md:p-6 rounded-[2rem] border-2 border-dark-chocolate/10">
-                    @csrf
+                <form action="{{ route('booking.index') }}" method="GET" class="space-y-6 bg-white/40 p-5 md:p-6 rounded-[2rem] border-2 border-dark-chocolate/10">
+                    <input type="hidden" name="kostum_id" value="2">
                     <div>
                         <label class="block text-sm font-bold text-dark-chocolate mb-3">Pilih Ukuran</label>
                         <div class="flex flex-wrap gap-3">

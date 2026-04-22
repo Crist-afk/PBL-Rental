@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/forum/{forumPost}/comments/{forumComment}', [ForumController::class, 'destroyComment'])->name('forum.comments.destroy');
 
     Route::get('/booking', [DashboardPelangganController::class, 'booking'])->name('booking.index');
+    Route::post('/booking', [DashboardPelangganController::class, 'storeBooking'])->name('booking.store');
     Route::get('/riwayat', [DashboardPelangganController::class, 'riwayat'])->name('riwayat.index');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

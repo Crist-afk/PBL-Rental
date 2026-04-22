@@ -26,7 +26,7 @@
                 <i class="fa-solid fa-calendar-days text-9xl text-dark-chocolate"></i>
             </div>
 
-            <form action="#" method="POST" class="space-y-10 relative">
+            <form action="{{ route('booking.store') }}" method="POST" class="space-y-10 relative">
                 @csrf
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -37,11 +37,11 @@
                         </label>
                         <div class="relative group">
                             <select id="kostum_id" name="kostum_id" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-pointer group-hover:border-sakura/50" required>
-                                <option value="" disabled selected>-- Cari Kostum --</option>
-                                <option value="1">Raiden Shogun (Genshin Impact)</option>
-                                <option value="2">Monkey D. Luffy (One Piece)</option>
-                                <option value="3">Kafka (Honkai: Star Rail)</option>
-                                <option value="4">Spider-Man (Marvel)</option>
+                                <option value="" disabled {{ !isset($kostum_id) ? 'selected' : '' }}>-- Cari Kostum --</option>
+                                <option value="1" {{ (isset($kostum_id) && $kostum_id == 1) ? 'selected' : '' }}>Raiden Shogun (Genshin Impact)</option>
+                                <option value="2" {{ (isset($kostum_id) && $kostum_id == 2) ? 'selected' : '' }}>Monkey D. Luffy (One Piece)</option>
+                                <option value="3" {{ (isset($kostum_id) && $kostum_id == 3) ? 'selected' : '' }}>Kafka (Honkai: Star Rail)</option>
+                                <option value="4" {{ (isset($kostum_id) && $kostum_id == 4) ? 'selected' : '' }}>Spider-Man (Marvel)</option>
                             </select>
                             <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-sakura">
                                 <i class="fa-solid fa-chevron-down"></i>
@@ -57,7 +57,7 @@
                         <div class="grid grid-cols-4 gap-3">
                             @foreach(['S', 'M', 'L', 'XL'] as $size)
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="size" value="{{ $size }}" class="peer sr-only" {{ $loop->first ? 'required' : '' }}>
+                                    <input type="radio" name="size" value="{{ $size }}" class="peer sr-only" {{ (isset($selected_size) && $selected_size == $size) ? 'checked' : ($loop->first && !isset($selected_size) ? 'required' : '') }}>
                                     <div class="w-full py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/10 font-black text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition-all duration-300 shadow-sm hover:scale-105 bg-white/40 hover:border-sakura/50 peer-checked:shadow-sakura/20 peer-checked:shadow-lg">
                                         {{ $size }}
                                     </div>
@@ -74,7 +74,7 @@
                             <i class="fa-solid fa-calendar-plus text-sakura"></i> Mulai Sewa
                         </label>
                         <div class="relative">
-                            <input type="date" id="tanggal_sewa" name="tanggal_sewa" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
+                            <input type="date" id="tanggal_sewa" name="tanggal_sewa" value="{{ $tanggal_sewa ?? '' }}" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
                         </div>
                     </div>
 
@@ -84,7 +84,7 @@
                             <i class="fa-solid fa-calendar-check text-sakura"></i> Selesai Sewa
                         </label>
                         <div class="relative">
-                            <input type="date" id="tanggal_kembali" name="tanggal_kembali" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
+                            <input type="date" id="tanggal_kembali" name="tanggal_kembali" value="{{ $tanggal_kembali ?? '' }}" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,23 @@
 
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        @if(session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#443025',
+                background: '#FFE4E1',
+                customClass: {
+                    title: 'text-dark-chocolate font-black',
+                    popup: 'rounded-[2rem] border-2 border-sakura/20 shadow-2xl'
+                }
+            });
+        @endif
+
         const tglSewa = document.getElementById('tanggal_sewa');
         const tglKembali = document.getElementById('tanggal_kembali');
 

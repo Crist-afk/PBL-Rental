@@ -42,6 +42,8 @@
                                 <option value="2" {{ (isset($kostum_id) && $kostum_id == 2) ? 'selected' : '' }}>Monkey D. Luffy (One Piece)</option>
                                 <option value="3" {{ (isset($kostum_id) && $kostum_id == 3) ? 'selected' : '' }}>Kafka (Honkai: Star Rail)</option>
                                 <option value="4" {{ (isset($kostum_id) && $kostum_id == 4) ? 'selected' : '' }}>Spider-Man (Marvel)</option>
+                                <option value="5" {{ (isset($kostum_id) && $kostum_id == 5) ? 'selected' : '' }}>Yae Miko (Genshin Impact)</option>
+                                <option value="6" {{ (isset($kostum_id) && $kostum_id == 6) ? 'selected' : '' }}>Gojo Satoru (Jujutsu Kaisen)</option>
                             </select>
                             <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-sakura">
                                 <i class="fa-solid fa-chevron-down"></i>

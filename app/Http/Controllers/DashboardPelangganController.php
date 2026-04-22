@@ -26,7 +26,8 @@ class DashboardPelangganController extends Controller
                 'size'        => 'M',
                 'return_date' => '18 April 2026',
                 'price'       => 180000,
-                'color'       => 'bg-dark-chocolate'
+                'color'       => 'bg-dark-chocolate',
+                'image'       => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s'
             ],
             [
                 'id'          => 2,
@@ -34,7 +35,8 @@ class DashboardPelangganController extends Controller
                 'size'        => 'L',
                 'return_date' => '20 April 2026',
                 'price'       => 120000,
-                'color'       => 'bg-aloewood'
+                'color'       => 'bg-aloewood',
+                'image'       => 'https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e'
             ],
         ];
 
@@ -57,12 +59,14 @@ class DashboardPelangganController extends Controller
             [
                 'title'    => 'Yae Miko',
                 'category' => 'Genshin Impact',
-                'color'    => 'bg-milk-tea'
+                'color'    => 'bg-milk-tea',
+                'image'    => 'https://ae01.alicdn.com/kf/S5c23516ed69b45b3ae3f35e3fbad217d6.jpg'
             ],
             [
                 'title'    => 'Gojo Satoru',
                 'category' => 'Jujutsu Kaisen',
-                'color'    => 'bg-sakura'
+                'color'    => 'bg-sakura',
+                'image'    => 'https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg'
             ],
         ];
 

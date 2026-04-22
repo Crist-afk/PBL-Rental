@@ -80,7 +80,11 @@
                 <div class="space-y-4">
                     @forelse($current_rentals ?? [] as $rental)
                     <article class="glass-card rounded-[2rem] p-5 flex flex-col sm:flex-row gap-5 items-start sm:items-center border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
-                        <div class="w-full sm:w-24 h-40 sm:h-24 {{ $rental['color'] ?? 'bg-dark-chocolate' }} rounded-[1.5rem] flex-shrink-0"></div>
+                        <div class="w-full sm:w-24 h-40 sm:h-24 {{ $rental['color'] ?? 'bg-dark-chocolate' }} rounded-[1.5rem] flex-shrink-0 overflow-hidden">
+                            @if(isset($rental['image']))
+                                <img src="{{ $rental['image'] }}" alt="{{ $rental['title'] }}" class="w-full h-full object-cover">
+                            @endif
+                        </div>
                         <div class="flex-1 min-w-0 w-full">
                             <h3 class="font-bold text-xl text-dark-chocolate line-clamp-1">{{ $rental['title'] }}</h3>
                             <p class="text-sm font-bold text-aloewood mt-1 uppercase tracking-wide">Ukuran {{ $rental['size'] }}</p>
@@ -175,7 +179,11 @@
                     <div class="flex gap-4 overflow-x-auto pb-2 snap-x">
                         @foreach($recommendations ?? [] as $rec)
                         <div class="min-w-[150px] snap-start bg-white/50 rounded-[1.5rem] overflow-hidden border-2 border-dark-chocolate/10 transition hover:-translate-y-1 hover:shadow-lg">
-                            <div class="h-28 {{ $rec['color'] }}"></div>
+                            <div class="h-28 {{ $rec['color'] }} overflow-hidden">
+                                @if(isset($rec['image']))
+                                    <img src="{{ $rec['image'] }}" alt="{{ $rec['title'] }}" class="w-full h-full object-cover">
+                                @endif
+                            </div>
                             <div class="p-4">
                                 <p class="font-bold text-sm text-dark-chocolate line-clamp-1">{{ $rec['title'] }}</p>
                                 <p class="text-[10px] font-bold uppercase tracking-wide text-aloewood mt-1">{{ $rec['category'] }}</p>

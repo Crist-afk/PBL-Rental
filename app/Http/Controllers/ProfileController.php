@@ -11,12 +11,26 @@ class ProfileController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        
+
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
-        
-        return redirect()->route('dashboard.pelanggan');
+
+        $user->loadCount('forumPosts');
+
+        $latestForumPosts = $user->forumPosts()
+            ->with('category')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $profileStats = [
+            'forum_posts' => $user->forum_posts_count,
+            'rental_count' => 0,
+            'rating_label' => '-',
+        ];
+
+        return view('pages.profile', compact('user', 'latestForumPosts', 'profileStats'));
     }
 
     // Memproses update nama dan foto

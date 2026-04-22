@@ -252,51 +252,5 @@
         </div>
     </main>
 
-    <div id="image-modal" role="dialog" aria-modal="true" aria-hidden="true" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4 opacity-0 transition-opacity duration-300 backdrop-blur-md" onclick="closeImageModal()">
-        <button type="button" aria-label="Tutup pratinjau gambar" onclick="closeImageModal()" class="absolute right-6 top-6 text-4xl text-white/50 transition hover:text-sakura">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <img id="modal-image" src="" alt="Pratinjau gambar forum" class="max-h-full max-w-full scale-95 rounded-2xl object-contain shadow-2xl transition-transform duration-300" onclick="event.stopPropagation()">
-    </div>
-
-    <script>
-        function openImageModal(imageSrc) {
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-image');
-
-            modalImg.src = imageSrc;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            modal.setAttribute('aria-hidden', 'false');
-
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modalImg.classList.remove('scale-95');
-                modalImg.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeImageModal() {
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-image');
-
-            modal.classList.add('opacity-0');
-            modalImg.classList.remove('scale-100');
-            modalImg.classList.add('scale-95');
-
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                modal.setAttribute('aria-hidden', 'true');
-                modalImg.src = '';
-            }, 300);
-        }
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                closeImageModal();
-            }
-        });
-    </script>
+    <x-forum.image-modal />
 @endsection

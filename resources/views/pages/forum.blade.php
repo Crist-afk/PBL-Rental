@@ -153,7 +153,7 @@
                     </div>
                     <a href="{{ auth()->check() ? '#buat-diskusi' : route('login') }}" class="hidden rounded-full bg-dark-chocolate px-5 py-3 text-sm font-bold text-misty-rose transition hover:bg-black md:inline-flex md:items-center md:gap-2">
                         <i class="fa-solid fa-pen-nib"></i>
-                        Buat Diskusi Baru
+                        {{ auth()->check() ? 'Buat Diskusi Baru' : 'Login untuk Berdiskusi' }}
                     </a>
                 </div>
 
@@ -225,7 +225,7 @@
             <aside class="space-y-6">
                 <a href="{{ auth()->check() ? '#buat-diskusi' : route('login') }}" class="flex items-center justify-center gap-2 rounded-[2rem] border-2 border-sakura/20 bg-dark-chocolate px-6 py-4 text-lg font-bold text-misty-rose shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-black">
                     <i class="fa-solid fa-pen-nib"></i>
-                    Buat Diskusi Baru
+                    {{ auth()->check() ? 'Buat Diskusi Baru' : 'Login untuk Berdiskusi' }}
                 </a>
 
                 <div class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-6 shadow-xl">

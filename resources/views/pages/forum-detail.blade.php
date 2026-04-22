@@ -197,7 +197,7 @@
                                     <p class="mt-1 text-sm font-medium text-dark-chocolate/70">Komentar dan balasanmu akan ikut memperkaya aktivitas forum di halaman profile.</p>
                                 </div>
                                 <div class="flex gap-3">
-                                    <a href="{{ route('login') }}" class="rounded-full bg-dark-chocolate px-5 py-3 text-sm font-bold text-misty-rose transition hover:bg-black">Login</a>
+                                    <a href="{{ route('login') }}" class="rounded-full bg-dark-chocolate px-5 py-3 text-sm font-bold text-misty-rose transition hover:bg-black">Login untuk Komentar</a>
                                     <a href="{{ route('register') }}" class="rounded-full border-2 border-dark-chocolate/20 px-5 py-3 text-sm font-bold text-dark-chocolate transition hover:bg-sakura">Register</a>
                                 </div>
                             </div>
@@ -335,6 +335,12 @@
                                                     </button>
                                                 </form>
                                             </details>
+                                        @else
+                                            <div class="mt-4">
+                                                <a href="{{ route('login') }}" class="text-sm font-bold text-aloewood transition hover:text-sakura">
+                                                    Login untuk membalas komentar
+                                                </a>
+                                            </div>
                                         @endauth
                                     </div>
                                 </div>

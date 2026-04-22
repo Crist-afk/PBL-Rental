@@ -93,9 +93,15 @@
                         });
                     </script>
 
-                    <button type="submit" class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-cart-shopping"></i> Lanjutkan Penyewaan
-                    </button>
+                    @auth
+                        <button type="submit" class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-cart-shopping"></i> Sewa Sekarang
+                        </button>
+                    @else
+                        <a href="{{ route('login') }}" class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-right-to-bracket"></i> Login untuk Sewa
+                        </a>
+                    @endauth
                 </form>
 
             </section>

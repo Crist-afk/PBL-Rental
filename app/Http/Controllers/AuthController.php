@@ -70,7 +70,7 @@ class AuthController extends Controller
             Auth::login($adminUser);
             $request->session()->regenerate();
             
-            return redirect()->route('admin.dashboard');
+            return redirect()->intended(route('admin.dashboard'));
         }
         // ============================
 
@@ -81,11 +81,11 @@ class AuthController extends Controller
 
             // Cek role user untuk menentukan arah halaman (redirect)
             if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
+                return redirect()->intended(route('admin.dashboard'));
             }
 
             // Arahkan pelanggan ke halaman Dashboard Pelanggan
-            return redirect()->route('dashboard.pelanggan');
+            return redirect()->intended(route('dashboard.pelanggan'));
         }
 
         // Jika gagal, tendang kembali ke halaman login bawa pesan error

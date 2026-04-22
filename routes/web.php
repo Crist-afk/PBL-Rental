@@ -28,15 +28,21 @@ Route::view('/about', 'pages.about')->name('about');
 Route::view('/contact', 'pages.contact')->name('contact');
 
 // ==================== ROUTE PRODUK ====================
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/product', [ProductController::class, 'index'])->name('products.index');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products', function () {
+    return redirect()->route('products.index', request()->query());
+});
+Route::get('/products/{id}', function ($id) {
+    return redirect()->route('products.show', ['id' => $id] + request()->query());
+});
 
 // ==================== ROUTE FORUM (PUBLIK) ====================
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');
 Route::get('/forum/{forumPost}', [ForumController::class, 'show'])->name('forum.show');
 
 // ==================== DASHBOARD PELANGGAN ====================
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardPelangganController::class, 'index'])
          ->name('dashboard.pelanggan');
 

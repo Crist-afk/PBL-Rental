@@ -53,8 +53,8 @@
                     </ul>
                 </div>
 
-                <form action="#" method="POST" class="space-y-6 bg-white/40 p-5 md:p-6 rounded-[2rem] border-2 border-dark-chocolate/10">
-                    @csrf
+                <form action="{{ route('booking.index') }}" method="GET" class="space-y-6 bg-white/40 p-5 md:p-6 rounded-[2rem] border-2 border-dark-chocolate/10">
+                    <input type="hidden" name="kostum_id" value="{{ $product['id'] }}">
                     <div>
                         <label class="block text-sm font-bold text-dark-chocolate mb-3">Pilih Ukuran</label>
                         <div class="flex flex-wrap gap-3">
@@ -90,9 +90,19 @@
                         });
                     </script>
 
-                    <button type="submit" class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-cart-shopping"></i> Lanjutkan Penyewaan
-                    </button>
+                    @auth
+                        <form action="{{ route('booking.index') }}" method="GET" class="space-y-6 ...">
+                            <input type="hidden" name="kostum_id" value="{{ $product['id'] }}">
+                            ...
+                            <button type="submit" class="w-full ...">
+                                Sewa Sekarang
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="w-full ...">
+                            Login untuk Sewa
+                        </a>
+                    @endauth
                 </form>
 
             </section>

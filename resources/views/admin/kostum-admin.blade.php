@@ -93,12 +93,11 @@
 
         <!-- Card 1 -->
         <div class="costume-card">
-          <div class="card-img" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)">
-            🦸
+          <div class="card-img" style="background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s') center/cover;">
             <span class="status-badge tersedia">Tersedia</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="card-name">Kostum Batman</span><span class="cat-tag">Superhero</span></div>
+            <div class="card-top"><span class="card-name">Kostum Spiderman</span><span class="cat-tag">Superhero</span></div>
             <div class="card-price">Rp</div>
             <div><span class="price-val">150.000</span><span class="price-unit"> /hari</span></div>
             <div class="card-stock" style="margin-top:4px">STOK: 3 UNIT</div>
@@ -112,12 +111,11 @@
 
         <!-- Card 2 -->
         <div class="costume-card">
-          <div class="card-img" style="background:linear-gradient(135deg,#831843,#ec4899)">
-            👗
+          <div class="card-img" style="background: url('https://ae01.alicdn.com/kf/S5c23516ed69b45b3ae3f35e3fbad217d6.jpg') center/cover;">
             <span class="status-badge disewa">Disewa</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="card-name">Gaun Cinderella</span><span class="cat-tag">Putri & Pangeran</span></div>
+            <div class="card-top"><span class="card-name">Yae Miko</span><span class="cat-tag">Anime & Karakter</span></div>
             <div class="card-price">Rp</div>
             <div><span class="price-val">200.000</span><span class="price-unit"> /hari</span></div>
             <div class="card-stock" style="margin-top:4px">STOK: 2 UNIT</div>
@@ -131,12 +129,11 @@
 
         <!-- Card 3 -->
         <div class="costume-card">
-          <div class="card-img" style="background:linear-gradient(135deg,#7c2d12,#f97316)">
-            🥷
+          <div class="card-img" style="background: url('https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg') center/cover;">
             <span class="status-badge tersedia">Tersedia</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="card-name">Kostum Naruto</span><span class="cat-tag">Anime</span></div>
+            <div class="card-top"><span class="card-name">Gojo Satoru</span><span class="cat-tag">Anime & Karakter</span></div>
             <div class="card-price">Rp</div>
             <div><span class="price-val">120.000</span><span class="price-unit"> /hari</span></div>
             <div class="card-stock" style="margin-top:4px">STOK: 5 UNIT</div>
@@ -150,12 +147,11 @@
 
         <!-- Card 4 -->
         <div class="costume-card">
-          <div class="card-img" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)">
-            👘
+          <div class="card-img" style="background: url('https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg') center/cover;">
             <span class="status-badge tidak">Tidak Tersedia</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="card-name">Baju Kimono</span><span class="cat-tag">Tradisional</span></div>
+            <div class="card-top"><span class="card-name">Kafka</span><span class="cat-tag">Anime & Karakter</span></div>
             <div class="card-price">Rp</div>
             <div><span class="price-val">180.000</span><span class="price-unit"> /hari</span></div>
             <div class="card-stock" style="margin-top:4px">STOK: 1 UNIT</div>
@@ -169,12 +165,11 @@
 
         <!-- Card 5 -->
         <div class="costume-card">
-          <div class="card-img" style="background:linear-gradient(135deg,#3b0764,#7c3aed)">
-            🧛
+          <div class="card-img" style="background: url('https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e') center/cover;">
             <span class="status-badge tersedia">Tersedia</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="card-name">Kostum Drakula</span><span class="cat-tag">Horror</span></div>
+            <div class="card-top"><span class="card-name">Monkey D. Luffy</span><span class="cat-tag">Anime & Karakter</span></div>
             <div class="card-price">Rp</div>
             <div><span class="price-val">130.000</span><span class="price-unit"> /hari</span></div>
             <div class="card-stock" style="margin-top:4px">STOK: 4 UNIT</div>
@@ -188,12 +183,11 @@
 
         <!-- Card 6 -->
         <div class="costume-card">
-          <div class="card-img" style="background:linear-gradient(135deg,#14532d,#16a34a)">
-            🧝
+          <div class="card-img" style="background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s') center/cover;">
             <span class="status-badge tersedia">Tersedia</span>
           </div>
           <div class="card-body">
-            <div class="card-top"><span class="card-name">Kostum Elf</span><span class="cat-tag">Anime</span></div>
+            <div class="card-top"><span class="card-name">Raiden Shogun</span><span class="cat-tag">Anime & Karakter</span></div>
             <div class="card-price">Rp</div>
             <div><span class="price-val">160.000</span><span class="price-unit"> /hari</span></div>
             <div class="card-stock" style="margin-top:4px">STOK: 2 UNIT</div>
@@ -423,12 +417,11 @@
       <!-- Detail Kostum Content -->
       <div style="display:flex;gap:20px;align-items:flex-start;">
         <!-- Image Placeholder -->
-        <div style="width:140px;height:140px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:48px;flex-shrink:0;">
-          🦸
+        <div style="width:140px;height:140px;background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s') center/cover;border-radius:12px;flex-shrink:0;">
         </div>
         <!-- Info -->
         <div style="flex:1;">
-          <h2 style="margin:0;font-size:20px;color:var(--text-1);">Kostum Batman</h2>
+          <h2 style="margin:0;font-size:20px;color:var(--text-1);">Kostum Spiderman</h2>
           <div style="margin-top:6px;font-size:12px;font-weight:700;color:var(--blue);background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.2);padding:4px 10px;border-radius:20px;display:inline-block;">SUPERHERO</div>
           
           <div style="margin-top:16px;display:flex;gap:24px;">

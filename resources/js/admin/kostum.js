@@ -77,6 +77,9 @@ window.openViewModal = function() {
 window.openDeleteModal = function() {
     document.getElementById('modalDelete').classList.add('show');
 }
+window.openAddCategoryModal = function() {
+    document.getElementById('modalAddCategory').classList.add('show');
+}
 window.closeModal = function(id) {
     document.getElementById(id).classList.remove('show');
 }

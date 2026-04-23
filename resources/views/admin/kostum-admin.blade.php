@@ -37,7 +37,7 @@
         <button class="tab" onclick="selectTab(this)">Anime &amp; Karakter</button>
         <button class="tab" onclick="selectTab(this)">Horror</button>
         <button class="tab" onclick="selectTab(this)">Tradisional</button>
-        <button class="tab add">+ Tambah Kategori</button>
+        <button class="tab add" onclick="openAddCategoryModal()">+ Tambah Kategori</button>
       </div>
 
       <!-- TOOLBAR -->
@@ -478,6 +478,33 @@
       <button class="btn btn-ghost" onclick="closeModal('modalDelete')">Batal</button>
       <button class="btn btn-primary" style="background:var(--red);border-color:var(--red);box-shadow:0 4px 12px rgba(248,113,113,0.3);" onclick="closeModal('modalDelete'); alert('Kostum berhasil dihapus!');">
         Ya, Hapus
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL TAMBAH KATEGORI ── -->
+<div class="modal-overlay" id="modalAddCategory">
+  <div class="modal" id="modalAddCategoryBox" style="width:400px;">
+    <div class="modal-header">
+      <span class="modal-title">Tambah Kategori Baru</span>
+      <div class="modal-close" onclick="closeModal('modalAddCategory')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Nama Kategori</label>
+        <input class="form-input" type="text" placeholder="Contoh: Superhero" />
+      </div>
+      <div class="form-group" style="margin-top:16px; margin-bottom:0">
+        <label class="form-label">Deskripsi Singkat</label>
+        <textarea class="form-textarea" placeholder="Deskripsi untuk kategori ini..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalAddCategory')">Batal</button>
+      <button class="btn btn-primary" onclick="closeModal('modalAddCategory'); alert('Kategori berhasil ditambahkan!');">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Simpan Kategori
       </button>
     </div>
   </div>

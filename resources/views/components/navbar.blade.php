@@ -2,6 +2,19 @@
 
 @php
     $isAuthPage = in_array($authPage, ['login', 'register'], true);
+    
+    $homeLabel = 'Home';
+    $homeRoute = 'home';
+    
+    if (Auth::check()) {
+        if (Auth::user()->role === 'pelanggan') {
+            $homeLabel = 'Dashboard';
+            $homeRoute = 'dashboard.pelanggan';
+        } elseif (Auth::user()->role === 'admin') {
+            $homeLabel = 'Dashboard';
+            $homeRoute = 'admin.dashboard';
+        }
+    }
 @endphp
 
 <div class="fixed w-full top-0 z-50 px-6 py-4">
@@ -30,7 +43,7 @@
                 <a href="{{ route('forum') }}" class="hover:text-sakura transition">Forum</a>
                 <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
             @else
-                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Home</a>
+                <a href="{{ route($homeRoute) }}" class="{{ request()->routeIs($homeRoute) ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">{{ $homeLabel }}</a>
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About</a>
                 <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Product</a>
                 <a href="{{ route('forum') }}" class="{{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
@@ -45,8 +58,16 @@
                 <a href="{{ route('register') }}" class="bg-sakura text-dark-chocolate px-5 py-2 rounded-full hover:bg-opacity-80 transition shadow">Register</a>
             @else
                 @auth
-                    <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard.pelanggan') }}" class="{{ request()->routeIs('profile') || request()->routeIs('admin.dashboard') || request()->routeIs('dashboard.pelanggan') ? 'text-sakura font-bold hover:underline transition' : 'hover:text-sakura transition' }}">
-                        <i class="fa-solid fa-user-circle mr-1"></i> {{ Auth::user()->nama ?? 'User' }}
+                    <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard.pelanggan') }}" class="flex items-center">
+                        @if(Auth::user()->avatar)
+                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" 
+                                 alt="Profile" 
+                                 class="w-9 h-9 rounded-full object-cover border-2 border-sakura shadow-sm hover:scale-105 transition-transform">
+                        @else
+                            <div class="w-9 h-9 flex items-center justify-center rounded-full bg-sakura text-dark-chocolate font-bold border-2 border-sakura shadow-sm hover:scale-105 transition-transform text-sm">
+                                {{ strtoupper(substr(Auth::user()->nama ?? 'U', 0, 1)) }}
+                            </div>
+                        @endif
                     </a>
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf

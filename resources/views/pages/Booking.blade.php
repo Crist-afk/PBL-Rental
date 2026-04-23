@@ -3,7 +3,7 @@
 @section('title', 'Form Booking Kostum - CosRent')
 
 @section('content')
-    <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-4xl mx-auto w-full">
+    <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-6xl mx-auto w-full">
         
         <!-- Header Section -->
         <div class="relative mb-10">
@@ -26,32 +26,35 @@
                 <i class="fa-solid fa-calendar-days text-9xl text-dark-chocolate"></i>
             </div>
 
-            <form action="{{ route('booking.store') }}" method="POST" class="space-y-10 relative">
+            <form action="{{ route('booking.store') }}" method="POST" class="relative">
                 @csrf
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <!-- Pilih Kostum -->
-                    <div class="space-y-4">
-                        <label for="kostum_id" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
-                            <i class="fa-solid fa-mask text-sakura"></i> Pilih Kostum
-                        </label>
-                        <div class="relative group">
-                            <select id="kostum_id" name="kostum_id" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-pointer group-hover:border-sakura/50 relative z-10" required>
-                                <option value="" disabled {{ !isset($kostum_id) ? 'selected' : '' }}>-- Cari Kostum --</option>
-                                <option value="1" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s" {{ (isset($kostum_id) && $kostum_id == 1) ? 'selected' : '' }}>Raiden Shogun (Genshin Impact)</option>
-                                <option value="2" data-image="https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e" {{ (isset($kostum_id) && $kostum_id == 2) ? 'selected' : '' }}>Monkey D. Luffy (One Piece)</option>
-                                <option value="3" data-image="https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg" {{ (isset($kostum_id) && $kostum_id == 3) ? 'selected' : '' }}>Kafka (Honkai: Star Rail)</option>
-                                <option value="4" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s" {{ (isset($kostum_id) && $kostum_id == 4) ? 'selected' : '' }}>Spider-Man (Marvel)</option>
-                                <option value="5" data-image="https://ae01.alicdn.com/kf/S5c23516ed69b45b3ae3f35e3fbad217d6.jpg" {{ (isset($kostum_id) && $kostum_id == 5) ? 'selected' : '' }}>Yae Miko (Genshin Impact)</option>
-                                <option value="6" data-image="https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg" {{ (isset($kostum_id) && $kostum_id == 6) ? 'selected' : '' }}>Gojo Satoru (Jujutsu Kaisen)</option>
-                            </select>
-                            <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-sakura z-20">
-                                <i class="fa-solid fa-chevron-down"></i>
+                <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12">
+                    <!-- Left Side: Selection & Preview -->
+                    <div class="space-y-8">
+                        <!-- Pilih Kostum -->
+                        <div class="space-y-4">
+                            <label for="kostum_id" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
+                                <i class="fa-solid fa-mask text-sakura"></i> Pilih Kostum
+                            </label>
+                            <div class="relative group">
+                                <select id="kostum_id" name="kostum_id" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-pointer group-hover:border-sakura/50 relative z-10" required>
+                                    <option value="" disabled {{ !isset($kostum_id) ? 'selected' : '' }}>-- Cari Kostum --</option>
+                                    <option value="1" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s" {{ (isset($kostum_id) && $kostum_id == 1) ? 'selected' : '' }}>Raiden Shogun (Genshin Impact)</option>
+                                    <option value="2" data-image="https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e" {{ (isset($kostum_id) && $kostum_id == 2) ? 'selected' : '' }}>Monkey D. Luffy (One Piece)</option>
+                                    <option value="3" data-image="https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg" {{ (isset($kostum_id) && $kostum_id == 3) ? 'selected' : '' }}>Kafka (Honkai: Star Rail)</option>
+                                    <option value="4" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s" {{ (isset($kostum_id) && $kostum_id == 4) ? 'selected' : '' }}>Spider-Man (Marvel)</option>
+                                    <option value="5" data-image="https://ae01.alicdn.com/kf/S5c23516ed69b45b3ae3f35e3fbad217d6.jpg" {{ (isset($kostum_id) && $kostum_id == 5) ? 'selected' : '' }}>Yae Miko (Genshin Impact)</option>
+                                    <option value="6" data-image="https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg" {{ (isset($kostum_id) && $kostum_id == 6) ? 'selected' : '' }}>Gojo Satoru (Jujutsu Kaisen)</option>
+                                </select>
+                                <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-sakura z-20">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Preview Container -->
-                        <div id="costume-preview" class="hidden mt-6 overflow-hidden rounded-[2rem] border-2 border-sakura/20 shadow-xl group bg-white/40 backdrop-blur-sm">
+                        <div id="costume-preview" class="hidden overflow-hidden rounded-[2rem] border-2 border-sakura/20 shadow-xl group bg-white/40 backdrop-blur-sm">
                             <div class="relative h-[32rem] w-full bg-dark-chocolate/5">
                                 <img id="preview-image" src="" alt="Preview" class="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105">
                                 <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-dark-chocolate/80 to-transparent flex items-end p-8">
@@ -64,64 +67,66 @@
                         </div>
                     </div>
 
-                    <!-- Pilih Ukuran -->
-                    <div class="space-y-4">
-                        <label class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
-                            <i class="fa-solid fa-ruler-combined text-sakura"></i> Pilih Ukuran
-                        </label>
-                        <div class="grid grid-cols-4 gap-3">
-                            @foreach(['S', 'M', 'L', 'XL'] as $size)
-                                <label class="cursor-pointer">
-                                    <input type="radio" name="size" value="{{ $size }}" class="peer sr-only" {{ (isset($selected_size) && $selected_size == $size) ? 'checked' : ($loop->first && !isset($selected_size) ? 'required' : '') }}>
-                                    <div class="w-full py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/10 font-black text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition-all duration-300 shadow-sm hover:scale-105 bg-white/40 hover:border-sakura/50 peer-checked:shadow-sakura/20 peer-checked:shadow-lg">
-                                        {{ $size }}
-                                    </div>
+                    <!-- Right Side: Booking Details -->
+                    <div class="space-y-8">
+                        <!-- Pilih Ukuran -->
+                        <div class="space-y-4">
+                            <label class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
+                                <i class="fa-solid fa-ruler-combined text-sakura"></i> Pilih Ukuran
+                            </label>
+                            <div class="grid grid-cols-4 gap-3">
+                                @foreach(['S', 'M', 'L', 'XL'] as $size)
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="size" value="{{ $size }}" class="peer sr-only" {{ (isset($selected_size) && $selected_size == $size) ? 'checked' : ($loop->first && !isset($selected_size) ? 'required' : '') }}>
+                                        <div class="w-full py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/10 font-black text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition-all duration-300 shadow-sm hover:scale-105 bg-white/40 hover:border-sakura/50 peer-checked:shadow-sakura/20 peer-checked:shadow-lg">
+                                            {{ $size }}
+                                        </div>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Tanggal Sewa -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <label for="tanggal_sewa" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
+                                    <i class="fa-solid fa-calendar-plus text-sakura"></i> Mulai Sewa
                                 </label>
-                            @endforeach
+                                <div class="relative">
+                                    <input type="date" id="tanggal_sewa" name="tanggal_sewa" value="{{ $tanggal_sewa ?? '' }}" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <label for="tanggal_kembali" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
+                                    <i class="fa-solid fa-calendar-check text-sakura"></i> Selesai Sewa
+                                </label>
+                                <div class="relative">
+                                    <input type="date" id="tanggal_kembali" name="tanggal_kembali" value="{{ $tanggal_kembali ?? '' }}" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <!-- Tanggal Sewa -->
-                    <div class="space-y-4">
-                        <label for="tanggal_sewa" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
-                            <i class="fa-solid fa-calendar-plus text-sakura"></i> Mulai Sewa
-                        </label>
-                        <div class="relative">
-                            <input type="date" id="tanggal_sewa" name="tanggal_sewa" value="{{ $tanggal_sewa ?? '' }}" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
+                        <!-- Catatan Tambahan -->
+                        <div class="space-y-4">
+                            <label for="catatan" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
+                                <i class="fa-solid fa-comment-dots text-sakura"></i> Catatan Khusus
+                            </label>
+                            <textarea id="catatan" name="catatan" rows="4" placeholder="Contoh: Tambahan wig, request pengiriman, dll..." class="w-full rounded-[2rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-5 font-medium text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition resize-none placeholder:text-dark-chocolate/30"></textarea>
                         </div>
-                    </div>
 
-                    <!-- Tanggal Kembali -->
-                    <div class="space-y-4">
-                        <label for="tanggal_kembali" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
-                            <i class="fa-solid fa-calendar-check text-sakura"></i> Selesai Sewa
-                        </label>
-                        <div class="relative">
-                            <input type="date" id="tanggal_kembali" name="tanggal_kembali" value="{{ $tanggal_kembali ?? '' }}" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
+                        <!-- Submit Button -->
+                        <div class="pt-6">
+                            <button type="submit" class="group relative w-full overflow-hidden rounded-full bg-dark-chocolate p-5 text-center font-black text-misty-rose shadow-2xl transition-all duration-500 hover:scale-[1.02] active:scale-95">
+                                <div class="absolute inset-0 bg-gradient-to-r from-sakura to-aloewood opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                                <span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest">
+                                    <i class="fa-solid fa-paper-plane animate-bounce-slow"></i> Konfirmasi Booking
+                                </span>
+                            </button>
+                            <div class="mt-6 flex items-center justify-center gap-2 text-dark-chocolate/40 font-bold text-[10px] uppercase tracking-[0.2em]">
+                                <i class="fa-solid fa-shield-halved text-green-500"></i> Data Anda Aman & Terenkripsi
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Catatan Tambahan -->
-                <div class="space-y-4">
-                    <label for="catatan" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
-                        <i class="fa-solid fa-comment-dots text-sakura"></i> Catatan Khusus
-                    </label>
-                    <textarea id="catatan" name="catatan" rows="4" placeholder="Contoh: Tambahan wig, request pengiriman, dll..." class="w-full rounded-[2rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-5 font-medium text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition resize-none placeholder:text-dark-chocolate/30"></textarea>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="pt-6">
-                    <button type="submit" class="group relative w-full overflow-hidden rounded-full bg-dark-chocolate p-5 text-center font-black text-misty-rose shadow-2xl transition-all duration-500 hover:scale-[1.02] active:scale-95">
-                        <div class="absolute inset-0 bg-gradient-to-r from-sakura to-aloewood opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-                        <span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest">
-                            <i class="fa-solid fa-paper-plane animate-bounce-slow"></i> Konfirmasi Booking
-                        </span>
-                    </button>
-                    <div class="mt-6 flex items-center justify-center gap-2 text-dark-chocolate/40 font-bold text-[10px] uppercase tracking-[0.2em]">
-                        <i class="fa-solid fa-shield-halved text-green-500"></i> Data Anda Aman & Terenkripsi
                     </div>
                 </div>
             </form>

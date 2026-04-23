@@ -69,6 +69,7 @@ class AuthController extends Controller
 
             Auth::login($adminUser);
             $request->session()->regenerate();
+            session()->flash('admin_login', true);
             
             return redirect()->intended(route('admin.dashboard'));
         }
@@ -81,6 +82,7 @@ class AuthController extends Controller
 
             // Cek role user untuk menentukan arah halaman (redirect)
             if (Auth::user()->role === 'admin') {
+                session()->flash('admin_login', true);
                 return redirect()->intended(route('admin.dashboard'));
             }
 

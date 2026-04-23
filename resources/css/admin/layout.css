@@ -190,6 +190,25 @@ html, body {
   font-weight: 700;
   margin-left: auto;
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  animation: badgePulse 2s ease-in-out infinite;
+  position: relative;
+}
+.badge::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 20px;
+  border: 2px solid rgba(239, 68, 68, 0.6);
+  animation: badgeRing 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3); }
+  50% { transform: scale(1.15); box-shadow: 0 2px 16px rgba(239, 68, 68, 0.6); }
+}
+@keyframes badgeRing {
+  0%, 100% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
 }
 
 .nav-item.logout { color: #fca5a5; }

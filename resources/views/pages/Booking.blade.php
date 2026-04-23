@@ -36,17 +36,30 @@
                             <i class="fa-solid fa-mask text-sakura"></i> Pilih Kostum
                         </label>
                         <div class="relative group">
-                            <select id="kostum_id" name="kostum_id" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-pointer group-hover:border-sakura/50" required>
+                            <select id="kostum_id" name="kostum_id" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-pointer group-hover:border-sakura/50 relative z-10" required>
                                 <option value="" disabled {{ !isset($kostum_id) ? 'selected' : '' }}>-- Cari Kostum --</option>
-                                <option value="1" {{ (isset($kostum_id) && $kostum_id == 1) ? 'selected' : '' }}>Raiden Shogun (Genshin Impact)</option>
-                                <option value="2" {{ (isset($kostum_id) && $kostum_id == 2) ? 'selected' : '' }}>Monkey D. Luffy (One Piece)</option>
-                                <option value="3" {{ (isset($kostum_id) && $kostum_id == 3) ? 'selected' : '' }}>Kafka (Honkai: Star Rail)</option>
-                                <option value="4" {{ (isset($kostum_id) && $kostum_id == 4) ? 'selected' : '' }}>Spider-Man (Marvel)</option>
-                                <option value="5" {{ (isset($kostum_id) && $kostum_id == 5) ? 'selected' : '' }}>Yae Miko (Genshin Impact)</option>
-                                <option value="6" {{ (isset($kostum_id) && $kostum_id == 6) ? 'selected' : '' }}>Gojo Satoru (Jujutsu Kaisen)</option>
+                                <option value="1" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s" {{ (isset($kostum_id) && $kostum_id == 1) ? 'selected' : '' }}>Raiden Shogun (Genshin Impact)</option>
+                                <option value="2" data-image="https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e" {{ (isset($kostum_id) && $kostum_id == 2) ? 'selected' : '' }}>Monkey D. Luffy (One Piece)</option>
+                                <option value="3" data-image="https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg" {{ (isset($kostum_id) && $kostum_id == 3) ? 'selected' : '' }}>Kafka (Honkai: Star Rail)</option>
+                                <option value="4" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s" {{ (isset($kostum_id) && $kostum_id == 4) ? 'selected' : '' }}>Spider-Man (Marvel)</option>
+                                <option value="5" data-image="https://ae01.alicdn.com/kf/S5c23516ed69b45b3ae3f35e3fbad217d6.jpg" {{ (isset($kostum_id) && $kostum_id == 5) ? 'selected' : '' }}>Yae Miko (Genshin Impact)</option>
+                                <option value="6" data-image="https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg" {{ (isset($kostum_id) && $kostum_id == 6) ? 'selected' : '' }}>Gojo Satoru (Jujutsu Kaisen)</option>
                             </select>
-                            <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-sakura">
+                            <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-sakura z-20">
                                 <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+
+                        <!-- Preview Container -->
+                        <div id="costume-preview" class="hidden mt-6 overflow-hidden rounded-[2rem] border-2 border-sakura/20 shadow-xl group bg-white/40 backdrop-blur-sm">
+                            <div class="relative h-[32rem] w-full bg-dark-chocolate/5">
+                                <img id="preview-image" src="" alt="Preview" class="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105">
+                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-dark-chocolate/80 to-transparent flex items-end p-8">
+                                    <div class="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                                        <p class="text-sakura text-[10px] font-black uppercase tracking-widest mb-1">Kostum Terpilih</p>
+                                        <h4 id="preview-name" class="text-white font-bold text-xl leading-tight"></h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -150,14 +163,44 @@
             }
         });
 
+        // Costume Preview Logic
+        const kostumSelect = document.getElementById('kostum_id');
+        const previewContainer = document.getElementById('costume-preview');
+        const previewImage = document.getElementById('preview-image');
+        const previewName = document.getElementById('preview-name');
+
+        function updatePreview() {
+            const selectedOption = kostumSelect.options[kostumSelect.selectedIndex];
+            const imageUrl = selectedOption.getAttribute('data-image');
+            const costumeName = selectedOption.text;
+
+            if (imageUrl) {
+                previewImage.src = imageUrl;
+                previewName.textContent = costumeName;
+                previewContainer.classList.remove('hidden');
+                previewContainer.classList.add('animate-fade-in');
+            } else {
+                previewContainer.classList.add('hidden');
+            }
+        }
+
+        kostumSelect.addEventListener('change', updatePreview);
+
+        // Run on load in case of pre-selected value
+        if (kostumSelect.value) {
+            updatePreview();
+        }
+
         // Simple animation on input focus
         const inputs = document.querySelectorAll('input, select, textarea');
         inputs.forEach(input => {
             input.addEventListener('focus', () => {
-                input.parentElement.closest('.space-y-4').querySelector('label').classList.add('text-sakura');
+                const label = input.parentElement.closest('.space-y-4').querySelector('label');
+                if (label) label.classList.add('text-sakura');
             });
             input.addEventListener('blur', () => {
-                input.parentElement.closest('.space-y-4').querySelector('label').classList.remove('text-sakura');
+                const label = input.parentElement.closest('.space-y-4').querySelector('label');
+                if (label) label.classList.remove('text-sakura');
             });
         });
     </script>
@@ -169,6 +212,24 @@
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-3px); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Fix for double arrow issue in some browsers */
+        select {
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            background-image: none !important;
+        }
+        select::-ms-expand {
+            display: none !important;
         }
     </style>
 @endsection

@@ -4,6 +4,57 @@
 
 @push('styles')
     @vite(['resources/css/admin/pengembalian.css', 'resources/js/admin/pengembalian.js'])
+    <style>
+      .status-options {
+        display: flex;
+        gap: 8px;
+      }
+      .status-opt {
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(0,0,0,0.05);
+        color: var(--text-3);
+      }
+      .status-opt.unpaid.active {
+        background: rgba(239,68,68,0.1);
+        color: #ef4444;
+        border-color: rgba(239,68,68,0.2);
+      }
+      .status-opt.paid.active {
+        background: rgba(16,185,129,0.1);
+        color: #10b981;
+        border-color: rgba(16,185,129,0.2);
+      }
+      .status-opt:hover:not(.active) {
+        background: rgba(0,0,0,0.1);
+      }
+      td {
+        padding: 14px 10px !important;
+        font-size: 11.5px !important;
+      }
+      th {
+        padding: 12px 10px !important;
+        font-size: 10px !important;
+      }
+      .customer-name {
+        font-size: 12.5px !important;
+      }
+      .order-id {
+        font-size: 10px !important;
+      }
+      .btn-action {
+        transform: scale(0.9);
+        transform-origin: center;
+      }
+    </style>
 @endpush
 
 @section('content')
@@ -241,7 +292,69 @@
                   <span class="btn-label">CATAT<br>KEMBALI</span>
                 </button>
               </td>
-              </button></td>
+            </tr>
+
+            <!-- Row 7: Terlambat & Denda Belum Bayar -->
+            <tr>
+              <td><span class="order-id">#ORD-<br>016</span></td>
+              <td><strong class="customer-name">Guntur<br>Pratama</strong></td>
+              <td><span class="kostum-cell">Gojo Satoru</span></td>
+              <td><span class="date-normal">10 Apr</span></td>
+              <td><span class="date-warn">13 Apr</span></td>
+              <td><span class="date-normal">16 Apr</span></td>
+              <td><span class="kondisi-display rusak" style="font-size:9px;padding:4px 8px;border-radius:6px;background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">RUSAK</span></td>
+              <td><span class="late-days red">3 hari</span></td>
+              <td>
+                <div class="fine-amount">
+                  <span class="fine-rp">Rp</span>
+                  <span class="fine-val">450.000</span>
+                </div>
+                <div style="font-size:8px;color:#ef4444;font-weight:700;margin-top:2px;">BELUM LUNAS</div>
+              </td>
+              <td>
+                <span class="badge-status terlambat">
+                  <span class="bico">🔴</span>TERLAMBAT
+                </span>
+              </td>
+              <td>
+                <button class="btn-action denda" onclick="openModalDenda('ORD-016','Guntur Pratama','Gojo Satoru','13/04/2026',3,150000)">
+                  <span class="btn-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </span>
+                  <span class="btn-label">BAYAR<br>DENDA</span>
+                </button>
+              </td>
+            </tr>
+
+            <!-- Row 8: Belum Kembali & Sangat Terlambat -->
+            <tr>
+              <td><span class="order-id">#ORD-<br>017</span></td>
+              <td><strong class="customer-name">Hana Amalia</strong></td>
+              <td><span class="kostum-cell">Kafka</span></td>
+              <td><span class="date-normal">08 Apr</span></td>
+              <td><span class="date-warn">11 Apr</span></td>
+              <td><span class="date-muted" style="color:#ef4444;font-weight:700;">TERLAMBAT!</span></td>
+              <td style="color:#4b5a7a">–</td>
+              <td><span class="late-days red">12 hari</span></td>
+              <td>
+                <div class="fine-amount">
+                  <span class="fine-rp">Rp</span>
+                  <span class="fine-val">600.000+</span>
+                </div>
+              </td>
+              <td>
+                <span class="badge-status belum" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#ef4444;">
+                  <span class="bico">⚠️</span>SANGAT<br>TELAT
+                </span>
+              </td>
+              <td>
+                <button class="btn-action kembali" style="background:linear-gradient(135deg,#ef4444,#dc2626);" onclick="openModalKembali('ORD-017','Hana Amalia','Kafka','11/04/2026')">
+                  <span class="btn-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </span>
+                  <span class="btn-label">TINDAK<br>LANJUT</span>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -302,7 +415,10 @@
       </div>
       <div class="status-payment-row">
         <span class="status-payment-label">Status Pembayaran Denda</span>
-        <span class="badge-belum">💲 BELUM DIBAYAR</span>
+        <div class="status-options">
+          <div class="status-opt unpaid active" id="opt-unpaid" onclick="setStatusDenda('unpaid')">💲 BELUM DIBAYAR</div>
+          <div class="status-opt paid" id="opt-paid" onclick="setStatusDenda('paid')">✅ LUNAS</div>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -495,4 +611,18 @@
     </div>
   </div>
 </div>
+<script>
+  function setStatusDenda(status) {
+    const unpaid = document.getElementById('opt-unpaid');
+    const paid = document.getElementById('opt-paid');
+    
+    if (status === 'paid') {
+      paid.classList.add('active');
+      unpaid.classList.remove('active');
+    } else {
+      unpaid.classList.add('active');
+      paid.classList.remove('active');
+    }
+  }
+</script>
 @endsection

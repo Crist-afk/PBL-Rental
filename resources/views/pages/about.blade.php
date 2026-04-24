@@ -271,7 +271,7 @@
                         <div class="relative w-64 h-64 mb-8 flex justify-center items-center">
                             <div class="absolute w-56 h-56 bg-milk-tea rounded-full z-0 transition-transform duration-500 group-hover:scale-110"></div>
                             <div class="relative z-10 w-48 h-60 overflow-hidden rounded-t-full border-b-4 border-misty-rose shadow-xl">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                                <img src="{{ asset('images/crist-uciha.png') }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
                             </div>
                         </div>
                         <h3 class="text-3xl font-black text-white mb-1">Crist</h3>

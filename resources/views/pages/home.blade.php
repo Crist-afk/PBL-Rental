@@ -6,8 +6,23 @@
     <style>
         body {
             background-color: #FFE4E1;
-            background-image: radial-gradient(#443025 10%, transparent 10%);
-            background-size: 20px 20px;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.15;
+            mix-blend-mode: color-burn;
+            pointer-events: none;
+            background-image: url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        body > * {
+            position: relative;
+            z-index: 1;
         }
         .glass-card {
             background-color: rgba(68, 48, 37, 0.05);
@@ -178,10 +193,11 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Card 1: Raiden Shogun -->
             <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
                 <div class="h-64 bg-dark-chocolate relative">
-                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full">Populer</span>
-                    <div class="w-full h-full bg-aloewood opacity-50"></div>
+                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Populer</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s" alt="Raiden Shogun" class="w-full h-full object-cover opacity-90">
                 </div>
                 <div class="p-6 flex flex-col flex-grow">
                     <span class="text-sakura text-xs font-bold tracking-wider mb-1">GENSHIN IMPACT</span>
@@ -194,10 +210,11 @@
                 </div>
             </div>
 
+            <!-- Card 2: Monkey D. Luffy -->
             <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
                 <div class="h-64 bg-dark-chocolate relative">
-                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full">Populer</span>
-                    <div class="w-full h-full bg-milk-tea opacity-50"></div>
+                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Populer</span>
+                    <img src="https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e" alt="Monkey D. Luffy" class="w-full h-full object-cover opacity-90">
                 </div>
                 <div class="p-6 flex flex-col flex-grow">
                     <span class="text-sakura text-xs font-bold tracking-wider mb-1">ONE PIECE</span>
@@ -210,10 +227,11 @@
                 </div>
             </div>
 
+            <!-- Card 3: Kafka -->
             <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
                 <div class="h-64 bg-dark-chocolate relative">
-                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full">Populer</span>
-                    <div class="w-full h-full bg-aloewood opacity-80"></div>
+                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Populer</span>
+                    <img src="https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg" alt="Kafka" class="w-full h-full object-cover opacity-90">
                 </div>
                 <div class="p-6 flex flex-col flex-grow">
                     <span class="text-sakura text-xs font-bold tracking-wider mb-1">HONKAI: STAR RAIL</span>
@@ -226,10 +244,11 @@
                 </div>
             </div>
 
+            <!-- Card 4: Spider-Man -->
             <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
                 <div class="h-64 bg-dark-chocolate relative">
-                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full">Populer</span>
-                    <div class="w-full h-full bg-sakura opacity-50"></div>
+                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Populer</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s" alt="Spider-Man" class="w-full h-full object-cover opacity-90">
                 </div>
                 <div class="p-6 flex flex-col flex-grow">
                     <span class="text-sakura text-xs font-bold tracking-wider mb-1">MARVEL</span>

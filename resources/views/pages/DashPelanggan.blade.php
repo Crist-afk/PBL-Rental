@@ -13,7 +13,7 @@
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
             <div class="glass-card rounded-[2rem] p-6 border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
                 <div class="flex justify-between items-start">
@@ -37,31 +37,6 @@
                     <div class="w-14 h-14 bg-aloewood/20 rounded-[1.2rem] flex items-center justify-center text-2xl text-aloewood"><i class="fa-solid fa-box-open"></i></div>
                 </div>
                 <p class="text-xs font-bold text-dark-chocolate/60 mt-5">Sejak bergabung</p>
-            </div>
-
-            <div class="glass-card rounded-[2rem] p-6 border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-bold uppercase tracking-wide text-aloewood">Poin Reward</p>
-                        <p class="text-4xl font-extrabold mt-3 text-sakura">{{ $stats['reward_points'] ?? 450 }}</p>
-                    </div>
-                    <div class="w-14 h-14 bg-milk-tea/30 rounded-[1.2rem] flex items-center justify-center text-2xl text-aloewood"><i class="fa-solid fa-star"></i></div>
-                </div>
-                <p class="text-xs font-bold text-aloewood mt-5">Bisa ditukar diskon</p>
-            </div>
-
-            <div class="glass-card rounded-[2rem] p-6 border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm font-bold uppercase tracking-wide text-aloewood">Rating Kamu</p>
-                        <p class="text-4xl font-extrabold mt-3 text-dark-chocolate flex items-center gap-2">
-                            {{ $stats['rating'] ?? 4.9 }} 
-                            <i class="fa-solid fa-star text-2xl text-yellow-500"></i>
-                        </p>
-                    </div>
-                    <div class="w-14 h-14 bg-yellow-400/20 rounded-[1.2rem] flex items-center justify-center text-2xl text-yellow-600"><i class="fa-solid fa-ranking-star"></i></div>
-                </div>
-                <p class="text-xs font-bold text-dark-chocolate/60 mt-5">Dari 12 penyewaan</p>
             </div>
 
         </div>

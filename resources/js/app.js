@@ -34,4 +34,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Eksekusi khusus untuk Kolom Konfirmasi Password di Halaman Register
     setupPasswordToggle('togglePasswordConfirm', 'password_confirmation', 'eyeIconConfirm');
 
+    // --- LOGIKA REVEAL ANIMATION (GLOBAL) ---
+    const reveals = document.querySelectorAll('.reveal');
+    if (reveals.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px',
+        });
+
+        reveals.forEach((reveal) => {
+            observer.observe(reveal);
+        });
+    }
 });

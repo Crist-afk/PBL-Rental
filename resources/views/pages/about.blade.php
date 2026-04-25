@@ -3,29 +3,6 @@
 @section('title', 'Tentang Kami - CosRent')
 
 @push('styles')
-    <style>
-        .reveal {
-            opacity: 0;
-            transition: opacity 0.9s cubic-bezier(0.5, 0, 0, 1), transform 0.9s cubic-bezier(0.5, 0, 0, 1);
-        }
-
-        .reveal[data-reveal="up"] {
-            transform: translateY(60px);
-        }
-
-        .reveal[data-reveal="left"] {
-            transform: translateX(-60px);
-        }
-
-        .reveal[data-reveal="right"] {
-            transform: translateX(60px);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translate(0, 0);
-        }
-    </style>
 @endpush
 
 @section('content')
@@ -306,5 +283,4 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/about.js') }}"></script>
 @endpush

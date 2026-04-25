@@ -18,7 +18,7 @@
     <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full flex flex-col gap-8">
 
         {{-- ── HEADER ── --}}
-        <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 px-6 py-8 md:px-10 md:py-10 shadow-xl text-center">
+        <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 px-6 py-8 md:px-10 md:py-10 shadow-xl text-center reveal" data-reveal="up">
             <span class="mb-4 block text-sm font-black uppercase tracking-[0.35em] text-aloewood">Katalog Produk</span>
             <h1 class="text-4xl md:text-5xl font-extrabold text-dark-chocolate mb-4">Pilih kostum cosplay favoritmu</h1>
             <p class="text-dark-chocolate/75 text-lg font-medium leading-relaxed max-w-2xl mx-auto">
@@ -27,7 +27,7 @@
         </section>
 
         {{-- ── FILTER ── --}}
-        <section class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-6 shadow-xl">
+        <section class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-6 shadow-xl reveal delay-100" data-reveal="up">
             <div class="flex flex-col md:flex-row gap-4 justify-between">
                 <input type="text" placeholder="Cari kostum..."
                     class="w-full md:w-1/3 rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition">
@@ -53,7 +53,7 @@
         <section>
             @if($products->isEmpty())
                 {{-- Empty state --}}
-                <div class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-16 shadow-xl text-center">
+                <div class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-16 shadow-xl text-center reveal delay-200" data-reveal="up">
                     <i class="fa-solid fa-shirt text-6xl text-dark-chocolate/20 mb-4 block"></i>
                     <h2 class="text-2xl font-bold text-dark-chocolate mb-2">Belum Ada Kostum</h2>
                     <p class="text-dark-chocolate/60 font-medium">Kostum akan segera ditambahkan. Pantau terus!</p>
@@ -62,7 +62,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach($products as $kostum)
                     {{-- Product Card --}}
-                    <article class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-4 shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col">
+                    <article class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-4 shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col reveal" data-reveal="up" style="transition-delay: {{ ($loop->index % 4) * 100 }}ms;">
 
                         {{-- Image --}}
                         <div class="h-60 rounded-[1.5rem] mb-4 overflow-hidden bg-dark-chocolate/10">

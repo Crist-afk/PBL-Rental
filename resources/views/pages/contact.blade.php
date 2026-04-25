@@ -4,7 +4,7 @@
 
 @section('content')
     <main class="flex-grow pt-32 pb-20 px-6 max-w-7xl mx-auto w-full">
-        <div class="text-center mb-16">
+        <div class="text-center mb-16 reveal" data-reveal="up">
             <h1 class="text-5xl font-bold mb-4 tracking-tight text-dark-chocolate">Hubungi <span class="text-sakura">CosRent</span></h1>
             <p class="text-dark-chocolate/80 text-lg max-w-2xl mx-auto font-medium">Punya pertanyaan seputar sewa kostum, kemitraan vendor, atau butuh bantuan teknis? Tim CosRent siap membantu Anda!</p>
         </div>
@@ -12,7 +12,7 @@
         <div class="grid md:grid-cols-2 gap-12">
 
             <div class="space-y-6">
-                <div class="glass-card p-8 rounded-[2rem] border-2 border-dark-chocolate/10 shadow-xl">
+                <div class="glass-card p-8 rounded-[2rem] border-2 border-dark-chocolate/10 shadow-xl reveal delay-100" data-reveal="left">
                     <h3 class="text-2xl font-bold text-dark-chocolate mb-6">Tim Dukungan CosRent</h3>
                     <p class="text-sm text-dark-chocolate/70 font-medium mb-6">Silakan hubungi salah satu admin kami di bawah ini untuk respon yang lebih cepat via WhatsApp.</p>
 
@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <div class="bg-dark-chocolate text-misty-rose p-8 rounded-[2rem] shadow-xl border-2 border-dark-chocolate">
+                <div class="bg-dark-chocolate text-misty-rose p-8 rounded-[2rem] shadow-xl border-2 border-dark-chocolate reveal delay-200" data-reveal="left">
                     <h3 class="text-xl font-bold mb-3 text-sakura"><i class="fa-solid fa-clock mr-2"></i>Jam Operasional Layanan</h3>
                     <p class="text-misty-rose/80 text-sm leading-relaxed">
                         Tim kami aktif melayani pada hari <span class="font-bold text-white">Senin - Jumat</span> pukul <span class="font-bold text-white">09:00 - 17:00 WIB</span>. Pesan yang masuk di luar jam kerja akan dibalas pada hari kerja berikutnya.
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="glass-card p-8 md:p-10 rounded-[2rem] border-2 border-dark-chocolate/10 shadow-xl h-fit">
+            <div class="glass-card p-8 md:p-10 rounded-[2rem] border-2 border-dark-chocolate/10 shadow-xl h-fit reveal delay-300" data-reveal="right">
                 <h3 class="text-2xl font-bold text-dark-chocolate mb-2">Kirim Pesan Langsung</h3>
                 <p class="text-sm text-dark-chocolate/70 font-medium mb-8">Isi formulir di bawah ini dan pesan akan langsung diteruskan ke sistem email kami.</p>
 

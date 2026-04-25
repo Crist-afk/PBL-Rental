@@ -17,8 +17,8 @@
     }
 @endphp
 
-<div class="fixed w-full top-0 z-50 px-4 sm:px-6 py-4">
-    <header class="bg-dark-chocolate text-misty-rose rounded-full shadow-lg max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+<div id="navbar-wrapper" class="fixed w-full top-0 z-50 px-4 sm:px-6 py-6 transition-all duration-500">
+    <header id="navbar-header" class="bg-transparent text-dark-chocolate rounded-full shadow-none max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center transition-all duration-500">
 
         {{-- ── Brand Logo ── --}}
         <div class="flex items-center gap-2 font-bold text-xl flex-shrink-0">
@@ -83,7 +83,7 @@
                                 </div>
                             @endif
                             {{-- Chevron icon --}}
-                            <svg id="avatarChevron" class="w-3.5 h-3.5 text-misty-rose/70 transition-transform duration-200 hidden sm:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <svg id="avatarChevron" class="w-3.5 h-3.5 text-dark-chocolate/70 transition-all duration-500 hidden sm:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                             </svg>
                         </button>
@@ -162,9 +162,9 @@
                 aria-label="Toggle mobile menu"
                 class="md:hidden flex flex-col gap-1.5 p-1 focus:outline-none"
             >
-                <span class="hamburger-line block w-5 h-0.5 bg-misty-rose rounded transition-all duration-300"></span>
-                <span class="hamburger-line block w-5 h-0.5 bg-misty-rose rounded transition-all duration-300"></span>
-                <span class="hamburger-line block w-5 h-0.5 bg-misty-rose rounded transition-all duration-300"></span>
+                <span class="hamburger-line block w-5 h-0.5 bg-dark-chocolate rounded transition-all duration-500"></span>
+                <span class="hamburger-line block w-5 h-0.5 bg-dark-chocolate rounded transition-all duration-500"></span>
+                <span class="hamburger-line block w-5 h-0.5 bg-dark-chocolate rounded transition-all duration-500"></span>
             </button>
         </div>
     </header>
@@ -281,5 +281,55 @@
             }
         });
     }
+
+    // ── Scroll Animation ──
+    var navbarWrapper = document.getElementById('navbar-wrapper');
+    var navbarHeader = document.getElementById('navbar-header');
+    var avatarChevron = document.getElementById('avatarChevron');
+    var hamburgerLines = document.querySelectorAll('.hamburger-line');
+
+    function handleScroll() {
+        if (window.scrollY > 20) {
+            // Scrolled state
+            if (navbarWrapper) {
+                navbarWrapper.classList.remove('py-6');
+                navbarWrapper.classList.add('py-2');
+            }
+            if (navbarHeader) {
+                navbarHeader.classList.remove('bg-transparent', 'text-dark-chocolate', 'py-4', 'shadow-none');
+                navbarHeader.classList.add('bg-dark-chocolate', 'text-misty-rose', 'py-2', 'shadow-lg');
+            }
+            if (avatarChevron) {
+                avatarChevron.classList.remove('text-dark-chocolate/70');
+                avatarChevron.classList.add('text-misty-rose/70');
+            }
+            hamburgerLines.forEach(function(line) {
+                line.classList.remove('bg-dark-chocolate');
+                line.classList.add('bg-misty-rose');
+            });
+        } else {
+            // Top state
+            if (navbarWrapper) {
+                navbarWrapper.classList.remove('py-2');
+                navbarWrapper.classList.add('py-6');
+            }
+            if (navbarHeader) {
+                navbarHeader.classList.remove('bg-dark-chocolate', 'text-misty-rose', 'py-2', 'shadow-lg');
+                navbarHeader.classList.add('bg-transparent', 'text-dark-chocolate', 'py-4', 'shadow-none');
+            }
+            if (avatarChevron) {
+                avatarChevron.classList.remove('text-misty-rose/70');
+                avatarChevron.classList.add('text-dark-chocolate/70');
+            }
+            hamburgerLines.forEach(function(line) {
+                line.classList.remove('bg-misty-rose');
+                line.classList.add('bg-dark-chocolate');
+            });
+        }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
 })();
 </script>

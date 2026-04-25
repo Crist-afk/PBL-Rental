@@ -15,8 +15,6 @@ class DashboardPelangganController extends Controller
         $stats = [
             'active_rentals' => 3,
             'total_rentals'  => 17,
-            'reward_points'  => 450,
-            'rating'         => 4.9,
         ];
 
         $current_rentals = [

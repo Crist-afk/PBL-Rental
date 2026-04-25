@@ -57,4 +57,30 @@
         border: 1px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0 10px 30px rgba(68, 48, 37, 0.05); /* Bayangan dark chocolate sangat tipis */
     }
+
+    .reveal {
+        opacity: 0;
+        transition: opacity 0.9s cubic-bezier(0.5, 0, 0, 1), transform 0.9s cubic-bezier(0.5, 0, 0, 1);
+    }
+
+    .reveal[data-reveal="up"] {
+        transform: translateY(60px);
+    }
+
+    .reveal[data-reveal="down"] {
+        transform: translateY(-60px);
+    }
+
+    .reveal[data-reveal="left"] {
+        transform: translateX(-60px);
+    }
+
+    .reveal[data-reveal="right"] {
+        transform: translateX(60px);
+    }
+
+    .reveal.active {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
 }

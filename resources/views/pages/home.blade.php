@@ -33,7 +33,7 @@
 
 @section('content')
     <section class="min-h-screen flex flex-col items-center justify-center pt-32 px-6 text-center">
-        <div class="glass-card p-8 md:p-12 rounded-[2.5rem] shadow-sm inline-flex flex-col items-center border-2 border-dark-chocolate/10">
+        <div class="glass-card p-8 md:p-12 rounded-[2.5rem] shadow-sm inline-flex flex-col items-center border-2 border-dark-chocolate/10 reveal" data-reveal="up">
             <h1 class="text-5xl md:text-6xl font-bold mb-4 tracking-tight">
                 Wujudkan Karakter <br>
                 <span class="text-sakura">Impianmu Jadi Nyata</span>
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div class="mt-16 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border-4 border-dark-chocolate bg-dark-chocolate">
+        <div class="mt-16 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border-4 border-dark-chocolate bg-dark-chocolate reveal delay-200" data-reveal="up">
             <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80" alt="Cosplay Landscape" class="w-full h-auto object-cover opacity-80">
         </div>
     </section>
@@ -68,37 +68,37 @@
         </div>
         
         <div class="max-w-7xl mx-auto text-center relative z-10">
-            <div class="inline-block mb-16">
+            <div class="inline-block mb-16 reveal" data-reveal="up">
                 <span class="text-sakura font-bold tracking-[0.3em] uppercase text-sm block mb-2">— Kategori Kostum —</span>
                 <h2 class="text-5xl md:text-6xl font-bold text-dark-chocolate">Pilih Karaktermu</h2>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
+                <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden reveal delay-100" data-reveal="up">
                     <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">アニメ</div>
                     <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">🎭</div>
                     <h3 class="font-bold text-lg text-dark-chocolate mb-1">Anime & Manga</h3>
                     <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">A-N-I-M-E</p>
                 </div>
-                <div class="group relative bg-dark-chocolate p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
+                <div class="group relative bg-dark-chocolate p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden reveal delay-200" data-reveal="up">
                     <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">ゲーム</div>
                     <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">🎮</div>
                     <h3 class="font-bold text-lg text-misty-rose mb-1">Video Games</h3>
                     <p class="text-xs text-misty-rose/40 uppercase tracking-widest">G-A-M-E</p>
                 </div>
-                <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
+                <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden reveal delay-300" data-reveal="up">
                     <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">映画</div>
                     <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">🎬</div>
                     <h3 class="font-bold text-lg text-dark-chocolate mb-1">Film & Toku</h3>
                     <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">M-O-V-I-E</p>
                 </div>
-                <div class="group relative bg-sakura p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-dark-chocolate cursor-pointer overflow-hidden">
+                <div class="group relative bg-sakura p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-dark-chocolate cursor-pointer overflow-hidden reveal delay-500" data-reveal="up">
                     <div class="absolute top-0 right-0 p-4 text-xs font-bold text-dark-chocolate/10 group-hover:text-dark-chocolate/20 transition-colors">オリジナル</div>
                     <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">✨</div>
                     <h3 class="font-bold text-lg text-dark-chocolate mb-1">Original</h3>
                     <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">O-R-I-G-I-N-A-L</p>
                 </div>
-                <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
+                <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden reveal delay-700" data-reveal="up">
                     <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">道具</div>
                     <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">💇‍♀️</div>
                     <h3 class="font-bold text-lg text-dark-chocolate mb-1">Accessories</h3>
@@ -113,14 +113,14 @@
         <img src="{{ asset('images/torii.png') }}" class="absolute -bottom-20 -right-20 w-96 opacity-10 pointer-events-none transform rotate-12" alt="Torii Decor">
         
         <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-24">
+            <div class="text-center mb-24 reveal" data-reveal="up">
                 <span class="text-sakura font-bold tracking-[0.3em] uppercase text-sm block mb-2">— TATA CARA —</span>
                 <h2 class="text-5xl font-bold text-dark-chocolate">Proses Sewa Mudah</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
                 <!-- Steps with Japanese numbers -->
-                <div class="flex flex-col items-center text-center group">
+                <div class="flex flex-col items-center text-center group reveal delay-100" data-reveal="up">
                     <div class="relative mb-8">
                         <div class="w-24 h-24 bg-dark-chocolate text-sakura rounded-full flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform border-4 border-sakura/20">
                             一
@@ -133,7 +133,7 @@
                     <p class="text-dark-chocolate/60 leading-relaxed">Pilih kostum favoritmu dan tentukan tanggal sewa di kalender kami.</p>
                 </div>
 
-                <div class="flex flex-col items-center text-center group">
+                <div class="flex flex-col items-center text-center group reveal delay-200" data-reveal="up">
                     <div class="relative mb-8">
                         <div class="w-24 h-24 bg-dark-chocolate text-sakura rounded-full flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform border-4 border-sakura/20">
                             二
@@ -146,7 +146,7 @@
                     <p class="text-dark-chocolate/60 leading-relaxed">Lakukan pembayaran melalui transfer atau e-wallet dengan bayar di tempat kami</p>
                 </div>
 
-                <div class="flex flex-col items-center text-center group">
+                <div class="flex flex-col items-center text-center group reveal delay-300" data-reveal="up">
                     <div class="relative mb-8">
                         <div class="w-24 h-24 bg-dark-chocolate text-sakura rounded-full flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform border-4 border-sakura/20">
                             三
@@ -159,7 +159,7 @@
                     <p class="text-dark-chocolate/60 leading-relaxed">Kostum dapat diambil di tempat kami.</p>
                 </div>
 
-                <div class="flex flex-col items-center text-center group">
+                <div class="flex flex-col items-center text-center group reveal delay-500" data-reveal="up">
                     <div class="relative mb-8">
                         <div class="w-24 h-24 bg-dark-chocolate text-sakura rounded-full flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform border-4 border-sakura/20">
                             四
@@ -181,7 +181,7 @@
             注目
         </div>
         
-        <div class="flex flex-col md:flex-row justify-between items-end mb-16 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 relative z-10 reveal" data-reveal="up">
             <div class="max-w-xl">
                 <span class="text-sakura font-bold tracking-[0.3em] uppercase text-sm block mb-2">— KOLEKSI UNGGULAN —</span>
                 <h2 class="text-5xl font-bold text-dark-chocolate">Pilihan Populer</h2>
@@ -264,7 +264,7 @@
     </section>
 
     <section class="py-10 px-6 max-w-7xl mx-auto">
-        <div class="glass-card rounded-[3rem] p-8 md:p-16 border-2 border-dark-chocolate/10 flex flex-col md:flex-row items-center gap-12 shadow-xl">
+        <div class="glass-card rounded-[3rem] p-8 md:p-16 border-2 border-dark-chocolate/10 flex flex-col md:flex-row items-center gap-12 shadow-xl reveal" data-reveal="up">
             <div class="md:w-1/2">
                 <h2 class="text-4xl md:text-5xl font-bold mb-6">Kenapa Memilih <br><span class="text-sakura">CosRent?</span></h2>
                 <p class="text-dark-chocolate/80 mb-10 text-lg">
@@ -310,13 +310,13 @@
     </section>
 
     <section class="py-20 px-6 max-w-7xl mx-auto text-center">
-        <div class="glass-card inline-block px-8 py-4 rounded-3xl border-2 border-dark-chocolate/10 shadow-sm mb-12">
+        <div class="glass-card inline-block px-8 py-4 rounded-3xl border-2 border-dark-chocolate/10 shadow-sm mb-12 reveal" data-reveal="up">
             <h2 class="text-4xl font-bold mb-2">Apa Kata Mereka?</h2>
             <p class="text-dark-chocolate/80">Pengalaman nyata dari para cosplayer</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
+            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative reveal delay-100" data-reveal="up">
                 <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
                 <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga pas banget sesuai deskripsi. Adminnya ramah dan prosesnya cepet banget. Pasti bakal sewa di sini lagi!"</p>
                 <div class="flex items-center gap-4">
@@ -328,7 +328,7 @@
                 </div>
             </div>
 
-            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
+            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative reveal delay-200" data-reveal="up">
                 <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
                 <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga pas banget sesuai deskripsi. Adminnya ramah dan prosesnya cepet banget. Pasti bakal sewa di sini lagi!"</p>
                 <div class="flex items-center gap-4">
@@ -340,7 +340,7 @@
                 </div>
             </div>
 
-            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
+            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative reveal delay-300" data-reveal="up">
                 <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
                 <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga pas banget sesuai deskripsi. Adminnya ramah dan prosesnya cepet banget. Pasti bakal sewa di sini lagi!"</p>
                 <div class="flex items-center gap-4">

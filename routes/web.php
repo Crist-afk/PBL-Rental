@@ -30,12 +30,9 @@ Route::view('/contact', 'pages.contact')->name('contact');
 // ==================== ROUTE PRODUK ====================
 Route::get('/product', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
-Route::get('/products', function () {
-    return redirect()->route('products.index', request()->query());
-});
-Route::get('/products/{id}', function ($id) {
-    return redirect()->route('products.show', ['id' => $id] + request()->query());
-});
+// Legacy redirect aliases (kept for backwards-compatible URLs)
+Route::redirect('/products', '/product', 301);
+Route::redirect('/products/{id}', '/product/{id}', 301);
 
 // ==================== ROUTE FORUM (PUBLIK) ====================
 Route::get('/forum', [ForumController::class, 'index'])->name('forum');

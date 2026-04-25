@@ -102,7 +102,7 @@
             <div><span class="price-val">150.000</span><span class="price-unit"> /hari</span></div>
             <div class="card-stock" style="margin-top:4px">STOK: 3 UNIT</div>
             <div class="card-actions">
-              <button class="act-btn edit" onclick="openEditModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>EDIT</button>
+              <button class="act-btn edit" onclick="openEditModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>UBAH</button>
               <button class="act-btn lihat" onclick="openViewModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>LIHAT</button>
               <button class="act-btn hapus" onclick="openDeleteModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>HAPUS</button>
             </div>
@@ -205,13 +205,13 @@
       <div class="pagination-bar">
         <span class="pagination-info">Menampilkan 1-6 dari 89 kostum</span>
         <div class="page-btns">
-          <button class="page-btn arrow">Prev</button>
+          <button class="page-btn arrow">Sebelumnya</button>
           <button class="page-btn active">1</button>
           <button class="page-btn">2</button>
           <button class="page-btn">3</button>
           <span class="page-dots">…</span>
           <button class="page-btn">15</button>
-          <button class="page-btn arrow">Next</button>
+          <button class="page-btn arrow">Berikutnya</button>
         </div>
       </div>
       
@@ -284,7 +284,7 @@
         <label class="form-label">Upload Foto Kostum</label>
         <div class="upload-zone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span>Klik untuk upload foto atau drag &amp; drop</span>
+          <span>Klik untuk unggah foto atau seret &amp; letakkan</span>
           <span style="font-size:11px;color:var(--text-3)">PNG, JPG, WEBP — Maks. 5MB</span>
         </div>
       </div>
@@ -377,7 +377,7 @@
         <label class="form-label">Upload Foto Kostum</label>
         <div class="upload-zone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span>Klik untuk ganti foto atau drag &amp; drop</span>
+          <span>Klik untuk ganti foto atau seret &amp; letakkan</span>
           <span style="font-size:11px;color:var(--text-3)">PNG, JPG, WEBP — Maks. 5MB</span>
         </div>
       </div>

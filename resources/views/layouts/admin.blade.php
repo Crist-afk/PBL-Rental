@@ -168,7 +168,7 @@
 
     <a class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Dashboard
+      Dasbor
     </a>
     <a class="nav-item {{ request()->routeIs('admin.kostum') ? 'active' : '' }}" href="{{ route('admin.kostum') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -199,7 +199,7 @@
       </a>
       <a class="nav-item logout" href="#" id="logoutBtn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Logout
+        Keluar
       </a>
       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
@@ -230,7 +230,7 @@
                   <line x1="21" y1="12" x2="9" y2="12"/>
               </svg>
           </div>
-          <div class="logout-text">Logging out...</div>
+          <div class="logout-text">Sedang keluar...</div>
           <div class="loader-dots"><span></span><span></span><span></span></div>
       </div>
   </div>
@@ -300,7 +300,7 @@
 
     // ═══ PAGE NAVIGATION TRANSITIONS ═══
     const navLabels = {
-        'admin.dashboard': 'Dashboard',
+        'admin.dashboard': 'Dasbor',
         'admin.kostum': 'Kelola Kostum',
         'admin.pembayaran': 'Validasi Pembayaran',
         'admin.pengembalian': 'Pengembalian & Denda',

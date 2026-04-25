@@ -5,7 +5,7 @@
         <i class="fa-solid fa-box-open mb-3 text-4xl text-sakura"></i>
         <p class="font-bold text-dark-chocolate">Belum ada transaksi yang ditampilkan di profil.</p>
         <p class="mt-1 text-sm text-dark-chocolate/60">
-            Bagian ini disiapkan untuk ringkasan sewa tanpa mengubah alur dashboard atau booking yang sedang aktif.
+            Bagian ini disiapkan untuk ringkasan sewa tanpa mengubah alur dasbor atau pemesanan yang sedang aktif.
         </p>
         <a href="{{ route('products.index') }}" class="mt-4 inline-block rounded-full bg-dark-chocolate px-6 py-2 text-sm font-bold text-misty-rose transition hover:bg-aloewood">
             Mulai Jelajah

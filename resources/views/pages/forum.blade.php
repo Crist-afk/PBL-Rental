@@ -21,7 +21,7 @@
                 </div>
 
                 <form action="{{ route('forum') }}" method="GET" class="flex w-full max-w-xl gap-3">
-                    <input type="text" name="q" value="{{ $search }}" placeholder="Cari judul diskusi, isi posting, atau nama member..." class="w-full rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura">
+                    <input type="text" name="q" value="{{ $search }}" placeholder="Cari judul diskusi, isi postingan, atau nama anggota..." class="w-full rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura">
                     @if($activeCategory)
                         <input type="hidden" name="category" value="{{ $activeCategory->slug }}">
                     @endif
@@ -126,11 +126,11 @@
                         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <div>
                                 <h2 class="text-2xl font-bold text-dark-chocolate">Ingin mulai berdiskusi?</h2>
-                                <p class="mt-1 text-sm font-medium text-dark-chocolate/70">Login dulu agar kamu bisa membuat topik baru dan membangun jejak aktivitas forum untuk halaman profile-mu.</p>
+                                <p class="mt-1 text-sm font-medium text-dark-chocolate/70">Masuk terlebih dahulu agar Anda dapat membuat topik baru dan membangun jejak aktivitas forum untuk halaman profil Anda.</p>
                             </div>
                             <div class="flex gap-3">
-                                <a href="{{ route('login') }}" class="rounded-full bg-dark-chocolate px-5 py-3 text-sm font-bold text-misty-rose transition hover:bg-black">Login</a>
-                                <a href="{{ route('register') }}" class="rounded-full border-2 border-dark-chocolate/20 px-5 py-3 text-sm font-bold text-dark-chocolate transition hover:bg-sakura">Register</a>
+                                <a href="{{ route('login') }}" class="rounded-full bg-dark-chocolate px-5 py-3 text-sm font-bold text-misty-rose transition hover:bg-black">Masuk</a>
+                                <a href="{{ route('register') }}" class="rounded-full border-2 border-dark-chocolate/20 px-5 py-3 text-sm font-bold text-dark-chocolate transition hover:bg-sakura">Daftar</a>
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@
                     </div>
                     <a href="{{ auth()->check() ? '#buat-diskusi' : route('login') }}" class="hidden rounded-full bg-dark-chocolate px-5 py-3 text-sm font-bold text-misty-rose transition hover:bg-black md:inline-flex md:items-center md:gap-2">
                         <i class="fa-solid fa-pen-nib"></i>
-                        {{ auth()->check() ? 'Buat Diskusi Baru' : 'Login untuk Berdiskusi' }}
+                        {{ auth()->check() ? 'Buat Diskusi Baru' : 'Masuk untuk Berdiskusi' }}
                     </a>
                 </div>
 
@@ -184,7 +184,7 @@
                                 <img src="{{ asset('storage/' . $post->image_path) }}" alt="Lampiran diskusi {{ $post->title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" onclick="event.stopPropagation()">
                                 <div class="absolute inset-0 flex items-center justify-center bg-dark-chocolate/20 opacity-0 transition duration-300 group-hover:opacity-100">
                                     <div class="rounded-full bg-dark-chocolate/70 px-4 py-2 text-sm font-bold text-misty-rose shadow-lg">
-                                        <i class="fa-solid fa-magnifying-glass-plus mr-2"></i>Lihat Penuh
+                                        <i class="fa-solid fa-magnifying-glass-plus mr-2"></i>Lihat Selengkapnya
                                     </div>
                                 </div>
                             </div>
@@ -225,12 +225,12 @@
             <aside class="space-y-6">
                 <a href="{{ auth()->check() ? '#buat-diskusi' : route('login') }}" class="flex items-center justify-center gap-2 rounded-[2rem] border-2 border-sakura/20 bg-dark-chocolate px-6 py-4 text-lg font-bold text-misty-rose shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-black">
                     <i class="fa-solid fa-pen-nib"></i>
-                    {{ auth()->check() ? 'Buat Diskusi Baru' : 'Login untuk Berdiskusi' }}
+                    {{ auth()->check() ? 'Buat Diskusi Baru' : 'Masuk untuk Berdiskusi' }}
                 </a>
 
                 <div class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-6 shadow-xl">
                     <h2 class="mb-4 border-b border-dark-chocolate/10 pb-3 text-lg font-bold text-dark-chocolate">
-                        <i class="fa-solid fa-arrow-trend-up mr-2 text-sakura"></i>Sedang Hangat
+                        <i class="fa-solid fa-arrow-trend-up mr-2 text-sakura"></i>Topik Populer
                     </h2>
 
                     <div class="space-y-5">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Form Booking Kostum - CosRent')
+@section('title', 'Formulir Pemesanan Kostum - CosRent')
 
 @section('content')
     <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-6xl mx-auto w-full">
@@ -13,7 +13,7 @@
             <div class="glass-card relative rounded-[3rem] border-2 border-white/20 px-6 py-10 md:px-12 md:py-12 shadow-2xl text-center overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-sakura/5 to-aloewood/5 pointer-events-none"></div>
                 <span class="mb-4 block text-sm font-black uppercase tracking-[0.4em] text-aloewood/80">Premium Service</span>
-                <h1 class="text-4xl md:text-6xl font-black text-dark-chocolate mb-4 tracking-tight">Form Booking</h1>
+                <h1 class="text-4xl md:text-6xl font-black text-dark-chocolate mb-4 tracking-tight">Formulir Pemesanan</h1>
                 <p class="text-base md:text-lg font-medium text-dark-chocolate/70 max-w-2xl mx-auto leading-relaxed">
                     Amankan kostum pilihanmu untuk event mendatang. Isi detail pemesanan di bawah ini dengan lengkap.
                 </p>
@@ -120,7 +120,7 @@
                             <button type="submit" class="group relative w-full overflow-hidden rounded-full bg-dark-chocolate p-5 text-center font-black text-misty-rose shadow-2xl transition-all duration-500 hover:scale-[1.02] active:scale-95">
                                 <div class="absolute inset-0 bg-gradient-to-r from-sakura to-aloewood opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
                                 <span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest">
-                                    <i class="fa-solid fa-paper-plane animate-bounce-slow"></i> Konfirmasi Booking
+                                    <i class="fa-solid fa-paper-plane animate-bounce-slow"></i> Konfirmasi Pemesanan
                                 </span>
                             </button>
                             <div class="mt-6 flex items-center justify-center gap-2 text-dark-chocolate/40 font-bold text-[10px] uppercase tracking-[0.2em]">
@@ -135,7 +135,7 @@
         <!-- Navigation Footer -->
         <div class="mt-12 flex justify-center">
             <a href="{{ route('dashboard.pelanggan') }}" class="inline-flex items-center gap-3 px-8 py-3 rounded-full bg-white/30 border border-white/50 text-dark-chocolate font-black text-xs uppercase tracking-widest hover:bg-white/50 transition-all duration-300 hover:shadow-lg">
-                <i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Dasbor
             </a>
         </div>
 

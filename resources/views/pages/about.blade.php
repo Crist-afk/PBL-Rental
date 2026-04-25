@@ -42,12 +42,12 @@
                     <div class="relative inline-block">
                         <h1 class="text-[4rem] md:text-[5.5rem] lg:text-[7rem] font-black text-dark-chocolate leading-[0.88] tracking-tighter uppercase relative z-20">
                             SEWA KOSTUM<br>
-                            <span class="text-sakura drop-shadow-md">TANPA DOUBLE BOOKING.</span>
+                            <span class="text-sakura drop-shadow-md">TANPA PEMESANAN GANDA.</span>
                         </h1>
                     </div>
 
                     <p class="text-dark-chocolate/85 text-xl md:text-2xl font-semibold mt-6 max-w-xl leading-snug">
-                        CosRent adalah platform rental cosplay untuk mengelola stok, ukuran, dan jadwal booking dalam satu alur yang lebih jelas.
+                        CosRent adalah platform rental cosplay untuk mengelola stok, ukuran, dan jadwal pemesanan dalam satu alur yang lebih jelas.
                     </p>
 
                     <p class="text-dark-chocolate/80 text-lg font-medium mt-6 max-w-xl leading-relaxed border-l-4 border-sakura pl-4 backdrop-blur-sm bg-white/20 p-2 rounded-r-xl">
@@ -93,7 +93,7 @@
         <section class="py-32 px-6 bg-white relative z-10 rounded-t-[4rem] shadow-[0_-20px_50px_rgba(0,0,0,0.05)]">
             <div class="max-w-7xl mx-auto">
                 <div class="max-w-3xl reveal" data-reveal="up">
-                    <span class="text-sakura font-bold tracking-widest uppercase text-xs mb-2 block">01 / Problem</span>
+                    <span class="text-sakura font-bold tracking-widest uppercase text-xs mb-2 block">01 / Masalah</span>
                     <h2 class="text-4xl md:text-5xl font-black text-dark-chocolate leading-tight mb-6">Masalah rental kostum biasanya muncul saat semuanya masih dicatat manual.</h2>
                     <p class="text-dark-chocolate/70 text-lg font-medium leading-relaxed border-t-2 border-dark-chocolate/10 pt-6">
                         Saat permintaan meningkat, tim rental harus menjaga jadwal, stok, dan ukuran tetap sinkron. Tanpa alur yang rapi, kesalahan kecil cepat berubah menjadi pengalaman buruk bagi pelanggan.
@@ -103,7 +103,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
                     <article class="rounded-[2rem] border border-dark-chocolate/10 bg-misty-rose/40 p-8 shadow-lg reveal delay-100" data-reveal="up">
                         <span class="text-sakura font-black text-sm tracking-[0.25em] uppercase">01</span>
-                        <h3 class="text-2xl font-black text-dark-chocolate mt-4 mb-4">Double booking mudah terjadi</h3>
+                        <h3 class="text-2xl font-black text-dark-chocolate mt-4 mb-4">Pemesanan ganda mudah terjadi</h3>
                         <p class="text-dark-chocolate/70 font-medium leading-relaxed">
                             Reservasi dari chat, DM, dan catatan manual membuat satu kostum berisiko disewakan ke dua pelanggan pada tanggal yang berdekatan.
                         </p>
@@ -119,9 +119,9 @@
 
                     <article class="rounded-[2rem] border border-dark-chocolate/10 bg-misty-rose/40 p-8 shadow-lg reveal delay-300" data-reveal="up">
                         <span class="text-milk-tea font-black text-sm tracking-[0.25em] uppercase">03</span>
-                        <h3 class="text-2xl font-black text-dark-chocolate mt-4 mb-4">Sizing sering baru jelas di akhir</h3>
+                        <h3 class="text-2xl font-black text-dark-chocolate mt-4 mb-4">Ukuran sering baru jelas di akhir</h3>
                         <p class="text-dark-chocolate/70 font-medium leading-relaxed">
-                            Pelanggan kerap harus bertanya ulang soal ukuran, detail fitting, atau kelengkapan kostum sebelum berani lanjut ke booking.
+                            Pelanggan kerap harus bertanya ulang soal ukuran, detail percobaan kostum, atau kelengkapan kostum sebelum berani lanjut ke pemesanan.
                         </p>
                     </article>
                 </div>
@@ -130,21 +130,21 @@
 
         <section id="solusi" class="py-32 px-6 bg-dark-chocolate text-misty-rose relative overflow-hidden">
             <div class="absolute bottom-0 right-0 w-full overflow-hidden opacity-5 pointer-events-none select-none text-right">
-                <h2 class="text-[10rem] md:text-[14rem] font-black whitespace-nowrap leading-none">SYSTEM.</h2>
+                <h2 class="text-[10rem] md:text-[14rem] font-black whitespace-nowrap leading-none">SISTEM.</h2>
             </div>
 
             <div class="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row gap-16 items-start">
                 <div class="md:w-5/12 reveal" data-reveal="left">
-                    <span class="text-sakura font-bold tracking-[0.2em] uppercase text-xs mb-4 block">02 / Solution</span>
+                    <span class="text-sakura font-bold tracking-[0.2em] uppercase text-xs mb-4 block">02 / Solusi</span>
                     <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-6">CosRent menata proses sewa menjadi alur yang lebih pasti.</h2>
                     <p class="text-misty-rose/75 text-lg font-medium leading-relaxed border-t-2 border-white/10 pt-6">
-                        Kami tidak hanya menampilkan katalog. CosRent dirancang untuk membantu rental cosplay menjaga informasi tetap rapi, memandu pelanggan memilih dengan lebih percaya diri, dan membuat proses booking terasa lebih jelas dari awal.
+                        Kami tidak hanya menampilkan katalog. CosRent dirancang untuk membantu rental cosplay menjaga informasi tetap rapi, memandu pelanggan memilih dengan lebih percaya diri, dan membuat proses pemesanan terasa lebih jelas dari awal.
                     </p>
 
                     <div class="grid grid-cols-2 gap-4 mt-10">
                         <div class="rounded-[1.5rem] border border-white/10 bg-white/10 p-5 backdrop-blur-sm">
                             <p class="text-2xl font-black text-white">1 Alur</p>
-                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-sakura mt-2">Untuk stok, ukuran, booking</p>
+                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-sakura mt-2">Untuk stok, ukuran, pemesanan</p>
                         </div>
                         <div class="rounded-[1.5rem] border border-white/10 bg-white/10 p-5 backdrop-blur-sm">
                             <p class="text-2xl font-black text-white">Lebih cepat</p>
@@ -156,7 +156,7 @@
                 <div class="md:w-7/12 grid gap-6 w-full">
                     <article class="rounded-[2rem] border border-white/10 bg-white/10 p-8 backdrop-blur-md shadow-2xl reveal delay-100" data-reveal="up">
                         <span class="text-sakura font-bold tracking-[0.2em] uppercase text-xs">Reservasi yang lebih terbaca</span>
-                        <h3 class="text-2xl md:text-3xl font-black text-white mt-3 mb-4">Ketersediaan kostum ditampilkan lebih jelas sebelum pelanggan memutuskan booking.</h3>
+                        <h3 class="text-2xl md:text-3xl font-black text-white mt-3 mb-4">Ketersediaan kostum ditampilkan lebih jelas sebelum pelanggan memutuskan pemesanan.</h3>
                         <p class="text-misty-rose/70 font-medium leading-relaxed">
                             Tim rental tidak perlu terus memverifikasi ulang dari percakapan yang tersebar. Alur yang lebih rapi membantu mengurangi risiko jadwal tumpang tindih.
                         </p>
@@ -172,7 +172,7 @@
 
                     <article class="rounded-[2rem] border border-white/10 bg-white/10 p-8 backdrop-blur-md shadow-2xl reveal delay-300" data-reveal="up">
                         <span class="text-milk-tea font-bold tracking-[0.2em] uppercase text-xs">Kepastian sebelum checkout</span>
-                        <h3 class="text-2xl md:text-3xl font-black text-white mt-3 mb-4">Informasi ukuran dan konteks produk tampil lebih awal agar pelanggan tidak ragu di langkah terakhir.</h3>
+                        <h3 class="text-2xl md:text-3xl font-black text-white mt-3 mb-4">Informasi ukuran dan konteks produk tampil lebih awal agar pelanggan tidak ragu di langkah penyelesaian pesanan.</h3>
                         <p class="text-misty-rose/70 font-medium leading-relaxed">
                             CosRent membantu memperpendek proses tanya-jawab yang berulang sehingga pengalaman sewa terasa lebih cepat, jelas, dan profesional.
                         </p>
@@ -184,7 +184,7 @@
         <section class="py-32 px-6 bg-white relative z-10">
             <div class="max-w-7xl mx-auto">
                 <div class="max-w-3xl reveal" data-reveal="up">
-                    <span class="text-aloewood font-bold tracking-widest uppercase text-xs mb-2 block">03 / Feature Highlights</span>
+                    <span class="text-aloewood font-bold tracking-widest uppercase text-xs mb-2 block">03 / Sorotan Fitur</span>
                     <h2 class="text-4xl md:text-5xl font-black text-dark-chocolate leading-tight mb-6">Fitur yang membuat pengalaman sewa terasa lebih terarah.</h2>
                     <p class="text-dark-chocolate/70 text-lg font-medium leading-relaxed border-t-2 border-dark-chocolate/10 pt-6">
                         Semua dirancang untuk membantu pelanggan membaca informasi lebih cepat sekaligus memberi tim rental alur yang lebih mudah dikelola.
@@ -193,8 +193,8 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-16">
                     <article class="rounded-[2rem] border border-dark-chocolate/10 bg-misty-rose/35 p-8 shadow-lg reveal delay-100" data-reveal="up">
-                        <span class="text-sakura font-bold tracking-[0.2em] uppercase text-xs">Booking System</span>
-                        <h3 class="text-2xl font-black text-dark-chocolate mt-4 mb-3">Jadwal booking langsung terbaca</h3>
+                        <span class="text-sakura font-bold tracking-[0.2em] uppercase text-xs">Sistem Pemesanan</span>
+                        <h3 class="text-2xl font-black text-dark-chocolate mt-4 mb-3">Jadwal pemesanan langsung terbaca</h3>
                         <p class="text-dark-chocolate/70 font-medium leading-relaxed">
                             Tanggal sewa dan status kostum bisa dicek lebih cepat sebelum reservasi dikunci.
                         </p>
@@ -209,7 +209,7 @@
                     </article>
 
                     <article class="rounded-[2rem] border border-dark-chocolate/10 bg-misty-rose/35 p-8 shadow-lg reveal delay-300" data-reveal="up">
-                        <span class="text-milk-tea font-bold tracking-[0.2em] uppercase text-xs">Size & Fit</span>
+                        <span class="text-milk-tea font-bold tracking-[0.2em] uppercase text-xs">Ukuran & Kecocokan</span>
                         <h3 class="text-2xl font-black text-dark-chocolate mt-4 mb-3">Ukuran tampil sebelum pelanggan ragu</h3>
                         <p class="text-dark-chocolate/70 font-medium leading-relaxed">
                             Informasi fit dan detail ukuran muncul lebih awal saat pelanggan memilih kostum.
@@ -217,10 +217,10 @@
                     </article>
 
                     <article class="rounded-[2rem] border border-dark-chocolate/10 bg-white p-8 shadow-lg reveal delay-500" data-reveal="up">
-                        <span class="text-sakura font-bold tracking-[0.2em] uppercase text-xs">Status Flow</span>
+                        <span class="text-sakura font-bold tracking-[0.2em] uppercase text-xs">Alur Status</span>
                         <h3 class="text-2xl font-black text-dark-chocolate mt-4 mb-3">Proses sewa tetap mudah diikuti</h3>
                         <p class="text-dark-chocolate/70 font-medium leading-relaxed">
-                            Dari pilih kostum sampai riwayat booking, pelanggan bisa melihat progresnya dengan lebih jelas.
+                            Dari pilih kostum sampai riwayat pemesanan, pelanggan bisa melihat progresnya dengan lebih jelas.
                         </p>
                     </article>
                 </div>
@@ -229,7 +229,7 @@
 
         <section id="tim" class="py-32 px-6 bg-dark-chocolate text-misty-rose relative overflow-hidden">
             <div class="absolute top-10 left-0 w-full overflow-hidden opacity-5 pointer-events-none select-none">
-                <h2 class="text-[12rem] md:text-[15rem] font-black whitespace-nowrap leading-none">CREATORS.</h2>
+                <h2 class="text-[12rem] md:text-[15rem] font-black whitespace-nowrap leading-none">PENCIPTA.</h2>
             </div>
 
             <div class="max-w-7xl mx-auto relative z-10">
@@ -247,7 +247,7 @@
                             </div>
                         </div>
                         <h3 class="text-3xl font-black text-white mb-1">Rangga</h3>
-                        <p class="text-sakura font-bold text-xs tracking-widest uppercase mb-4">Lead Programmer</p>
+                        <p class="text-sakura font-bold text-xs tracking-widest uppercase mb-4">Pemrogram Utama</p>
                         <p class="text-misty-rose/60 text-sm font-medium text-center max-w-xs leading-relaxed">
                             Fondasi logika & keamanan database. Memastikan sistem CosRent berjalan tanpa celah.
                         </p>
@@ -261,7 +261,7 @@
                             </div>
                         </div>
                         <h3 class="text-3xl font-black text-white mb-1">Akbar</h3>
-                        <p class="text-aloewood font-bold text-xs tracking-widest uppercase mb-4">Full-Stack Dev</p>
+                        <p class="text-aloewood font-bold text-xs tracking-widest uppercase mb-4">Pengembang Full-Stack</p>
                         <p class="text-misty-rose/60 text-sm font-medium text-center max-w-xs leading-relaxed">
                             Menjembatani antarmuka visual dengan mesin server agar mulus & responsif.
                         </p>
@@ -275,9 +275,9 @@
                             </div>
                         </div>
                         <h3 class="text-3xl font-black text-white mb-1">Crist</h3>
-                        <p class="text-milk-tea font-bold text-xs tracking-widest uppercase mb-4">Project Manager</p>
+                        <p class="text-milk-tea font-bold text-xs tracking-widest uppercase mb-4">Manajer Proyek</p>
                         <p class="text-misty-rose/60 text-sm font-medium text-center max-w-xs leading-relaxed">
-                            Nahkoda visi PBL. Mengarahkan tim & mengubah ide abstrak menjadi produk nyata.
+                            Nakhoda visi PBL. Mengarahkan tim & mengubah ide abstrak menjadi produk nyata.
                         </p>
                     </div>
                 </div>
@@ -290,7 +290,7 @@
                     Saatnya pindah ke alur rental yang lebih rapi.
                 </h3>
                 <p class="text-dark-chocolate/70 text-lg font-medium leading-relaxed">
-                    Jika stok, ukuran, dan booking bisa dibaca dalam satu tempat, tim rental bergerak lebih cepat dan pelanggan bisa menyewa dengan lebih yakin.
+                    Jika stok, ukuran, dan pemesanan bisa dibaca dalam satu tempat, tim rental bergerak lebih cepat dan pelanggan bisa menyewa dengan lebih yakin.
                 </p>
             </div>
             <div class="text-center relative z-10 bg-white/40 backdrop-blur-md p-14 rounded-[3rem] border border-white/50 shadow-xl">

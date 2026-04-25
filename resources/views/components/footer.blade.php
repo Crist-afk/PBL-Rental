@@ -49,12 +49,12 @@
             <h4 class="font-bold text-sakura mb-6 text-lg">Lokasi Toko</h4>
             <div class="w-full h-32 bg-aloewood rounded-xl border border-misty-rose/20 relative overflow-hidden flex items-center justify-center">
                 <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=400&q=80" alt="Map" class="absolute inset-0 w-full h-full object-cover opacity-40">
-                <button class="relative z-10 bg-dark-chocolate/80 text-misty-rose px-4 py-2 rounded border border-misty-rose/50 text-sm hover:bg-sakura hover:text-dark-chocolate transition">Buka Maps</button>
+                <button class="relative z-10 bg-dark-chocolate/80 text-misty-rose px-4 py-2 rounded border border-misty-rose/50 text-sm hover:bg-sakura hover:text-dark-chocolate transition">Buka Peta</button>
             </div>
         </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-misty-rose/10 text-center text-sm opacity-60">
-        © {{ date('Y') }} CosRent. All rights reserved. Crafted with ❤️ for Cosplayers.
+        © {{ date('Y') }} CosRent. Hak cipta dilindungi undang-undang. Dibuat dengan ❤️ untuk para Cosplayer.
     </div>
 </footer>

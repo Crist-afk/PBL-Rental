@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('harga_sewa');
             $table->string('ukuran', 10); // Menyimpan S, M, L, XL
             $table->text('kelengkapan')->nullable(); // Deskripsi wig, aksesoris, dll
+            $table->string('gambar')->nullable();
 
             $table->timestamps();
         });

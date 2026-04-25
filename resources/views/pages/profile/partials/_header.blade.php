@@ -48,7 +48,7 @@
                     data-modal-toggle="edit-profile-modal"
                     class="flex items-center gap-2 rounded-full border-2 border-dark-chocolate bg-dark-chocolate px-6 py-2.5 text-sm font-bold text-misty-rose shadow-md transition hover:bg-black"
                 >
-                    <i class="fa-solid fa-pen-to-square"></i> Edit Profil
+                    <i class="fa-solid fa-pen-to-square"></i> Ubah Profil
                 </button>
                 <button
                     type="button"
@@ -62,7 +62,7 @@
 
         <div class="mt-4">
             <p class="mb-6 max-w-3xl text-sm font-medium leading-relaxed text-dark-chocolate/80 md:text-base">
-                {{ filled($user->bio) ? $user->bio : 'Belum ada deskripsi profil. Klik Edit Profil untuk menambahkan bio singkatmu.' }}
+                {{ filled($user->bio) ? $user->bio : 'Belum ada deskripsi profil. Klik Ubah Profil untuk menambahkan bio singkat Anda.' }}
             </p>
 
             <div class="flex gap-6 border-y border-dark-chocolate/10 py-4">

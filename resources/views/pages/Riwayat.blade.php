@@ -91,7 +91,7 @@
                         
                         <div class="flex gap-3 w-full lg:w-auto">
                             <button class="flex-1 lg:flex-none px-6 py-3 bg-white/80 border-2 border-dark-chocolate/5 rounded-full text-[10px] font-black text-dark-chocolate uppercase tracking-[0.2em] hover:bg-dark-chocolate hover:text-white transition-all shadow-sm">
-                                <i class="fa-solid fa-file-invoice mr-2"></i>Invoice
+                                <i class="fa-solid fa-file-invoice mr-2"></i>Faktur
                             </button>
                             <button class="flex-1 lg:flex-none px-8 py-3 bg-dark-chocolate text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl">
                                 Detail
@@ -105,7 +105,7 @@
         <!-- Back Button -->
         <div class="mt-20 text-center">
             <a href="{{ route('dashboard.pelanggan') }}" class="inline-flex items-center gap-3 px-10 py-4 rounded-full bg-white/40 border border-white/60 text-dark-chocolate font-black text-[10px] uppercase tracking-[0.4em] hover:bg-white/80 transition-all duration-300 hover:shadow-xl">
-                <i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Dasbor
             </a>
         </div>
 

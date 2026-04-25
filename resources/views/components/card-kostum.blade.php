@@ -10,14 +10,14 @@
         <div class="flex justify-between relative mt-1">
             <div class="flex flex-col gap-3 w-1/2 pr-2">
                 <div>
-                    <span class="inline-block bg-[#E874A3] text-white text-[10px] font-bold px-3 py-0.5 rounded-full mb-1.5 shadow-sm">Include</span>
+                    <span class="inline-block bg-[#E874A3] text-white text-[10px] font-bold px-3 py-0.5 rounded-full mb-1.5 shadow-sm">Termasuk</span>
                     <ul class="text-[10px] text-[#E874A3] font-medium leading-relaxed pl-1">
                         <li>• Wig (T)</li>
                         <li>• Kostum (Maker)</li>
                     </ul>
                 </div>
                 <div>
-                    <span class="inline-block bg-[#E874A3] text-white text-[10px] font-bold px-3 py-0.5 rounded-full mb-1.5 shadow-sm">Size L</span>
+                    <span class="inline-block bg-[#E874A3] text-white text-[10px] font-bold px-3 py-0.5 rounded-full mb-1.5 shadow-sm">Ukuran L</span>
                     <div class="text-[10px] text-[#E874A3] font-medium leading-relaxed pl-1">
                         <p>ld : 95 cm</p>
                         <p>lp : 72-84 cm</p>
@@ -36,14 +36,14 @@
                 
                 <div class="absolute -bottom-4 -left-6 bg-[#E874A3] w-16 h-16 rounded-full flex flex-col items-center justify-center text-white border-2 border-white shadow-md z-10">
                     <span class="font-bold text-base leading-none tracking-tight">65k</span>
-                    <span class="text-[9px] leading-none mt-1 font-medium">/3 days</span>
+                    <span class="text-[9px] leading-none mt-1 font-medium">/ 3 hari</span>
                 </div>
             </div>
         </div>
 
         <div class="mt-6 flex justify-center z-10 relative">
             <div class="bg-[#E874A3] text-white text-[10px] font-bold py-1.5 px-6 rounded-full w-full text-center shadow-sm tracking-wide">
-                Laundry sendiri atau +15k
+                Cuci sendiri atau tambah Rp15.000
             </div>
         </div>
         

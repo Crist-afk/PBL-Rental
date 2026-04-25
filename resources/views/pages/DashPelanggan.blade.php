@@ -7,7 +7,7 @@
 
         <!-- Greeting -->
         <div class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 px-6 py-8 md:px-10 md:py-10 shadow-xl text-center md:text-left">
-            <span class="mb-4 block text-sm font-black uppercase tracking-[0.35em] text-aloewood">Dashboard Area</span>
+            <span class="mb-4 block text-sm font-black uppercase tracking-[0.35em] text-aloewood">Area Dasbor</span>
             <h1 class="text-4xl md:text-5xl font-extrabold text-dark-chocolate">Selamat Datang, {{ auth()->user()->nama ?? 'Pelanggan' }}! 👋</h1>
             <p class="mt-4 text-base font-medium leading-relaxed text-dark-chocolate/75 md:text-lg max-w-3xl">Ini adalah pusat kendali akunmu. Lihat status persewaan aktif, riwayat transaksi, dan temukan kostum incaranmu berikutnya.</p>
         </div>
@@ -31,7 +31,7 @@
             <div class="glass-card rounded-[2rem] p-6 border-2 border-dark-chocolate/10 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm font-bold uppercase tracking-wide text-aloewood">Total Sewa</p>
+                        <p class="text-sm font-bold uppercase tracking-wide text-aloewood">Total Penyewaan</p>
                         <p class="text-4xl font-extrabold mt-3 text-dark-chocolate">{{ $stats['total_rentals'] ?? 17 }}</p>
                     </div>
                     <div class="w-14 h-14 bg-aloewood/20 rounded-[1.2rem] flex items-center justify-center text-2xl text-aloewood"><i class="fa-solid fa-box-open"></i></div>
@@ -102,7 +102,7 @@
                                 <i class="fa-solid fa-calendar-check"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-sm">Form Booking</p>
+                                <p class="font-bold text-sm">Formulir Pemesanan</p>
                                 <p class="text-[10px] opacity-70">Pesan kostum sekarang</p>
                             </div>
                         </a>
@@ -121,7 +121,7 @@
                 <!-- Info Denda -->
                 <div class="glass-card rounded-[2rem] p-6 border-2 border-red-500/20 bg-red-500/5 shadow-xl">
                     <h3 class="font-bold text-lg text-red-600 flex items-center gap-2 mb-3">
-                        <i class="fa-solid fa-circle-exclamation"></i> Info Denda Telat
+                        <i class="fa-solid fa-circle-exclamation"></i> Informasi Denda Keterlambatan
                     </h3>
                     <p class="text-sm font-medium text-dark-chocolate/80 leading-relaxed">
                         Keterlambatan pengembalian kostum akan dikenakan denda sebesar <span class="font-bold text-red-600">Rp 50.000 / hari</span>. Harap kembalikan tepat waktu!

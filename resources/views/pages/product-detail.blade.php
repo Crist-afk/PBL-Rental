@@ -30,21 +30,17 @@
             <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-4 shadow-xl flex items-center justify-center">
                 <div class="w-full h-[400px] md:h-[500px] bg-dark-chocolate/10 rounded-[2rem] flex flex-col items-center justify-center relative overflow-hidden group">
 
-                    @if($kostum->gambar && Storage::disk('public')->exists($kostum->gambar))
+                    @if($kostum->gambar)
                         {{-- Gambar dari storage lokal --}}
-                        <img src="{{ asset('storage/' . $kostum->gambar) }}"
+                        <img src="{{ asset('storage/kostum/' . $kostum->gambar) }}"
                              alt="{{ $kostum->nama_kostum }}"
-                             class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
-                    @elseif($kostum->gambar && str_starts_with($kostum->gambar, 'http'))
-                        {{-- URL eksternal --}}
-                        <img src="{{ $kostum->gambar }}"
-                             alt="{{ $kostum->nama_kostum }}"
-                             class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
+                             class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
                     @else
                         {{-- Placeholder jika tidak ada gambar --}}
                         <div class="flex flex-col items-center justify-center gap-4 text-dark-chocolate/30">
                             <i class="fa-solid fa-shirt text-8xl"></i>
-                            <span class="font-bold text-sm uppercase tracking-widest">Foto segera hadir</span>
+                            <span class="font-bold text-sm uppercase tracking-widest">Foto segera tersedia</span>
                         </div>
                     @endif
 
@@ -185,7 +181,7 @@
                         @else
                             <a href="{{ route('login') }}"
                                class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
-                                <i class="fa-solid fa-right-to-bracket"></i> Login untuk Sewa
+                                <i class="fa-solid fa-right-to-bracket"></i> Masuk untuk Menyewa
                             </a>
                         @endauth
                     </form>
@@ -197,7 +193,7 @@
                         <p class="text-sm text-red-500 mt-1">Silakan cek kembali nanti atau pilih kostum lain.</p>
                         <a href="{{ route('products.index') }}"
                            class="mt-4 inline-block rounded-full bg-dark-chocolate px-6 py-3 text-sm font-bold text-misty-rose transition hover:bg-black">
-                            Lihat Kostum Lain
+                            Lihat Kostum Lainnya
                         </a>
                     </div>
                 @endif

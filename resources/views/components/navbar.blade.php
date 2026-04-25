@@ -3,15 +3,15 @@
 @php
     $isAuthPage = in_array($authPage, ['login', 'register'], true);
 
-    $homeLabel = 'Home';
+    $homeLabel = 'Beranda';
     $homeRoute = 'home';
 
     if (Auth::check()) {
         if (Auth::user()->role === 'pelanggan') {
-            $homeLabel = 'Dashboard';
+            $homeLabel = 'Dasbor';
             $homeRoute = 'dashboard.pelanggan';
         } elseif (Auth::user()->role === 'admin') {
-            $homeLabel = 'Dashboard';
+            $homeLabel = 'Dasbor';
             $homeRoute = 'admin.dashboard';
         }
     }
@@ -48,10 +48,10 @@
                 <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
             @else
                 <a href="{{ route($homeRoute) }}" class="{{ request()->routeIs($homeRoute) ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">{{ $homeLabel }}</a>
-                <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About</a>
-                <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Product</a>
+                <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Tentang Kami</a>
+                <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Produk</a>
                 <a href="{{ route('forum') }}" class="{{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
-                <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact</a>
+                <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Kontak</a>
             @endif
         </nav>
 
@@ -123,7 +123,7 @@
                                     <svg class="w-4 h-4 text-aloewood flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                                     </svg>
-                                    Dashboard
+                                    Dasbor
                                 </a>
                             </div>
 
@@ -149,8 +149,8 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="hover:text-sakura transition hidden sm:inline">Login</a>
-                    <a href="{{ route('register') }}" class="bg-sakura text-dark-chocolate px-4 py-2 rounded-full hover:bg-opacity-80 transition shadow text-sm">Register</a>
+                    <a href="{{ route('login') }}" class="hover:text-sakura transition hidden sm:inline">Masuk</a>
+                    <a href="{{ route('register') }}" class="bg-sakura text-dark-chocolate px-4 py-2 rounded-full hover:bg-opacity-80 transition shadow text-sm">Daftar</a>
                 @endauth
             @endif
 
@@ -185,15 +185,15 @@
             </div>
         @else
             <a href="{{ route($homeRoute) }}" class="py-2 {{ request()->routeIs($homeRoute) ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">{{ $homeLabel }}</a>
-            <a href="{{ route('about') }}" class="py-2 {{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About</a>
-            <a href="{{ route('products.index') }}" class="py-2 {{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Product</a>
+            <a href="{{ route('about') }}" class="py-2 {{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Tentang Kami</a>
+            <a href="{{ route('products.index') }}" class="py-2 {{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Produk</a>
             <a href="{{ route('forum') }}" class="py-2 {{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
-            <a href="{{ route('contact') }}" class="py-2 {{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact</a>
+            <a href="{{ route('contact') }}" class="py-2 {{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Kontak</a>
 
             @guest
                 <div class="border-t border-misty-rose/20 mt-2 pt-3 flex gap-3">
-                    <a href="{{ route('login') }}" class="hover:text-sakura transition">Login</a>
-                    <a href="{{ route('register') }}" class="bg-sakura text-dark-chocolate px-4 py-1.5 rounded-full hover:bg-opacity-80 transition">Register</a>
+                    <a href="{{ route('login') }}" class="hover:text-sakura transition">Masuk</a>
+                    <a href="{{ route('register') }}" class="bg-sakura text-dark-chocolate px-4 py-1.5 rounded-full hover:bg-opacity-80 transition">Daftar</a>
                 </div>
             @endguest
 
@@ -201,7 +201,7 @@
                 <div class="border-t border-misty-rose/20 mt-2 pt-3 flex flex-col gap-1">
                     <p class="text-xs text-misty-rose/50 uppercase tracking-wide mb-1">Masuk sebagai {{ Auth::user()->nama }}</p>
                     <a href="{{ Auth::user()->role === 'admin' ? route('admin.profile') : route('profile') }}" class="py-2 hover:text-sakura transition">Profil Saya</a>
-                    <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard.pelanggan') }}" class="py-2 hover:text-sakura transition">Dashboard</a>
+                    <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard.pelanggan') }}" class="py-2 hover:text-sakura transition">Dasbor</a>
                     <form action="{{ route('logout') }}" method="POST" class="mt-1">
                         @csrf
                         <button type="submit" class="text-left py-2 text-red-400 hover:text-red-300 transition font-bold">Keluar</button>

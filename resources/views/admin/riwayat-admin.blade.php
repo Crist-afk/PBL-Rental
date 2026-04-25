@@ -59,7 +59,7 @@
           </div>
           <div class="list-head">
             <span>Pelanggan</span>
-            <span>Total Order</span>
+            <span>Total Pesanan</span>
             <span>Terakhir Sewa</span>
             <span>Total Bayar</span>
             <span></span>
@@ -179,8 +179,8 @@
             </div>
 
             <div class="export-footer">
-              <button class="btn-export-foot" onclick="exportPDF()">⬇ Export PDF</button>
-              <button class="btn-export-foot" onclick="exportExcel()">📄 Export Excel</button>
+              <button class="btn-export-foot" onclick="exportPDF()">⬇ Ekspor PDF</button>
+              <button class="btn-export-foot" onclick="exportExcel()">📄 Ekspor Excel</button>
             </div>
           </div>
         </div>

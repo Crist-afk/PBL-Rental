@@ -83,7 +83,7 @@
                 <div class="group relative bg-dark-chocolate p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">ゲーム</div>
                     <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">🎮</div>
-                    <h3 class="font-bold text-lg text-misty-rose mb-1">Video Games</h3>
+                    <h3 class="font-bold text-lg text-misty-rose mb-1">Permainan Video</h3>
                     <p class="text-xs text-misty-rose/40 uppercase tracking-widest">G-A-M-E</p>
                 </div>
                 <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
@@ -101,7 +101,7 @@
                 <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">道具</div>
                     <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">💇‍♀️</div>
-                    <h3 class="font-bold text-lg text-dark-chocolate mb-1">Accessories</h3>
+                    <h3 class="font-bold text-lg text-dark-chocolate mb-1">Aksesori</h3>
                     <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">W-I-G-S</p>
                 </div>
             </div>
@@ -274,28 +274,28 @@
                     <div class="flex items-start gap-4">
                         <div class="bg-sakura/50 p-3 rounded-full text-dark-chocolate">✨</div>
                         <div>
-                            <h4 class="font-bold">Premium Fabric</h4>
+                            <h4 class="font-bold">Kain Premium</h4>
                             <p class="text-sm opacity-80">Kualitas kain terbaik untuk kenyamanan maksimal.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
                         <div class="bg-sakura/50 p-3 rounded-full text-dark-chocolate">🛡️</div>
                         <div>
-                            <h4 class="font-bold">Hygienic</h4>
+                            <h4 class="font-bold">Higienis</h4>
                             <p class="text-sm opacity-80">Setiap kostum dicuci bersih dan disterilkan.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
                         <div class="bg-sakura/50 p-3 rounded-full text-dark-chocolate">📏</div>
                         <div>
-                            <h4 class="font-bold">Fitting Available</h4>
-                            <p class="text-sm opacity-80">Bisa fitting langsung di offline store kami.</p>
+                            <h4 class="font-bold">Layanan Pas Kostum</h4>
+                            <p class="text-sm opacity-80">Bisa mencoba langsung di toko luring kami.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
                         <div class="bg-sakura/50 p-3 rounded-full text-dark-chocolate">👕</div>
                         <div>
-                            <h4 class="font-bold">Full Size Options</h4>
+                            <h4 class="font-bold">Pilihan Ukuran Lengkap</h4>
                             <p class="text-sm opacity-80">Tersedia ukuran lengkap dari XS hingga XXXL.</p>
                         </div>
                     </div>
@@ -318,12 +318,24 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
             <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
                 <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
-                <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga pas banget sesuai deskripsi. Adminnya ramah dan prosesnya cepet banget. Pasti bakal sewa di sini lagi!"</p>
+                <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga sangat pas sesuai deskripsi. Adminnya ramah dan prosesnya sangat cepat. Pasti akan sewa di sini lagi!"</p>
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-aloewood rounded-full"></div>
                     <div>
-                        <h4 class="font-bold">Customer #1</h4>
-                        <p class="text-xs opacity-70">Verified Cosplayer</p>
+                        <h4 class="font-bold">Pelanggan #1</h4>
+                        <p class="text-xs opacity-70">Cosplayer Terverifikasi</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
+                <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
+                <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga sangat pas sesuai deskripsi. Adminnya ramah dan prosesnya sangat cepat. Pasti akan sewa di sini lagi!"</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-aloewood rounded-full"></div>
+                    <div>
+                        <h4 class="font-bold">Pelanggan #2</h4>
+                        <p class="text-xs opacity-70">Cosplayer Terverifikasi</p>
                     </div>
                 </div>
             </div>
@@ -334,20 +346,8 @@
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-aloewood rounded-full"></div>
                     <div>
-                        <h4 class="font-bold">Customer #2</h4>
-                        <p class="text-xs opacity-70">Verified Cosplayer</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card p-8 rounded-3xl border-2 border-dark-chocolate/10 shadow-lg relative">
-                <div class="text-sakura mb-4">⭐⭐⭐⭐⭐</div>
-                <p class="italic mb-8 opacity-90">"Kostumnya sangat wangi dan bersih! Ukurannya juga pas banget sesuai deskripsi. Adminnya ramah dan prosesnya cepet banget. Pasti bakal sewa di sini lagi!"</p>
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-aloewood rounded-full"></div>
-                    <div>
-                        <h4 class="font-bold">Customer #3</h4>
-                        <p class="text-xs opacity-70">Verified Cosplayer</p>
+                        <h4 class="font-bold">Pelanggan #3</h4>
+                        <p class="text-xs opacity-70">Cosplayer Terverifikasi</p>
                     </div>
                 </div>
             </div>

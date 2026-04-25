@@ -31,7 +31,7 @@
                             </div>
                             <input type="text" id="name" name="nama" value="{{ old('nama') }}" required
                                 class="w-full pl-11 pr-4 py-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium"
-                                placeholder="Misal: Crist">
+                                placeholder="Contoh: Crist">
                         </div>
                     </div>
 
@@ -48,7 +48,7 @@
                     </div>
 
                     <div>
-                        <label for="password" class="block text-sm font-bold text-dark-chocolate mb-1">Password</label>
+                        <label for="password" class="block text-sm font-bold text-dark-chocolate mb-1">Kata Sandi</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none border-r border-dark-chocolate/10 pr-3 my-2">
                                 <i class="fa-solid fa-lock text-dark-chocolate/50"></i>
@@ -63,14 +63,14 @@
                     </div>
 
                     <div>
-                        <label for="password_confirmation" class="block text-sm font-bold text-dark-chocolate mb-1">Konfirmasi Password</label>
+                        <label for="password_confirmation" class="block text-sm font-bold text-dark-chocolate mb-1">Konfirmasi Kata Sandi</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none border-r border-dark-chocolate/10 pr-3 my-2">
                                 <i class="fa-solid fa-shield-check text-dark-chocolate/50"></i>
                             </div>
                             <input type="password" id="password_confirmation" name="password_confirmation" required
                                 class="w-full pl-14 pr-12 py-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium"
-                                placeholder="Ulangi password">
+                                placeholder="Ulangi kata sandi">
                             <button type="button" id="togglePasswordConfirm" class="absolute inset-y-0 right-0 pr-4 flex items-center text-dark-chocolate/50 hover:text-sakura transition-colors focus:outline-none">
                                 <i class="fa-regular fa-eye-slash" id="eyeIconConfirm"></i>
                             </button>
@@ -108,7 +108,7 @@
                             </div>
                             <div>
                                 <p class="text-2xl font-bold text-sakura">600+</p>
-                                <p class="text-xs text-misty-rose/70 uppercase tracking-wider font-bold">Vendor</p>
+                                <p class="text-xs text-misty-rose/70 uppercase tracking-wider font-bold">Pemasok</p>
                             </div>
                         </div>
                     </div>

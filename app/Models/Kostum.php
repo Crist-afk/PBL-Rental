@@ -6,11 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kostum extends Model
 {
-    protected $table = 'kostum'; // Pastikan nama tabel spesifik
+    protected $table = 'kostum';
 
-    // GUARDED: Kolom 'id' diabaikan dari input form, sisanya boleh diisi.
-    // Ini lebih efisien daripada menulis $fillable satu per satu jika kolomnya banyak.
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'kategori_id',
+        'nama_kostum',
+        'stok',
+        'harga_sewa',
+        'ukuran',
+        'kelengkapan',
+        'gambar'
+    ];
 
     // Relasi: Satu kostum dimiliki oleh satu kategori (BelongsTo)
     public function kategori()

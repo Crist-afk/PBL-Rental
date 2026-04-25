@@ -119,7 +119,7 @@
         </select>
         <button class="btn-export">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Export
+          Ekspor
         </button>
       </div>
 
@@ -128,7 +128,7 @@
         <table>
           <thead>
             <tr>
-              <th>ID<br>ORDER</th>
+              <th>ID<br>PESANAN</th>
               <th>PELANGGAN</th>
               <th>KOSTUM</th>
               <th>TGL<br>MULAI SEWA</th>

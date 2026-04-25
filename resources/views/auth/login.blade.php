@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - CosRent</title>
+    <title>Masuk - CosRent</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -17,7 +17,7 @@
 
             <div class="w-full md:w-1/2 p-8 sm:p-12 lg:p-14 bg-white/60 flex flex-col justify-center">
                 <div class="mb-8">
-                    <h2 class="text-4xl font-bold text-dark-chocolate tracking-tight mb-2">Login</h2>
+                    <h2 class="text-4xl font-bold text-dark-chocolate tracking-tight mb-2">Masuk</h2>
                     <p class="text-dark-chocolate/70 font-medium">Masuk kembali ke akun Anda</p>
                 </div>
 
@@ -48,7 +48,7 @@
                             </div>
                             <input type="password" id="password" name="password" required
                                 class="w-full pl-14 pr-12 py-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium"
-                                placeholder="Password">
+                                placeholder="Kata Sandi">
                             <button type="button" id="togglePassword" class="absolute right-0 pr-4 flex items-center text-dark-chocolate/50 hover:text-sakura transition-colors focus:outline-none">
                                 <i class="fa-regular fa-eye-slash" id="eyeIcon"></i>
                             </button>
@@ -64,11 +64,11 @@
                     </div>
 
                     <button type="submit" class="w-full bg-dark-chocolate hover:bg-black text-misty-rose font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
-                        Login
+                        Masuk
                     </button>
 
                     <div class="text-center mt-4">
-                        <a href="#" class="text-sm font-bold text-aloewood hover:text-sakura transition duration-200">Lupa Password?</a>
+                        <a href="#" class="text-sm font-bold text-aloewood hover:text-sakura transition duration-200">Lupa Kata Sandi?</a>
                     </div>
                 </form>
             </div>
@@ -83,7 +83,7 @@
                     </div>
                     <h2 class="text-3xl md:text-4xl font-bold text-misty-rose mb-4">Selamat Datang Kembali!</h2>
                     <p class="text-misty-rose/80 mb-8 leading-relaxed font-medium">
-                        Kostum incaranmu mungkin sedang dipesan orang lain. Segera masuk dan amankan jadwal bookingmu sekarang.
+                        Kostum incaranmu mungkin sedang dipesan orang lain. Segera masuk dan amankan jadwal pemesananmu sekarang.
                     </p>
                     <a href="{{ route('register') }}" class="inline-block px-8 py-3 text-misty-rose font-bold border-2 border-sakura rounded-full hover:bg-sakura hover:text-dark-chocolate transition-colors duration-300 shadow-lg">
                         Buat Akun Baru

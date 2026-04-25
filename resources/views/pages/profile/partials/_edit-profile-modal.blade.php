@@ -2,7 +2,7 @@
     <div class="relative max-h-full w-full max-w-md p-4">
         <div class="relative rounded-[2rem] border-2 border-dark-chocolate/10 bg-[#FFE4E1] shadow-2xl">
             <div class="flex items-center justify-between border-b border-dark-chocolate/10 p-6">
-                <h3 class="text-xl font-bold text-dark-chocolate">Edit Akun Cosplayer</h3>
+                <h3 class="text-xl font-bold text-dark-chocolate">Ubah Akun Cosplayer</h3>
                 <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-sm text-dark-chocolate/50 hover:text-dark-chocolate" data-modal-hide="edit-profile-modal" aria-label="Tutup modal edit profil">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -29,7 +29,7 @@
                             name="bio"
                             rows="3"
                             class="block w-full resize-none rounded-xl border-2 border-dark-chocolate/10 bg-white p-2.5 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura"
-                            placeholder="Ceritakan hobimu atau spesialisasi cosplay-mu..."
+                            placeholder="Ceritakan hobi Anda atau spesialisasi cosplay Anda..."
                         >{{ old('bio', $user->bio) }}</textarea>
                     </div>
 

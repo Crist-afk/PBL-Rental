@@ -101,7 +101,7 @@
                 <div class="group relative bg-white p-8 rounded-3xl shadow-xl hover:-translate-y-2 transition-all duration-500 border-b-8 border-sakura cursor-pointer overflow-hidden reveal delay-700" data-reveal="up">
                     <div class="absolute top-0 right-0 p-4 text-xs font-bold text-sakura/20 group-hover:text-sakura/40 transition-colors">道具</div>
                     <div class="text-5xl mb-6 transform group-hover:scale-110 transition-transform">💇‍♀️</div>
-                    <h3 class="font-bold text-lg text-dark-chocolate mb-1">Aksesori</h3>
+                    <h3 class="font-bold text-lg text-dark-chocolate mb-1">VTuber</h3>
                     <p class="text-xs text-dark-chocolate/40 uppercase tracking-widest">W-I-G-S</p>
                 </div>
             </div>

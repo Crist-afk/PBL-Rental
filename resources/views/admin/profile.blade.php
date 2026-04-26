@@ -57,6 +57,8 @@
         margin-bottom: 1.25rem;
         flex-wrap: wrap;
         gap: 1rem;
+        position: relative;
+        z-index: 10;
     }
     .profile-avatar-circle {
         width: 5rem;
@@ -241,7 +243,9 @@
 @endpush
 
 @section('content')
-<div class="profile-container">
+<main class="main">
+    <div class="main-inner">
+        <div class="profile-container">
 
     {{-- Page Header --}}
     <div class="profile-page-header">
@@ -418,5 +422,7 @@
         </div>
     </div>
 
-</div>
+        </div>
+    </div>
+</main>
 @endsection

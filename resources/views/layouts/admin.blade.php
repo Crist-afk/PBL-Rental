@@ -158,13 +158,21 @@
       <span class="brand-name">CosRent</span>
     </div>
 
-    <div class="user-card">
-      <div class="avatar">A</div>
-      <div>
-        <div class="user-name">Admin</div>
-        <div class="user-role">Super Admin</div>
+    <a href="{{ route('admin.profile') }}" class="user-card-link">
+      <div class="user-card">
+        <div class="avatar">
+          @if(Auth::user()->avatar)
+            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+          @else
+            {{ strtoupper(substr(Auth::user()->nama ?? 'A', 0, 1)) }}
+          @endif
+        </div>
+        <div>
+          <div class="user-name">{{ Auth::user()->nama ?? 'Admin' }}</div>
+          <div class="user-role">Super Admin</div>
+        </div>
       </div>
-    </div>
+    </a>
 
     <a class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>

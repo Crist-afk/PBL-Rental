@@ -17,6 +17,7 @@ class User extends Authenticatable
         'password',
         'role', // Penting untuk Single Table Inheritance
         'avatar',
+        'cover_photo',
         'bio', // Kolom tambahan untuk profil
     ];
 

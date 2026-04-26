@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>@yield('title', 'CosRent Admin')</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-@vite(['resources/css/admin/layout.css', 'resources/js/admin/theme.js'])
+@vite(['resources/css/app.css', 'resources/css/admin/layout.css', 'resources/js/admin/theme.js'])
 @stack('styles')
 <script>
     if (localStorage.getItem('theme') === 'dark') {
@@ -85,6 +85,7 @@
         transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         flex: 1;
         min-width: 0;
+        overflow-x: hidden;
     }
     .admin-content-wrapper.visible {
         opacity: 1;
@@ -317,7 +318,7 @@
     };
 
     // Intercept admin sidebar navigation links
-    const navItems = document.querySelectorAll('.sidebar .nav-item[href]');
+    const navItems = document.querySelectorAll('.sidebar .nav-item[href], a[href="{{ route("admin.profile") }}"]');
     navItems.forEach(function(link) {
         const href = link.getAttribute('href');
         // Skip non-navigation items (theme toggle, logout, # links)
@@ -331,6 +332,9 @@
 
             // Determine label from link text (strip badge numbers)
             let linkText = link.textContent.trim().replace(/\d+$/, '').trim();
+            if (targetUrl === '{{ route("admin.profile") }}') {
+                linkText = 'Profil Admin';
+            }
             const navText = document.getElementById('navOverlayText');
             if (navText) navText.textContent = linkText;
 

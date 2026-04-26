@@ -137,7 +137,15 @@
           </div><!-- /notif-dropdown -->
         </div><!-- /notif-wrap -->
 
-        <div class="user-avatar">A</div>
+        <a href="{{ route('admin.profile') }}" title="Lihat Profil">
+          <div class="user-avatar">
+            @if(Auth::user()->avatar)
+              <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+            @else
+              {{ strtoupper(substr(Auth::user()->nama ?? 'A', 0, 1)) }}
+            @endif
+          </div>
+        </a>
       </div>
     </div>
 

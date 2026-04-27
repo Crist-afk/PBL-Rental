@@ -57,17 +57,10 @@
 
                         {{-- Image --}}
                         <div class="h-60 rounded-[1.5rem] mb-4 overflow-hidden bg-dark-chocolate/10">
-                            @if($kostum->gambar)
-                                <img src="{{ asset('storage/kostum/' . $kostum->gambar) }}"
-                                     alt="{{ $kostum->nama_kostum }}"
-                                     class="w-full h-full object-cover transition duration-300 hover:scale-105"
-                                     onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
-                            @else
-                                <div class="w-full h-full flex flex-col items-center justify-center text-dark-chocolate/20 gap-2">
-                                    <i class="fa-solid fa-shirt text-5xl"></i>
-                                    <span class="text-xs font-bold uppercase tracking-widest">Foto belum tersedia</span>
-                                </div>
-                            @endif
+                            <img src="{{ $kostum->gambar_url }}"
+                                 alt="{{ $kostum->nama_kostum }}"
+                                 class="w-full h-full object-cover transition duration-300 hover:scale-105"
+                                 onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
                         </div>
 
                         {{-- Card Body --}}

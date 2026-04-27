@@ -29,4 +29,21 @@ class Kostum extends Model
     {
         return $this->hasMany(DetailTransaksi::class, 'kostum_id');
     }
+
+    /**
+     * Accessor untuk mendapatkan URL gambar yang valid.
+     * Mendukung link eksternal (http/https) maupun file lokal di storage.
+     */
+    public function getGambarUrlAttribute()
+    {
+        if (!$this->gambar) {
+            return 'https://via.placeholder.com/400x500.png?text=No+Image';
+        }
+
+        if (filter_var($this->gambar, FILTER_VALIDATE_URL)) {
+            return $this->gambar;
+        }
+
+        return asset('storage/kostum/' . $this->gambar);
+    }
 }

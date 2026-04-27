@@ -21,19 +21,10 @@
             <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-4 shadow-xl flex items-center justify-center">
                 <div class="w-full h-[400px] md:h-[500px] bg-dark-chocolate/10 rounded-[2rem] flex flex-col items-center justify-center relative overflow-hidden group">
 
-                    @if($kostum->gambar)
-                        {{-- Gambar dari storage lokal --}}
-                        <img src="{{ asset('storage/kostum/' . $kostum->gambar) }}"
-                             alt="{{ $kostum->nama_kostum }}"
-                             class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
-                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
-                    @else
-                        {{-- Placeholder jika tidak ada gambar --}}
-                        <div class="flex flex-col items-center justify-center gap-4 text-dark-chocolate/30">
-                            <i class="fa-solid fa-shirt text-8xl"></i>
-                            <span class="font-bold text-sm uppercase tracking-widest">Foto segera tersedia</span>
-                        </div>
-                    @endif
+                    <img src="{{ $kostum->gambar_url }}"
+                         alt="{{ $kostum->nama_kostum }}"
+                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                         onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
 
                     {{-- Hover overlay --}}
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none">

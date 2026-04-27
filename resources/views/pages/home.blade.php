@@ -4,6 +4,7 @@
 
 @push('styles')
     @vite(['resources/css/pages/home.css'])
+@endpush
 
 @section('content')
     <section class="min-h-screen flex flex-col items-center justify-center pt-32 px-6 text-center">

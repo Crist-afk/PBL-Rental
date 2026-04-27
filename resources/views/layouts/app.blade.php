@@ -38,5 +38,30 @@
     <x-footer />
 
     @stack('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonColor: '#443025',
+                background: '#FFE4E1',
+                customClass: {
+                    title: 'text-dark-chocolate font-black',
+                    popup: 'rounded-[2rem] border-2 border-sakura/20 shadow-2xl'
+                }
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                title: 'Error!',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonColor: '#443025'
+            });
+        @endif
+    </script>
 </body>
 </html>

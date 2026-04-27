@@ -4,6 +4,7 @@
 
 @push('styles')
     @vite(['resources/css/pages/product.css'])
+@endpush
 
 @section('content')
     <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full flex flex-col gap-8">

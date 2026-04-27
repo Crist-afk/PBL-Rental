@@ -62,4 +62,3 @@ if (window.bookingSuccessMessage) {
                 if (label) label.classList.remove('text-sakura');
             });
         });
-    </script>

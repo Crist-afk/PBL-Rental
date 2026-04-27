@@ -26,6 +26,16 @@
                 <i class="fa-solid fa-calendar-days text-9xl text-dark-chocolate"></i>
             </div>
 
+            @if($errors->any())
+                <div class="mb-8 p-6 bg-red-50 border-2 border-red-200 rounded-[2rem] text-red-700">
+                    <ul class="list-disc list-inside font-bold text-sm">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('booking.store') }}" method="POST" class="relative">
                 @csrf
                 
@@ -40,12 +50,11 @@
                             <div class="relative group">
                                 <select id="kostum_id" name="kostum_id" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-pointer group-hover:border-sakura/50 relative z-10" required>
                                     <option value="" disabled {{ !isset($kostum_id) ? 'selected' : '' }}>-- Cari Kostum --</option>
-                                    <option value="1" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s" {{ (isset($kostum_id) && $kostum_id == 1) ? 'selected' : '' }}>Raiden Shogun (Genshin Impact)</option>
-                                    <option value="2" data-image="https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e" {{ (isset($kostum_id) && $kostum_id == 2) ? 'selected' : '' }}>Monkey D. Luffy (One Piece)</option>
-                                    <option value="3" data-image="https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg" {{ (isset($kostum_id) && $kostum_id == 3) ? 'selected' : '' }}>Kafka (Honkai: Star Rail)</option>
-                                    <option value="4" data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s" {{ (isset($kostum_id) && $kostum_id == 4) ? 'selected' : '' }}>Spider-Man (Marvel)</option>
-                                    <option value="5" data-image="https://ae01.alicdn.com/kf/S5c23516ed69b45b3ae3f35e3fbad217d6.jpg" {{ (isset($kostum_id) && $kostum_id == 5) ? 'selected' : '' }}>Yae Miko (Genshin Impact)</option>
-                                    <option value="6" data-image="https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg" {{ (isset($kostum_id) && $kostum_id == 6) ? 'selected' : '' }}>Gojo Satoru (Jujutsu Kaisen)</option>
+                                    @foreach($kostums as $k)
+                                        <option value="{{ $k->id }}" data-image="{{ $k->gambar_url }}" {{ (isset($kostum_id) && $kostum_id == $k->id) ? 'selected' : '' }}>
+                                            {{ $k->nama_kostum }} ({{ $k->kategori->nama_kategori ?? 'Umum' }})
+                                        </option>
+                                    @endforeach
                                 </select>
                                 <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-sakura z-20">
                                     <i class="fa-solid fa-chevron-down"></i>
@@ -141,10 +150,11 @@
 
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-    <script>
-        window.bookingSuccessMessage = {!! json_encode(session('success')) !!};
-    </script>
-    @vite(['resources/css/pages/booking.css', 'resources/js/pages/booking.js'])
+    @push('scripts')
+        @vite(['resources/js/pages/booking.js'])
+    @endpush
+
+    @push('styles')
+        @vite(['resources/css/pages/booking.css'])
+    @endpush
 @endsection

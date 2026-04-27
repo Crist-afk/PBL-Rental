@@ -20,7 +20,15 @@ export default defineConfig({
                 'resources/js/admin/pengembalian.js',
                 'resources/js/admin/riwayat.js',
                 'resources/js/admin/pengguna.js',
-                'resources/js/admin/theme.js'
+                'resources/js/admin/theme.js',
+                'resources/css/admin/profile.css',
+                'resources/css/pages/home.css',
+                'resources/css/pages/product.css',
+                'resources/css/pages/product-detail.css',
+                'resources/css/pages/booking.css',
+                'resources/css/pages/welcome.css',
+                'resources/js/pages/product-detail.js',
+                'resources/js/pages/booking.js'
             ],
             refresh: true,
         }),

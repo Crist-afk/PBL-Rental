@@ -235,3 +235,52 @@ tbody tr:hover td { background: rgba(236,156,157,0.08); }
 /* ── STATUS DETAIL BADGE ── */
 .badge-detail-tepat    { background: rgba(16,185,129,0.18); color: #22d3a5; border: 1px solid rgba(34,211,165,0.3); padding: 5px 12px; border-radius: 7px; font-size: 10px; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; }
 .badge-detail-terlambat { background: rgba(239,68,68,0.18); color: #f87171; border: 1px solid rgba(248,113,113,0.3); padding: 5px 12px; border-radius: 7px; font-size: 10px; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; }
+      .status-options {
+        display: flex;
+        gap: 8px;
+      }
+      .status-opt {
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(0,0,0,0.05);
+        color: var(--text-3);
+      }
+      .status-opt.unpaid.active {
+        background: rgba(239,68,68,0.1);
+        color: #ef4444;
+        border-color: rgba(239,68,68,0.2);
+      }
+      .status-opt.paid.active {
+        background: rgba(16,185,129,0.1);
+        color: #10b981;
+        border-color: rgba(16,185,129,0.2);
+      }
+      .status-opt:hover:not(.active) {
+        background: rgba(0,0,0,0.1);
+      }
+      td {
+        padding: 14px 10px !important;
+        font-size: 11.5px !important;
+      }
+      th {
+        padding: 12px 10px !important;
+        font-size: 10px !important;
+      }
+      .customer-name {
+        font-size: 12.5px !important;
+      }
+      .order-id {
+        font-size: 10px !important;
+      }
+      .btn-action {
+        transform: scale(0.9);
+        transform-origin: center;
+      }

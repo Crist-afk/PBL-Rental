@@ -150,3 +150,15 @@ window.openModalDetail = function(orderId, penyewa, kostum, tglMulai, tglWajib, 
 
     document.getElementById('modalDetail').classList.add('open');
 }
+  function setStatusDenda(status) {
+    const unpaid = document.getElementById('opt-unpaid');
+    const paid = document.getElementById('opt-paid');
+    
+    if (status === 'paid') {
+      paid.classList.add('active');
+      unpaid.classList.remove('active');
+    } else {
+      unpaid.classList.add('active');
+      paid.classList.remove('active');
+    }
+  }

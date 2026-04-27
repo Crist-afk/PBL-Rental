@@ -3,16 +3,7 @@
 @section('title', 'Katalog Produk - CosRent')
 
 @push('styles')
-    <style>
-        body {
-            background-color: #FFE4E1;   /* Warna misty-rose */
-        }
-        .glass-card {
-            background-color: rgba(68, 48, 37, 0.05);
-            backdrop-filter: blur(10px);
-        }
-    </style>
-@endpush
+    @vite(['resources/css/pages/product.css'])
 
 @section('content')
     <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full flex flex-col gap-8">

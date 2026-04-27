@@ -1,0 +1,7 @@
+        body {
+            background-color: #FFE4E1; /* misty-rose */
+        }
+        .glass-card {
+            background-color: rgba(68, 48, 37, 0.05);
+            backdrop-filter: blur(10px);
+        }

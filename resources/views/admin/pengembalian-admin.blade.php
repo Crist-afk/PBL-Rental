@@ -4,57 +4,6 @@
 
 @push('styles')
     @vite(['resources/css/admin/pengembalian.css', 'resources/js/admin/pengembalian.js'])
-    <style>
-      .status-options {
-        display: flex;
-        gap: 8px;
-      }
-      .status-opt {
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-        border: 1px solid transparent;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        background: rgba(0,0,0,0.05);
-        color: var(--text-3);
-      }
-      .status-opt.unpaid.active {
-        background: rgba(239,68,68,0.1);
-        color: #ef4444;
-        border-color: rgba(239,68,68,0.2);
-      }
-      .status-opt.paid.active {
-        background: rgba(16,185,129,0.1);
-        color: #10b981;
-        border-color: rgba(16,185,129,0.2);
-      }
-      .status-opt:hover:not(.active) {
-        background: rgba(0,0,0,0.1);
-      }
-      td {
-        padding: 14px 10px !important;
-        font-size: 11.5px !important;
-      }
-      th {
-        padding: 12px 10px !important;
-        font-size: 10px !important;
-      }
-      .customer-name {
-        font-size: 12.5px !important;
-      }
-      .order-id {
-        font-size: 10px !important;
-      }
-      .btn-action {
-        transform: scale(0.9);
-        transform-origin: center;
-      }
-    </style>
 @endpush
 
 @section('content')
@@ -611,18 +560,4 @@
     </div>
   </div>
 </div>
-<script>
-  function setStatusDenda(status) {
-    const unpaid = document.getElementById('opt-unpaid');
-    const paid = document.getElementById('opt-paid');
-    
-    if (status === 'paid') {
-      paid.classList.add('active');
-      unpaid.classList.remove('active');
-    } else {
-      unpaid.classList.add('active');
-      paid.classList.remove('active');
-    }
-  }
-</script>
 @endsection

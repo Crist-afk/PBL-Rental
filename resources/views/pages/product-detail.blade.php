@@ -3,16 +3,7 @@
 @section('title', 'Sewa ' . $kostum->nama_kostum . ' - CosRent')
 
 @push('styles')
-    <style>
-        body {
-            background-color: #FFE4E1; /* misty-rose */
-        }
-        .glass-card {
-            background-color: rgba(68, 48, 37, 0.05);
-            backdrop-filter: blur(10px);
-        }
-    </style>
-@endpush
+    @vite(['resources/css/pages/product-detail.css'])
 
 @section('content')
     <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full flex flex-col gap-8">
@@ -205,17 +196,5 @@
 @endsection
 
 @push('scripts')
-<script>
-    const tglSewa    = document.getElementById('tanggal_sewa');
-    const tglKembali = document.getElementById('tanggal_kembali');
-
-    if (tglSewa && tglKembali) {
-        tglSewa.addEventListener('change', function () {
-            tglKembali.min = this.value;
-            if (tglKembali.value && tglKembali.value < this.value) {
-                tglKembali.value = this.value;
-            }
-        });
-    }
-</script>
+    @vite(['resources/js/pages/product-detail.js'])
 @endpush

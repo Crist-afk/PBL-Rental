@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaksi;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardPelangganController extends Controller
 {
@@ -105,6 +107,23 @@ class DashboardPelangganController extends Controller
      */
     public function riwayat()
     {
-        return view('pages.Riwayat');
+        $historyItems = Transaksi::with(['detailTransaksi.kostum'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('pages.Riwayat', compact('historyItems'));
+    }
+
+    /**
+     * Menampilkan Halaman Faktur
+     */
+    public function faktur($id)
+    {
+        $transaksi = Transaksi::with(['detailTransaksi.kostum', 'user'])
+            ->where('user_id', Auth::id())
+            ->findOrFail($id);
+
+        return view('pages.Faktur', compact('transaksi'));
     }
 }

@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/booking', [DashboardPelangganController::class, 'booking'])->name('booking.index');
     Route::post('/booking', [DashboardPelangganController::class, 'storeBooking'])->name('booking.store');
     Route::get('/riwayat', [DashboardPelangganController::class, 'riwayat'])->name('riwayat.index');
+    Route::get('/riwayat/{id}/faktur', [DashboardPelangganController::class, 'faktur'])->name('riwayat.faktur');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');

@@ -70,9 +70,9 @@
                                 <span class="block text-[10px] font-bold text-dark-chocolate/60 uppercase tracking-widest">Total Harga</span>
                                 <span class="font-bold text-xl text-dark-chocolate">Rp {{ number_format($rental['price'], 0, ',', '.') }}</span>
                             </div>
-                            <button class="bg-dark-chocolate text-misty-rose px-6 py-2.5 rounded-full text-sm font-bold hover:bg-black transition sm:mt-3 whitespace-nowrap">
+                            <a href="{{ route('riwayat.faktur', $rental['id']) }}" class="bg-dark-chocolate text-misty-rose px-6 py-2.5 rounded-full text-sm font-bold hover:bg-black transition sm:mt-3 whitespace-nowrap inline-flex items-center justify-center">
                                 <i class="fa-solid fa-receipt mr-1"></i> Detail
-                            </button>
+                            </a>
                         </div>
                     </article>
                     @empty
@@ -132,7 +132,7 @@
                 <div class="glass-card rounded-[2rem] p-6 md:p-8 border-2 border-dark-chocolate/10 shadow-xl">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="font-bold text-xl text-dark-chocolate"><i class="fa-solid fa-clock-rotate-left text-aloewood mr-2"></i>Riwayat</h3>
-                        <a href="#" class="text-xs font-bold text-sakura hover:text-dark-chocolate transition">Lihat Semua</a>
+                        <a href="{{ route('riwayat.index') }}" class="text-xs font-bold text-sakura hover:text-dark-chocolate transition">Lihat Semua</a>
                     </div>
                     
                     <div class="space-y-4">

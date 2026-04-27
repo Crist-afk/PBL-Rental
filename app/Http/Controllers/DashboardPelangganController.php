@@ -13,62 +13,56 @@ class DashboardPelangganController extends Controller
      */
     public function index()
     {
-        // Data Dummy
+        $userId = Auth::id();
+
+        // Stats
         $stats = [
-            'active_rentals' => 3,
-            'total_rentals'  => 17,
+            'active_rentals' => Transaksi::where('user_id', $userId)->where('status', 'Disewa')->count(),
+            'total_rentals'  => Transaksi::where('user_id', $userId)->count(),
         ];
 
-        $current_rentals = [
-            [
-                'id'          => 1,
-                'title'       => 'Raiden Shogun - Genshin Impact',
-                'size'        => 'M',
-                'return_date' => '18 April 2026',
-                'price'       => 180000,
-                'color'       => 'bg-dark-chocolate',
-                'image'       => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s'
-            ],
-            [
-                'id'          => 2,
-                'title'       => 'Monkey D. Luffy - One Piece',
-                'size'        => 'L',
-                'return_date' => '20 April 2026',
-                'price'       => 120000,
-                'color'       => 'bg-aloewood',
-                'image'       => 'https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e'
-            ],
-        ];
+        // Active Rentals (Kostum Sedang Disewa)
+        $current_rentals = Transaksi::with(['detailTransaksi.kostum'])
+            ->where('user_id', $userId)
+            ->where('status', 'Disewa')
+            ->get()
+            ->map(function ($t) {
+                $firstDetail = $t->detailTransaksi->first();
+                $kostum = $firstDetail ? $firstDetail->kostum : null;
+                return [
+                    'id'          => $t->id,
+                    'title'       => $kostum ? $kostum->nama_kostum : 'Transaksi #' . $t->id,
+                    'size'        => $kostum ? $kostum->ukuran : 'N/A', // Assuming first size or simple size
+                    'return_date' => \Carbon\Carbon::parse($t->tanggal_selesai)->format('d F Y'),
+                    'price'       => $t->total_biaya,
+                    'image'       => $kostum ? $kostum->gambar_url : null
+                ];
+            });
 
-        $recent_history = [
-            [
-                'title'  => 'Kafka - Honkai: Star Rail',
-                'date'   => '5 April 2026',
-                'price'  => 200000,
-                'status' => 'Selesai'
-            ],
-            [
-                'title'  => 'Spider-Man (Marvel)',
-                'date'   => '28 Maret 2026',
-                'price'  => 150000,
-                'status' => 'Selesai'
-            ],
-        ];
+        // Recent History
+        $recent_history = Transaksi::where('user_id', $userId)
+            ->whereIn('status', ['Selesai', 'Batal'])
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get()
+            ->map(function ($t) {
+                return [
+                    'title'  => $t->detailTransaksi->first()?->kostum->nama_kostum ?? 'Transaksi #' . $t->id,
+                    'date'   => \Carbon\Carbon::parse($t->tanggal_mulai)->format('j M Y'),
+                    'price'  => $t->total_biaya,
+                    'status' => $t->status
+                ];
+            });
 
-        $recommendations = [
-            [
-                'title'    => 'Yae Miko',
-                'category' => 'Genshin Impact',
+        // Recommendations (Static for now, but can be improved)
+        $recommendations = \App\Models\Kostum::inRandomOrder()->limit(5)->get()->map(function($k) {
+            return [
+                'title'    => $k->nama_kostum,
+                'category' => $k->kategori->nama_kategori ?? 'Umum',
                 'color'    => 'bg-milk-tea',
-                'image'    => 'https://ae01.alicdn.com/kf/S5c23516ed69b45b3ae3f35e3fbad217d6.jpg'
-            ],
-            [
-                'title'    => 'Gojo Satoru',
-                'category' => 'Jujutsu Kaisen',
-                'color'    => 'bg-sakura',
-                'image'    => 'https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg'
-            ],
-        ];
+                'image'    => $k->gambar_url
+            ];
+        });
 
         return view('pages.DashPelanggan', compact(
             'stats', 

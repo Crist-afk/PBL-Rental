@@ -64,4 +64,26 @@ class ProfileController extends Controller
 
         return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui!');
     }
+
+    // Memproses update foto sampul
+    public function updateCover(Request $request)
+    {
+        $request->validate([
+            'cover_photo' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $user = $request->user();
+
+        if ($request->hasFile('cover_photo')) {
+            if ($user->cover_photo && Storage::exists('public/' . $user->cover_photo)) {
+                Storage::delete('public/' . $user->cover_photo);
+            }
+
+            $path = $request->file('cover_photo')->store('covers', 'public');
+            $user->cover_photo = $path;
+            $user->save();
+        }
+
+        return redirect()->route('profile')->with('success', 'Foto sampul berhasil diperbarui!');
+    }
 }

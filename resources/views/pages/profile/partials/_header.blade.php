@@ -1,18 +1,27 @@
 <div class="glass-card mb-8 overflow-hidden rounded-[2rem] border-2 border-dark-chocolate/10 shadow-xl">
     <div class="relative h-48 w-full group md:h-64">
-        <img
-            src="https://images.unsplash.com/photo-1541959833400-049d37f98ccd?q=80&w=1200&auto=format&fit=crop"
-            alt="Sampul profil"
-            class="h-full w-full object-cover"
-        >
-        <div class="absolute inset-0 bg-dark-chocolate/30 transition duration-300 group-hover:bg-dark-chocolate/10"></div>
-        <button
-            type="button"
-            title="Fitur ubah sampul belum tersedia"
-            class="absolute right-4 top-4 rounded-full border border-white/20 bg-dark-chocolate/60 px-4 py-2 text-xs font-bold text-misty-rose backdrop-blur-sm transition hover:bg-sakura hover:text-dark-chocolate"
-        >
-            <i class="fa-solid fa-camera mr-2"></i> Sampul
-        </button>
+        @if($user->cover_photo)
+            <img
+                src="{{ asset('storage/' . $user->cover_photo) }}"
+                alt="Sampul profil"
+                class="h-full w-full object-cover"
+            >
+        @else
+            <img
+                src="https://images.unsplash.com/photo-1541959833400-049d37f98ccd?q=80&w=1200&auto=format&fit=crop"
+                alt="Sampul profil bawaan"
+                class="h-full w-full object-cover"
+            >
+        @endif
+
+        <form action="{{ route('profile.updateCover') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <label for="customerCoverUpload" class="absolute inset-0 bg-dark-chocolate/30 transition duration-300 group-hover:bg-dark-chocolate/10 cursor-pointer"></label>
+            <label for="customerCoverUpload" class="absolute right-4 top-4 cursor-pointer rounded-full border border-white/20 bg-dark-chocolate/60 px-4 py-2 text-xs font-bold text-misty-rose backdrop-blur-sm transition hover:bg-sakura hover:text-dark-chocolate z-10">
+                <i class="fa-solid fa-camera mr-2"></i> Ubah Sampul
+            </label>
+            <input type="file" id="customerCoverUpload" name="cover_photo" class="hidden" accept="image/*" onchange="this.form.submit()">
+        </form>
     </div>
 
     <div class="relative px-6 pb-8 md:px-10">

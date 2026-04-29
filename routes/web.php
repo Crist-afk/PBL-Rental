@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/cover', [ProfileController::class, 'updateCover'])->name('profile.updateCover');
     Route::get('/admin/profil', [\App\Http\Controllers\Admin\AdminProfileController::class, 'edit'])->name('admin.profile');
     Route::put('/admin/profil', [\App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('admin.profile.update');
     Route::post('/admin/profil/avatar', [\App\Http\Controllers\Admin\AdminProfileController::class, 'updateAvatar'])->name('admin.profile.avatar');

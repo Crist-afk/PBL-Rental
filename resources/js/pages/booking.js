@@ -32,6 +32,7 @@ if (window.bookingSuccessMessage) {
             const selectedOption = kostumSelect.options[kostumSelect.selectedIndex];
             const imageUrl = selectedOption.getAttribute('data-image');
             const costumeName = selectedOption.text;
+            const sizesString = selectedOption.getAttribute('data-sizes');
 
             if (imageUrl) {
                 previewImage.src = imageUrl;
@@ -40,6 +41,31 @@ if (window.bookingSuccessMessage) {
                 previewContainer.classList.add('animate-fade-in');
             } else {
                 previewContainer.classList.add('hidden');
+            }
+
+            // Update Sizes Dynamically
+            const sizeContainer = document.getElementById('size-container');
+            if (sizeContainer && sizesString) {
+                const sizes = sizesString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+                const finalSizes = sizes.length > 0 ? sizes : ['All Size'];
+                const selectedSize = sizeContainer.getAttribute('data-selected');
+                
+                sizeContainer.innerHTML = '';
+                
+                finalSizes.forEach((size, index) => {
+                    const isChecked = selectedSize === size || (!selectedSize && index === 0);
+                    const label = document.createElement('label');
+                    label.className = 'cursor-pointer';
+                    label.innerHTML = `
+                        <input type="radio" name="size" value="${size}" class="peer sr-only" ${isChecked ? 'checked' : ''} ${index === 0 ? 'required' : ''}>
+                        <div class="min-w-[3rem] px-4 py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/10 font-black text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition-all duration-300 shadow-sm hover:scale-105 bg-white/40 hover:border-sakura/50 peer-checked:shadow-sakura/20 peer-checked:shadow-lg">
+                            ${size}
+                        </div>
+                    `;
+                    sizeContainer.appendChild(label);
+                });
+            } else if (sizeContainer) {
+                sizeContainer.innerHTML = '<p class="text-sm font-medium text-dark-chocolate/50 italic py-2">Pilih kostum terlebih dahulu untuk melihat ukuran.</p>';
             }
         }
 

@@ -119,13 +119,21 @@
 
                         {{-- Size Selection --}}
                         <div>
-                            <label class="block text-sm font-bold text-dark-chocolate mb-3">Pilih Ukuran</label>
+                            <div class="flex justify-between items-center mb-3">
+                                <label class="block text-sm font-bold text-dark-chocolate">Pilih Ukuran</label>
+                                <button type="button" onclick="document.getElementById('sizeChartModal').classList.remove('hidden')" class="text-xs font-bold text-sakura hover:text-dark-chocolate transition flex items-center gap-1">
+                                    <i class="fa-solid fa-ruler"></i> Panduan Ukuran (cm)
+                                </button>
+                            </div>
                             <div class="flex flex-wrap gap-3">
-                                @foreach(['S', 'M', 'L', 'XL'] as $size)
+                                @php
+                                    $availableSizes = $kostum->ukuran ? array_map('trim', explode(',', $kostum->ukuran)) : ['All Size'];
+                                @endphp
+                                @foreach($availableSizes as $size)
                                     <label class="cursor-pointer">
                                         <input type="radio" name="size" value="{{ $size }}" class="peer sr-only"
                                                {{ $loop->first ? 'required' : '' }}>
-                                        <div class="w-12 h-12 flex items-center justify-center rounded-xl border-2 border-dark-chocolate/20 font-bold text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition shadow-sm hover:border-sakura">
+                                        <div class="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-xl border-2 border-dark-chocolate/20 font-bold text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition shadow-sm hover:border-sakura">
                                             {{ $size }}
                                         </div>
                                     </label>
@@ -185,6 +193,65 @@
         </div>
 
     </main>
+
+    {{-- Size Chart Modal --}}
+    <div id="sizeChartModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300">
+        <div class="glass-card bg-white/95 rounded-[2rem] border-2 border-sakura/20 p-6 md:p-8 shadow-2xl max-w-lg w-full relative">
+            <button type="button" onclick="document.getElementById('sizeChartModal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-dark-chocolate/10 text-dark-chocolate rounded-full hover:bg-dark-chocolate hover:text-misty-rose transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-2xl font-black text-dark-chocolate mb-6 text-center"><i class="fa-solid fa-ruler-combined text-sakura mr-2"></i>Panduan Ukuran (cm)</h3>
+            <div class="overflow-x-auto rounded-[1.5rem] border border-dark-chocolate/10">
+                <table class="w-full text-sm text-left text-dark-chocolate">
+                    <thead class="bg-sakura/20 font-bold uppercase text-[10px] tracking-widest text-dark-chocolate text-center">
+                        <tr>
+                            <th class="px-4 py-4">Ukuran</th>
+                            <th class="px-4 py-4">Dada</th>
+                            <th class="px-4 py-4">Pinggang</th>
+                            <th class="px-4 py-4">Tinggi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-dark-chocolate/10 text-center font-medium bg-white/50">
+                        <tr class="hover:bg-dark-chocolate/5 transition">
+                            <td class="px-4 py-3 font-black text-sakura">S</td>
+                            <td class="px-4 py-3">80 - 84</td>
+                            <td class="px-4 py-3">60 - 64</td>
+                            <td class="px-4 py-3">150 - 155</td>
+                        </tr>
+                        <tr class="hover:bg-dark-chocolate/5 transition">
+                            <td class="px-4 py-3 font-black text-sakura">M</td>
+                            <td class="px-4 py-3">85 - 89</td>
+                            <td class="px-4 py-3">65 - 69</td>
+                            <td class="px-4 py-3">156 - 160</td>
+                        </tr>
+                        <tr class="hover:bg-dark-chocolate/5 transition">
+                            <td class="px-4 py-3 font-black text-sakura">L</td>
+                            <td class="px-4 py-3">90 - 94</td>
+                            <td class="px-4 py-3">70 - 74</td>
+                            <td class="px-4 py-3">161 - 165</td>
+                        </tr>
+                        <tr class="hover:bg-dark-chocolate/5 transition">
+                            <td class="px-4 py-3 font-black text-sakura">XL</td>
+                            <td class="px-4 py-3">95 - 99</td>
+                            <td class="px-4 py-3">75 - 79</td>
+                            <td class="px-4 py-3">166 - 170</td>
+                        </tr>
+                        <tr class="hover:bg-dark-chocolate/5 transition">
+                            <td class="px-4 py-3 font-black text-sakura">XXL</td>
+                            <td class="px-4 py-3">100 - 104</td>
+                            <td class="px-4 py-3">80 - 84</td>
+                            <td class="px-4 py-3">171 - 175</td>
+                        </tr>
+                        <tr class="hover:bg-dark-chocolate/5 transition">
+                            <td class="px-4 py-3 font-black text-sakura">All Size</td>
+                            <td class="px-4 py-3" colspan="3">Menyesuaikan bentuk tubuh (fit S to L)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-[10px] font-bold text-dark-chocolate/50 text-center mt-4 uppercase tracking-widest">*Toleransi ukuran 1-3 cm dari aslinya</p>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')

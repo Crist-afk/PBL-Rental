@@ -79,7 +79,7 @@
 
                 <div class="relative z-10">
                     <div class="w-20 h-20 bg-sakura text-dark-chocolate rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg">
-                        🎭
+                        <img src="{{ asset('images/Logo-CosRent.png') }}" alt="CosRent Logo" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: center 20%; border: 2px solid rgba(236,156,157,0.6); box-shadow: 0 2px 10px rgba(236,156,157,0.4); flex-shrink: 0;">
                     </div>
                     <h2 class="text-3xl md:text-4xl font-bold text-misty-rose mb-4">Selamat Datang Kembali!</h2>
                     <p class="text-misty-rose/80 mb-8 leading-relaxed font-medium">

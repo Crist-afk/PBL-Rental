@@ -29,7 +29,7 @@
         </div>
 
         <div class="mt-16 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border-4 border-dark-chocolate bg-dark-chocolate reveal delay-200" data-reveal="up">
-            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80" alt="Cosplay Landscape" class="w-full h-auto object-cover opacity-80">
+            <img src="{{ asset('images/pixel_cosrent.png') }}" alt="CosRent Banner" class="w-full h-auto object-cover opacity-80">
         </div>
     </section>
 

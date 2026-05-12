@@ -85,9 +85,15 @@
                             <a href="{{ route('riwayat.faktur', $item->id) }}" class="flex-1 lg:flex-none px-6 py-3 bg-white/80 border-2 border-dark-chocolate/5 rounded-full text-[10px] font-black text-dark-chocolate uppercase tracking-[0.2em] hover:bg-dark-chocolate hover:text-white transition-all shadow-sm flex items-center justify-center">
                                 <i class="fa-solid fa-file-invoice mr-2"></i>Faktur
                             </a>
-                            <button class="flex-1 lg:flex-none px-8 py-3 bg-dark-chocolate text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl">
+                            @if($kostum)
+                            <a href="{{ route('products.show', $kostum->id) }}" class="flex-1 lg:flex-none px-8 py-3 bg-dark-chocolate text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl text-center flex items-center justify-center">
+                                Detail
+                            </a>
+                            @else
+                            <button disabled class="flex-1 lg:flex-none px-8 py-3 bg-dark-chocolate/50 text-white/70 rounded-full text-[10px] font-black uppercase tracking-[0.2em] cursor-not-allowed shadow-xl">
                                 Detail
                             </button>
+                            @endif
                         </div>
                     </div>
                 </article>

@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->string('nama_kostum');
             $table->integer('stok');
+            $table->json('stok_per_ukuran')->nullable(); // JSON: {"S": 1, "M": 2}
             $table->integer('harga_sewa');
             $table->string('ukuran', 10); // Menyimpan S, M, L, XL
             $table->text('kelengkapan')->nullable(); // Deskripsi wig, aksesoris, dll

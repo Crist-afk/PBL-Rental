@@ -131,13 +131,18 @@
                                 @endphp
                                 @foreach($availableSizes as $size)
                                     <label class="cursor-pointer">
-                                        <input type="radio" name="size" value="{{ $size }}" class="peer sr-only"
+                                        <input type="radio" name="size" value="{{ $size }}" class="peer sr-only size-radio"
                                                {{ $loop->first ? 'required' : '' }}>
                                         <div class="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-xl border-2 border-dark-chocolate/20 font-bold text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition shadow-sm hover:border-sakura">
                                             {{ $size }}
                                         </div>
                                     </label>
                                 @endforeach
+                            </div>
+                            {{-- Info Stok yang muncul saat ukuran diklik --}}
+                            <div id="stock-info" class="hidden mt-3 px-4 py-2 bg-sakura/10 rounded-xl border border-sakura/20 text-sm font-bold text-dark-chocolate flex items-center gap-2 transition-all duration-300">
+                                <i class="fa-solid fa-box-open text-sakura"></i>
+                                <span>Sisa stok ukuran <span id="selected-size-text" class="text-sakura"></span>: <span class="text-sakura">{{ $kostum->stok }}</span> unit</span>
                             </div>
                         </div>
 
@@ -165,7 +170,7 @@
 
                         {{-- CTA Button --}}
                         @auth
-                            <button type="submit"
+                            <button type="submit" id="btn-sewa-sekarang"
                                     class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
                                 <i class="fa-solid fa-cart-shopping"></i> Rent Now
                             </button>
@@ -256,4 +261,55 @@
 
 @push('scripts')
     @vite(['resources/js/pages/product-detail.js'])
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sizeRadios = document.querySelectorAll('input[name="size"]');
+            const stockInfo = document.getElementById('stock-info');
+            const selectedSizeText = document.getElementById('selected-size-text');
+            const stokValueSpan = stockInfo ? stockInfo.querySelector('span.text-sakura:last-child') : null;
+            const sewaBtn = document.getElementById('btn-sewa-sekarang'); // Tambahkan id ini ke button sewa jika belum ada
+
+            // Data stok per ukuran dari backend
+            const stokPerUkuran = {!! $kostum->stok_per_ukuran ? json_encode($kostum->stok_per_ukuran) : '{}' !!};
+            const totalStok = {{ $kostum->stok }};
+
+            if (sizeRadios.length > 0 && stockInfo && selectedSizeText) {
+                sizeRadios.forEach(radio => {
+                    radio.addEventListener('change', function() {
+                        if (this.checked) {
+                            const selectedSize = this.value;
+                            selectedSizeText.textContent = selectedSize;
+                            
+                            // Cek stok spesifik ukuran
+                            let sisaStok = 0;
+                            if (stokPerUkuran.hasOwnProperty(selectedSize)) {
+                                sisaStok = stokPerUkuran[selectedSize];
+                            } else {
+                                // Fallback jika tidak ada data JSON
+                                sisaStok = totalStok;
+                            }
+                            
+                            if (stokValueSpan) {
+                                stokValueSpan.textContent = sisaStok;
+                            }
+                            stockInfo.classList.remove('hidden');
+
+                            // Disable tombol sewa jika stok ukuran habis
+                            if (sewaBtn) {
+                                if (sisaStok <= 0) {
+                                    sewaBtn.disabled = true;
+                                    sewaBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                                    sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> Stok Ukuran Habis';
+                                } else {
+                                    sewaBtn.disabled = false;
+                                    sewaBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                    sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Sewa Sekarang';
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 @endpush

@@ -58,12 +58,35 @@ Route::middleware(['auth'])->group(function () {
 // ==================== ADMIN ====================
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/kostum', [AdminController::class, 'kostum'])->name('kostum');
-    Route::get('/pembayaran', [AdminController::class, 'pembayaran'])->name('pembayaran');
-    Route::get('/pengembalian', [AdminController::class, 'pengembalian'])->name('pengembalian');
-    Route::get('/riwayat', [AdminController::class, 'riwayat'])->name('riwayat');
-    Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
 
+    // ── Kostum CRUD ──
+    Route::get('/kostum', [AdminController::class, 'kostum'])->name('kostum');
+    Route::post('/kostum', [AdminController::class, 'kostumStore'])->name('kostum.store');
+    Route::put('/kostum/{id}', [AdminController::class, 'kostumUpdate'])->name('kostum.update');
+    Route::delete('/kostum/{id}', [AdminController::class, 'kostumDestroy'])->name('kostum.destroy');
+
+    // ── Kategori CRUD ──
+    Route::post('/kategori', [AdminController::class, 'kategoriStore'])->name('kategori.store');
+    Route::delete('/kategori/{id}', [AdminController::class, 'kategoriDestroy'])->name('kategori.destroy');
+
+    // ── Pembayaran ──
+    Route::get('/pembayaran', [AdminController::class, 'pembayaran'])->name('pembayaran');
+    Route::post('/pembayaran/{id}/setujui', [AdminController::class, 'pembayaranSetujui'])->name('pembayaran.setujui');
+    Route::post('/pembayaran/{id}/tolak', [AdminController::class, 'pembayaranTolak'])->name('pembayaran.tolak');
+
+    // ── Pengembalian ──
+    Route::get('/pengembalian', [AdminController::class, 'pengembalian'])->name('pengembalian');
+    Route::post('/pengembalian/{id}/kembali', [AdminController::class, 'pengembalianKembali'])->name('pengembalian.kembali');
+
+    // ── Riwayat ──
+    Route::get('/riwayat', [AdminController::class, 'riwayat'])->name('riwayat');
+    Route::get('/riwayat/user/{id}', [AdminController::class, 'riwayatUser'])->name('riwayat.user');
+
+    // ── Pengguna ──
+    Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
+    Route::delete('/pengguna/{id}', [AdminController::class, 'penggunaDestroy'])->name('pengguna.destroy');
+
+    // ── Profil Admin ──
     Route::get('/profil', [AdminProfileController::class, 'edit'])->name('profile');
     Route::put('/profil', [AdminProfileController::class, 'update'])->name('profile.update');
     Route::post('/profil/avatar', [AdminProfileController::class, 'updateAvatar'])->name('profile.avatar');

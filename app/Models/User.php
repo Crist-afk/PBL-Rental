@@ -19,6 +19,7 @@ class User extends Authenticatable
         'avatar',
         'cover_photo',
         'bio', // Kolom tambahan untuk profil
+        'no_hp',
     ];
 
     // HIDDEN: Menyembunyikan atribut sensitif agar tidak bocor saat data diubah ke array/JSON
@@ -35,5 +36,10 @@ class User extends Authenticatable
     public function forumComments()
     {
         return $this->hasMany(ForumComment::class, 'user_id');
+    }
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'user_id');
     }
 }

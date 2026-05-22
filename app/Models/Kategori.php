@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Kategori extends Model
 {
     protected $table = 'kategori';
-    protected $guarded = ['id'];
+
+    protected $fillable = [
+        'nama_kategori',
+        'franchise',
+    ];
 
     // Relasi: Satu kategori memiliki banyak kostum
     public function kostum()

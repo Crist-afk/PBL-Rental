@@ -131,8 +131,19 @@ class DashboardPelangganController extends Controller
                 'harga_sewa_saat_transaksi' => $total_biaya
             ]);
 
-            // Kurangi Stok Kostum
-            $kostum->decrement('stok');
+            // Kurangi Stok Kostum (Total dan Per Ukuran)
+            $size = $request->size;
+            $stokPerUkuran = $kostum->stok_per_ukuran;
+            
+            if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size]) && $stokPerUkuran[$size] > 0) {
+                $stokPerUkuran[$size] -= 1;
+                $kostum->stok_per_ukuran = $stokPerUkuran;
+            }
+            
+            if ($kostum->stok > 0) {
+                $kostum->stok -= 1;
+            }
+            $kostum->save();
 
             \Illuminate\Support\Facades\DB::commit();
             

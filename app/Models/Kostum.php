@@ -12,10 +12,15 @@ class Kostum extends Model
         'kategori_id',
         'nama_kostum',
         'stok',
+        'stok_per_ukuran',
         'harga_sewa',
         'ukuran',
         'kelengkapan',
         'gambar'
+    ];
+
+    protected $casts = [
+        'stok_per_ukuran' => 'array',
     ];
 
     // Relasi: Satu kostum dimiliki oleh satu kategori (BelongsTo)

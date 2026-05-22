@@ -10,8 +10,8 @@ const closeModalBtn  = document.getElementById('closeModalBtn');
 function openModal(userId) {
     // Show a loading state inside the modal first
     document.getElementById('modalAvatar').textContent   = '...';
-    document.getElementById('modalTitle').textContent    = 'Memuat Data...';
-    document.getElementById('modalSubtitle').textContent = 'Silakan tunggu';
+    document.getElementById('modalTitle').textContent    = 'Loading Data...';
+    document.getElementById('modalSubtitle').textContent = 'Please wait';
 
     document.getElementById('mstatTotal').textContent   = '...';
     document.getElementById('mstatSelesai').textContent = '...';
@@ -19,7 +19,7 @@ function openModal(userId) {
     document.getElementById('mstatTotal2').textContent  = '...';
     
     const tbody = document.getElementById('riwayatTableBody');
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">Memuat data riwayat pesanan...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">Loading order history...</td></tr>';
 
     // Show modal first so user knows it's fetching
     modalOverlay.classList.add('show');
@@ -27,7 +27,7 @@ function openModal(userId) {
 
     fetch(`/admin/riwayat/user/${userId}`)
         .then(response => {
-            if (!response.ok) throw new Error('Gagal mengambil data');
+            if (!response.ok) throw new Error('Failed to fetch data');
             return response.json();
         })
         .then(data => {
@@ -36,11 +36,11 @@ function openModal(userId) {
 
             // Set header
             document.getElementById('modalAvatar').textContent   = u.nama.charAt(0).toUpperCase();
-            document.getElementById('modalTitle').textContent    = 'Katalog Pesanan — ' + u.nama;
+            document.getElementById('modalTitle').textContent    = 'Order Catalog — ' + u.nama;
             document.getElementById('modalSubtitle').textContent = u.email + (u.no_hp ? ' | ' + u.no_hp : '');
 
             // Compute stats
-            document.getElementById('mstatTotal').textContent   = u.total_transaksi + ' Order';
+            document.getElementById('mstatTotal').textContent   = u.total_transaksi + ' Orders';
             document.getElementById('mstatSelesai').textContent = u.total_selesai;
             document.getElementById('mstatBerjalan').textContent = u.total_disewa;
             document.getElementById('mstatTotal2').textContent  = rupiah(u.total_bayar || 0);
@@ -48,7 +48,7 @@ function openModal(userId) {
             // Render table rows
             tbody.innerHTML = '';
             if (orders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px; color:var(--text-3);">Belum ada riwayat pesanan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px; color:var(--text-3);">No order history yet.</td></tr>';
                 return;
             }
 
@@ -56,7 +56,12 @@ function openModal(userId) {
                 const total = order.total_biaya;
                 const statusClass = order.status === 'Selesai' ? 'selesai'
                                   : (order.status === 'Disewa' ? 'berjalan' : 'batal');
-                const statusLabel = order.status;
+                const statusMap = {
+                    'Selesai': 'Completed',
+                    'Disewa': 'Rented',
+                    'Batal': 'Cancelled'
+                };
+                const statusLabel = statusMap[order.status] || order.status;
                 const dendaHtml = order.total_denda > 0
                     ? `<span class="denda-val">+${rupiah(order.total_denda)}</span>`
                     : `<span class="denda-none">—</span>`;
@@ -82,9 +87,9 @@ function openModal(userId) {
         })
         .catch(err => {
             console.error(err);
-            document.getElementById('modalTitle').textContent = 'Kesalahan';
-            document.getElementById('modalSubtitle').textContent = 'Gagal memuat data pengguna.';
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px; color:var(--red);">Gagal memuat data dari server. Silakan coba lagi.</td></tr>';
+            document.getElementById('modalTitle').textContent = 'Error';
+            document.getElementById('modalSubtitle').textContent = 'Failed to load user data.';
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px; color:var(--red);">Failed to load data from server. Please try again.</td></tr>';
         });
 }
 

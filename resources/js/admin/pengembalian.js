@@ -9,7 +9,7 @@ window.openModalDenda = function(orderId, penyewa, kostum, tglWajib, hariTerlamb
     document.getElementById('denda-order-id').textContent = '#' + orderId;
     document.getElementById('denda-penyewa').textContent = penyewa;
     document.getElementById('denda-kostum').textContent = kostum;
-    document.getElementById('denda-hari').textContent = hariTerlambat + ' HARI';
+    document.getElementById('denda-hari').textContent = hariTerlambat + ' DAYS';
     document.getElementById('denda-perhari').textContent = 'Rp ' + dendaPerHari.toLocaleString('id-ID');
     document.getElementById('denda-total').textContent = 'Rp ' + (hariTerlambat * dendaPerHari).toLocaleString('id-ID');
 
@@ -54,7 +54,7 @@ window.hitungKembaliDenda = function() {
     const kalk = document.getElementById('kembali-kalk');
     if (diff > 0) {
         kalk.style.display = 'block';
-        document.getElementById('kembali-hari').textContent = diff + ' HARI';
+        document.getElementById('kembali-hari').textContent = diff + ' DAYS';
         document.getElementById('kembali-total').textContent = 'Rp ' + (diff * 50000).toLocaleString('id-ID');
     } else {
         kalk.style.display = 'none';
@@ -76,12 +76,12 @@ window.selectKondisiK = function(btn, type) {
 }
 
 window.simpanDenda = function() {
-    alert('✅ Data pengembalian & denda berhasil disimpan!');
+    alert('✅ Return & penalty data saved successfully!');
     window.closeModal('modalDenda');
 }
 
 window.simpanKembali = function() {
-    alert('✅ Pengembalian kostum berhasil dicatat!');
+    alert('✅ Costume return recorded successfully!');
     window.closeModal('modalKembali');
 }
 
@@ -105,9 +105,9 @@ window.openModalDetail = function(orderId, penyewa, kostum, tglMulai, tglWajib, 
     const isTepat = status.toLowerCase().includes('tepat');
     const statusBadgeEl = document.getElementById('detail-status-badge');
     if (isTepat) {
-        statusBadgeEl.innerHTML = '<span class="badge-detail-tepat">✅ TEPAT WAKTU</span>';
+        statusBadgeEl.innerHTML = '<span class="badge-detail-tepat">✅ ON TIME</span>';
     } else {
-        statusBadgeEl.innerHTML = '<span class="badge-detail-terlambat">🔴 TERLAMBAT</span>';
+        statusBadgeEl.innerHTML = '<span class="badge-detail-terlambat">🔴 LATE</span>';
     }
 
     // Timeline
@@ -119,12 +119,17 @@ window.openModalDetail = function(orderId, penyewa, kostum, tglMulai, tglWajib, 
     const kondisiEl = document.getElementById('detail-kondisi-badge');
     const k = kondisi.toLowerCase();
     kondisiEl.className = 'kondisi-display ' + (k === 'baik' ? 'baik' : k === 'lecet' ? 'lecet' : 'rusak');
-    kondisiEl.textContent = kondisi.toUpperCase();
+    const kondisiMap = {
+        'baik': 'GOOD',
+        'lecet': 'SCRATCHED',
+        'rusak': 'DAMAGED'
+    };
+    kondisiEl.textContent = kondisiMap[k] || kondisi.toUpperCase();
 
     // Keterlambatan
     const terlambatEl = document.getElementById('detail-terlambat');
     if (isTepat) {
-        terlambatEl.textContent = '✓ Tepat Waktu';
+        terlambatEl.textContent = '✓ On Time';
         terlambatEl.style.color = 'var(--green)';
     } else {
         terlambatEl.textContent = status;
@@ -143,9 +148,9 @@ window.openModalDetail = function(orderId, penyewa, kostum, tglMulai, tglWajib, 
     // Payment Badge
     const paymentEl = document.getElementById('detail-payment-badge');
     if (statusBayar.toLowerCase() === 'lunas') {
-        paymentEl.innerHTML = '<span class="badge-lunas">✅ LUNAS</span>';
+        paymentEl.innerHTML = '<span class="badge-lunas">✅ PAID</span>';
     } else {
-        paymentEl.innerHTML = '<span class="badge-belum-detail">💲 BELUM DIBAYAR</span>';
+        paymentEl.innerHTML = '<span class="badge-belum-detail">💲 UNPAID</span>';
     }
 
     document.getElementById('modalDetail').classList.add('open');

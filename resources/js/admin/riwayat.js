@@ -16,17 +16,17 @@ window.selectPelanggan = function(el, userId) {
   const avatar = document.getElementById('custAvatar');
   avatar.textContent = '...';
   avatar.style.background = '#3b82f6';
-  document.getElementById('custName').textContent = 'Memuat...';
+  document.getElementById('custName').textContent = 'Loading...';
   document.getElementById('custEmail').textContent = '';
   document.getElementById('custPhone').textContent = '';
   document.getElementById('custJoin').textContent = '';
 
   const list = document.getElementById('timelineList');
-  list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-3);">Memuat data timeline...</div>';
+  list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-3);">Loading timeline data...</div>';
 
   fetch(`/admin/riwayat/user/${userId}`)
     .then(response => {
-      if (!response.ok) throw new Error('Gagal memuat detail pelanggan');
+      if (!response.ok) throw new Error('Failed to load customer details');
       return response.json();
     })
     .then(data => {
@@ -42,29 +42,34 @@ window.selectPelanggan = function(el, userId) {
 
       list.innerHTML = '';
       if (orders.length === 0) {
-        list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-3);">Belum ada riwayat sewa.</div>';
+        list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-3);">No rental history yet.</div>';
         return;
       }
 
       orders.forEach(t => {
         const dotClass   = t.status === 'Selesai' ? 'green' : (t.status === 'Batal' ? 'red' : 'blue');
         const badgeClass = t.status === 'Selesai' ? 'selesai' : (t.status === 'Batal' ? 'batal' : 'berjalan');
-        const badgeLabel = t.status.toUpperCase();
+        const statusMap = {
+            'Selesai': 'COMPLETED',
+            'Batal': 'CANCELLED',
+            'Disewa': 'RENTED'
+        };
+        const badgeLabel = statusMap[t.status] || t.status.toUpperCase();
         
-        let infoText = 'TEPAT WAKTU';
+        let infoText = 'ON TIME';
         let infoClass = '';
         if (t.status === 'Disewa') {
-            infoText = 'SEDANG BERJALAN';
+            infoText = 'ONGOING';
             infoClass = 'blue';
         } else if (t.status === 'Batal') {
-            infoText = 'BATAL';
+            infoText = 'CANCELLED';
             infoClass = 'red';
         } else if (t.total_denda > 0) {
-            infoText = 'TERLAMBAT';
+            infoText = 'LATE';
             infoClass = 'red';
         }
 
-        const dendaHtml = t.total_denda > 0 ? `<span class="tl-denda">⚠ DENDA ${rupiah(t.total_denda)}</span>` : '';
+        const dendaHtml = t.total_denda > 0 ? `<span class="tl-denda">⚠ FINE ${rupiah(t.total_denda)}</span>` : '';
 
         list.innerHTML += `
           <div class="tl-item">
@@ -90,15 +95,15 @@ window.selectPelanggan = function(el, userId) {
     })
     .catch(err => {
       console.error(err);
-      document.getElementById('custName').textContent = 'Kesalahan';
-      list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--red);">Gagal mengambil riwayat dari server.</div>';
+      document.getElementById('custName').textContent = 'Error';
+      list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--red);">Failed to fetch history from server.</div>';
     });
 };
 
 window.exportPDF = function() {
-  alert('📄 Fitur Ekspor PDF akan segera hadir!');
+  alert('📄 PDF Export feature is coming soon!');
 };
 
 window.exportExcel = function() {
-  alert('📊 Fitur Ekspor Excel akan segera hadir!');
+  alert('📊 Excel Export feature is coming soon!');
 };

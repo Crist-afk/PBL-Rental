@@ -20,7 +20,7 @@ window.addEventListener('load', () => {
             data: {
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                 datasets: [{
-                    label: 'Penyewaan',
+                    label: 'Rentals',
                     data: [65, 85, 73, 110, 95, 130],
                     borderColor: '#EC9C9D', // var(--blue) from layout
                     backgroundColor: 'rgba(236, 156, 157, 0.2)',
@@ -51,7 +51,7 @@ window.addEventListener('load', () => {
                         displayColors: false,
                         callbacks: {
                             label: function(context) {
-                                return context.parsed.y + ' Kali Disewa';
+                                return context.parsed.y + ' Times Rented';
                             }
                         }
                     }

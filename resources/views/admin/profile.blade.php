@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Profil Admin - CosRent')
+@section('title', 'Admin Profile - CosRent')
 
 @push('styles')
 <style>
@@ -247,8 +247,8 @@
     <div class="main-inner max-w-6xl mx-auto w-full">
         {{-- Page Header --}}
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">Profil Admin</h1>
-            <p class="text-sm text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">Kelola informasi akun dan pantau aktivitas sistem.</p>
+            <h1 class="text-2xl font-bold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">Admin Profile</h1>
+            <p class="text-sm text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">Manage account information and monitor admin activity.</p>
         </div>
 
         @if(session('success'))
@@ -283,7 +283,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
-                                <span class="text-xs font-medium">Ubah Sampul</span>
+                                <span class="text-xs font-medium">Change Cover</span>
                             </label>
                             <input type="file" id="cover_upload" name="cover_photo" class="hidden" onchange="this.form.submit()">
                         </form>
@@ -342,7 +342,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
                         </div>
-                        Informasi Akun
+                        Account Information
                     </h3>
                     
                     <form action="{{ route('admin.profile.update') }}" method="POST" class="space-y-4">
@@ -350,29 +350,29 @@
                         @method('PUT')
                         
                         <div>
-                            <label for="nama" class="block text-xs font-medium text-stone-600 [.dark-mode_&]:text-stone-300 mb-1 transition-all duration-300 ease-in-out">Nama Lengkap</label>
+                            <label for="nama" class="block text-xs font-medium text-stone-600 [.dark-mode_&]:text-stone-300 mb-1 transition-all duration-300 ease-in-out">Full Name</label>
                             <input type="text" name="nama" id="nama" value="{{ old('nama', auth()->user()->nama) }}" class="w-full text-sm rounded-lg border-stone-300 [.dark-mode_&]:border-stone-600 bg-transparent text-stone-900 [.dark-mode_&]:text-white focus:ring-[var(--text-primary,#443025)] focus:border-[var(--text-primary,#443025)] p-2.5 transition-all duration-300 ease-in-out">
                         </div>
                         
                         <div>
-                            <label for="email" class="block text-xs font-medium text-stone-600 [.dark-mode_&]:text-stone-300 mb-1 transition-all duration-300 ease-in-out">Surel</label>
+                            <label for="email" class="block text-xs font-medium text-stone-600 [.dark-mode_&]:text-stone-300 mb-1 transition-all duration-300 ease-in-out">Email</label>
                             <input type="email" name="email" id="email" value="{{ old('email', auth()->user()->email) }}" class="w-full text-sm rounded-lg border-stone-300 [.dark-mode_&]:border-stone-600 bg-transparent text-stone-900 [.dark-mode_&]:text-white focus:ring-[var(--text-primary,#443025)] focus:border-[var(--text-primary,#443025)] p-2.5 transition-all duration-300 ease-in-out">
                         </div>
 
                         <div class="pt-2">
                             <button type="submit" class="w-full bg-[var(--text-primary,#443025)] text-[var(--bg-card,var(--card-bg,#fff))] font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all shadow-sm duration-300 ease-in-out">
-                                Simpan Perubahan
+                                Save Changes
                             </button>
                         </div>
                     </form>
 
                     <div class="mt-4 pt-4 border-t border-[var(--border-color)] space-y-3 text-sm transition-all duration-300 ease-in-out">
                         <div class="flex justify-between items-center py-1">
-                            <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Peran Sistem</span>
+                            <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">System Role</span>
                             <span class="text-stone-900 [.dark-mode_&]:text-white font-semibold transition-all duration-300 ease-in-out">Admin</span>
                         </div>
                         <div class="flex justify-between items-center py-1">
-                            <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Bergabung</span>
+                            <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Joined</span>
                             <span class="text-stone-900 [.dark-mode_&]:text-white font-semibold transition-all duration-300 ease-in-out">{{ Auth::user()->created_at ? Auth::user()->created_at->format('d M Y') : '-' }}</span>
                         </div>
                     </div>
@@ -384,9 +384,9 @@
                 {{-- Quick Stats Grid --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                     <div class="bg-[var(--bg-card,var(--card-bg,#fff))] rounded-2xl border border-[var(--border-color)] shadow-sm p-5 flex flex-col justify-between transition-all duration-300 ease-in-out">
-                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Total Pengguna</span>
+                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Total Users</span>
                         <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">128</span>
-                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Pelanggan terdaftar</span>
+                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Registered customers</span>
                         <div class="mt-3">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold">
                                 <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-green-100 rounded-full">
@@ -394,14 +394,14 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
                                     </svg>
                                 </div>
-                                +12 bulan ini
+                                +12 this month
                             </span>
                         </div>
                     </div>
                     <div class="bg-[var(--bg-card,var(--card-bg,#fff))] rounded-2xl border border-[var(--border-color)] shadow-sm p-5 flex flex-col justify-between transition-all duration-300 ease-in-out">
-                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Transaksi Aktif</span>
+                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Active Transactions</span>
                         <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">34</span>
-                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Sedang berjalan</span>
+                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Currently ongoing</span>
                         <div class="mt-3">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold">
                                 <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-amber-100 rounded-full">
@@ -409,14 +409,14 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
-                                5 menunggu
+                                5 waiting
                             </span>
                         </div>
                     </div>
                     <div class="bg-[var(--bg-card,var(--card-bg,#fff))] rounded-2xl border border-[var(--border-color)] shadow-sm p-5 flex flex-col justify-between transition-all duration-300 ease-in-out">
-                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Total Kostum</span>
+                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Total Costumes</span>
                         <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">72</span>
-                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Tersedia di katalog</span>
+                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Available in catalog</span>
                         <div class="mt-3">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[var(--bg-card,var(--card-bg,#fff))] text-stone-900 [.dark-mode_&]:text-white rounded-full text-xs font-bold transition-all duration-300 ease-in-out">
                                 <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-[var(--bg-card,var(--card-bg,#fff))] rounded-full transition-all duration-300 ease-in-out">
@@ -424,7 +424,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                     </svg>
                                 </div>
-                                8 sedang disewa
+                                8 currently rented
                             </span>
                         </div>
                     </div>
@@ -439,51 +439,51 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                                 </svg>
                             </div>
-                            Hak Akses Sistem
+                            System Access Rights
                         </h3>
                         <div class="space-y-3 text-sm">
                             <div class="flex justify-between items-center py-2 border-b border-[var(--border-color)] transition-all duration-300 ease-in-out">
-                                <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Kelola Kostum</span>
+                                <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Manage Costumes</span>
                                 <span class="text-green-600 font-semibold flex items-center gap-1.5">
                                     <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-green-100 rounded-full">
                                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                         </svg>
                                     </div>
-                                    Aktif
+                                    Active
                                 </span>
                             </div>
                             <div class="flex justify-between items-center py-2 border-b border-[var(--border-color)] transition-all duration-300 ease-in-out">
-                                <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Validasi Pembayaran</span>
+                                <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Payment Validation</span>
                                 <span class="text-green-600 font-semibold flex items-center gap-1.5">
                                     <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-green-100 rounded-full">
                                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                         </svg>
                                     </div>
-                                    Aktif
+                                    Active
                                 </span>
                             </div>
                             <div class="flex justify-between items-center py-2 border-b border-[var(--border-color)] transition-all duration-300 ease-in-out">
-                                <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Kelola Pengguna</span>
+                                <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Manage Users</span>
                                 <span class="text-green-600 font-semibold flex items-center gap-1.5">
                                     <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-green-100 rounded-full">
                                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                         </svg>
                                     </div>
-                                    Aktif
+                                    Active
                                 </span>
                             </div>
                             <div class="flex justify-between items-center py-2">
-                                <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Laporan & Riwayat</span>
+                                <span class="text-stone-600 [.dark-mode_&]:text-stone-300 font-medium transition-all duration-300 ease-in-out">Reports & History</span>
                                 <span class="text-green-600 font-semibold flex items-center gap-1.5">
                                     <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-green-100 rounded-full">
                                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                         </svg>
                                     </div>
-                                    Aktif
+                                    Active
                                 </span>
                             </div>
                         </div>
@@ -497,7 +497,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </div>
-                            Riwayat Aktivitas
+                            Activity History
                         </h3>
                         <div class="space-y-4">
                             <div class="flex items-start gap-3 pb-3 border-b border-[var(--border-color)] last:border-0 last:pb-0 transition-all duration-300 ease-in-out">
@@ -505,8 +505,8 @@
                                     <div class="w-2 h-2 rounded-full bg-[var(--text-primary,#443025)] transition-all duration-300 ease-in-out"></div>
                                 </div>
                                 <div class="pt-1.5">
-                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Memvalidasi pembayaran #TRX-0087</p>
-                                    <p class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">Hari ini, 10:32</p>
+                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Validated payment #TRX-0087</p>
+                                    <p class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">Today, 10:32</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 pb-3 border-b border-[var(--border-color)] last:border-0 last:pb-0 transition-all duration-300 ease-in-out">
@@ -514,8 +514,8 @@
                                     <div class="w-2 h-2 rounded-full bg-[var(--text-secondary,#8B5A2B)] transition-all duration-300 ease-in-out"></div>
                                 </div>
                                 <div class="pt-1.5">
-                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Menambahkan kostum: "Naruto Sage Mode"</p>
-                                    <p class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">Kemarin, 15:14</p>
+                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Added costume: "Naruto Sage Mode"</p>
+                                    <p class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">Yesterday, 15:14</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 pb-3 border-b border-[var(--border-color)] last:border-0 last:pb-0 transition-all duration-300 ease-in-out">
@@ -523,7 +523,7 @@
                                     <div class="w-2 h-2 rounded-full bg-[var(--text-secondary,#8B5A2B)] transition-all duration-300 ease-in-out"></div>
                                 </div>
                                 <div class="pt-1.5">
-                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Masuk ke sistem admin</p>
+                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Signed in to admin panel</p>
                                     <p class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">23 Apr 2026, 08:22</p>
                                 </div>
                             </div>

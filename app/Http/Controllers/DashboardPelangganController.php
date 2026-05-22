@@ -103,15 +103,31 @@ class DashboardPelangganController extends Controller
             'tanggal_kembali' => 'required|date|after_or_equal:tanggal_sewa',
         ]);
 
+        $kostum = Kostum::findOrFail($request->kostum_id);
+
+        if ($kostum->stok <= 0) {
+            return back()->with('error', 'Stok kostum habis.')->withInput();
+        }
+
+        $isBooked = DetailTransaksi::where('kostum_id', $request->kostum_id)
+            ->whereHas('transaksi', function ($query) use ($request) {
+                $query->whereIn('status', ['Menunggu Pembayaran', 'Disewa'])
+                    ->where('tanggal_mulai', '<=', $request->tanggal_kembali)
+                    ->where('tanggal_selesai', '>=', $request->tanggal_sewa);
+            })
+            ->exists();
+
+        if ($isBooked) {
+            return back()->with('error', 'Kostum sudah dipesan pada tanggal tersebut.')->withInput();
+        }
+
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            $kostum = Kostum::findOrFail($request->kostum_id);
-            
             $start = Carbon::parse($request->tanggal_sewa);
             $end   = Carbon::parse($request->tanggal_kembali);
             $days  = max(1, $start->diffInDays($end));
-            
+
             $total_biaya = $kostum->harga_sewa * $days;
 
             // Buat Transaksi Utama
@@ -121,7 +137,7 @@ class DashboardPelangganController extends Controller
                 'tanggal_selesai' => $request->tanggal_kembali,
                 'total_biaya'     => $total_biaya,
                 'total_denda'     => 0,
-                'status'          => 'Disewa'
+                'status'          => 'Menunggu Pembayaran'
             ]);
 
             // Buat Detail Transaksi
@@ -131,12 +147,9 @@ class DashboardPelangganController extends Controller
                 'harga_sewa_saat_transaksi' => $total_biaya
             ]);
 
-            // Kurangi Stok Kostum
-            $kostum->decrement('stok');
-
             \Illuminate\Support\Facades\DB::commit();
-            
-            return redirect()->route('dashboard.pelanggan')->with('success', 'Pemesanan berhasil! Kostum Anda kini aktif di daftar persewaan.');
+
+            return redirect()->route('dashboard.pelanggan')->with('success', 'Pemesanan berhasil dibuat! Silakan tunggu konfirmasi pembayaran.');
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();

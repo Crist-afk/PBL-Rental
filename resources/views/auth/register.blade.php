@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun - CosRent</title>
+    <title>Create Account - CosRent</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -16,27 +16,27 @@
 
             <div class="w-full md:w-1/2 p-8 sm:p-12 bg-white/60">
                 <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-dark-chocolate tracking-tight mb-2">Gabung CosRent</h2>
-                    <p class="text-dark-chocolate/70 text-sm font-medium">Buat akun untuk mulai menyewa atau menyewakan kostum cosplay impianmu.</p>
+                    <h2 class="text-3xl font-bold text-dark-chocolate tracking-tight mb-2">Join CosRent</h2>
+                    <p class="text-dark-chocolate/70 text-sm font-medium">Create an account to start renting your dream cosplay costumes.</p>
                 </div>
 
                 <form action="{{ route('register.process') }}" method="POST" class="space-y-5">
                     @csrf
 
                     <div>
-                        <label for="name" class="block text-sm font-bold text-dark-chocolate mb-1">Nama Lengkap</label>
+                        <label for="name" class="block text-sm font-bold text-dark-chocolate mb-1">Full Name</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fa-regular fa-user text-dark-chocolate/50"></i>
                             </div>
                             <input type="text" id="name" name="nama" value="{{ old('nama') }}" required
                                 class="w-full pl-11 pr-4 py-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium"
-                                placeholder="Contoh: Crist">
+                                placeholder="Example: Crist">
                         </div>
                     </div>
 
                     <div>
-                        <label for="email" class="block text-sm font-bold text-dark-chocolate mb-1">Alamat Email</label>
+                        <label for="email" class="block text-sm font-bold text-dark-chocolate mb-1">Email Address</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fa-regular fa-envelope text-dark-chocolate/50"></i>
@@ -48,14 +48,14 @@
                     </div>
 
                     <div>
-                        <label for="password" class="block text-sm font-bold text-dark-chocolate mb-1">Kata Sandi</label>
+                        <label for="password" class="block text-sm font-bold text-dark-chocolate mb-1">Password</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none border-r border-dark-chocolate/10 pr-3 my-2">
                                 <i class="fa-solid fa-lock text-dark-chocolate/50"></i>
                             </div>
                             <input type="password" id="password" name="password" required
                                 class="w-full pl-14 pr-12 py-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium"
-                                placeholder="Minimal 8 karakter">
+                                placeholder="Minimum 8 characters">
                             <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-4 flex items-center text-dark-chocolate/50 hover:text-sakura transition-colors focus:outline-none">
                                 <i class="fa-regular fa-eye-slash" id="eyeIcon"></i>
                             </button>
@@ -63,14 +63,14 @@
                     </div>
 
                     <div>
-                        <label for="password_confirmation" class="block text-sm font-bold text-dark-chocolate mb-1">Konfirmasi Kata Sandi</label>
+                        <label for="password_confirmation" class="block text-sm font-bold text-dark-chocolate mb-1">Confirm Password</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none border-r border-dark-chocolate/10 pr-3 my-2">
                                 <i class="fa-solid fa-shield-check text-dark-chocolate/50"></i>
                             </div>
                             <input type="password" id="password_confirmation" name="password_confirmation" required
                                 class="w-full pl-14 pr-12 py-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium"
-                                placeholder="Ulangi kata sandi">
+                                placeholder="Repeat password">
                             <button type="button" id="togglePasswordConfirm" class="absolute inset-y-0 right-0 pr-4 flex items-center text-dark-chocolate/50 hover:text-sakura transition-colors focus:outline-none">
                                 <i class="fa-regular fa-eye-slash" id="eyeIconConfirm"></i>
                             </button>
@@ -78,14 +78,14 @@
                     </div>
 
                     <button type="submit" class="w-full bg-dark-chocolate hover:bg-black text-misty-rose font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex justify-center items-center gap-2 mt-4">
-                        <span>Daftar Sekarang</span>
+                        <span>Register Now</span>
                         <i class="fa-solid fa-arrow-right text-sm"></i>
                     </button>
                 </form>
 
                 <p class="mt-6 text-center text-sm text-dark-chocolate/80 font-medium">
-                    Sudah punya akun?
-                    <a href="{{ route('login') }}" class="font-bold text-sakura hover:text-aloewood transition duration-200">Masuk di sini</a>
+                    Already have an account?
+                    <a href="{{ route('login') }}" class="font-bold text-sakura hover:text-aloewood transition duration-200">Login here</a>
                 </p>
             </div>
 
@@ -97,18 +97,18 @@
 
                 <div class="absolute inset-0 flex flex-col justify-end p-12 text-misty-rose z-10">
                     <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
-                        <h3 class="text-2xl font-bold mb-2">Eksplorasi Karaktermu</h3>
+                        <h3 class="text-2xl font-bold mb-2">Explore Your Character</h3>
                         <p class="text-misty-rose/80 text-sm leading-relaxed">
-                            Bergabunglah dengan ribuan cosplayer lainnya. Sewa kostum impianmu atau mulai hasilkan uang dari koleksimu sendiri.
+                            Join thousands of other cosplayers. Rent your dream costume and discover your next look.
                         </p>
                         <div class="flex gap-6 mt-6 pt-6 border-t border-white/10">
                             <div>
                                 <p class="text-2xl font-bold text-sakura">12k+</p>
-                                <p class="text-xs text-misty-rose/70 uppercase tracking-wider font-bold">Katalog</p>
+                                <p class="text-xs text-misty-rose/70 uppercase tracking-wider font-bold">Catalog</p>
                             </div>
                             <div>
                                 <p class="text-2xl font-bold text-sakura">600+</p>
-                                <p class="text-xs text-misty-rose/70 uppercase tracking-wider font-bold">Pemasok</p>
+                                <p class="text-xs text-misty-rose/70 uppercase tracking-wider font-bold">Partners</p>
                             </div>
                         </div>
                     </div>

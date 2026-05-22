@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Katalog Produk - CosRent')
+@section('title', 'Product Catalog - CosRent')
 
 @push('styles')
     @vite(['resources/css/pages/product.css'])
@@ -11,31 +11,31 @@
 
         {{-- ── HEADER ── --}}
         <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 px-6 py-8 md:px-10 md:py-10 shadow-xl text-center reveal" data-reveal="up">
-            <span class="mb-4 block text-sm font-black uppercase tracking-[0.35em] text-aloewood">Katalog Produk</span>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-dark-chocolate mb-4">Pilih kostum cosplay favoritmu</h1>
+            <span class="mb-4 block text-sm font-black uppercase tracking-[0.35em] text-aloewood">Product Catalog</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-dark-chocolate mb-4">Choose your favorite cosplay costume</h1>
             <p class="text-dark-chocolate/75 text-lg font-medium leading-relaxed max-w-2xl mx-auto">
-                Kualitas kain terbaik, higienis, dan pilihan ukuran lengkap untuk kebutuhan event cosplay-mu.
+                Premium fabric quality, clean costumes, and complete size options for your cosplay events.
             </p>
         </section>
 
         {{-- ── FILTER ── --}}
         <section class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-6 shadow-xl reveal delay-100" data-reveal="up">
             <div class="flex flex-col md:flex-row gap-4 justify-between">
-                <input type="text" placeholder="Cari kostum..."
+                <input type="text" placeholder="Search costumes..."
                     class="w-full md:w-1/3 rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition">
 
                 <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                     <select class="w-full sm:w-auto rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition">
-                        <option>Semua Kategori</option>
+                        <option>All Categories</option>
                         <option>Anime</option>
                         <option>Game</option>
-                        <option>Film</option>
+                        <option>Movie</option>
                     </select>
 
                     <select class="w-full sm:w-auto rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition">
-                        <option>Urutkan</option>
-                        <option>Harga Terendah</option>
-                        <option>Harga Tertinggi</option>
+                        <option>Sort By</option>
+                        <option>Lowest Price</option>
+                        <option>Highest Price</option>
                     </select>
                 </div>
             </div>
@@ -47,8 +47,8 @@
                 {{-- Empty state --}}
                 <div class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-16 shadow-xl text-center reveal delay-200" data-reveal="up">
                     <i class="fa-solid fa-shirt text-6xl text-dark-chocolate/20 mb-4 block"></i>
-                    <h2 class="text-2xl font-bold text-dark-chocolate mb-2">Belum Ada Kostum</h2>
-                    <p class="text-dark-chocolate/60 font-medium">Kostum akan segera ditambahkan. Pantau terus!</p>
+                    <h2 class="text-2xl font-bold text-dark-chocolate mb-2">No Costumes Yet</h2>
+                    <p class="text-dark-chocolate/60 font-medium">Costumes will be added soon. Stay tuned!</p>
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -73,7 +73,7 @@
                                 {{ $kostum->nama_kostum }}
                             </h3>
                             <span class="text-xs font-medium text-dark-chocolate/50 mb-3">
-                                Ukuran: {{ $kostum->ukuran }}
+                                Size: {{ $kostum->ukuran }}
                             </span>
 
                             {{-- Footer --}}
@@ -85,11 +85,11 @@
                                 @if($kostum->stok > 0)
                                     <a href="{{ route('products.show', $kostum->id) }}"
                                        class="rounded-full bg-dark-chocolate px-4 py-2 text-sm font-bold text-misty-rose transition hover:bg-black">
-                                        Detail
+                                        Details
                                     </a>
                                 @else
                                     <span class="rounded-full bg-dark-chocolate/20 px-4 py-2 text-sm font-bold text-dark-chocolate/40 cursor-not-allowed">
-                                        Habis
+                                        Out of Stock
                                     </span>
                                 @endif
                             </div>

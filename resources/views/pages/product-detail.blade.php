@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sewa ' . $kostum->nama_kostum . ' - CosRent')
+@section('title', 'Rent ' . $kostum->nama_kostum . ' - CosRent')
 
 @push('styles')
     @vite(['resources/css/pages/product-detail.css'])
@@ -12,7 +12,7 @@
         {{-- ── Breadcrumb / Back Button ── --}}
         <div>
             <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 text-sm font-bold text-dark-chocolate transition hover:text-sakura">
-                <i class="fa-solid fa-arrow-left"></i> Kembali ke Katalog
+                <i class="fa-solid fa-arrow-left"></i> Back to Catalog
             </a>
         </div>
 
@@ -41,7 +41,7 @@
 
                 {{-- Category & Title --}}
                 <span class="mb-2 block text-xs font-black uppercase tracking-[0.35em] text-aloewood">
-                    {{ $kostum->kategori->nama_kategori ?? 'Kostum' }}
+                    {{ $kostum->kategori->nama_kategori ?? 'Costume' }}
                 </span>
                 <h1 class="text-4xl md:text-5xl font-extrabold text-dark-chocolate mb-2">
                     {{ $kostum->nama_kostum }}
@@ -51,15 +51,15 @@
                 <div class="flex flex-wrap items-center gap-4 mb-6 pb-6 border-b border-dark-chocolate/10">
                     <span class="text-3xl font-black text-sakura">
                         Rp {{ number_format($kostum->harga_sewa, 0, ',', '.') }}
-                        <span class="text-lg font-medium text-dark-chocolate/60">/ hari</span>
+                        <span class="text-lg font-medium text-dark-chocolate/60">/ day</span>
                     </span>
                     @if($kostum->stok > 0)
                         <span class="px-3 py-1 bg-green-100 text-green-700 font-bold text-xs rounded-full uppercase tracking-wider border border-green-200">
-                            Tersedia ({{ $kostum->stok }} unit)
+                            Available ({{ $kostum->stok }} units)
                         </span>
                     @else
                         <span class="px-3 py-1 bg-red-100 text-red-700 font-bold text-xs rounded-full uppercase tracking-wider border border-red-200">
-                            Habis
+                            Out of Stock
                         </span>
                     @endif
                 </div>
@@ -69,7 +69,7 @@
 
                     {{-- Deskripsi / Kelengkapan dari kolom DB --}}
                     @if($kostum->kelengkapan)
-                        <h3 class="text-lg font-bold text-dark-chocolate">Deskripsi & Kelengkapan</h3>
+                        <h3 class="text-lg font-bold text-dark-chocolate">Description & Included Items</h3>
                         <p class="text-dark-chocolate/80 text-sm font-medium leading-relaxed">
                             {{ $kostum->kelengkapan }}
                         </p>
@@ -79,7 +79,7 @@
                             $items = array_filter(array_map('trim', explode("\n", $kostum->kelengkapan)));
                         @endphp
                         @if(count($items) > 1)
-                            <h3 class="text-lg font-bold text-dark-chocolate pt-2">Termasuk dalam Paket</h3>
+                            <h3 class="text-lg font-bold text-dark-chocolate pt-2">Included in the Package</h3>
                             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-medium text-dark-chocolate/80">
                                 @foreach($items as $item)
                                     <li class="flex items-center gap-2">
@@ -92,16 +92,16 @@
                             </ul>
                         @endif
                     @else
-                        <h3 class="text-lg font-bold text-dark-chocolate">Deskripsi Kostum</h3>
+                        <h3 class="text-lg font-bold text-dark-chocolate">Costume Description</h3>
                         <p class="text-dark-chocolate/80 text-sm font-medium leading-relaxed italic">
-                            Deskripsi lengkap kostum ini belum tersedia.
+                            A full description for this costume is not available yet.
                         </p>
                     @endif
 
                     {{-- Ukuran dari DB --}}
                     @if($kostum->ukuran)
                         <div class="flex items-center gap-3 pt-2">
-                            <span class="text-sm font-bold text-dark-chocolate">Ukuran Tersedia:</span>
+                            <span class="text-sm font-bold text-dark-chocolate">Available Sizes:</span>
                             <span class="px-4 py-1.5 bg-sakura/20 text-dark-chocolate font-black text-sm rounded-full border border-sakura/30">
                                 {{ $kostum->ukuran }}
                             </span>
@@ -120,9 +120,9 @@
                         {{-- Size Selection --}}
                         <div>
                             <div class="flex justify-between items-center mb-3">
-                                <label class="block text-sm font-bold text-dark-chocolate">Pilih Ukuran</label>
+                                <label class="block text-sm font-bold text-dark-chocolate">Choose Size</label>
                                 <button type="button" onclick="document.getElementById('sizeChartModal').classList.remove('hidden')" class="text-xs font-bold text-sakura hover:text-dark-chocolate transition flex items-center gap-1">
-                                    <i class="fa-solid fa-ruler"></i> Panduan Ukuran (cm)
+                                    <i class="fa-solid fa-ruler"></i> Size Guide (cm)
                                 </button>
                             </div>
                             <div class="flex flex-wrap gap-3">
@@ -145,7 +145,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label for="tanggal_sewa" class="block text-sm font-bold text-dark-chocolate mb-2">
-                                    Tanggal Mulai Sewa
+                                    Rental Start Date
                                 </label>
                                 <input type="date" id="tanggal_sewa" name="tanggal_sewa"
                                        min="{{ date('Y-m-d') }}"
@@ -154,7 +154,7 @@
                             </div>
                             <div>
                                 <label for="tanggal_kembali" class="block text-sm font-bold text-dark-chocolate mb-2">
-                                    Tanggal Selesai Sewa
+                                    Rental End Date
                                 </label>
                                 <input type="date" id="tanggal_kembali" name="tanggal_kembali"
                                        min="{{ date('Y-m-d') }}"
@@ -167,12 +167,12 @@
                         @auth
                             <button type="submit"
                                     class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
-                                <i class="fa-solid fa-cart-shopping"></i> Sewa Sekarang
+                                <i class="fa-solid fa-cart-shopping"></i> Rent Now
                             </button>
                         @else
                             <a href="{{ route('login') }}"
                                class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
-                                <i class="fa-solid fa-right-to-bracket"></i> Masuk untuk Menyewa
+                                <i class="fa-solid fa-right-to-bracket"></i> Login to Rent
                             </a>
                         @endauth
                     </form>
@@ -180,11 +180,11 @@
                     {{-- Out of stock state --}}
                     <div class="bg-red-50 border-2 border-red-100 rounded-[2rem] p-6 text-center">
                         <i class="fa-solid fa-box-open text-3xl text-red-300 mb-3 block"></i>
-                        <p class="font-bold text-red-600">Kostum ini sedang tidak tersedia.</p>
-                        <p class="text-sm text-red-500 mt-1">Silakan cek kembali nanti atau pilih kostum lain.</p>
+                        <p class="font-bold text-red-600">This costume is currently unavailable.</p>
+                        <p class="text-sm text-red-500 mt-1">Please check again later or choose another costume.</p>
                         <a href="{{ route('products.index') }}"
                            class="mt-4 inline-block rounded-full bg-dark-chocolate px-6 py-3 text-sm font-bold text-misty-rose transition hover:bg-black">
-                            Lihat Kostum Lainnya
+                            View Other Costumes
                         </a>
                     </div>
                 @endif
@@ -200,15 +200,15 @@
             <button type="button" onclick="document.getElementById('sizeChartModal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-dark-chocolate/10 text-dark-chocolate rounded-full hover:bg-dark-chocolate hover:text-misty-rose transition">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <h3 class="text-2xl font-black text-dark-chocolate mb-6 text-center"><i class="fa-solid fa-ruler-combined text-sakura mr-2"></i>Panduan Ukuran (cm)</h3>
+            <h3 class="text-2xl font-black text-dark-chocolate mb-6 text-center"><i class="fa-solid fa-ruler-combined text-sakura mr-2"></i>Size Guide (cm)</h3>
             <div class="overflow-x-auto rounded-[1.5rem] border border-dark-chocolate/10">
                 <table class="w-full text-sm text-left text-dark-chocolate">
                     <thead class="bg-sakura/20 font-bold uppercase text-[10px] tracking-widest text-dark-chocolate text-center">
                         <tr>
-                            <th class="px-4 py-4">Ukuran</th>
-                            <th class="px-4 py-4">Dada</th>
-                            <th class="px-4 py-4">Pinggang</th>
-                            <th class="px-4 py-4">Tinggi</th>
+                            <th class="px-4 py-4">Size</th>
+                            <th class="px-4 py-4">Chest</th>
+                            <th class="px-4 py-4">Waist</th>
+                            <th class="px-4 py-4">Height</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-dark-chocolate/10 text-center font-medium bg-white/50">
@@ -244,12 +244,12 @@
                         </tr>
                         <tr class="hover:bg-dark-chocolate/5 transition">
                             <td class="px-4 py-3 font-black text-sakura">All Size</td>
-                            <td class="px-4 py-3" colspan="3">Menyesuaikan bentuk tubuh (fit S to L)</td>
+                            <td class="px-4 py-3" colspan="3">Adjusts to body shape (fits S to L)</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="text-[10px] font-bold text-dark-chocolate/50 text-center mt-4 uppercase tracking-widest">*Toleransi ukuran 1-3 cm dari aslinya</p>
+            <p class="text-[10px] font-bold text-dark-chocolate/50 text-center mt-4 uppercase tracking-widest">*Size tolerance is 1-3 cm from actual measurements</p>
         </div>
     </div>
 @endsection

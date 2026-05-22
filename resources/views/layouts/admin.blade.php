@@ -177,38 +177,38 @@
 
     <a class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Dasbor
+      Dashboard
     </a>
     <a class="nav-item {{ request()->routeIs('admin.kostum') ? 'active' : '' }}" href="{{ route('admin.kostum') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-      Kelola Kostum &amp; Kategori
+      Manage Costumes &amp; Categories
     </a>
     <a class="nav-item {{ request()->routeIs('admin.pembayaran') ? 'active' : '' }}" href="{{ route('admin.pembayaran') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-      Validasi Pembayaran
+      Payment Validation
       <span class="badge">5</span>
     </a>
     <a class="nav-item {{ request()->routeIs('admin.pengembalian') ? 'active' : '' }}" href="{{ route('admin.pengembalian') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-      Pengembalian &amp; Denda
+      Returns &amp; Penalties
     </a>
     <a class="nav-item {{ request()->routeIs('admin.riwayat') ? 'active' : '' }}" href="{{ route('admin.riwayat') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline><polyline points="12 7 12 12 15 15"></polyline></svg>
-      Riwayat Penyewaan
+      Rental History
     </a>
     <a class="nav-item {{ request()->routeIs('admin.pengguna') ? 'active' : '' }}" href="{{ route('admin.pengguna') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-      Kelola Akun Pengguna
+      Manage User Accounts
     </a>
 
     <div class="nav-bottom">
       <a class="nav-item" id="themeToggle" href="#">
         <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <span id="themeLabel">Mode Gelap</span>
+        <span id="themeLabel">Dark Mode</span>
       </a>
       <a class="nav-item logout" href="#" id="logoutBtn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Keluar
+        Logout
       </a>
       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
@@ -223,7 +223,7 @@
           <div class="loader-logo">
               <img src="/images/Logo-CosRent.png" alt="CosRent">
           </div>
-          <div class="loader-text">Selamat Datang, Admin!</div>
+          <div class="loader-text">Welcome, Admin!</div>
           <div class="loader-dots"><span></span><span></span><span></span></div>
       </div>
   </div>
@@ -239,7 +239,7 @@
                   <line x1="21" y1="12" x2="9" y2="12"/>
               </svg>
           </div>
-          <div class="logout-text">Sedang keluar...</div>
+          <div class="logout-text">Logging out...</div>
           <div class="loader-dots"><span></span><span></span><span></span></div>
       </div>
   </div>
@@ -250,7 +250,7 @@
           <div class="loader-logo">
               <img src="/images/Logo-CosRent.png" alt="CosRent">
           </div>
-          <div class="loader-text" id="navOverlayText">Memuat halaman...</div>
+          <div class="loader-text" id="navOverlayText">Loading page...</div>
           <div class="loader-dots"><span></span><span></span><span></span></div>
       </div>
   </div>
@@ -309,12 +309,12 @@
 
     // ═══ PAGE NAVIGATION TRANSITIONS ═══
     const navLabels = {
-        'admin.dashboard': 'Dasbor',
-        'admin.kostum': 'Kelola Kostum',
-        'admin.pembayaran': 'Validasi Pembayaran',
-        'admin.pengembalian': 'Pengembalian & Denda',
-        'admin.riwayat': 'Riwayat Penyewaan',
-        'admin.pengguna': 'Kelola Pengguna'
+        'admin.dashboard': 'Dashboard',
+        'admin.kostum': 'Manage Costumes',
+        'admin.pembayaran': 'Payment Validation',
+        'admin.pengembalian': 'Returns & Penalties',
+        'admin.riwayat': 'Rental History',
+        'admin.pengguna': 'Manage Users'
     };
 
     // Intercept admin sidebar navigation links
@@ -333,12 +333,12 @@
             // Determine label from link text (strip badge numbers)
             let linkText = link.textContent.trim().replace(/\d+$/, '').trim();
             if (targetUrl === '{{ route("admin.profile") }}') {
-                linkText = 'Profil Admin';
+                linkText = 'Admin Profile';
             }
             const navText = document.getElementById('navOverlayText');
             if (navText) navText.textContent = linkText;
 
-            // Hide sidebar badge when navigating to Validasi Pembayaran
+            // Hide sidebar badge when navigating to Payment Validation
             const sidebarBadge = link.querySelector('.badge');
             if (sidebarBadge) {
                 sidebarBadge.style.display = 'none';

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'CosRent — Validasi Pembayaran')
+@section('title', 'CosRent — Payment Validation')
 
 @push('styles')
     @vite(['resources/css/admin/pembayaran.css', 'resources/js/admin/pembayaran.js'])
@@ -10,42 +10,42 @@
   <!-- ── MAIN ── -->
   <main class="main">
 
-    <h1 class="page-title">Validasi Pembayaran</h1>
-    <p class="page-sub">Konfirmasi bukti transfer dari pelanggan baru</p>
+    <h1 class="page-title">Payment Validation</h1>
+    <p class="page-sub">Confirm transfer proof from new customers</p>
 
     <!-- STAT CARDS -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon-label"><span class="stat-icon">⏳</span><span class="stat-lbl">Menunggu Validasi</span></div>
+        <div class="stat-icon-label"><span class="stat-icon">⏳</span><span class="stat-lbl">Waiting for Validation</span></div>
         <div class="stat-val amber">12</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon-label"><span class="stat-icon">✅</span><span class="stat-lbl">Disetujui Hari Ini</span></div>
+        <div class="stat-icon-label"><span class="stat-icon">✅</span><span class="stat-lbl">Approved Today</span></div>
         <div class="stat-val green2">34</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon-label"><span class="stat-icon">🚫</span><span class="stat-lbl">Ditolak</span></div>
+        <div class="stat-icon-label"><span class="stat-icon">🚫</span><span class="stat-lbl">Rejected</span></div>
         <div class="stat-val red">3</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon-label"><span class="stat-icon">💵</span><span class="stat-lbl">Total Pendapatan Hari Ini</span></div>
+        <div class="stat-icon-label"><span class="stat-icon">💵</span><span class="stat-lbl">Today's Revenue</span></div>
         <div class="stat-subval">Rp 4.250.000</div>
       </div>
     </div>
 
     <!-- TABS -->
     <div class="tabs">
-      <button class="tab active" onclick="selectTab(this)">Semua</button>
-      <button class="tab" onclick="selectTab(this)">Menunggu Konfirmasi <span class="tab-badge">12</span></button>
-      <button class="tab" onclick="selectTab(this)">Sudah Dikonfirmasi</button>
-      <button class="tab" onclick="selectTab(this)">Ditolak</button>
+      <button class="tab active" onclick="selectTab(this)">All</button>
+      <button class="tab" onclick="selectTab(this)">Waiting for Confirmation <span class="tab-badge">12</span></button>
+      <button class="tab" onclick="selectTab(this)">Confirmed</button>
+      <button class="tab" onclick="selectTab(this)">Rejected</button>
     </div>
 
     <!-- TOOLBAR -->
     <div class="toolbar">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input class="search-input" type="text" placeholder="Cari nama pelanggan atau ID order..."/>
+        <input class="search-input" type="text" placeholder="Search customer name or order ID..."/>
       </div>
 
       <!-- Date Range -->
@@ -57,7 +57,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       </div>
 
-      <button class="btn-filter">Saring</button>
+      <button class="btn-filter">Filter</button>
     </div>
 
     <!-- TABLE -->
@@ -65,19 +65,19 @@
       <table>
         <thead>
           <tr>
-            <th>ID<br>PESANAN</th>
-            <th>PELANGGAN</th>
-            <th>KOSTUM<br>DISEWA</th>
-            <th>TANGGAL<br>SEWA</th>
-            <th>DURASI</th>
-            <th>TOTAL<br>BAYAR</th>
-            <th>BUKTI<br>TRANSFER</th>
+            <th>ORDER<br>ID</th>
+            <th>CUSTOMER</th>
+            <th>RENTED<br>COSTUME</th>
+            <th>RENTAL<br>DATE</th>
+            <th>DURATION</th>
+            <th>TOTAL<br>PAYMENT</th>
+            <th>PAYMENT<br>PROOF</th>
             <th>STATUS</th>
-            <th>AKSI</th>
+            <th>ACTIONS</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Row 1: Menunggu -->
+          <!-- Row 1: Waiting -->
           <tr>
             <td><span class="order-id-stacked">#ORD-<br>001</span></td>
             <td>
@@ -86,14 +86,14 @@
                 <span class="cust-name">Asep<br>Sulaiman</span>
               </div>
             </td>
-            <td><span class="kostum-name">Batman + Joker (2 kostum)</span></td>
+            <td><span class="kostum-name">Batman + Joker (2 costumes)</span></td>
             <td>
               <span class="date-stacked">
                 <span class="date-day">20 Apr</span><br>
                 <span class="date-year">2026</span>
               </span>
             </td>
-            <td><span class="durasi-text">3 hari</span></td>
+            <td><span class="durasi-text">3 days</span></td>
             <td>
               <div class="payment-wrap">
                 <span class="payment-rp">Rp</span>
@@ -101,25 +101,25 @@
               </div>
             </td>
             <td>
-              <button class="btn-bukti" onclick="openModal('ORD-001','Asep Sulaiman','Batman + Joker (2 kostum)','900.000','BCA','ASEP SULAIMAN','menunggu')">
+              <button class="btn-bukti" onclick="openModal('ORD-001','Asep Sulaiman','Batman + Joker (2 costumes)','900.000','BCA','ASEP SULAIMAN','menunggu')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                Lihat Bukti
+                View Proof
               </button>
             </td>
             <td>
               <span class="status-badge waiting">
-                <span class="status-dot"></span> MENUNGGU
+                <span class="status-dot"></span> WAITING
               </span>
             </td>
             <td>
               <div class="act-btns">
-                <button class="btn-approve" onclick="openModal('ORD-001','Asep Sulaiman','...','900.000','...','...','menunggu')">🟢 Setujui</button>
-                <button class="btn-reject" onclick="openModal('ORD-001','Asep Sulaiman','...','900.000','...','...','menunggu')">🔴 Tolak</button>
+                <button class="btn-approve" onclick="openModal('ORD-001','Asep Sulaiman','...','900.000','...','...','menunggu')">🟢 Approve</button>
+                <button class="btn-reject" onclick="openModal('ORD-001','Asep Sulaiman','...','900.000','...','...','menunggu')">🔴 Reject</button>
               </div>
             </td>
           </tr>
 
-          <!-- Row 2: Menunggu -->
+          <!-- Row 2: Waiting -->
           <tr>
             <td><span class="order-id-stacked">#ORD-<br>002</span></td>
             <td>
@@ -128,14 +128,14 @@
                 <span class="cust-name">Budi<br>Santoso</span>
               </div>
             </td>
-            <td><span class="kostum-name">Gaun Cinderella</span></td>
+            <td><span class="kostum-name">Cinderella Dress</span></td>
             <td>
               <span class="date-stacked">
                 <span class="date-day">21 Apr</span><br>
                 <span class="date-year">2026</span>
               </span>
             </td>
-            <td><span class="durasi-text">2 hari</span></td>
+            <td><span class="durasi-text">2 days</span></td>
             <td>
               <div class="payment-wrap">
                 <span class="payment-rp">Rp</span>
@@ -145,23 +145,23 @@
             <td>
               <button class="btn-bukti" onclick="openModal('ORD-002','Budi Santoso','...','400.000','...','...','menunggu')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                Lihat Bukti
+                View Proof
               </button>
             </td>
             <td>
               <span class="status-badge waiting">
-                <span class="status-dot"></span> MENUNGGU
+                <span class="status-dot"></span> WAITING
               </span>
             </td>
             <td>
               <div class="act-btns">
-                <button class="btn-approve" onclick="openModal('ORD-002','...','...','400.000','...','...','menunggu')">🟢 Setujui</button>
-                <button class="btn-reject" onclick="openModal('ORD-002','...','...','400.000','...','...','menunggu')">🔴 Tolak</button>
+                <button class="btn-approve" onclick="openModal('ORD-002','...','...','400.000','...','...','menunggu')">🟢 Approve</button>
+                <button class="btn-reject" onclick="openModal('ORD-002','...','...','400.000','...','...','menunggu')">🔴 Reject</button>
               </div>
             </td>
           </tr>
 
-          <!-- Row 3: Dikonfirmasi -->
+          <!-- Row 3: Confirmed -->
           <tr>
             <td><span class="order-id-stacked">#ORD-<br>003</span></td>
             <td>
@@ -170,14 +170,14 @@
                 <span class="cust-name">Citra Dewi</span>
               </div>
             </td>
-            <td><span class="kostum-name">Kostum Naruto</span></td>
+            <td><span class="kostum-name">Naruto Costume</span></td>
             <td>
               <span class="date-stacked">
                 <span class="date-day">19 Apr</span><br>
                 <span class="date-year">2026</span>
               </span>
             </td>
-            <td><span class="durasi-text">1 hari</span></td>
+            <td><span class="durasi-text">1 day</span></td>
             <td>
               <div class="payment-wrap">
                 <span class="payment-rp">Rp</span>
@@ -187,25 +187,25 @@
             <td>
               <button class="btn-bukti" onclick="openModal('ORD-003','...','...','120.000','...','...','dikonfirmasi')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                Lihat Bukti
+                View Proof
               </button>
             </td>
             <td>
               <span class="status-badge confirmed">
-                <span class="status-dot"></span> DIKONFIRMASI
+                <span class="status-dot"></span> CONFIRMED
               </span>
             </td>
             <td>
               <div class="act-btns">
                 <button class="btn-det" onclick="openModal('ORD-003','...','...','...','...','...','dikonfirmasi')">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  DETAIL
+                  DETAILS
                 </button>
               </div>
             </td>
           </tr>
 
-          <!-- Row 4: Ditolak -->
+          <!-- Row 4: Rejected -->
           <tr>
             <td><span class="order-id-stacked">#ORD-<br>004</span></td>
             <td>
@@ -214,14 +214,14 @@
                 <span class="cust-name">Deni<br>Pratama</span>
               </div>
             </td>
-            <td><span class="kostum-name">Baju Kimono</span></td>
+            <td><span class="kostum-name">Kimono Outfit</span></td>
             <td>
               <span class="date-stacked">
                 <span class="date-day">18 Apr</span><br>
                 <span class="date-year">2026</span>
               </span>
             </td>
-            <td><span class="durasi-text">5 hari</span></td>
+            <td><span class="durasi-text">5 days</span></td>
             <td>
               <div class="payment-wrap">
                 <span class="payment-rp">Rp</span>
@@ -231,19 +231,19 @@
             <td>
               <button class="btn-bukti" onclick="openModal('ORD-004','...','...','...','...','...','ditolak')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                Lihat Bukti
+                View Proof
               </button>
             </td>
             <td>
               <span class="status-badge rejected">
-                <span class="status-dot"></span> DITOLAK
+                <span class="status-dot"></span> REJECTED
               </span>
             </td>
             <td>
               <div class="act-btns">
                 <button class="btn-det" onclick="openModal('ORD-004','...','...','...','...','...','ditolak')">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  DETAIL
+                  DETAILS
                 </button>
               </div>
             </td>
@@ -263,10 +263,10 @@
       <button class="cal-nav" id="calNext" onclick="changeMonth(1)">&#8250;</button>
     </div>
     <div class="cal-grid" id="calGrid"></div>
-    <div class="cal-label" id="calHint">Pilih tanggal mulai</div>
+    <div class="cal-label" id="calHint">Select start date</div>
     <div class="cal-footer">
-      <button class="cal-btn reset" onclick="resetCalendar()">Atur Ulang</button>
-      <button class="cal-btn apply" onclick="applyCalendar()">Terapkan</button>
+      <button class="cal-btn reset" onclick="resetCalendar()">Reset</button>
+      <button class="cal-btn apply" onclick="applyCalendar()">Apply</button>
     </div>
   </div>
 </div>
@@ -277,7 +277,7 @@
     <div class="modal-header">
       <div>
         <div class="modal-order-id" id="mOrderId">#ORD-001</div>
-        <div class="modal-sub">Validasi pembayaran oleh: <span id="mCustName">Asep Sulaiman</span></div>
+        <div class="modal-sub">Payment validation for: <span id="mCustName">Asep Sulaiman</span></div>
       </div>
       <div class="modal-close" onclick="closeModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -286,51 +286,51 @@
     <div class="modal-body">
       <!-- LEFT -->
       <div>
-        <div class="modal-section-title">RANGKUMAN PESANAN</div>
+        <div class="modal-section-title">ORDER SUMMARY</div>
         <div class="order-item-card">
           <div class="order-item-icon" id="mItemIcon">🎭</div>
           <div>
             <div class="order-item-name" id="mKostum">...</div>
-            <div class="order-item-date" id="mDate">20 Apr 2026 (3 hari)</div>
+            <div class="order-item-date" id="mDate">20 Apr 2026 (3 days)</div>
           </div>
         </div>
         
         <div class="total-row">
-          <span class="total-lbl">Total Tagihan</span>
+          <span class="total-lbl">Total Bill</span>
           <span class="total-amt" id="mTotal">Rp 0</span>
         </div>
 
-        <div class="modal-section-title">DETAIL TRANSFER</div>
+        <div class="modal-section-title">TRANSFER DETAILS</div>
         <div class="detail-grid">
           <div class="detail-item">
-            <div class="detail-lbl">NAMA BANK</div>
+            <div class="detail-lbl">BANK NAME</div>
             <div class="detail-val" id="mBank">...</div>
           </div>
           <div class="detail-item">
-            <div class="detail-lbl">NAMA PENGIRIM</div>
+            <div class="detail-lbl">SENDER NAME</div>
             <div class="detail-val" id="mPengirim">...</div>
           </div>
         </div>
         
         <div class="detail-item" style="margin-top: 12px;">
-          <div class="detail-lbl">NOMINAL TRANSFER</div>
+          <div class="detail-lbl">TRANSFER AMOUNT</div>
           <div class="detail-amt" id="mNominal">Rp 0</div>
         </div>
 
-        <div class="modal-section-title">CATATAN ADMIN</div>
-        <textarea class="form-textarea" placeholder="Tambahkan catatan jika perlu (Contoh: Bukti buram, mohon upload ulang)..."></textarea>
+        <div class="modal-section-title">ADMIN NOTES</div>
+        <textarea class="form-textarea" placeholder="Add notes if needed (Example: Blurry proof, please upload again)..."></textarea>
       </div>
 
       <!-- RIGHT -->
       <div class="bukti-panel">
-        <div class="modal-section-title">BUKTI TRANSFER</div>
+        <div class="modal-section-title">PAYMENT PROOF</div>
         <div class="bukti-img">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           <span>BuktiTransfer.jpg</span>
         </div>
         <button class="btn-resolusi">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Lihat Resolusi Penuh
+          View Full Resolution
         </button>
       </div>
     </div>

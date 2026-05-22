@@ -7,20 +7,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardPelangganController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminProfileController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
-
-// ==================== ADMIN DASHBOARD ====================
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-Route::get('/admin/kostum', [AdminController::class, 'kostum'])->name('admin.kostum');
-Route::get('/admin/pembayaran', [AdminController::class, 'pembayaran'])->name('admin.pembayaran');
-Route::get('/admin/pengembalian', [AdminController::class, 'pengembalian'])->name('admin.pengembalian');
-Route::get('/admin/riwayat', [AdminController::class, 'riwayat'])->name('admin.riwayat');
-Route::get('/admin/pengguna', [AdminController::class, 'pengguna'])->name('admin.pengguna');
 
 // [1] ROUTE PUBLIK
 Route::view('/', 'pages.home')->name('home');
@@ -59,11 +52,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/cover', [ProfileController::class, 'updateCover'])->name('profile.updateCover');
-    Route::get('/admin/profil', [\App\Http\Controllers\Admin\AdminProfileController::class, 'edit'])->name('admin.profile');
-    Route::put('/admin/profil', [\App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('admin.profile.update');
-    Route::post('/admin/profil/avatar', [\App\Http\Controllers\Admin\AdminProfileController::class, 'updateAvatar'])->name('admin.profile.avatar');
-    Route::post('/admin/profil/cover', [\App\Http\Controllers\Admin\AdminProfileController::class, 'updateCover'])->name('admin.profile.cover');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+// ==================== ADMIN ====================
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/kostum', [AdminController::class, 'kostum'])->name('kostum');
+    Route::get('/pembayaran', [AdminController::class, 'pembayaran'])->name('pembayaran');
+    Route::get('/pengembalian', [AdminController::class, 'pengembalian'])->name('pengembalian');
+    Route::get('/riwayat', [AdminController::class, 'riwayat'])->name('riwayat');
+    Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
+
+    Route::get('/profil', [AdminProfileController::class, 'edit'])->name('profile');
+    Route::put('/profil', [AdminProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profil/avatar', [AdminProfileController::class, 'updateAvatar'])->name('profile.avatar');
+    Route::post('/profil/cover', [AdminProfileController::class, 'updateCover'])->name('profile.cover');
 });
 
 // [2] ROUTE GUEST

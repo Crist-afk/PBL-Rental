@@ -49,6 +49,6 @@ class Kostum extends Model
             return $this->gambar;
         }
 
-        return asset('storage/kostum/' . $this->gambar);
+        return asset('storage/' . $this->gambar);
     }
 }

@@ -24,7 +24,7 @@ class ForumFeatureTest extends TestCase
         $response = app(ForumController::class)->index($request);
 
         $this->assertInstanceOf(View::class, $response);
-        $this->assertSame('forum', $response->name());
+        $this->assertSame('pages.forum', $response->name());
         $this->assertArrayHasKey('categories', $response->getData());
         $this->assertCount(4, $response->getData()['categories']);
     }
@@ -76,7 +76,7 @@ class ForumFeatureTest extends TestCase
         $response = app(ForumController::class)->show($post);
 
         $this->assertInstanceOf(View::class, $response);
-        $this->assertSame('forum-detail', $response->name());
+        $this->assertSame('pages.forum-detail', $response->name());
         $this->assertSame($post->id, $response->getData()['post']->id);
     }
 

@@ -136,23 +136,25 @@
                     </div>
                     
                     <div class="space-y-4">
-                        @foreach($recent_history ?? [] as $history)
+                        @forelse($recent_history as $t)
+                        @php
+                            $kostumName = $t->detailTransaksi->first()?->kostum?->nama_kostum ?? 'Transaksi #' . $t->id;
+                        @endphp
                         <div class="flex justify-between items-start border-b border-dark-chocolate/10 pb-4 last:border-0 last:pb-0">
-                            <div>
-                                <p class="font-bold text-sm text-dark-chocolate">{{ $history['title'] }}</p>
-                                <p class="text-xs font-medium text-dark-chocolate/60 mt-1">{{ $history['date'] }} • Rp {{ number_format($history['price'], 0, ',', '.') }}</p>
+                            <div class="flex-1 min-w-0 mr-3">
+                                <p class="font-bold text-sm text-dark-chocolate truncate">{{ $kostumName }}</p>
+                                <p class="text-xs font-medium text-dark-chocolate/60 mt-1">
+                                    {{ $t->tanggal_mulai->format('j M Y') }} • Rp {{ number_format($t->total_biaya, 0, ',', '.') }}
+                                </p>
                             </div>
-                            @php
-                                $statusLabels = [
-                                    'Menunggu Pembayaran' => 'Waiting for Payment',
-                                    'Disewa' => 'Rented',
-                                    'Selesai' => 'Completed',
-                                    'Batal' => 'Canceled',
-                                ];
-                            @endphp
-                            <span class="bg-green-100 border border-green-200 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">{{ $statusLabels[$history['status']] ?? $history['status'] }}</span>
+                            <a href="{{ route('riwayat.faktur', $t->id) }}"
+                               class="flex-shrink-0 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $t->status_color }} hover:opacity-80 transition whitespace-nowrap">
+                                {{ $t->status_label }}
+                            </a>
                         </div>
-                        @endforeach
+                        @empty
+                        <p class="text-sm text-center text-dark-chocolate/50 py-4">Belum ada riwayat transaksi.</p>
+                        @endforelse
                     </div>
                 </div>
 

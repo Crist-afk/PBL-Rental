@@ -13,11 +13,34 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        // Eager-load relasi 'kategori' agar tidak terjadi N+1 query problem
-        $products = Kostum::with('kategori')
-            ->paginate(12);
+        $query = Kostum::with('kategori');
 
-        return view('pages.product', compact('products'));
+        // Filter by Search Keyword
+        if ($request->filled('search')) {
+            $query->where('nama_kostum', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by Category
+        if ($request->filled('kategori')) {
+            $query->where('kategori_id', $request->kategori);
+        }
+
+        // Sort by Price
+        if ($request->filled('sort')) {
+            if ($request->sort == 'lowest') {
+                $query->orderBy('harga_sewa', 'asc');
+            } elseif ($request->sort == 'highest') {
+                $query->orderBy('harga_sewa', 'desc');
+            }
+        } else {
+            // Default sort: newest first
+            $query->latest();
+        }
+
+        $products = $query->paginate(12)->withQueryString();
+        $categories = \App\Models\Kategori::orderBy('nama_kategori', 'asc')->get();
+
+        return view('pages.product', compact('products', 'categories'));
     }
 
     /**

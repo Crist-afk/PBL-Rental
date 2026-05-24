@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
             'harga_sewa' => 150000,
             'ukuran' => 'L, XL',
             'kelengkapan' => 'Wig, Eye Patch, Jujutsu High Uniform',
-            'gambar' => 'https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg',
+            'gambar' => 'https://m.media-amazon.com/images/I/51wY4-Gv6tL._AC_SX679_.jpg',
         ]);
 
         \App\Models\Kostum::create([

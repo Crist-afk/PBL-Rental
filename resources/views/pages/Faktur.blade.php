@@ -125,6 +125,22 @@
                     </div>
                 </div>
 
+                <!-- Catatan Pelanggan (jika ada) -->
+                @if($transaksi->catatan)
+                <div class="pt-8 border-t border-dark-chocolate/5">
+                    <h4 class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-3">Customer Notes</h4>
+                    <p class="text-sm font-medium text-dark-chocolate/80 bg-dark-chocolate/5 rounded-2xl px-5 py-4">{{ $transaksi->catatan }}</p>
+                </div>
+                @endif
+
+                <!-- Catatan Admin (jika ada) -->
+                @if($transaksi->catatan_admin)
+                <div class="pt-8 border-t border-dark-chocolate/5">
+                    <h4 class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-3">Admin Notes</h4>
+                    <p class="text-sm font-medium text-dark-chocolate/80 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">{{ $transaksi->catatan_admin }}</p>
+                </div>
+                @endif
+
                 <!-- Footer Note -->
                 <div class="pt-12 mt-12 border-t border-dark-chocolate/5 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
                     <div>
@@ -133,10 +149,19 @@
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-2">Payment Status</p>
-                        <span class="px-4 py-1 rounded-full text-[10px] font-black border border-green-200 bg-green-100 text-green-700 uppercase tracking-wider">
-                            PAID
+                        <span class="px-4 py-1 rounded-full text-[10px] font-black border {{ $transaksi->status_color }} uppercase tracking-wider">
+                            {{ $transaksi->status_label }}
                         </span>
                     </div>
+                    @if($transaksi->bukti_pembayaran)
+                    <div class="md:text-right">
+                        <p class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-2">Payment Proof</p>
+                        <a href="{{ asset('storage/' . $transaksi->bukti_pembayaran) }}" target="_blank"
+                           class="inline-flex items-center gap-2 text-xs font-bold text-sakura hover:text-dark-chocolate transition">
+                            <i class="fa-solid fa-image"></i> View Proof
+                        </a>
+                    </div>
+                    @endif
                     <div class="md:text-right">
                         <p class="text-[10px] font-black text-dark-chocolate/40 mb-1">Printed on:</p>
                         <p class="text-[10px] font-bold text-dark-chocolate">{{ now()->format('d M Y, H:i') }}</p>

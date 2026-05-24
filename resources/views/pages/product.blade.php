@@ -20,25 +20,37 @@
 
         {{-- ── FILTER ── --}}
         <section class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-6 shadow-xl reveal delay-100" data-reveal="up">
-            <div class="flex flex-col md:flex-row gap-4 justify-between">
-                <input type="text" placeholder="Search costumes..."
-                    class="w-full md:w-1/3 rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition">
+            <form action="{{ url()->current() }}" method="GET" class="flex flex-col md:flex-row gap-4 justify-between">
+                {{-- Keep 'sort' and 'kategori' when searching --}}
+                @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
+                @if(request('kategori')) <input type="hidden" name="kategori" value="{{ request('kategori') }}"> @endif
+                
+                <div class="relative w-full md:w-1/3">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search costumes..."
+                        class="w-full rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 pr-12 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition"
+                        onchange="this.form.submit()">
+                    <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 text-dark-chocolate/50 hover:text-sakura transition">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
 
                 <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                    <select class="w-full sm:w-auto rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition">
-                        <option>All Categories</option>
-                        <option>Anime</option>
-                        <option>Game</option>
-                        <option>Movie</option>
+                    <select name="kategori" class="w-full sm:w-auto rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition cursor-pointer" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ request('kategori') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->nama_kategori }}
+                            </option>
+                        @endforeach
                     </select>
 
-                    <select class="w-full sm:w-auto rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition">
-                        <option>Sort By</option>
-                        <option>Lowest Price</option>
-                        <option>Highest Price</option>
+                    <select name="sort" class="w-full sm:w-auto rounded-2xl border-2 border-dark-chocolate/10 bg-white/70 px-5 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition cursor-pointer" onchange="this.form.submit()">
+                        <option value="">Sort By Latest</option>
+                        <option value="lowest" {{ request('sort') == 'lowest' ? 'selected' : '' }}>Lowest Price</option>
+                        <option value="highest" {{ request('sort') == 'highest' ? 'selected' : '' }}>Highest Price</option>
                     </select>
                 </div>
-            </div>
+            </form>
         </section>
 
         {{-- ── PRODUCT GRID ── --}}

@@ -15,7 +15,7 @@ class Transaksi extends Model
         'total_biaya',
         'total_denda',
         'status',
-        // Kolom baru untuk pembayaran & pengembalian admin
+        'catatan',
         'bukti_pembayaran',
         'catatan_admin',
         'tanggal_kembali_aktual',
@@ -27,6 +27,32 @@ class Transaksi extends Model
         'tanggal_selesai'        => 'date',
         'tanggal_kembali_aktual' => 'date',
     ];
+
+    // ── Accessors: label & warna status yang konsisten ──────────────────
+
+    public function getStatusLabelAttribute(): string
+    {
+        return match ($this->status) {
+            'Menunggu Pembayaran' => 'Waiting for Payment',
+            'Disewa'              => 'Rented',
+            'Selesai'             => 'Completed',
+            'Batal'               => 'Canceled',
+            default               => $this->status,
+        };
+    }
+
+    public function getStatusColorAttribute(): string
+    {
+        return match ($this->status) {
+            'Menunggu Pembayaran' => 'bg-amber-100 text-amber-700 border-amber-200',
+            'Disewa'              => 'bg-blue-100 text-blue-700 border-blue-200',
+            'Selesai'             => 'bg-green-100 text-green-700 border-green-200',
+            'Batal'               => 'bg-red-100 text-red-700 border-red-200',
+            default               => 'bg-gray-100 text-gray-700 border-gray-200',
+        };
+    }
+
+    // ── Relasi ──────────────────────────────────────────────────────────
 
     // Relasi: Satu transaksi dimiliki oleh satu user (Pelanggan)
     public function user()

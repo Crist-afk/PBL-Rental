@@ -42,20 +42,12 @@ class DashboardPelangganController extends Controller
                 ];
             });
 
-        // Recent History
-        $recent_history = Transaksi::where('user_id', $userId)
-            ->whereIn('status', ['Selesai', 'Batal'])
-            ->orderBy('created_at', 'desc')
-            ->limit(3)
-            ->get()
-            ->map(function ($t) {
-                return [
-                    'title'  => $t->detailTransaksi->first()?->kostum->nama_kostum ?? 'Transaksi #' . $t->id,
-                    'date'   => \Carbon\Carbon::parse($t->tanggal_mulai)->format('j M Y'),
-                    'price'  => $t->total_biaya,
-                    'status' => $t->status
-                ];
-            });
+        // Recent History – tampilkan semua status, limit 5
+        $recent_history = Transaksi::with(['detailTransaksi.kostum'])
+            ->where('user_id', $userId)
+            ->latest()
+            ->limit(5)
+            ->get();
 
         // Recommendations (Static for now, but can be improved)
         $recommendations = \App\Models\Kostum::inRandomOrder()->limit(5)->get()->map(function($k) {
@@ -137,7 +129,8 @@ class DashboardPelangganController extends Controller
                 'tanggal_selesai' => $request->tanggal_kembali,
                 'total_biaya'     => $total_biaya,
                 'total_denda'     => 0,
-                'status'          => 'Menunggu Pembayaran'
+                'status'          => 'Menunggu Pembayaran',
+                'catatan'         => $request->catatan,
             ]);
 
             // Buat Detail Transaksi

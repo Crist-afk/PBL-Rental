@@ -123,6 +123,12 @@ class DashboardPelangganController extends Controller
             $total_biaya = $kostum->harga_sewa * $days;
 
             // Buat Transaksi Utama
+            $size = $request->size;
+            $catatan = "Ukuran: " . $size;
+            if ($request->filled('catatan')) {
+                $catatan .= "\nCatatan: " . $request->catatan;
+            }
+
             $transaksi = Transaksi::create([
                 'user_id'         => Auth::id(),
                 'tanggal_mulai'   => $request->tanggal_sewa,
@@ -130,7 +136,7 @@ class DashboardPelangganController extends Controller
                 'total_biaya'     => $total_biaya,
                 'total_denda'     => 0,
                 'status'          => 'Menunggu Pembayaran',
-                'catatan'         => $request->catatan,
+                'catatan'         => $catatan,
             ]);
 
             // Buat Detail Transaksi
@@ -140,19 +146,6 @@ class DashboardPelangganController extends Controller
                 'harga_sewa_saat_transaksi' => $total_biaya
             ]);
 
-            // Kurangi Stok Kostum (Total dan Per Ukuran)
-            $size = $request->size;
-            $stokPerUkuran = $kostum->stok_per_ukuran;
-            
-            if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size]) && $stokPerUkuran[$size] > 0) {
-                $stokPerUkuran[$size] -= 1;
-                $kostum->stok_per_ukuran = $stokPerUkuran;
-            }
-            
-            if ($kostum->stok > 0) {
-                $kostum->stok -= 1;
-            }
-            $kostum->save();
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('dashboard.pelanggan')->with('success', 'Pemesanan berhasil dibuat! Silakan tunggu konfirmasi pembayaran.');

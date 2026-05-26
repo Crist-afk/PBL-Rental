@@ -238,18 +238,59 @@ class AdminController extends Controller
 
     public function pembayaranSetujui(Request $request, $id)
     {
-        $transaksi = Transaksi::findOrFail($id);
+        $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
 
         $request->validate([
             'catatan_admin' => 'nullable|string|max:500',
         ]);
 
-        $transaksi->update([
-            'status'         => 'Disewa',
-            'catatan_admin'  => $request->catatan_admin,
-        ]);
+        // Parse the size from catatan
+        $size = null;
+        if ($transaksi->catatan && preg_match('/^Ukuran:\s*([^\n|]+)/i', $transaksi->catatan, $matches)) {
+            $size = trim($matches[1]);
+        }
 
-        return redirect()->route('admin.pembayaran')->with('success', "Pembayaran #TRX-{$id} berhasil dikonfirmasi!");
+        try {
+            \Illuminate\Support\Facades\DB::beginTransaction();
+
+            foreach ($transaksi->detailTransaksi as $detail) {
+                $kostum = $detail->kostum;
+                if ($kostum) {
+                    if ($kostum->stok <= 0) {
+                        \Illuminate\Support\Facades\DB::rollBack();
+                        return back()->with('error', "Gagal menyetujui. Stok kostum '{$kostum->nama_kostum}' habis.");
+                    }
+
+                    if ($size) {
+                        $stokPerUkuran = $kostum->stok_per_ukuran;
+                        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
+                            if ($stokPerUkuran[$size] <= 0) {
+                                \Illuminate\Support\Facades\DB::rollBack();
+                                return back()->with('error', "Gagal menyetujui. Stok kostum '{$kostum->nama_kostum}' untuk ukuran '{$size}' habis.");
+                            }
+                            $stokPerUkuran[$size] -= 1;
+                            $kostum->stok_per_ukuran = $stokPerUkuran;
+                        }
+                    }
+
+                    $kostum->stok -= 1;
+                    $kostum->save();
+                }
+            }
+
+            $transaksi->update([
+                'status'         => 'Disewa',
+                'catatan_admin'  => $request->catatan_admin,
+            ]);
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            return redirect()->route('admin.pembayaran')->with('success', "Pembayaran #TRX-{$id} berhasil dikonfirmasi!");
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+        }
     }
 
     public function pembayaranTolak(Request $request, $id)
@@ -259,13 +300,6 @@ class AdminController extends Controller
         $request->validate([
             'catatan_admin' => 'nullable|string|max:500',
         ]);
-
-        // Kembalikan stok kostum
-        foreach ($transaksi->detailTransaksi as $detail) {
-            if ($detail->kostum) {
-                $detail->kostum->increment('stok');
-            }
-        }
 
         $transaksi->update([
             'status'        => 'Batal',
@@ -333,10 +367,25 @@ class AdminController extends Controller
             $totalDenda    = $hariTerlambat * $dendaPerHari;
         }
 
+        // Parse the size from catatan
+        $size = null;
+        if ($transaksi->catatan && preg_match('/^Ukuran:\s*([^\n|]+)/i', $transaksi->catatan, $matches)) {
+            $size = trim($matches[1]);
+        }
+
         // Kembalikan stok kostum
         foreach ($transaksi->detailTransaksi as $detail) {
-            if ($detail->kostum) {
-                $detail->kostum->increment('stok');
+            $kostum = $detail->kostum;
+            if ($kostum) {
+                if ($size) {
+                    $stokPerUkuran = $kostum->stok_per_ukuran;
+                    if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
+                        $stokPerUkuran[$size] += 1;
+                        $kostum->stok_per_ukuran = $stokPerUkuran;
+                    }
+                }
+                $kostum->stok += 1;
+                $kostum->save();
             }
         }
 

@@ -35,23 +35,69 @@
         </div>
 
         {{-- ── Desktop Navigation ── --}}
-        <nav class="hidden md:flex gap-6 font-medium text-sm">
+        <nav class="hidden md:flex items-center gap-2">
             @if ($isAuthPage)
-                <a href="{{ route('home') }}" class="hover:text-sakura transition">Home</a>
-                <a href="{{ route('about') }}" class="hover:text-sakura transition">About</a>
-                @if ($authPage === 'login')
-                    <a href="{{ route('login') }}" class="hover:text-sakura transition">Login</a>
-                @else
-                    <a href="{{ route('register') }}" class="hover:text-sakura transition">Register</a>
-                @endif
-                <a href="{{ route('forum') }}" class="hover:text-sakura transition">Forum</a>
-                <a href="{{ route('contact') }}" class="hover:text-sakura transition">Contact</a>
+                <a href="{{ route('home') }}" class="social-btn {{ request()->routeIs('home') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+                    <span class="social-text">Home</span>
+                </a>
+                <a href="{{ route('products.index') }}" class="social-btn {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                    </div>
+                    <span class="social-text">Products</span>
+                </a>
+                <a href="{{ route('forum') }}" class="social-btn {{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <span class="social-text">Forum</span>
+                </a>
+                <a href="{{ route('about') }}" class="social-btn {{ request()->routeIs('about') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <span class="social-text">About Us</span>
+                </a>
+                <a href="{{ route('contact') }}" class="social-btn {{ request()->routeIs('contact') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <span class="social-text">Contact Us</span>
+                </a>
             @else
-                <a href="{{ route($homeRoute) }}" class="{{ request()->routeIs($homeRoute) ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">{{ $homeLabel }}</a>
-                <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About Us</a>
-                <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Products</a>
-                <a href="{{ route('forum') }}" class="{{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
-                <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact</a>
+                <a href="{{ route($homeRoute) }}" class="social-btn {{ request()->routeIs($homeRoute) ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+                    <span class="social-text">{{ $homeLabel }}</span>
+                </a>
+                <a href="{{ route('products.index') }}" class="social-btn {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                    </div>
+                    <span class="social-text">Products</span>
+                </a>
+                <a href="{{ route('forum') }}" class="social-btn {{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <span class="social-text">Forum</span>
+                </a>
+                <a href="{{ route('about') }}" class="social-btn {{ request()->routeIs('about') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <span class="social-text">About Us</span>
+                </a>
+                <a href="{{ route('contact') }}" class="social-btn {{ request()->routeIs('contact') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <span class="social-text">Contact Us</span>
+                </a>
             @endif
         </nav>
 
@@ -175,20 +221,21 @@
         class="md:hidden hidden mt-2 bg-dark-chocolate text-misty-rose rounded-2xl shadow-xl max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1 font-medium text-sm"
     >
         @if ($isAuthPage)
-            <a href="{{ route('home') }}" class="py-2 hover:text-sakura transition">Home</a>
-            <a href="{{ route('about') }}" class="py-2 hover:text-sakura transition">About</a>
-            <a href="{{ route('forum') }}" class="py-2 hover:text-sakura transition">Forum</a>
-            <a href="{{ route('contact') }}" class="py-2 hover:text-sakura transition">Contact</a>
+            <a href="{{ route('home') }}" class="py-2 {{ request()->routeIs('home') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Home</a>
+            <a href="{{ route('products.index') }}" class="py-2 {{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Products</a>
+            <a href="{{ route('forum') }}" class="py-2 {{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
+            <a href="{{ route('about') }}" class="py-2 {{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About Us</a>
+            <a href="{{ route('contact') }}" class="py-2 {{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact Us</a>
             <div class="border-t border-misty-rose/20 mt-2 pt-3 flex gap-3">
                 <a href="{{ route('login') }}" class="hover:text-sakura transition">Login</a>
                 <a href="{{ route('register') }}" class="bg-sakura text-dark-chocolate px-4 py-1.5 rounded-full hover:bg-opacity-80 transition">Register</a>
             </div>
         @else
             <a href="{{ route($homeRoute) }}" class="py-2 {{ request()->routeIs($homeRoute) ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">{{ $homeLabel }}</a>
-            <a href="{{ route('about') }}" class="py-2 {{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About Us</a>
             <a href="{{ route('products.index') }}" class="py-2 {{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Products</a>
             <a href="{{ route('forum') }}" class="py-2 {{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
-            <a href="{{ route('contact') }}" class="py-2 {{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact</a>
+            <a href="{{ route('about') }}" class="py-2 {{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About Us</a>
+            <a href="{{ route('contact') }}" class="py-2 {{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact Us</a>
 
             @guest
                 <div class="border-t border-misty-rose/20 mt-2 pt-3 flex gap-3">
@@ -333,3 +380,112 @@
     handleScroll();
 })();
 </script>
+
+<style>
+    /* ── Premium Dynamic Expanding Button Navigation ── */
+    .social-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        height: 44px;
+        width: 44px;
+        border-radius: 9999px;
+        text-decoration: none;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        white-space: nowrap;
+        padding: 0;
+        margin: 0 4px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    /* Icon container centering */
+    .social-btn .social-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 1.1rem;
+    }
+
+    /* Hidden text description */
+    .social-btn .social-text {
+        opacity: 0;
+        transform: translateX(-12px);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding-right: 18px;
+        letter-spacing: 0.02em;
+    }
+
+    /* Hover expanded state */
+    .social-btn:hover {
+        width: 148px;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(68, 48, 37, 0.12);
+    }
+
+    .social-btn:hover .social-text {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* ── State 1: Top (Transparent navbar) ── */
+    #navbar-header:not(.bg-dark-chocolate) .social-btn {
+        background: rgba(68, 48, 37, 0.04);
+        border: 1.5px solid rgba(68, 48, 37, 0.08);
+        color: #443025; /* dark-chocolate */
+    }
+
+    #navbar-header:not(.bg-dark-chocolate) .social-btn:hover {
+        background: #443025;
+        border-color: #443025;
+        color: #FFE4E1; /* misty-rose */
+        box-shadow: 0 8px 20px rgba(68, 48, 37, 0.25);
+    }
+
+    #navbar-header:not(.bg-dark-chocolate) .social-btn.active {
+        background: rgba(236, 156, 157, 0.15);
+        border-color: rgba(236, 156, 157, 0.4);
+        color: #EC9C9D; /* sakura */
+    }
+    
+    #navbar-header:not(.bg-dark-chocolate) .social-btn.active:hover {
+        background: #EC9C9D;
+        border-color: #EC9C9D;
+        color: #443025;
+        box-shadow: 0 8px 20px rgba(236, 156, 157, 0.25);
+    }
+
+    /* ── State 2: Scrolled (Dark chocolate background) ── */
+    #navbar-header.bg-dark-chocolate .social-btn {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1.5px solid rgba(255, 255, 255, 0.08);
+        color: #FFE4E1; /* misty-rose */
+    }
+
+    #navbar-header.bg-dark-chocolate .social-btn:hover {
+        background: #EC9C9D; /* sakura */
+        border-color: #EC9C9D;
+        color: #443025;
+        box-shadow: 0 8px 20px rgba(236, 156, 157, 0.35);
+    }
+
+    #navbar-header.bg-dark-chocolate .social-btn.active {
+        background: rgba(236, 156, 157, 0.2);
+        border-color: rgba(236, 156, 157, 0.6);
+        color: #EC9C9D;
+    }
+    
+    #navbar-header.bg-dark-chocolate .social-btn.active:hover {
+        background: #EC9C9D;
+        border-color: #EC9C9D;
+        color: #443025;
+        box-shadow: 0 8px 20px rgba(236, 156, 157, 0.35);
+    }
+</style>

@@ -61,7 +61,12 @@
                             @endif
                         </div>
                         <div class="flex-1 min-w-0 w-full">
-                            <h3 class="font-bold text-xl text-dark-chocolate line-clamp-1">{{ $rental['title'] }}</h3>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <h3 class="font-bold text-xl text-dark-chocolate line-clamp-1">{{ $rental['title'] }}</h3>
+                                @if(isset($rental['status']))
+                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border {{ $rental['status_color'] }} whitespace-nowrap">{{ $rental['status'] }}</span>
+                                @endif
+                            </div>
                             <p class="text-sm font-bold text-aloewood mt-1 uppercase tracking-wide">Size {{ $rental['size'] }}</p>
                             <p class="text-xs font-medium text-dark-chocolate/70 mt-1"><i class="fa-regular fa-clock mr-1"></i> Return {{ $rental['return_date'] }}</p>
                         </div>

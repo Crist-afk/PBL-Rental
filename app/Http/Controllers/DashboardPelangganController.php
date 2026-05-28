@@ -24,21 +24,28 @@ class DashboardPelangganController extends Controller
             'total_rentals'  => Transaksi::where('user_id', $userId)->count(),
         ];
 
-        // Active Rentals (Kostum Sedang Disewa)
+        // Active Rentals (Kostum Sedang Disewa & Menunggu Pembayaran)
         $current_rentals = Transaksi::with(['detailTransaksi.kostum'])
             ->where('user_id', $userId)
-            ->where('status', 'Disewa')
+            ->whereIn('status', ['Menunggu Pembayaran', 'Disewa'])
             ->get()
             ->map(function ($t) {
                 $firstDetail = $t->detailTransaksi->first();
                 $kostum = $firstDetail ? $firstDetail->kostum : null;
+                $size = 'N/A';
+                if ($t->catatan && preg_match('/^Ukuran:\s*([^\n|]+)/i', $t->catatan, $matches)) {
+                    $size = trim($matches[1]);
+                }
+
                 return [
                     'id'          => $t->id,
                     'title'       => $kostum ? $kostum->nama_kostum : 'Transaksi #' . $t->id,
-                    'size'        => $kostum ? $kostum->ukuran : 'N/A', // Assuming first size or simple size
+                    'size'        => $size,
                     'return_date' => \Carbon\Carbon::parse($t->tanggal_selesai)->format('d F Y'),
                     'price'       => $t->total_biaya,
-                    'image'       => $kostum ? $kostum->gambar_url : null
+                    'image'       => $kostum ? $kostum->gambar_url : null,
+                    'status'      => $t->status_label,
+                    'status_color'=> $t->status_color
                 ];
             });
 
@@ -97,8 +104,19 @@ class DashboardPelangganController extends Controller
 
         $kostum = Kostum::findOrFail($request->kostum_id);
 
-        if ($kostum->stok <= 0) {
-            return back()->with('error', 'Stok kostum habis.')->withInput();
+        // Cek stok per ukuran
+        $stokPerUkuran = $kostum->stok_per_ukuran ?? [];
+        $size = $request->size;
+
+        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
+            if ($stokPerUkuran[$size] <= 0) {
+                return back()->with('error', 'Stok kostum untuk ukuran ' . $size . ' habis.')->withInput();
+            }
+        } else {
+            // Fallback ke stok umum jika stok_per_ukuran tidak ada/tidak sesuai
+            if ($kostum->stok <= 0) {
+                return back()->with('error', 'Stok kostum habis.')->withInput();
+            }
         }
 
         $isBooked = DetailTransaksi::where('kostum_id', $request->kostum_id)

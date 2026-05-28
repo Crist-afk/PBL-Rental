@@ -33,6 +33,11 @@ if (window.bookingSuccessMessage) {
             const imageUrl = selectedOption.getAttribute('data-image');
             const costumeName = selectedOption.text;
             const sizesString = selectedOption.getAttribute('data-sizes');
+            const stokUkuranStr = selectedOption.getAttribute('data-stok-ukuran');
+            let stokUkuran = {};
+            try {
+                if (stokUkuranStr) stokUkuran = JSON.parse(stokUkuranStr);
+            } catch (e) {}
 
             if (imageUrl) {
                 previewImage.src = imageUrl;
@@ -48,18 +53,31 @@ if (window.bookingSuccessMessage) {
             if (sizeContainer && sizesString) {
                 const sizes = sizesString.split(',').map(s => s.trim()).filter(s => s.length > 0);
                 const finalSizes = sizes.length > 0 ? sizes : ['All Size'];
-                const selectedSize = sizeContainer.getAttribute('data-selected');
+                let selectedSize = sizeContainer.getAttribute('data-selected');
                 
                 sizeContainer.innerHTML = '';
                 
+                // Find first available size to check if no valid size is selected
+                const availableSizes = finalSizes.filter(size => {
+                    const sisaStok = stokUkuran.hasOwnProperty(size) ? stokUkuran[size] : 1;
+                    return sisaStok > 0;
+                });
+                
+                if (availableSizes.length > 0 && (!selectedSize || !availableSizes.includes(selectedSize))) {
+                    selectedSize = availableSizes[0];
+                }
+
                 finalSizes.forEach((size, index) => {
-                    const isChecked = selectedSize === size || (!selectedSize && index === 0);
+                    const sisaStok = stokUkuran.hasOwnProperty(size) ? stokUkuran[size] : 1;
+                    const isDisabled = sisaStok <= 0;
+                    const isChecked = !isDisabled && selectedSize === size;
+                    
                     const label = document.createElement('label');
-                    label.className = 'cursor-pointer';
+                    label.className = isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer';
                     label.innerHTML = `
-                        <input type="radio" name="size" value="${size}" class="peer sr-only" ${isChecked ? 'checked' : ''} ${index === 0 ? 'required' : ''}>
-                        <div class="min-w-[3rem] px-4 py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/10 font-black text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition-all duration-300 shadow-sm hover:scale-105 bg-white/40 hover:border-sakura/50 peer-checked:shadow-sakura/20 peer-checked:shadow-lg">
-                            ${size}
+                        <input type="radio" name="size" value="${size}" class="peer sr-only" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''} ${isChecked ? 'required' : ''}>
+                        <div class="min-w-[3rem] px-4 py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/10 font-black text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition-all duration-300 shadow-sm ${isDisabled ? '' : 'hover:scale-105 hover:border-sakura/50'} bg-white/40 peer-checked:shadow-sakura/20 peer-checked:shadow-lg">
+                            ${size} ${isDisabled ? '<span class="text-[10px] ml-1 font-bold text-red-500">(Habis)</span>' : ''}
                         </div>
                     `;
                     sizeContainer.appendChild(label);

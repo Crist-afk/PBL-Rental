@@ -51,7 +51,7 @@
                                 <select id="kostum_id" name="kostum_id" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-pointer group-hover:border-sakura/50 relative z-10" required>
                                     <option value="" disabled {{ !isset($kostum_id) ? 'selected' : '' }}>-- Search Costume --</option>
                                     @foreach($kostums as $k)
-                                        <option value="{{ $k->id }}" data-image="{{ $k->gambar_url }}" data-sizes="{{ $k->ukuran }}" {{ (isset($kostum_id) && $kostum_id == $k->id) ? 'selected' : '' }}>
+                                        <option value="{{ $k->id }}" data-image="{{ $k->gambar_url }}" data-sizes="{{ $k->ukuran }}" data-stok-ukuran="{{ json_encode($k->stok_per_ukuran) }}" {{ (isset($kostum_id) && $kostum_id == $k->id) ? 'selected' : '' }}>
                                             {{ $k->nama_kostum }} ({{ $k->kategori->nama_kategori ?? 'General' }})
                                         </option>
                                     @endforeach

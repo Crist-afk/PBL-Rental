@@ -51,4 +51,10 @@ class Kostum extends Model
 
         return asset('storage/' . $this->gambar);
     }
+
+    // Relasi: Satu kostum bisa memiliki banyak gambar tambahan
+    public function images()
+    {
+        return $this->hasMany(KostumImage::class, 'kostum_id');
+    }
 }

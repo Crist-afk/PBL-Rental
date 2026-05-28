@@ -18,15 +18,15 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-8">
 
-            {{-- ── Left Side: Product Image ── --}}
-            <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-4 shadow-xl flex items-center justify-center">
-                <div class="w-full h-[400px] md:h-[500px] bg-dark-chocolate/10 rounded-[2rem] flex flex-col items-center justify-center relative overflow-hidden group">
-
-                    <img src="{{ $kostum->gambar_url }}"
+            {{-- ── Left Side: Product Images ── --}}
+            <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-4 shadow-xl flex flex-col gap-4">
+                {{-- Main Image --}}
+                <div class="w-full h-[400px] md:h-[450px] bg-dark-chocolate/10 rounded-[2rem] flex flex-col items-center justify-center relative overflow-hidden group">
+                    <img id="main-product-image" src="{{ $kostum->gambar_url }}"
                          alt="{{ $kostum->nama_kostum }}"
-                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                         class="w-full h-full object-cover transition duration-500"
                          onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
-
+                         
                     {{-- Hover overlay --}}
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none">
                         <span class="text-misty-rose font-bold">
@@ -34,6 +34,60 @@
                         </span>
                     </div>
                 </div>
+                
+                {{-- Thumbnails --}}
+                @if($kostum->images && $kostum->images->count() > 0)
+                    <div class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
+                        {{-- Thumbnail for main image --}}
+                        <button onclick="changeMainImage('{{ $kostum->gambar_url }}', this)" class="thumbnail-btn w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden border-2 border-sakura opacity-100 focus:outline-none transition-all">
+                            <img src="{{ $kostum->gambar_url }}" alt="Main" class="w-full h-full object-cover">
+                        </button>
+                        
+                        {{-- Thumbnails for additional images --}}
+                        @foreach($kostum->images as $img)
+                            @php
+                                $imgUrl = filter_var($img->gambar, FILTER_VALIDATE_URL) ? $img->gambar : asset('storage/' . $img->gambar);
+                            @endphp
+                            <button onclick="changeMainImage('{{ $imgUrl }}', this)" class="thumbnail-btn w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 hover:border-sakura focus:outline-none transition-all">
+                                <img src="{{ $imgUrl }}" alt="Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://via.placeholder.com/100x100.png?text=No+Image';">
+                            </button>
+                        @endforeach
+                    </div>
+                    
+                    <script>
+                        function changeMainImage(url, clickedBtn) {
+                            document.getElementById('main-product-image').src = url;
+                            
+                            // Reset all buttons styling
+                            const btns = document.querySelectorAll('.thumbnail-btn');
+                            btns.forEach(btn => {
+                                btn.classList.remove('border-sakura', 'opacity-100');
+                                btn.classList.add('border-transparent', 'opacity-60');
+                            });
+                            
+                            // Highlight clicked button
+                            clickedBtn.classList.remove('border-transparent', 'opacity-60');
+                            clickedBtn.classList.add('border-sakura', 'opacity-100');
+                        }
+                    </script>
+                    
+                    <style>
+                        .custom-scrollbar::-webkit-scrollbar {
+                            height: 6px;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-track {
+                            background: rgba(84, 51, 16, 0.1); 
+                            border-radius: 10px;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-thumb {
+                            background: rgba(255, 182, 193, 0.8); 
+                            border-radius: 10px;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                            background: rgba(255, 182, 193, 1); 
+                        }
+                    </style>
+                @endif
             </section>
 
             {{-- ── Right Side: Details & Action ── --}}

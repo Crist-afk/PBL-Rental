@@ -16,7 +16,7 @@ class ProfileController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        $user->loadCount('forumPosts');
+        $user->loadCount(['forumPosts', 'transaksi']);
 
         $latestForumPosts = $user->forumPosts()
             ->with('category')
@@ -26,7 +26,7 @@ class ProfileController extends Controller
 
         $profileStats = [
             'forum_posts' => $user->forum_posts_count,
-            'rental_count' => 0,
+            'rental_count' => $user->transaksi_count,
             'rating_label' => '-',
         ];
 
@@ -40,12 +40,16 @@ class ProfileController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'bio' => 'nullable|string|max:500', // Tambahkan validasi bio
+            'no_hp' => 'nullable|string|max:20',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Maksimal 2MB
         ]);
 
         $user = $request->user();
         $user->nama = $request->nama; // Menggunakan 'nama' sesuai form registermu sebelumnya
         $user->bio = $request->bio; // Menyimpan bio yang diinputkan
+        if ($request->has('no_hp')) {
+            $user->no_hp = $request->no_hp;
+        }
 
         // 2. Logika Upload File
         if ($request->hasFile('avatar')) {
@@ -62,7 +66,7 @@ class ProfileController extends Controller
         // 3. Simpan ke database
         $user->save();
 
-        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui!');
+        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
     }
 
     // Memproses update foto sampul
@@ -84,6 +88,6 @@ class ProfileController extends Controller
             $user->save();
         }
 
-        return redirect()->route('profile')->with('success', 'Foto sampul berhasil diperbarui!');
+        return redirect()->route('profile')->with('success', 'Cover photo updated successfully!');
     }
 }

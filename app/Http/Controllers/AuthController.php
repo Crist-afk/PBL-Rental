@@ -38,7 +38,7 @@ class AuthController extends Controller
         ]);
 
         // Lempar ke halaman login dengan pesan sukses
-        return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silakan Login.');
+        return redirect()->route('login')->with('success', 'Account created successfully! Please log in.');
     }
 
     // === BAGIAN LOGIN ===
@@ -72,7 +72,7 @@ class AuthController extends Controller
 
         // Jika gagal, tendang kembali ke halaman login bawa pesan error
         return back()->withErrors([
-            'email' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
+            'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
 

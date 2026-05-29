@@ -83,7 +83,7 @@ class ForumController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->route('forum')->with('forum_success', 'Diskusi baru berhasil dipublikasikan.');
+        return redirect()->route('forum')->with('forum_success', 'New discussion published successfully.');
     }
 
     public function update(Request $request, ForumPost $forumPost)
@@ -118,7 +118,7 @@ class ForumController extends Controller
             'content' => $validated['edit_content'],
         ]);
 
-        return redirect()->route('forum.show', $forumPost)->with('forum_success', 'Diskusi berhasil diperbarui.');
+        return redirect()->route('forum.show', $forumPost)->with('forum_success', 'Discussion updated successfully.');
     }
 
     public function destroy(Request $request, ForumPost $forumPost)
@@ -131,7 +131,7 @@ class ForumController extends Controller
 
         $forumPost->delete();
 
-        return redirect()->route('forum')->with('forum_success', 'Diskusi berhasil dihapus.');
+        return redirect()->route('forum')->with('forum_success', 'Discussion deleted successfully.');
     }
 
     public function show(ForumPost $forumPost)
@@ -177,7 +177,7 @@ class ForumController extends Controller
             if (! $parentComment) {
                 return redirect()
                     ->route('forum.show', $forumPost)
-                    ->withErrors(['content' => 'Balasan tidak valid untuk diskusi ini.']);
+                    ->withErrors(['content' => 'The reply is not valid for this discussion.']);
             }
         }
 
@@ -190,7 +190,7 @@ class ForumController extends Controller
 
         return redirect()
             ->route('forum.show', $forumPost)
-            ->with('forum_success', $parentId ? 'Balasan berhasil dikirim.' : 'Komentar berhasil dikirim.');
+            ->with('forum_success', $parentId ? 'Reply sent successfully.' : 'Comment sent successfully.');
     }
 
     public function updateComment(Request $request, ForumPost $forumPost, ForumComment $forumComment)
@@ -207,7 +207,7 @@ class ForumController extends Controller
             'content' => $validated['edit_comment_content'],
         ]);
 
-        return redirect()->route('forum.show', $forumPost)->with('forum_success', 'Komentar berhasil diperbarui.');
+        return redirect()->route('forum.show', $forumPost)->with('forum_success', 'Comment updated successfully.');
     }
 
     public function destroyComment(Request $request, ForumPost $forumPost, ForumComment $forumComment)
@@ -218,17 +218,17 @@ class ForumController extends Controller
         $forumComment->replies()->delete();
         $forumComment->delete();
 
-        return redirect()->route('forum.show', $forumPost)->with('forum_success', 'Komentar berhasil dihapus.');
+        return redirect()->route('forum.show', $forumPost)->with('forum_success', 'Comment deleted successfully.');
     }
 
     private function generateUniqueSlug(string $title): string
     {
         $baseSlug = Str::slug($title);
-        $slug = $baseSlug !== '' ? $baseSlug : 'diskusi-baru';
+        $slug = $baseSlug !== '' ? $baseSlug : 'new-discussion';
         $counter = 2;
 
         while (ForumPost::where('slug', $slug)->exists()) {
-            $slug = ($baseSlug !== '' ? $baseSlug : 'diskusi-baru') . '-' . $counter;
+            $slug = ($baseSlug !== '' ? $baseSlug : 'new-discussion') . '-' . $counter;
             $counter++;
         }
 

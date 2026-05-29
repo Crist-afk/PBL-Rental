@@ -26,7 +26,7 @@ class AdminProfileController extends Controller
         $user->email = $request->email;
         $user->save();
 
-        return back()->with('success', 'Profil berhasil diperbarui.');
+        return back()->with('success', 'Profile updated successfully.');
     }
 
     public function updateAvatar(Request $request)
@@ -47,7 +47,7 @@ class AdminProfileController extends Controller
             $user->save();
         }
 
-        return back()->with('success', 'Avatar berhasil diperbarui.');
+        return back()->with('success', 'Avatar updated successfully.');
     }
 
     public function updateCover(Request $request)
@@ -68,6 +68,6 @@ class AdminProfileController extends Controller
             $user->save();
         }
 
-        return back()->with('success', 'Foto sampul berhasil diperbarui.');
+        return back()->with('success', 'Cover photo updated successfully.');
     }
 }

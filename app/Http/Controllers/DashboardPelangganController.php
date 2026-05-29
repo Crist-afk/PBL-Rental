@@ -110,12 +110,12 @@ class DashboardPelangganController extends Controller
 
         if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
             if ($stokPerUkuran[$size] <= 0) {
-                return back()->with('error', 'Stok kostum untuk ukuran ' . $size . ' habis.')->withInput();
+                return back()->with('error', 'Costume size ' . $size . ' is out of stock.')->withInput();
             }
         } else {
             // Fallback ke stok umum jika stok_per_ukuran tidak ada/tidak sesuai
             if ($kostum->stok <= 0) {
-                return back()->with('error', 'Stok kostum habis.')->withInput();
+                return back()->with('error', 'Costume is out of stock.')->withInput();
             }
         }
 
@@ -128,7 +128,7 @@ class DashboardPelangganController extends Controller
             ->exists();
 
         if ($isBooked) {
-            return back()->with('error', 'Kostum sudah dipesan pada tanggal tersebut.')->withInput();
+            return back()->with('error', 'Costume is already booked for those dates.')->withInput();
         }
 
         try {
@@ -166,11 +166,11 @@ class DashboardPelangganController extends Controller
 
             \Illuminate\Support\Facades\DB::commit();
 
-            return redirect()->route('dashboard.pelanggan')->with('success', 'Pemesanan berhasil dibuat! Silakan tunggu konfirmasi pembayaran.');
+            return redirect()->route('dashboard.pelanggan')->with('success', 'Booking created successfully! Please wait for payment confirmation.');
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', 'Gagal memproses pemesanan: ' . $e->getMessage())->withInput();
+            return back()->with('error', 'Failed to process booking: ' . $e->getMessage())->withInput();
         }
     }
 

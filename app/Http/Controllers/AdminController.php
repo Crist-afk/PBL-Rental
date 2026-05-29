@@ -104,7 +104,7 @@ class AdminController extends Controller
             'gambar'          => $gambar,
         ]);
 
-        return redirect()->route('admin.kostum')->with('success', 'Kostum berhasil ditambahkan!');
+        return redirect()->route('admin.kostum')->with('success', 'Costume added successfully!');
     }
 
     public function kostumUpdate(Request $request, $id)
@@ -155,7 +155,7 @@ class AdminController extends Controller
             'gambar'          => $gambar,
         ]);
 
-        return redirect()->route('admin.kostum')->with('success', 'Kostum berhasil diperbarui!');
+        return redirect()->route('admin.kostum')->with('success', 'Costume updated successfully!');
     }
 
     public function kostumDestroy($id)
@@ -169,7 +169,7 @@ class AdminController extends Controller
 
         $kostum->delete();
 
-        return redirect()->route('admin.kostum')->with('success', 'Kostum berhasil dihapus!');
+        return redirect()->route('admin.kostum')->with('success', 'Costume deleted successfully!');
     }
 
     // =====================================================================
@@ -187,7 +187,7 @@ class AdminController extends Controller
             'franchise'     => $request->franchise,
         ]);
 
-        return redirect()->route('admin.kostum')->with('success', 'Kategori berhasil ditambahkan!');
+        return redirect()->route('admin.kostum')->with('success', 'Category added successfully!');
     }
 
     public function kategoriDestroy($id)
@@ -197,12 +197,12 @@ class AdminController extends Controller
         // Cek apakah masih ada kostum di kategori ini
         if ($kategori->kostum()->count() > 0) {
             return redirect()->route('admin.kostum')
-                ->with('error', 'Kategori tidak bisa dihapus karena masih memiliki kostum!');
+                ->with('error', 'Category cannot be deleted because it still has costumes!');
         }
 
         $kategori->delete();
 
-        return redirect()->route('admin.kostum')->with('success', 'Kategori berhasil dihapus!');
+        return redirect()->route('admin.kostum')->with('success', 'Category deleted successfully!');
     }
 
     // =====================================================================
@@ -240,6 +240,10 @@ class AdminController extends Controller
     {
         $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
 
+        if ($transaksi->status !== 'Menunggu Pembayaran') {
+            return back()->with('error', 'Only transactions waiting for payment can be approved.');
+        }
+
         $request->validate([
             'catatan_admin' => 'nullable|string|max:500',
         ]);
@@ -258,7 +262,7 @@ class AdminController extends Controller
                 if ($kostum) {
                     if ($kostum->stok <= 0) {
                         \Illuminate\Support\Facades\DB::rollBack();
-                        return back()->with('error', "Gagal menyetujui. Stok kostum '{$kostum->nama_kostum}' habis.");
+                        return back()->with('error', "Failed to approve. Costume '{$kostum->nama_kostum}' is out of stock.");
                     }
 
                     if ($size) {
@@ -266,7 +270,7 @@ class AdminController extends Controller
                         if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
                             if ($stokPerUkuran[$size] <= 0) {
                                 \Illuminate\Support\Facades\DB::rollBack();
-                                return back()->with('error', "Gagal menyetujui. Stok kostum '{$kostum->nama_kostum}' untuk ukuran '{$size}' habis.");
+                                return back()->with('error', "Failed to approve. Costume '{$kostum->nama_kostum}' in size '{$size}' is out of stock.");
                             }
                             $stokPerUkuran[$size] -= 1;
                             $kostum->stok_per_ukuran = $stokPerUkuran;
@@ -285,17 +289,21 @@ class AdminController extends Controller
 
             \Illuminate\Support\Facades\DB::commit();
 
-            return redirect()->route('admin.pembayaran')->with('success', "Pembayaran #TRX-{$id} berhasil dikonfirmasi!");
+            return redirect()->route('admin.pembayaran')->with('success', "Payment #TRX-{$id} confirmed successfully!");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+            return back()->with('error', "An error occurred: " . $e->getMessage());
         }
     }
 
     public function pembayaranTolak(Request $request, $id)
     {
         $transaksi = Transaksi::findOrFail($id);
+
+        if ($transaksi->status !== 'Menunggu Pembayaran') {
+            return back()->with('error', 'Only transactions waiting for payment can be rejected.');
+        }
 
         $request->validate([
             'catatan_admin' => 'nullable|string|max:500',
@@ -306,7 +314,7 @@ class AdminController extends Controller
             'catatan_admin' => $request->catatan_admin,
         ]);
 
-        return redirect()->route('admin.pembayaran')->with('success', "Pembayaran #TRX-{$id} berhasil ditolak.");
+        return redirect()->route('admin.pembayaran')->with('success', "Payment #TRX-{$id} rejected successfully.");
     }
 
     // =====================================================================
@@ -350,6 +358,10 @@ class AdminController extends Controller
     public function pengembalianKembali(Request $request, $id)
     {
         $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
+
+        if ($transaksi->status !== 'Disewa') {
+            return back()->with('error', 'Only active rentals can be returned.');
+        }
 
         $request->validate([
             'tanggal_kembali_aktual' => 'required|date',
@@ -398,8 +410,8 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.pengembalian')
-            ->with('success', "Pengembalian #TRX-{$id} berhasil dicatat." .
-                ($totalDenda > 0 ? " Denda: Rp " . number_format($totalDenda, 0, ',', '.') : ''));
+            ->with('success', "Return #TRX-{$id} recorded successfully." .
+                ($totalDenda > 0 ? " Fine: Rp " . number_format($totalDenda, 0, ',', '.') : ''));
     }
 
     // =====================================================================
@@ -434,7 +446,7 @@ class AdminController extends Controller
         $user = User::where('role', 'pelanggan')->findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.pengguna')->with('success', "Akun pengguna '{$user->nama}' berhasil dihapus.");
+        return redirect()->route('admin.pengguna')->with('success', "User account '{$user->nama}' deleted successfully.");
     }
 
     // =====================================================================

@@ -49,16 +49,18 @@ class DatabaseSeeder extends Seeder
         );
 
         // 4. Membuat Kostum Dummy
-        \App\Models\Kostum::create([
-            'kategori_id' => $anime->id,
-            'nama_kostum' => 'Gojo Satoru',
-            'stok' => 3,
-            'stok_per_ukuran' => ['L' => 1, 'XL' => 2],
-            'harga_sewa' => 150000,
-            'ukuran' => 'L, XL',
-            'kelengkapan' => 'Wig, Eye Patch, Jujutsu High Uniform',
-            'gambar' => 'https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg',
-        ]);
+        \App\Models\Kostum::updateOrCreate(
+            ['nama_kostum' => 'Gojo Satoru'],
+            [
+                'kategori_id' => $anime->id,
+                'stok' => 3,
+                'stok_per_ukuran' => ['L' => 1, 'XL' => 2],
+                'harga_sewa' => 150000,
+                'ukuran' => 'L, XL',
+                'kelengkapan' => 'Wig, Eye Patch, Jujutsu High Uniform',
+                'gambar' => 'https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg',
+            ]
+        );
 
         \App\Models\Kostum::updateOrCreate(
             ['nama_kostum' => 'Kafka'],

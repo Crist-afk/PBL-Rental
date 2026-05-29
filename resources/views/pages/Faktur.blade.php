@@ -3,6 +3,12 @@
 @section('title', 'Invoice #' . str_pad($transaksi->id, 5, '0', STR_PAD_LEFT) . ' - CosRent')
 
 @section('content')
+    @php
+        $pengembalian = $transaksi->pengembalian;
+        $returnPenalty = $pengembalian?->total_denda ?? $transaksi->total_denda;
+        $returnNote = $pengembalian?->catatan_qc;
+    @endphp
+
     <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 max-w-4xl mx-auto w-full">
         
         <!-- Action Buttons (Hidden on Print) -->
@@ -90,7 +96,12 @@
                                             </div>
                                             <div>
                                                 <p class="font-black text-dark-chocolate">{{ $detail->kostum->nama_kostum }}</p>
-                                                <p class="text-[10px] font-bold text-dark-chocolate/40 uppercase tracking-widest">{{ $detail->kostum->kategori->nama_kategori ?? 'Costume' }}</p>
+                                                <p class="text-[10px] font-bold text-dark-chocolate/40 uppercase tracking-widest">
+                                                    {{ $detail->kostum->kategori->nama_kategori ?? 'Costume' }}
+                                                    @if($detail->ukuran)
+                                                        / Size {{ $detail->ukuran }}
+                                                    @endif
+                                                </p>
                                             </div>
                                         </div>
                                     </td>
@@ -117,11 +128,11 @@
                     </div>
                     <div class="flex justify-between w-full md:w-64">
                         <span class="text-sm font-bold text-dark-chocolate/40 uppercase tracking-widest">Penalty</span>
-                        <span class="text-sm font-bold text-dark-chocolate">Rp {{ number_format($transaksi->total_denda, 0, ',', '.') }}</span>
+                        <span class="text-sm font-bold text-dark-chocolate">Rp {{ number_format($returnPenalty, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between w-full md:w-64 pt-4 border-t border-dark-chocolate/5">
                         <span class="text-lg font-black text-dark-chocolate uppercase tracking-widest">Total</span>
-                        <span class="text-2xl font-black text-sakura">Rp {{ number_format($transaksi->total_biaya + $transaksi->total_denda, 0, ',', '.') }}</span>
+                        <span class="text-2xl font-black text-sakura">Rp {{ number_format($transaksi->total_biaya + $returnPenalty, 0, ',', '.') }}</span>
                     </div>
                 </div>
 
@@ -138,6 +149,14 @@
                 <div class="pt-8 border-t border-dark-chocolate/5">
                     <h4 class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-3">Admin Notes</h4>
                     <p class="text-sm font-medium text-dark-chocolate/80 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">{{ $transaksi->catatan_admin }}</p>
+                </div>
+                @endif
+
+                <!-- Catatan QC Pengembalian (jika ada) -->
+                @if($returnNote)
+                <div class="pt-8 border-t border-dark-chocolate/5">
+                    <h4 class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-3">Return QC Notes</h4>
+                    <p class="text-sm font-medium text-dark-chocolate/80 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">{{ $returnNote }}</p>
                 </div>
                 @endif
 

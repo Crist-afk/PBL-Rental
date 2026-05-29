@@ -142,7 +142,10 @@
                 $kostumDesc = count($kostumNames) > 0 ? implode(', ', $kostumNames) : 'N/A';
                 
                 $tanggalSelesai = $t->tanggal_selesai;
-                $tanggalKembali = $t->tanggal_kembali_aktual;
+                $pengembalian = $t->pengembalian;
+                $tanggalKembali = $pengembalian?->tanggal_kembali_aktual ?? $t->tanggal_kembali_aktual;
+                $kondisiBarang = $pengembalian?->kondisi_barang ?? $t->kondisi_kostum;
+                $totalDenda = $pengembalian?->total_denda ?? $t->total_denda;
                 $isTerlambat = false;
                 $hariTerlambat = 0;
                 
@@ -163,8 +166,8 @@
                 <td><span class="date-normal">{{ $t->tanggal_mulai?->format('d M Y') }}</span></td>
                 <td><span class="date-warn">{{ $t->tanggal_selesai?->format('d M Y') }}</span></td>
                 <td>
-                  @if($t->status === 'Selesai' && $t->tanggal_kembali_aktual)
-                    <span class="date-normal">{{ $t->tanggal_kembali_aktual->format('d M Y') }}</span>
+                  @if($t->status === 'Selesai' && $tanggalKembali)
+                    <span class="date-normal">{{ $tanggalKembali->format('d M Y') }}</span>
                   @else
                     @if($isTerlambat)
                       <span class="date-muted" style="color:#ef4444;font-weight:700;">TERLAMBAT!</span>
@@ -175,12 +178,14 @@
                 </td>
                 <td>
                   @if($t->status === 'Selesai')
-                    @if($t->kondisi_kostum === 'Baik')
+                    @if($kondisiBarang === 'Baik')
                       <span class="kondisi-display baik" style="font-size:9px;padding:4px 8px;border-radius:6px;">BAIK</span>
-                    @elseif($t->kondisi_kostum === 'Lecet')
+                    @elseif($kondisiBarang === 'Lecet')
                       <span class="kondisi-display lecet" style="font-size:9px;padding:4px 8px;border-radius:6px;">LECET</span>
-                    @else
+                    @elseif($kondisiBarang === 'Rusak')
                       <span class="kondisi-display rusak" style="font-size:9px;padding:4px 8px;border-radius:6px;background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">RUSAK</span>
+                    @else
+                      <span style="color:#4b5a7a">â€“</span>
                     @endif
                   @else
                     <span style="color:#4b5a7a">–</span>
@@ -194,10 +199,10 @@
                   @endif
                 </td>
                 <td>
-                  @if($t->total_denda > 0)
+                  @if($totalDenda > 0)
                     <div class="fine-amount">
                       <span class="fine-rp">Rp</span>
-                      <span class="fine-val">{{ number_format($t->total_denda, 0, ',', '.') }}</span>
+                      <span class="fine-val">{{ number_format($totalDenda, 0, ',', '.') }}</span>
                     </div>
                   @elseif($t->status === 'Selesai')
                     <span class="fine-zero">Rp 0</span>
@@ -217,7 +222,7 @@
                       </span>
                     @endif
                   @else
-                    @if($t->total_denda > 0)
+                    @if($totalDenda > 0)
                       <span class="badge-status terlambat">
                         <span class="bico">🔴</span>TERLAMBAT
                       </span>
@@ -530,7 +535,12 @@
       const tWajib = new Date(transaksi.tanggal_selesai);
       document.getElementById('detail-tgl-wajib').textContent = tWajib.toLocaleDateString('id-ID', options);
       
-      const tAktual = transaksi.tanggal_kembali_aktual ? new Date(transaksi.tanggal_kembali_aktual) : null;
+      const pengembalian = transaksi.pengembalian || {};
+      const tanggalAktual = pengembalian.tanggal_kembali_aktual || transaksi.tanggal_kembali_aktual;
+      const kondisi = pengembalian.kondisi_barang || transaksi.kondisi_kostum;
+      const totalDenda = Number((pengembalian.total_denda != null ? pengembalian.total_denda : transaksi.total_denda) || 0);
+      const catatanQc = pengembalian.catatan_qc || transaksi.catatan_admin;
+      const tAktual = tanggalAktual ? new Date(tanggalAktual) : null;
       document.getElementById('detail-tgl-aktual').textContent = tAktual ? tAktual.toLocaleDateString('id-ID', options) : 'Belum Kembali';
       
       // Status & Kondisi badges
@@ -543,10 +553,10 @@
       
       const kondisiBadge = document.getElementById('detail-kondisi-badge');
       kondisiBadge.className = 'kondisi-display';
-      if (transaksi.kondisi_kostum) {
-          const kLower = transaksi.kondisi_kostum.toLowerCase();
+      if (kondisi) {
+          const kLower = kondisi.toLowerCase();
           kondisiBadge.classList.add(kLower);
-          kondisiBadge.textContent = transaksi.kondisi_kostum.toUpperCase();
+          kondisiBadge.textContent = kondisi.toUpperCase();
           kondisiBadge.style.display = 'inline-block';
       } else {
           kondisiBadge.style.display = 'none';
@@ -554,8 +564,8 @@
       
       // Terlambat text
       const terlambatVal = document.getElementById('detail-terlambat');
-      if (isTerlambat || (transaksi.total_denda > 0)) {
-          terlambatVal.textContent = `Terlambat ${hariTerlambat || Math.ceil(transaksi.total_denda / 50000)} Hari`;
+      if (isTerlambat || (totalDenda > 0)) {
+          terlambatVal.textContent = `Terlambat ${hariTerlambat || Math.ceil(totalDenda / 50000)} Hari`;
           terlambatVal.style.color = 'var(--red)';
       } else {
           terlambatVal.textContent = 'Tepat Waktu';
@@ -564,12 +574,12 @@
       
       // Biaya
       const fmt = (v) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(v);
-      document.getElementById('detail-biaya-sewa').textContent = fmt(transaksi.total_biaya - transaksi.total_denda);
-      document.getElementById('detail-denda').textContent = fmt(transaksi.total_denda);
-      document.getElementById('detail-total').textContent = fmt(transaksi.total_biaya);
+      document.getElementById('detail-biaya-sewa').textContent = fmt(transaksi.total_biaya);
+      document.getElementById('detail-denda').textContent = fmt(totalDenda);
+      document.getElementById('detail-total').textContent = fmt(Number(transaksi.total_biaya) + totalDenda);
       
       // Notes
-      document.getElementById('detail-catatan-admin').textContent = transaksi.catatan_admin || 'Tidak ada catatan admin.';
+      document.getElementById('detail-catatan-admin').textContent = catatanQc || 'Tidak ada catatan admin.';
       
       const modal = document.getElementById('modalDetail');
       modal.classList.add('show');

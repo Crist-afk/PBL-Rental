@@ -36,6 +36,8 @@
                     $firstDetail = $item->detailTransaksi->first();
                     $kostum = $firstDetail ? $firstDetail->kostum : null;
                     $statusColor = $statusColors[$item->status] ?? 'bg-gray-100 text-gray-700 border-gray-200';
+                    $penalty = $item->pengembalian?->total_denda ?? $item->total_denda;
+                    $totalCost = $item->total_biaya + $penalty;
                 @endphp
                 <article class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-6 md:p-10 shadow-lg bg-white/60 flex flex-col lg:flex-row gap-10 items-center lg:items-center w-full">
                     
@@ -84,7 +86,10 @@
                     <div class="w-full lg:w-auto flex flex-col items-center lg:items-end gap-6 pt-8 lg:pt-0 border-t lg:border-0 border-dark-chocolate/10">
                         <div class="text-center lg:text-right">
                             <p class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-1 opacity-60">Total Cost</p>
-                            <p class="text-4xl font-black text-sakura tracking-tighter">Rp {{ number_format($item->total_biaya, 0, ',', '.') }}</p>
+                            <p class="text-4xl font-black text-sakura tracking-tighter">Rp {{ number_format($totalCost, 0, ',', '.') }}</p>
+                            @if($penalty > 0)
+                                <p class="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] mt-1">Includes penalty Rp {{ number_format($penalty, 0, ',', '.') }}</p>
+                            @endif
                         </div>
                         
                         <div class="flex gap-3 w-full lg:w-auto">

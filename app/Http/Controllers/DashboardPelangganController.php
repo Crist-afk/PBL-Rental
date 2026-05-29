@@ -32,10 +32,7 @@ class DashboardPelangganController extends Controller
             ->map(function ($t) {
                 $firstDetail = $t->detailTransaksi->first();
                 $kostum = $firstDetail ? $firstDetail->kostum : null;
-                $size = 'N/A';
-                if ($t->catatan && preg_match('/^Ukuran:\s*([^\n|]+)/i', $t->catatan, $matches)) {
-                    $size = trim($matches[1]);
-                }
+                $size = $firstDetail?->ukuran ?? 'N/A';
 
                 return [
                     'id'          => $t->id,
@@ -142,11 +139,6 @@ class DashboardPelangganController extends Controller
 
             // Buat Transaksi Utama
             $size = $request->size;
-            $catatan = "Ukuran: " . $size;
-            if ($request->filled('catatan')) {
-                $catatan .= "\nCatatan: " . $request->catatan;
-            }
-
             $transaksi = Transaksi::create([
                 'user_id'         => Auth::id(),
                 'tanggal_mulai'   => $request->tanggal_sewa,
@@ -154,13 +146,14 @@ class DashboardPelangganController extends Controller
                 'total_biaya'     => $total_biaya,
                 'total_denda'     => 0,
                 'status'          => 'Menunggu Pembayaran',
-                'catatan'         => $catatan,
+                'catatan'         => $request->catatan,
             ]);
 
             // Buat Detail Transaksi
             DetailTransaksi::create([
                 'transaksi_id'              => $transaksi->id,
                 'kostum_id'                 => $request->kostum_id,
+                'ukuran'                    => $size,
                 'harga_sewa_saat_transaksi' => $total_biaya
             ]);
 
@@ -179,7 +172,7 @@ class DashboardPelangganController extends Controller
      */
     public function riwayat()
     {
-        $historyItems = Transaksi::with(['detailTransaksi.kostum'])
+        $historyItems = Transaksi::with(['detailTransaksi.kostum', 'pengembalian'])
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();
@@ -192,7 +185,7 @@ class DashboardPelangganController extends Controller
      */
     public function faktur($id)
     {
-        $transaksi = Transaksi::with(['detailTransaksi.kostum', 'user'])
+        $transaksi = Transaksi::with(['detailTransaksi.kostum', 'user', 'pengembalian'])
             ->where('user_id', Auth::id())
             ->findOrFail($id);
 

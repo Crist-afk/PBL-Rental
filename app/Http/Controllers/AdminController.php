@@ -7,6 +7,7 @@ use App\Models\Kostum;
 use App\Models\Kategori;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
+use App\Models\Pengembalian;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -26,7 +27,7 @@ class AdminController extends Controller
             'total_pendapatan'  => Transaksi::whereIn('status', ['Disewa', 'Selesai'])->sum('total_biaya'),
         ];
 
-        $transaksi_terbaru = Transaksi::with(['user', 'detailTransaksi.kostum'])
+        $transaksi_terbaru = Transaksi::with(['user', 'detailTransaksi.kostum', 'pengembalian'])
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
@@ -248,12 +249,6 @@ class AdminController extends Controller
             'catatan_admin' => 'nullable|string|max:500',
         ]);
 
-        // Parse the size from catatan
-        $size = null;
-        if ($transaksi->catatan && preg_match('/^Ukuran:\s*([^\n|]+)/i', $transaksi->catatan, $matches)) {
-            $size = trim($matches[1]);
-        }
-
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
@@ -265,14 +260,14 @@ class AdminController extends Controller
                         return back()->with('error', "Failed to approve. Costume '{$kostum->nama_kostum}' is out of stock.");
                     }
 
-                    if ($size) {
+                    if ($detail->ukuran) {
                         $stokPerUkuran = $kostum->stok_per_ukuran;
-                        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
-                            if ($stokPerUkuran[$size] <= 0) {
+                        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$detail->ukuran])) {
+                            if ($stokPerUkuran[$detail->ukuran] <= 0) {
                                 \Illuminate\Support\Facades\DB::rollBack();
-                                return back()->with('error', "Failed to approve. Costume '{$kostum->nama_kostum}' in size '{$size}' is out of stock.");
+                                return back()->with('error', "Failed to approve. Costume '{$kostum->nama_kostum}' in size '{$detail->ukuran}' is out of stock.");
                             }
-                            $stokPerUkuran[$size] -= 1;
+                            $stokPerUkuran[$detail->ukuran] -= 1;
                             $kostum->stok_per_ukuran = $stokPerUkuran;
                         }
                     }
@@ -325,18 +320,43 @@ class AdminController extends Controller
         $filter = $request->get('filter', 'semua');
 
         // Ambil transaksi yang statusnya Disewa (belum dikembalikan) atau Selesai (sudah)
-        $query = Transaksi::with(['user', 'detailTransaksi.kostum'])
+        $query = Transaksi::with(['user', 'detailTransaksi.kostum', 'pengembalian'])
             ->whereIn('status', ['Disewa', 'Selesai'])
             ->latest();
 
         if ($filter === 'belum') {
-            $query->where('status', 'Disewa')->whereNull('tanggal_kembali_aktual');
+            $query->where('status', 'Disewa')->whereDoesntHave('pengembalian');
         } elseif ($filter === 'tepat') {
-            $query->where('status', 'Selesai')->whereColumn('tanggal_kembali_aktual', '<=', 'tanggal_selesai');
+            $query->where('status', 'Selesai')
+                ->where(function ($q) {
+                    $q->whereHas('pengembalian', function ($returnQuery) {
+                        $returnQuery->whereColumn('tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
+                    })->orWhere(function ($legacyQuery) {
+                        $legacyQuery->whereDoesntHave('pengembalian')
+                            ->whereNotNull('tanggal_kembali_aktual')
+                            ->whereColumn('tanggal_kembali_aktual', '<=', 'tanggal_selesai');
+                    });
+                });
         } elseif ($filter === 'terlambat') {
-            $query->where('status', 'Selesai')->whereColumn('tanggal_kembali_aktual', '>', 'tanggal_selesai');
+            $query->where('status', 'Selesai')
+                ->where(function ($q) {
+                    $q->whereHas('pengembalian', function ($returnQuery) {
+                        $returnQuery->whereColumn('tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
+                    })->orWhere(function ($legacyQuery) {
+                        $legacyQuery->whereDoesntHave('pengembalian')
+                            ->whereNotNull('tanggal_kembali_aktual')
+                            ->whereColumn('tanggal_kembali_aktual', '>', 'tanggal_selesai');
+                    });
+                });
         } elseif ($filter === 'denda') {
-            $query->where('total_denda', '>', 0);
+            $query->where(function ($q) {
+                $q->whereHas('pengembalian', function ($returnQuery) {
+                    $returnQuery->where('total_denda', '>', 0);
+                })->orWhere(function ($legacyQuery) {
+                    $legacyQuery->whereDoesntHave('pengembalian')
+                        ->where('total_denda', '>', 0);
+                });
+            });
         }
 
         $transaksis = $query->paginate(15)->withQueryString();
@@ -345,11 +365,17 @@ class AdminController extends Controller
         $stats = [
             'harus_kembali' => Transaksi::where('status', 'Disewa')
                                 ->whereDate('tanggal_selesai', today())->count(),
-            'sudah_kembali' => Transaksi::where('status', 'Selesai')
-                                ->whereDate('tanggal_kembali_aktual', today())->count(),
+            'sudah_kembali' => Pengembalian::whereDate('tanggal_kembali_aktual', today())->count()
+                                + Transaksi::where('status', 'Selesai')
+                                    ->whereDoesntHave('pengembalian')
+                                    ->whereDate('tanggal_kembali_aktual', today())
+                                    ->count(),
             'terlambat'     => Transaksi::where('status', 'Disewa')
                                 ->whereDate('tanggal_selesai', '<', today())->count(),
-            'total_denda'   => Transaksi::whereMonth('updated_at', now()->month)->sum('total_denda'),
+            'total_denda'   => Pengembalian::whereMonth('created_at', now()->month)->sum('total_denda')
+                                + Transaksi::whereDoesntHave('pengembalian')
+                                    ->whereMonth('updated_at', now()->month)
+                                    ->sum('total_denda'),
         ];
 
         return view('admin.pengembalian-admin', compact('transaksis', 'stats', 'filter'));
@@ -357,10 +383,14 @@ class AdminController extends Controller
 
     public function pengembalianKembali(Request $request, $id)
     {
-        $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
+        $transaksi = Transaksi::with(['detailTransaksi.kostum', 'pengembalian'])->findOrFail($id);
 
         if ($transaksi->status !== 'Disewa') {
             return back()->with('error', 'Only active rentals can be returned.');
+        }
+
+        if ($transaksi->pengembalian) {
+            return back()->with('error', 'This rental has already been returned.');
         }
 
         $request->validate([
@@ -379,35 +409,44 @@ class AdminController extends Controller
             $totalDenda    = $hariTerlambat * $dendaPerHari;
         }
 
-        // Parse the size from catatan
-        $size = null;
-        if ($transaksi->catatan && preg_match('/^Ukuran:\s*([^\n|]+)/i', $transaksi->catatan, $matches)) {
-            $size = trim($matches[1]);
-        }
+        try {
+            \Illuminate\Support\Facades\DB::beginTransaction();
 
-        // Kembalikan stok kostum
-        foreach ($transaksi->detailTransaksi as $detail) {
-            $kostum = $detail->kostum;
-            if ($kostum) {
-                if ($size) {
-                    $stokPerUkuran = $kostum->stok_per_ukuran;
-                    if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
-                        $stokPerUkuran[$size] += 1;
-                        $kostum->stok_per_ukuran = $stokPerUkuran;
+            // Kembalikan stok kostum
+            foreach ($transaksi->detailTransaksi as $detail) {
+                $kostum = $detail->kostum;
+                if ($kostum) {
+                    if ($detail->ukuran) {
+                        $stokPerUkuran = $kostum->stok_per_ukuran;
+                        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$detail->ukuran])) {
+                            $stokPerUkuran[$detail->ukuran] += 1;
+                            $kostum->stok_per_ukuran = $stokPerUkuran;
+                        }
                     }
+                    $kostum->stok += 1;
+                    $kostum->save();
                 }
-                $kostum->stok += 1;
-                $kostum->save();
             }
-        }
 
-        $transaksi->update([
-            'status'                 => 'Selesai',
-            'tanggal_kembali_aktual' => $request->tanggal_kembali_aktual,
-            'kondisi_kostum'         => $request->kondisi_kostum,
-            'total_denda'            => $totalDenda,
-            'catatan_admin'          => $request->catatan_admin,
-        ]);
+            Pengembalian::create([
+                'transaksi_id'             => $transaksi->id,
+                'tanggal_kembali_aktual'   => $request->tanggal_kembali_aktual,
+                'kondisi_barang'           => $request->kondisi_kostum,
+                'catatan_qc'               => $request->catatan_admin,
+                'denda_keterlambatan'      => $totalDenda,
+                'denda_kerusakan'          => 0,
+                'total_denda'              => $totalDenda,
+            ]);
+
+            $transaksi->update([
+                'status' => 'Selesai',
+            ]);
+
+            \Illuminate\Support\Facades\DB::commit();
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            return back()->with('error', "An error occurred: " . $e->getMessage());
+        }
 
         return redirect()->route('admin.pengembalian')
             ->with('success', "Return #TRX-{$id} recorded successfully." .
@@ -487,12 +526,17 @@ class AdminController extends Controller
     {
         $user = User::where('role', 'pelanggan')->findOrFail($id);
 
-        $transaksis = Transaksi::with('detailTransaksi.kostum')
+        $transaksis = Transaksi::with(['detailTransaksi.kostum', 'pengembalian'])
             ->where('user_id', $id)
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($t) {
-                $kostumNama = $t->detailTransaksi->first()?->kostum?->nama_kostum ?? 'N/A';
+                $firstDetail = $t->detailTransaksi->first();
+                $kostumNama = $firstDetail?->kostum?->nama_kostum ?? 'N/A';
+                if ($firstDetail?->ukuran) {
+                    $kostumNama .= " ({$firstDetail->ukuran})";
+                }
+                $totalDenda = $t->pengembalian?->total_denda ?? $t->total_denda;
                 return [
                     'id'             => $t->id,
                     'kostum'         => $kostumNama,
@@ -502,7 +546,7 @@ class AdminController extends Controller
                                         ? $t->tanggal_mulai->diffInDays($t->tanggal_selesai) . ' hari'
                                         : '-',
                     'total_biaya'    => $t->total_biaya,
-                    'total_denda'    => $t->total_denda,
+                    'total_denda'    => $totalDenda,
                     'status'         => $t->status,
                 ];
             });

@@ -136,6 +136,7 @@
             $bg = 'rgba(59,130,246,0.12)';
             $title = 'Aktivitas Transaksi';
             $desc = 'Order #' . $trx->id . ' oleh ' . ($trx->user?->nama ?? 'Pelanggan');
+            $totalDenda = $trx->pengembalian?->total_denda ?? $trx->total_denda;
             
             if ($trx->status === 'Menunggu Pembayaran') {
                 $icon = '💵';
@@ -152,11 +153,11 @@
                 $bg = 'rgba(251,146,60,0.12)';
                 $title = 'Kostum dikembalikan';
                 $desc = 'Penyewaan #TRX-' . $trx->id . ' telah selesai';
-                if ($trx->total_denda > 0) {
+                if ($totalDenda > 0) {
                     $icon = '⚠️';
                     $bg = 'rgba(248,113,113,0.12)';
                     $title = 'Pengembalian terlambat';
-                    $desc = 'Penyewaan #TRX-' . $trx->id . ' dikenakan denda Rp ' . number_format($trx->total_denda, 0, ',', '.');
+                    $desc = 'Penyewaan #TRX-' . $trx->id . ' dikenakan denda Rp ' . number_format($totalDenda, 0, ',', '.');
                 }
             } elseif ($trx->status === 'Batal') {
                 $icon = '❌';
@@ -237,4 +238,3 @@
     </div>
   </main>
 @endsection
-

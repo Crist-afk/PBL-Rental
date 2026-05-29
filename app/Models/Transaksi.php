@@ -65,4 +65,9 @@ class Transaksi extends Model
     {
         return $this->hasMany(DetailTransaksi::class, 'transaksi_id');
     }
+
+    public function pengembalian()
+    {
+        return $this->hasOne(Pengembalian::class, 'transaksi_id');
+    }
 }

@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
                 'harga_sewa' => 150000,
                 'ukuran' => 'L, XL',
                 'kelengkapan' => 'Wig, Eye Patch, Jujutsu High Uniform',
-                'gambar' => 'https://images-cdn.ubuy.co.in/65179920f4977158b35cafa6-gojo-satoru-costume-jujutsu-kaisen.jpg',
+                'gambar' => 'kostum/gojo.jpg',
             ]
         );
 
@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
                 'harga_sewa' => 200000,
                 'ukuran' => 'M, L',
                 'kelengkapan' => 'Wig, Coat, Shirt, Trousers, Accessories',
-                'gambar' => 'https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg',
+                'gambar' => 'kostum/kafka.jpg',
             ]
         );
 
@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
                 'harga_sewa' => 100000,
                 'ukuran' => 'S, M, L',
                 'kelengkapan' => 'Straw Hat, Red Vest, Shorts, Waist Sash',
-                'gambar' => 'https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e',
+                'gambar' => 'kostum/luffy.jpg',
             ]
         );
 
@@ -97,7 +97,7 @@ class DatabaseSeeder extends Seeder
                 'harga_sewa' => 250000,
                 'ukuran' => 'M',
                 'kelengkapan' => 'Wig, Kimono, Obi, Hairpiece, Tabi',
-                'gambar' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s',
+                'gambar' => 'kostum/raiden.jpg',
             ]
         );
 
@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
                 'harga_sewa' => 125000,
                 'ukuran' => 'M, L',
                 'kelengkapan' => 'Full Body Suit, Mask',
-                'gambar' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s',
+                'gambar' => 'kostum/spiderman.jpg',
             ]
         );
 
@@ -123,7 +123,7 @@ class DatabaseSeeder extends Seeder
                 'harga_sewa' => 225000,
                 'ukuran' => 'M, L',
                 'kelengkapan' => 'Wig, Shrine Maiden Outfit, Accessories',
-                'gambar' => 'https://ae01.alicdn.com/kf/S5c23516ed69b45b3ae3f35e3fbad217d6.jpg',
+                'gambar' => 'kostum/yae.jpg',
             ]
         );
 

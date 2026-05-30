@@ -43,12 +43,14 @@
                             </div>
                         </div>
 
-                        @if(auth()->check() && auth()->id() === $post->user_id)
+                        @if(auth()->check() && (auth()->id() === $post->user_id || auth()->user()->role === 'admin'))
                             <div class="flex flex-wrap gap-3">
-                                <a href="{{ route('profile') }}" class="inline-flex items-center gap-2 rounded-full bg-dark-chocolate px-5 py-3 text-sm font-bold text-misty-rose transition hover:bg-black">
-                                    <i class="fa-solid fa-user"></i>
-                                    View on My Profile
-                                </a>
+                                @if(auth()->id() === $post->user_id)
+                                    <a href="{{ route('profile') }}" class="inline-flex items-center gap-2 rounded-full bg-dark-chocolate px-5 py-3 text-sm font-bold text-misty-rose transition hover:bg-black">
+                                        <i class="fa-solid fa-user"></i>
+                                        View on My Profile
+                                    </a>
+                                @endif
                                 <form action="{{ route('forum.destroy', $post) }}" method="POST" onsubmit="return confirm('Delete this discussion? All comments inside it will also be deleted.');">
                                     @csrf
                                     @method('DELETE')
@@ -222,32 +224,34 @@
 
                                         <p class="mt-3 whitespace-pre-line text-sm font-medium leading-relaxed text-dark-chocolate/80">{{ $comment->content }}</p>
 
-                                        @if(auth()->check() && auth()->id() === $comment->user_id)
+                                        @if(auth()->check() && (auth()->id() === $comment->user_id || auth()->user()->role === 'admin'))
                                             <div class="mt-4 flex flex-wrap items-center gap-3">
-                                                <details class="rounded-xl border border-dark-chocolate/10 bg-white/60 p-4" @if(old('editing_comment') == $comment->id) open @endif>
-                                                    <summary class="cursor-pointer text-sm font-bold text-aloewood">Edit comment</summary>
-                                                    @if($errors->getBag('commentUpdate')->any() && old('editing_comment') == $comment->id)
-                                                        <div class="mt-4 rounded-2xl border-2 border-red-200 bg-red-50 p-4 text-red-700">
-                                                            <ul class="space-y-1 text-sm font-medium">
-                                                                @foreach($errors->getBag('commentUpdate')->all() as $error)
-                                                                    <li>{{ $error }}</li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                    @endif
-                                                    <form action="{{ route('forum.comments.update', [$post, $comment]) }}" method="POST" class="mt-4 space-y-3">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <input type="hidden" name="editing_comment" value="{{ $comment->id }}">
-                                                        <div>
-                                                            <textarea name="edit_comment_content" rows="3" class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 text-sm font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura" required>{{ old('editing_comment') == $comment->id ? old('edit_comment_content') : $comment->content }}</textarea>
-                                                        </div>
-                                                        <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-dark-chocolate px-5 py-2.5 text-xs font-bold text-misty-rose transition hover:bg-black">
-                                                            <i class="fa-solid fa-floppy-disk"></i>
-                                                            Save Edit
-                                                        </button>
-                                                    </form>
-                                                </details>
+                                                @if(auth()->id() === $comment->user_id)
+                                                    <details class="rounded-xl border border-dark-chocolate/10 bg-white/60 p-4" @if(old('editing_comment') == $comment->id) open @endif>
+                                                        <summary class="cursor-pointer text-sm font-bold text-aloewood">Edit comment</summary>
+                                                        @if($errors->getBag('commentUpdate')->any() && old('editing_comment') == $comment->id)
+                                                            <div class="mt-4 rounded-2xl border-2 border-red-200 bg-red-50 p-4 text-red-700">
+                                                                <ul class="space-y-1 text-sm font-medium">
+                                                                    @foreach($errors->getBag('commentUpdate')->all() as $error)
+                                                                        <li>{{ $error }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        @endif
+                                                        <form action="{{ route('forum.comments.update', [$post, $comment]) }}" method="POST" class="mt-4 space-y-3">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <input type="hidden" name="editing_comment" value="{{ $comment->id }}">
+                                                            <div>
+                                                                <textarea name="edit_comment_content" rows="3" class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 text-sm font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura" required>{{ old('editing_comment') == $comment->id ? old('edit_comment_content') : $comment->content }}</textarea>
+                                                            </div>
+                                                            <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-dark-chocolate px-5 py-2.5 text-xs font-bold text-misty-rose transition hover:bg-black">
+                                                                <i class="fa-solid fa-floppy-disk"></i>
+                                                                Save Edit
+                                                            </button>
+                                                        </form>
+                                                    </details>
+                                                @endif
 
                                                 <form action="{{ route('forum.comments.destroy', [$post, $comment]) }}" method="POST" onsubmit="return confirm('Delete this comment? Replies below it will also be deleted.');">
                                                     @csrf
@@ -278,32 +282,34 @@
                                                         </div>
                                                         <p class="mt-3 whitespace-pre-line text-sm font-medium leading-relaxed text-dark-chocolate/80">{{ $reply->content }}</p>
 
-                                                        @if(auth()->check() && auth()->id() === $reply->user_id)
+                                                        @if(auth()->check() && (auth()->id() === $reply->user_id || auth()->user()->role === 'admin'))
                                                             <div class="mt-4 flex flex-wrap items-center gap-3">
-                                                                <details class="rounded-xl border border-dark-chocolate/10 bg-white/80 p-4" @if(old('editing_comment') == $reply->id) open @endif>
-                                                                    <summary class="cursor-pointer text-xs font-bold text-aloewood">Edit reply</summary>
-                                                                    @if($errors->getBag('commentUpdate')->any() && old('editing_comment') == $reply->id)
-                                                                        <div class="mt-4 rounded-2xl border-2 border-red-200 bg-red-50 p-4 text-red-700">
-                                                                            <ul class="space-y-1 text-sm font-medium">
-                                                                                @foreach($errors->getBag('commentUpdate')->all() as $error)
-                                                                                    <li>{{ $error }}</li>
-                                                                                @endforeach
-                                                                            </ul>
-                                                                        </div>
-                                                                    @endif
-                                                                    <form action="{{ route('forum.comments.update', [$post, $reply]) }}" method="POST" class="mt-4 space-y-3">
-                                                                        @csrf
-                                                                        @method('PATCH')
-                                                                        <input type="hidden" name="editing_comment" value="{{ $reply->id }}">
-                                                                        <div>
-                                                                            <textarea name="edit_comment_content" rows="3" class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 text-sm font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura" required>{{ old('editing_comment') == $reply->id ? old('edit_comment_content') : $reply->content }}</textarea>
-                                                                        </div>
-                                                                        <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-dark-chocolate px-5 py-2.5 text-xs font-bold text-misty-rose transition hover:bg-black">
-                                                                            <i class="fa-solid fa-floppy-disk"></i>
-                                                                            Save
-                                                                        </button>
-                                                                    </form>
-                                                                </details>
+                                                                @if(auth()->id() === $reply->user_id)
+                                                                    <details class="rounded-xl border border-dark-chocolate/10 bg-white/80 p-4" @if(old('editing_comment') == $reply->id) open @endif>
+                                                                        <summary class="cursor-pointer text-xs font-bold text-aloewood">Edit reply</summary>
+                                                                        @if($errors->getBag('commentUpdate')->any() && old('editing_comment') == $reply->id)
+                                                                            <div class="mt-4 rounded-2xl border-2 border-red-200 bg-red-50 p-4 text-red-700">
+                                                                                <ul class="space-y-1 text-sm font-medium">
+                                                                                    @foreach($errors->getBag('commentUpdate')->all() as $error)
+                                                                                        <li>{{ $error }}</li>
+                                                                                    @endforeach
+                                                                                </ul>
+                                                                            </div>
+                                                                        @endif
+                                                                        <form action="{{ route('forum.comments.update', [$post, $reply]) }}" method="POST" class="mt-4 space-y-3">
+                                                                            @csrf
+                                                                            @method('PATCH')
+                                                                            <input type="hidden" name="editing_comment" value="{{ $reply->id }}">
+                                                                            <div>
+                                                                                <textarea name="edit_comment_content" rows="3" class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 text-sm font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura" required>{{ old('editing_comment') == $reply->id ? old('edit_comment_content') : $reply->content }}</textarea>
+                                                                            </div>
+                                                                            <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-dark-chocolate px-5 py-2.5 text-xs font-bold text-misty-rose transition hover:bg-black">
+                                                                                <i class="fa-solid fa-floppy-disk"></i>
+                                                                                Save
+                                                                            </button>
+                                                                        </form>
+                                                                    </details>
+                                                                @endif
 
                                                                 <form action="{{ route('forum.comments.destroy', [$post, $reply]) }}" method="POST" onsubmit="return confirm('Delete this reply?');">
                                                                     @csrf

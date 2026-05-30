@@ -198,9 +198,21 @@
                                     {{ $post->comments_count }} comments
                                 </span>
                             </div>
-                            <a href="{{ route('forum.show', $post) }}" class="transition hover:text-sakura">
-                                Read Discussion <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </a>
+                            <div class="flex items-center gap-3">
+                                @if(auth()->check() && (auth()->id() === $post->user_id || auth()->user()->role === 'admin'))
+                                    <form action="{{ route('forum.destroy', $post) }}" method="POST" onsubmit="return confirm('Delete this discussion? All comments inside it will also be deleted.');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center gap-1 text-red-600 transition hover:text-red-700">
+                                            <i class="fa-solid fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                @endif
+                                <a href="{{ route('forum.show', $post) }}" class="transition hover:text-sakura">
+                                    Read Discussion <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
                         </div>
                     </article>
                 @empty

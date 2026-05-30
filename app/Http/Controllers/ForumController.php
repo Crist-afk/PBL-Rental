@@ -88,7 +88,7 @@ class ForumController extends Controller
 
     public function update(Request $request, ForumPost $forumPost)
     {
-        $this->authorizePostOwner($request, $forumPost);
+        $this->authorizePostEditor($request, $forumPost);
 
         $validated = $request->validateWithBag('postUpdate', [
             'edit_forum_category_id' => 'required|exists:forum_categories,id',
@@ -196,7 +196,7 @@ class ForumController extends Controller
     public function updateComment(Request $request, ForumPost $forumPost, ForumComment $forumComment)
     {
         $this->ensureCommentBelongsToPost($forumPost, $forumComment);
-        $this->authorizeCommentOwner($request, $forumComment);
+        $this->authorizeCommentEditor($request, $forumComment);
 
         $validated = $request->validateWithBag('commentUpdate', [
             'edit_comment_content' => 'required|string|max:2000',
@@ -237,10 +237,20 @@ class ForumController extends Controller
 
     private function authorizePostOwner(Request $request, ForumPost $forumPost): void
     {
-        abort_unless($request->user()->is($forumPost->user), 403);
+        abort_unless($request->user()->is($forumPost->user) || $request->user()->role === 'admin', 403);
     }
 
     private function authorizeCommentOwner(Request $request, ForumComment $forumComment): void
+    {
+        abort_unless($request->user()->is($forumComment->user) || $request->user()->role === 'admin', 403);
+    }
+
+    private function authorizePostEditor(Request $request, ForumPost $forumPost): void
+    {
+        abort_unless($request->user()->is($forumPost->user), 403);
+    }
+
+    private function authorizeCommentEditor(Request $request, ForumComment $forumComment): void
     {
         abort_unless($request->user()->is($forumComment->user), 403);
     }

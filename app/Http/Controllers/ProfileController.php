@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -89,5 +91,61 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('profile')->with('success', 'Cover photo updated successfully!');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validateWithBag('updatePassword', [
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        if (! Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors([
+                'current_password' => 'The current password is incorrect.',
+            ], 'updatePassword');
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->route('profile')->with('success', 'Password updated successfully.');
+    }
+
+    public function destroyAccount(Request $request)
+    {
+        $request->validateWithBag('deleteAccount', [
+            'password' => 'required',
+        ]);
+
+        $user = $request->user();
+
+        if ($user->role === 'admin') {
+            return back()->withErrors([
+                'password' => 'Admin accounts cannot be deleted from the customer profile page.',
+            ], 'deleteAccount');
+        }
+
+        if ($user->role !== 'pelanggan') {
+            return back()->withErrors([
+                'password' => 'Only customer accounts can be deleted from this page.',
+            ], 'deleteAccount');
+        }
+
+        if (! Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'password' => 'The password is incorrect.',
+            ], 'deleteAccount');
+        }
+
+        $user->delete();
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home')->with('success', 'Your account has been deleted successfully.');
     }
 }

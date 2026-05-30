@@ -56,7 +56,7 @@ class AuthController extends Controller
         ]);
 
         // Coba cocokkan dengan database
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             // Jika berhasil, perbarui sesi (keamanan anti-hijacking)
             $request->session()->regenerate();
 

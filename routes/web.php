@@ -52,6 +52,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/cover', [ProfileController::class, 'updateCover'])->name('profile.updateCover');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::delete('/profile/account', [ProfileController::class, 'destroyAccount'])->name('profile.account.destroy');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

@@ -377,6 +377,51 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Change Password Card --}}
+                <div class="bg-[var(--bg-card,var(--card-bg,#fff))] rounded-2xl border border-[var(--border-color)] shadow-sm p-6 transition-all duration-300 ease-in-out">
+                    <h3 class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-4 flex items-center gap-2 transition-all duration-300 ease-in-out">
+                        <div class="w-8 h-8 shrink-0 flex items-center justify-center bg-[var(--bg-card,var(--card-bg,#fff))] rounded-full transition-all duration-300 ease-in-out">
+                            <svg class="w-4 h-4 text-stone-600 [.dark-mode_&]:text-stone-300 transition-all duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 11V8a5 5 0 00-10 0v3m-1 0h12a1 1 0 011 1v7a1 1 0 01-1 1H6a1 1 0 01-1-1v-7a1 1 0 011-1z"/>
+                            </svg>
+                        </div>
+                        Change Password
+                    </h3>
+
+                    <form action="{{ route('admin.profile.password.update') }}" method="POST" class="space-y-4">
+                        @csrf
+                        @method('PUT')
+
+                        <div>
+                            <label for="current_password" class="block text-xs font-medium text-stone-600 [.dark-mode_&]:text-stone-300 mb-1 transition-all duration-300 ease-in-out">Current Password</label>
+                            <input type="password" name="current_password" id="current_password" class="w-full text-sm rounded-lg border-stone-300 [.dark-mode_&]:border-stone-600 bg-transparent text-stone-900 [.dark-mode_&]:text-white focus:ring-[var(--text-primary,#443025)] focus:border-[var(--text-primary,#443025)] p-2.5 transition-all duration-300 ease-in-out">
+                            @error('current_password', 'updatePassword')
+                                <p class="mt-2 text-xs font-semibold text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-xs font-medium text-stone-600 [.dark-mode_&]:text-stone-300 mb-1 transition-all duration-300 ease-in-out">New Password</label>
+                            <input type="password" name="password" id="password" class="w-full text-sm rounded-lg border-stone-300 [.dark-mode_&]:border-stone-600 bg-transparent text-stone-900 [.dark-mode_&]:text-white focus:ring-[var(--text-primary,#443025)] focus:border-[var(--text-primary,#443025)] p-2.5 transition-all duration-300 ease-in-out">
+                            @error('password', 'updatePassword')
+                                <p class="mt-2 text-xs font-semibold text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="password_confirmation" class="block text-xs font-medium text-stone-600 [.dark-mode_&]:text-stone-300 mb-1 transition-all duration-300 ease-in-out">Confirm New Password</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="w-full text-sm rounded-lg border-stone-300 [.dark-mode_&]:border-stone-600 bg-transparent text-stone-900 [.dark-mode_&]:text-white focus:ring-[var(--text-primary,#443025)] focus:border-[var(--text-primary,#443025)] p-2.5 transition-all duration-300 ease-in-out">
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full bg-[var(--text-primary,#443025)] text-[var(--bg-card,var(--card-bg,#fff))] font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all shadow-sm duration-300 ease-in-out">
+                                Update Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             {{-- Right Column --}}

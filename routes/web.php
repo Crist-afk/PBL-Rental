@@ -91,6 +91,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // ── Profil Admin ──
     Route::get('/profil', [AdminProfileController::class, 'edit'])->name('profile');
     Route::put('/profil', [AdminProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profil/password', [AdminProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::post('/profil/avatar', [AdminProfileController::class, 'updateAvatar'])->name('profile.avatar');
     Route::post('/profil/cover', [AdminProfileController::class, 'updateCover'])->name('profile.cover');
 });

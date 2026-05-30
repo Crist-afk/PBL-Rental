@@ -45,14 +45,6 @@
             </form>
         </div>
 
-        <div class="flex items-center justify-between rounded-xl border border-dark-chocolate/10 bg-misty-rose/20 p-4">
-            <div>
-                <p class="font-bold text-dark-chocolate">Two-Factor Authentication</p>
-                <p class="mt-1 text-xs text-dark-chocolate/60">This feature is not available yet.</p>
-            </div>
-            <span class="rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-wide text-dark-chocolate/60">Disabled</span>
-        </div>
-
         <div class="mt-8 rounded-xl border border-red-100 bg-red-50 p-4">
             <div class="mb-4">
                 <p class="font-bold text-red-700">Delete Account</p>

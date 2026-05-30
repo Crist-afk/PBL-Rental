@@ -57,7 +57,7 @@ class Transaksi extends Model
     // Relasi: Satu transaksi dimiliki oleh satu user (Pelanggan)
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id')->withTrashed();
     }
 
     // Relasi: Satu transaksi punya banyak detail barang yang disewa

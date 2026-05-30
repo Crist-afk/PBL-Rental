@@ -47,8 +47,8 @@
 
         <div class="mt-8 rounded-xl border border-red-100 bg-red-50 p-4">
             <div class="mb-4">
-                <p class="font-bold text-red-700">Delete Account</p>
-                <p class="mt-1 text-xs text-red-500/80">This permanently deletes your customer account. This action cannot be undone.</p>
+                <p class="font-bold text-red-700">Deactivate Account</p>
+                <p class="mt-1 text-xs text-red-500/80">Your profile will be anonymized and you will no longer be able to log in. Rental history may be retained for business records, and forum content may remain visible as Deleted User.</p>
             </div>
 
             <form action="{{ route('profile.account.destroy') }}" method="POST" class="space-y-4">
@@ -66,8 +66,8 @@
 
                 <button type="submit"
                     class="rounded-xl bg-red-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-200"
-                    onclick="return confirm('Are you sure you want to permanently delete your account?')">
-                    Delete My Account
+                    onclick="return confirm('Are you sure you want to deactivate your account?')">
+                    Deactivate My Account
                 </button>
             </form>
         </div>

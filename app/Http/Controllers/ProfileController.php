@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -140,12 +141,29 @@ class ProfileController extends Controller
             ], 'deleteAccount');
         }
 
+        foreach (['avatar', 'cover_photo'] as $imageField) {
+            if ($user->{$imageField} && Storage::disk('public')->exists($user->{$imageField})) {
+                Storage::disk('public')->delete($user->{$imageField});
+            }
+        }
+
+        $user->nama = 'Deleted User';
+        $user->email = 'deleted_user_' . $user->id . '@cosrent.local';
+        $user->no_hp = null;
+        $user->bio = null;
+        $user->avatar = null;
+        $user->cover_photo = null;
+        $user->password = Hash::make(Str::random(64));
+        $user->remember_token = null;
+        $user->is_active = false;
+        $user->save();
         $user->delete();
+
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home')->with('success', 'Your account has been deleted successfully.');
+        return redirect()->route('home')->with('success', 'Your account has been deactivated successfully.');
     }
 }

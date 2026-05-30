@@ -57,6 +57,17 @@ class AuthController extends Controller
 
         // Coba cocokkan dengan database
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            if (! Auth::user()->is_active) {
+                Auth::logout();
+
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'This account has been deactivated.',
+                ])->onlyInput('email');
+            }
+
             // Jika berhasil, perbarui sesi (keamanan anti-hijacking)
             $request->session()->regenerate();
 

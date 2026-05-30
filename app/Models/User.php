@@ -2,11 +2,12 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     protected $table = 'users'; // Representasi dari Tabel Akun
 
@@ -16,6 +17,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role', // Penting untuk Single Table Inheritance
+        'is_active',
         'avatar',
         'cover_photo',
         'bio', // Kolom tambahan untuk profil
@@ -26,6 +28,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 
     public function forumPosts()

@@ -35,59 +35,7 @@
                     </div>
                 </div>
                 
-                {{-- Thumbnails --}}
-                @if($kostum->images && $kostum->images->count() > 0)
-                    <div class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
-                        {{-- Thumbnail for main image --}}
-                        <button onclick="changeMainImage('{{ $kostum->gambar_url }}', this)" class="thumbnail-btn w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden border-2 border-sakura opacity-100 focus:outline-none transition-all">
-                            <img src="{{ $kostum->gambar_url }}" alt="Main" class="w-full h-full object-cover">
-                        </button>
-                        
-                        {{-- Thumbnails for additional images --}}
-                        @foreach($kostum->images as $img)
-                            @php
-                                $imgUrl = filter_var($img->gambar, FILTER_VALIDATE_URL) ? $img->gambar : asset('storage/' . $img->gambar);
-                            @endphp
-                            <button onclick="changeMainImage('{{ $imgUrl }}', this)" class="thumbnail-btn w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 hover:border-sakura focus:outline-none transition-all">
-                                <img src="{{ $imgUrl }}" alt="Thumbnail" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://via.placeholder.com/100x100.png?text=No+Image';">
-                            </button>
-                        @endforeach
-                    </div>
-                    
-                    <script>
-                        function changeMainImage(url, clickedBtn) {
-                            document.getElementById('main-product-image').src = url;
-                            
-                            // Reset all buttons styling
-                            const btns = document.querySelectorAll('.thumbnail-btn');
-                            btns.forEach(btn => {
-                                btn.classList.remove('border-sakura', 'opacity-100');
-                                btn.classList.add('border-transparent', 'opacity-60');
-                            });
-                            
-                            // Highlight clicked button
-                            clickedBtn.classList.remove('border-transparent', 'opacity-60');
-                            clickedBtn.classList.add('border-sakura', 'opacity-100');
-                        }
-                    </script>
-                    
-                    <style>
-                        .custom-scrollbar::-webkit-scrollbar {
-                            height: 6px;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-track {
-                            background: rgba(84, 51, 16, 0.1); 
-                            border-radius: 10px;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-thumb {
-                            background: rgba(255, 182, 193, 0.8); 
-                            border-radius: 10px;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                            background: rgba(255, 182, 193, 1); 
-                        }
-                    </style>
-                @endif
+
             </section>
 
             {{-- ── Right Side: Details & Action ── --}}

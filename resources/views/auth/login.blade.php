@@ -68,7 +68,7 @@
                     </button>
 
                     <div class="text-center mt-4">
-                        <a href="#" class="text-sm font-bold text-aloewood hover:text-sakura transition duration-200">Forgot Password?</a>
+                        <a href="{{ route('password.request') }}" class="text-sm font-bold text-aloewood hover:text-sakura transition duration-200">Forgot Password?</a>
                     </div>
                 </form>
             </div>

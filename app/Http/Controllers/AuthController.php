@@ -55,19 +55,18 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        $existingUser = User::withTrashed()
+            ->where('email', $request->email)
+            ->first();
+
+        if ($existingUser && (! $existingUser->is_active || $existingUser->trashed())) {
+            return back()->withErrors([
+                'email' => 'This account has been deactivated.',
+            ])->onlyInput('email');
+        }
+
         // Coba cocokkan dengan database
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            if (! Auth::user()->is_active) {
-                Auth::logout();
-
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-
-                return back()->withErrors([
-                    'email' => 'This account has been deactivated.',
-                ])->onlyInput('email');
-            }
-
             // Jika berhasil, perbarui sesi (keamanan anti-hijacking)
             $request->session()->regenerate();
 

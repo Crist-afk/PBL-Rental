@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardPelangganController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,4 +104,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'processRegister'])->name('register.process');
+
+    Route::get('/forgot-password', [PasswordResetController::class, 'showForgotForm'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->name('password.update');
 });

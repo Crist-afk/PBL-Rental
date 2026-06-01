@@ -19,12 +19,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-8">
 
             {{-- ── Left Side: Product Images ── --}}
-            <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-4 shadow-xl flex flex-col gap-4">
+            <section class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-4 shadow-xl flex flex-col gap-4 h-fit">
                 {{-- Main Image --}}
-                <div class="w-full h-[400px] md:h-[450px] bg-dark-chocolate/10 rounded-[2rem] flex flex-col items-center justify-center relative overflow-hidden group">
+                <div class="w-full h-auto bg-dark-chocolate/10 rounded-[2rem] flex flex-col items-center justify-center relative overflow-hidden group">
                     <img id="main-product-image" src="{{ $kostum->gambar_url }}"
                          alt="{{ $kostum->nama_kostum }}"
-                         class="w-full h-full object-cover transition duration-500"
+                         class="w-full h-auto object-contain transition duration-500"
                          onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
                          
                     {{-- Hover overlay --}}

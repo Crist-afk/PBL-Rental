@@ -69,10 +69,10 @@
                     <article class="glass-card rounded-[2rem] border-2 border-dark-chocolate/10 p-4 shadow-xl transition duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col reveal" data-reveal="up" style="transition-delay: {{ ($loop->index % 4) * 100 }}ms;">
 
                         {{-- Image --}}
-                        <div class="h-60 rounded-[1.5rem] mb-4 overflow-hidden bg-dark-chocolate/10">
+                        <div class="h-60 rounded-[1.5rem] mb-4 overflow-hidden bg-dark-chocolate/10 p-2">
                             <img src="{{ $kostum->gambar_url }}"
                                  alt="{{ $kostum->nama_kostum }}"
-                                 class="w-full h-full object-cover transition duration-300 hover:scale-105"
+                                 class="w-full h-full object-contain transition duration-300 hover:scale-105"
                                  onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
                         </div>
 

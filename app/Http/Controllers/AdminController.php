@@ -395,19 +395,26 @@ class AdminController extends Controller
 
         $request->validate([
             'tanggal_kembali_aktual' => 'required|date',
-            'kondisi_kostum'         => 'required|in:Baik,Lecet,Rusak',
-            'catatan_admin'          => 'nullable|string|max:500',
+            'kondisi_kostum'         => 'required|string|max:255',
+            'catatan_admin'          => 'nullable|string|max:1000',
         ]);
 
-        $tanggalSelesai = Carbon::parse($transaksi->tanggal_selesai);
-        $tanggalKembali = Carbon::parse($request->tanggal_kembali_aktual);
+        // Normalisasi ke awal hari agar perbandingan tanggal tidak terpengaruh komponen waktu
+        $tanggalSelesai = Carbon::parse($transaksi->tanggal_selesai)->startOfDay();
+        $tanggalKembali = Carbon::parse($request->tanggal_kembali_aktual)->startOfDay();
         $dendaPerHari   = 50000; // Rp 50.000 per hari keterlambatan
 
-        $totalDenda = 0;
-        if ($tanggalKembali->gt($tanggalSelesai)) {
+        // VALIDASI BISNIS: Jika kembali tepat waktu atau lebih awal, TIDAK ada denda
+        if ($tanggalKembali->lte($tanggalSelesai)) {
+            $hariTerlambat = 0;
+            $totalDenda    = 0;
+        } else {
             $hariTerlambat = $tanggalKembali->diffInDays($tanggalSelesai);
             $totalDenda    = $hariTerlambat * $dendaPerHari;
         }
+
+        // Safety net: pastikan denda tidak pernah bernilai negatif
+        $totalDenda = max(0, $totalDenda);
 
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();

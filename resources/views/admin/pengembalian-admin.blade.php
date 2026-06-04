@@ -188,7 +188,9 @@
                       <span style="color:#4b5a7a">â€“</span>
                     @endif
                   @else
-                    <span style="color:#4b5a7a">–</span>
+                    <button type="button" class="kondisi-btn-action" style="font-size: 9px; padding: 4px 8px; border-radius: 6px; background: rgba(124, 58, 237, 0.1); color: #7c3aed; border: 1px dashed #7c3aed; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: all 0.2s;" onmouseover="this.style.background='rgba(124, 58, 237, 0.2)'" onmouseout="this.style.background='rgba(124, 58, 237, 0.1)'" onclick="openKembaliFormModal({{ json_encode($t) }}, '{{ $kostumDesc }}')">
+                      📝 CATAT KEMBALI
+                    </button>
                   @endif
                 </td>
                 <td>
@@ -304,26 +306,53 @@
           </div>
         </div>
         <div class="field" style="margin-top: 12px;">
-          <label>Kondisi Kostum</label>
-          <input type="hidden" name="kondisi_kostum" id="kembali_kondisi_input" value="Baik">
-          <div class="kondisi-row" style="display: flex; gap: 8px;">
-            <button type="button" class="kondisi-btn baik selected" onclick="selectKondisiK(this,'baik')" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-2); cursor: pointer; font-weight: 600;">BAIK</button>
-            <button type="button" class="kondisi-btn lecet" onclick="selectKondisiK(this,'lecet')" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-2); cursor: pointer; font-weight: 600;">LECET</button>
-            <button type="button" class="kondisi-btn rusak" onclick="selectKondisiK(this,'rusak')" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-2); cursor: pointer; font-weight: 600;">RUSAK</button>
+          <label style="font-weight: 600;">Kondisi Kostum <span style="color: var(--red);">*</span></label>
+          <div class="kondisi-row" style="margin-top: 6px;">
+            <button type="button" class="kondisi-btn baik" onclick="selectKondisi('Baik')">Baik</button>
+            <button type="button" class="kondisi-btn lecet" onclick="selectKondisi('Lecet')">Lecet</button>
+            <button type="button" class="kondisi-btn rusak" onclick="selectKondisi('Rusak')">Rusak</button>
           </div>
+          <input type="hidden" name="kondisi_kostum" id="kembali_kondisi_input" required value="Baik">
+          <div style="font-size: 11px; color: var(--text-3); margin-top: 6px;">Pilih kondisi kostum saat diterima kembali.</div>
         </div>
         
-        <!-- Live fine display -->
-        <div class="kalkulasi" id="kembali-kalk" style="display:none; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 12px; margin-top: 16px;">
+        <!-- Panel: Kembali Lebih Awal (hijau) -->
+        <div id="kembali-early" style="display:none; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.25); border-radius: 10px; padding: 14px 16px; margin-top: 16px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 22px;">✅</span>
+            <div>
+              <div style="font-weight: 700; color: #10b981; font-size: 13px;">PENGEMBALIAN LEBIH AWAL</div>
+              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Kostum dikembalikan <strong id="kembali-early-days">0 hari</strong> sebelum jadwal wajib. <strong style="color:#10b981;">Tidak ada denda.</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Tepat Waktu (biru) -->
+        <div id="kembali-ontime" style="display:none; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 10px; padding: 14px 16px; margin-top: 16px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 22px;">🎯</span>
+            <div>
+              <div style="font-weight: 700; color: var(--blue); font-size: 13px;">TEPAT WAKTU</div>
+              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Kostum dikembalikan tepat sesuai jadwal. <strong style="color:var(--blue);">Tidak ada denda.</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Terlambat (merah) -->
+        <div class="kalkulasi" id="kembali-kalk" style="display:none; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 14px 16px; margin-top: 16px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <span style="font-size:18px;">⚠️</span>
+            <span style="font-weight:700; color: var(--red); font-size:13px;">PENGEMBALIAN TERLAMBAT</span>
+          </div>
           <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
-            <span>Hari Terlambat</span>
-            <span class="red" id="kembali-hari" style="color: var(--red); font-weight: 700;">0 HARI</span>
+            <span style="color:var(--text-2);">Hari Terlambat</span>
+            <span id="kembali-hari" style="color: var(--red); font-weight: 700;">0 HARI</span>
           </div>
           <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-3);">
             <span>Denda per Hari</span>
             <span>Rp 50.000</span>
           </div>
-          <div class="kalk-total" style="display: flex; justify-content: space-between; border-top: 1px solid rgba(239, 68, 68, 0.2); padding-top: 8px; font-weight: 700; font-size: 14px;">
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(239,68,68,0.2); padding-top: 10px; font-weight: 700; font-size: 15px;">
             <span>ESTIMASI DENDA</span>
             <span id="kembali-total" style="color: var(--red);">Rp 0</span>
           </div>
@@ -336,7 +365,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-batal" onclick="closeModal('modalKembali')">BATAL</button>
-        <button type="submit" class="btn-simpan" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">SIMPAN PENGEMBALIAN</button>
+        <button type="submit" class="btn-simpan" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">✓ KONFIRMASI KOSTUM KEMBALI KE TOKO</button>
       </div>
     </form>
   </div>
@@ -455,70 +484,91 @@
 <script>
   let currentTransaksi = null;
 
+  window.selectKondisi = function(val) {
+      document.getElementById('kembali_kondisi_input').value = val;
+      const buttons = document.querySelectorAll('.kondisi-btn');
+      buttons.forEach(btn => {
+          btn.classList.remove('selected');
+          if (btn.classList.contains(val.toLowerCase())) {
+              btn.classList.add('selected');
+          }
+      });
+  }
+
   window.openKembaliFormModal = function(transaksi, kostumDesc) {
       currentTransaksi = transaksi;
       const modal = document.getElementById('modalKembali');
       const form = modal.querySelector('form');
       form.action = `/admin/pengembalian/${transaksi.id}/kembali`;
-      
+
       document.getElementById('kembali-order-id').textContent = '#TRX-' + transaksi.id;
       document.getElementById('kembali-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
       document.getElementById('kembali-kostum').textContent = kostumDesc;
-      
+
       const tSelesai = new Date(transaksi.tanggal_selesai);
       document.getElementById('kembali-wajib').textContent = tSelesai.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-      
-      // Set default tanggal kembali aktual to today
+
+      // Set tanggal kembali default = hari ini
       const todayStr = new Date().toISOString().split('T')[0];
       document.getElementById('kembali-tgl').value = todayStr;
-      
-      // Default condition to 'Baik'
-      document.getElementById('kembali_kondisi_input').value = 'Baik';
-      modal.querySelectorAll('.kondisi-btn').forEach(btn => btn.classList.remove('selected'));
-      modal.querySelector('.kondisi-btn.baik').classList.add('selected');
-      
-      document.getElementById('kembali_catatan').value = '';
-      
-      hitungKembaliDenda();
-      
-      modal.classList.add('show');
-  }
 
-  window.selectKondisiK = function(button, value) {
-      const row = button.closest('.kondisi-row');
-      row.querySelectorAll('.kondisi-btn').forEach(btn => btn.classList.remove('selected'));
-      button.classList.add('selected');
-      
-      // Set input value capitalized to match Enum 'Baik', 'Lecet', 'Rusak'
-      const capValue = value.charAt(0).toUpperCase() + value.slice(1);
-      document.getElementById('kembali_kondisi_input').value = capValue;
+      // Reset kondisi ke 'Baik'
+      selectKondisi('Baik');
+      document.getElementById('kembali_catatan').value = '';
+
+      // Sembunyikan semua panel info
+      document.getElementById('kembali-early').style.display  = 'none';
+      document.getElementById('kembali-ontime').style.display = 'none';
+      document.getElementById('kembali-kalk').style.display   = 'none';
+
+      hitungKembaliDenda();
+      modal.classList.add('show');
+
+      // Fokus ke tanggal input
+      setTimeout(() => {
+          const tglInput = document.getElementById('kembali-tgl');
+          if (tglInput) tglInput.focus();
+      }, 200);
   }
 
   window.hitungKembaliDenda = function() {
       if (!currentTransaksi) return;
-      
-      const tSelesaiStr = currentTransaksi.tanggal_selesai;
-      const tSelesai = new Date(tSelesaiStr);
+
+      const tSelesai = new Date(currentTransaksi.tanggal_selesai);
       tSelesai.setHours(0,0,0,0);
-      
+
       const tKembaliVal = document.getElementById('kembali-tgl').value;
       if (!tKembaliVal) return;
-      
+
       const tKembali = new Date(tKembaliVal);
       tKembali.setHours(0,0,0,0);
-      
-      const kalkDiv = document.getElementById('kembali-kalk');
-      
-      if (tKembali > tSelesai) {
-          const diffTime = Math.abs(tKembali - tSelesai);
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          
-          document.getElementById('kembali-hari').textContent = diffDays + ' HARI';
-          const dendaTotalVal = diffDays * 50000;
-          document.getElementById('kembali-total').textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dendaTotalVal);
-          kalkDiv.style.display = 'block';
+
+      const panelEarly  = document.getElementById('kembali-early');
+      const panelOntime = document.getElementById('kembali-ontime');
+      const panelLate   = document.getElementById('kembali-kalk');
+
+      const diffMs   = tKembali - tSelesai;
+      const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+      // Sembunyikan semua panel dulu
+      panelEarly.style.display  = 'none';
+      panelOntime.style.display = 'none';
+      panelLate.style.display   = 'none';
+
+      if (diffDays < 0) {
+          // Kembali lebih awal
+          document.getElementById('kembali-early-days').textContent = Math.abs(diffDays) + ' hari';
+          panelEarly.style.display = 'block';
+      } else if (diffDays === 0) {
+          // Tepat waktu
+          panelOntime.style.display = 'block';
       } else {
-          kalkDiv.style.display = 'none';
+          // Terlambat
+          document.getElementById('kembali-hari').textContent = diffDays + ' HARI';
+          const dendaVal = diffDays * 50000;
+          document.getElementById('kembali-total').textContent =
+              new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dendaVal);
+          panelLate.style.display = 'block';
       }
   }
 

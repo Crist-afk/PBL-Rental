@@ -65,14 +65,33 @@ window.closeModal = function(id) {
     document.getElementById(id).classList.remove('open');
 }
 
-window.selectKondisi = function(btn, type) {
-    document.querySelectorAll('#modalDenda .kondisi-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
+window.selectKondisi = function(val) {
+    const modalDenda = document.getElementById('modalDenda');
+    if (modalDenda) {
+        modalDenda.querySelectorAll('.kondisi-btn').forEach(b => b.classList.remove('selected'));
+        const target = modalDenda.querySelector('.kondisi-btn.' + (typeof val === 'string' ? val.toLowerCase() : ''));
+        if (target) target.classList.add('selected');
+    }
+    // Also handle the kembali modal kondisi by value
+    const hiddenInput = document.getElementById('kembali_kondisi_input');
+    if (hiddenInput && typeof val === 'string') {
+        hiddenInput.value = val;
+        document.querySelectorAll('.kondisi-btn').forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn.classList.contains(val.toLowerCase())) {
+                btn.classList.add('selected');
+            }
+        });
+    }
 }
 
-window.selectKondisiK = function(btn, type) {
-    document.querySelectorAll('#modalKembali .kondisi-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
+window.selectKondisiK = function(val) {
+    const modalKembali = document.getElementById('modalKembali');
+    if (modalKembali) {
+        modalKembali.querySelectorAll('.kondisi-btn').forEach(b => b.classList.remove('selected'));
+        const target = modalKembali.querySelector('.kondisi-btn.' + (typeof val === 'string' ? val.toLowerCase() : ''));
+        if (target) target.classList.add('selected');
+    }
 }
 
 window.simpanDenda = function() {

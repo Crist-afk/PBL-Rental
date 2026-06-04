@@ -188,7 +188,7 @@
                       <span style="color:#4b5a7a">â€“</span>
                     @endif
                   @else
-                    <button type="button" class="kondisi-btn-action" style="font-size: 9px; padding: 4px 8px; border-radius: 6px; background: rgba(124, 58, 237, 0.1); color: #7c3aed; border: 1px dashed #7c3aed; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: all 0.2s;" onmouseover="this.style.background='rgba(124, 58, 237, 0.2)'" onmouseout="this.style.background='rgba(124, 58, 237, 0.1)'" onclick="openKembaliFormModal({{ json_encode($t) }}, '{{ $kostumDesc }}')">
+                    <button type="button" class="kondisi-btn-action" style="font-size: 9px; padding: 4px 8px; border-radius: 6px; background: rgba(124, 58, 237, 0.1); color: #7c3aed; border: 1px dashed #7c3aed; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: all 0.2s;" onmouseover="this.style.background='rgba(124, 58, 237, 0.2)'" onmouseout="this.style.background='rgba(124, 58, 237, 0.1)'" onclick="openKembaliFormModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }})">
                       📝 CATAT KEMBALI
                     </button>
                   @endif
@@ -237,14 +237,14 @@
                 </td>
                 <td>
                   @if($t->status === 'Disewa')
-                    <button class="btn-action kembali" onclick="openKembaliFormModal({{ json_encode($t) }}, '{{ $kostumDesc }}')">
+                    <button class="btn-action kembali" onclick="openKembaliFormModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }})">
                       <span class="btn-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                       </span>
                       <span class="btn-label">CATAT KEMBALI</span>
                     </button>
                   @else
-                    <button class="btn-action detail" onclick="openDetailFormModal({{ json_encode($t) }}, '{{ $kostumDesc }}', {{ $isTerlambat ? 'true' : 'false' }}, {{ $hariTerlambat }})">👁 LIHAT DETAIL</button>
+                    <button class="btn-action detail" onclick="openDetailFormModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }}, {{ $isTerlambat ? 'true' : 'false' }}, {{ $hariTerlambat }})">👁 LIHAT DETAIL</button>
                   @endif
                 </td>
               </tr>
@@ -522,7 +522,7 @@
       document.getElementById('kembali-kalk').style.display   = 'none';
 
       hitungKembaliDenda();
-      modal.classList.add('show');
+      modal.classList.add('open');
 
       // Fokus ke tanggal input
       setTimeout(() => {
@@ -632,11 +632,11 @@
       document.getElementById('detail-catatan-admin').textContent = catatanQc || 'Tidak ada catatan admin.';
       
       const modal = document.getElementById('modalDetail');
-      modal.classList.add('show');
+      modal.classList.add('open');
   }
 
   window.closeModal = function(id) {
-      document.getElementById(id).classList.remove('show');
+      document.getElementById(id).classList.remove('open');
   }
 </script>
 @endpush

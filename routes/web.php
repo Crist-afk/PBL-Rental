@@ -49,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/booking', [DashboardPelangganController::class, 'storeBooking'])->name('booking.store');
     Route::get('/riwayat', [DashboardPelangganController::class, 'riwayat'])->name('riwayat.index');
     Route::get('/riwayat/{id}/faktur', [DashboardPelangganController::class, 'faktur'])->name('riwayat.faktur');
-
+    Route::post('/riwayat/{id}/upload-bukti', [DashboardPelangganController::class, 'uploadBukti'])->name('riwayat.upload_bukti');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/cover', [ProfileController::class, 'updateCover'])->name('profile.updateCover');

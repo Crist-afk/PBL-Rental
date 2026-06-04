@@ -191,4 +191,33 @@ class DashboardPelangganController extends Controller
 
         return view('pages.Faktur', compact('transaksi'));
     }
+
+    /**
+     * Menangani Upload Bukti Pembayaran
+     */
+    public function uploadBukti(Request $request, $id)
+    {
+        $request->validate([
+            'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $transaksi = Transaksi::where('user_id', Auth::id())
+            ->where('status', 'Menunggu Pembayaran')
+            ->findOrFail($id);
+
+        if ($request->hasFile('bukti_pembayaran')) {
+            // Delete old file if exists
+            if ($transaksi->bukti_pembayaran && \Illuminate\Support\Facades\Storage::disk('public')->exists($transaksi->bukti_pembayaran)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($transaksi->bukti_pembayaran);
+            }
+
+            $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+            $transaksi->bukti_pembayaran = $path;
+            $transaksi->save();
+
+            return back()->with('success', 'Payment proof uploaded successfully. Waiting for admin confirmation.');
+        }
+
+        return back()->with('error', 'Failed to upload payment proof.');
+    }
 }

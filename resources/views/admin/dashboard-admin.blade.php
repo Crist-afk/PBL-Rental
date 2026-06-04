@@ -23,9 +23,7 @@
         <div class="notif-wrap" id="notifWrap">
           <button class="icon-btn notif-btn" id="notifBtn" title="Notifikasi Pesanan">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            @if($pesanan_masuk->count() > 0)
-              <span class="notif-badge" id="notifBadge">{{ $pesanan_masuk->count() }}</span>
-            @endif
+            <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
           </button>
 
           <!-- NOTIFICATION DROPDOWN -->
@@ -33,35 +31,73 @@
             <!-- Header -->
             <div class="notif-header">
               <div class="notif-header-left">
-                <span class="notif-header-title">Pesanan Masuk</span>
-                <span class="notif-header-count">{{ $pesanan_masuk->count() }} menunggu konfirmasi</span>
+                <span class="notif-header-title">Notifikasi Aktivitas</span>
+                <span class="notif-header-count" id="notifHeaderCount">0 belum dibaca</span>
               </div>
-              <a href="{{ route('admin.pembayaran') }}" class="notif-see-all">Lihat Semua →</a>
+              <a href="#" class="notif-see-all" id="notifMarkAllRead">Tandai Semua Dibaca</a>
             </div>
 
-            <!-- Order List -->
+            <!-- Activity List -->
             <div class="notif-list">
-              @forelse($pesanan_masuk as $order)
-                <a href="{{ route('admin.pembayaran') }}" class="notif-item unread">
-                  <div class="notif-avatar" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700;">
-                    {{ strtoupper(substr($order->user?->nama ?? 'P', 0, 1)) }}
+              @forelse($transaksi_terbaru as $trx)
+                @php
+                  $icon = '📦';
+                  $bg = 'linear-gradient(135deg, #3b82f6, #60a5fa)';
+                  $title = 'Aktivitas Transaksi';
+                  $desc = 'Order #' . $trx->id . ' oleh ' . ($trx->user?->nama ?? 'Pelanggan');
+                  $totalDenda = $trx->pengembalian?->total_denda ?? $trx->total_denda;
+                  $targetUrl = '#';
+
+                  if ($trx->status === 'Menunggu Pembayaran') {
+                      $icon = '💵';
+                      $bg = 'linear-gradient(135deg, #a78bfa, #c084fc)';
+                      $title = 'Pembayaran baru';
+                      $desc = 'Menunggu konfirmasi #' . $trx->id;
+                      $targetUrl = route('admin.pembayaran');
+                  } elseif ($trx->status === 'Disewa') {
+                      $icon = '👕';
+                      $bg = 'linear-gradient(135deg, #10b981, #34d399)';
+                      $title = 'Sewa Disetujui';
+                      $desc = 'Order #' . $trx->id . ' aktif disewa';
+                      $targetUrl = route('admin.pengembalian');
+                  } elseif ($trx->status === 'Selesai') {
+                      $icon = '↩️';
+                      $bg = 'linear-gradient(135deg, #f97316, #fb923c)';
+                      $title = 'Kostum Kembali';
+                      $desc = 'Order #' . $trx->id . ' selesai';
+                      $targetUrl = route('admin.pengembalian');
+                      if ($totalDenda > 0) {
+                          $icon = '⚠️';
+                          $bg = 'linear-gradient(135deg, #ef4444, #f87171)';
+                          $title = 'Terlambat & Denda';
+                          $desc = 'Order #' . $trx->id . ' denda Rp' . number_format($totalDenda, 0, ',', '.');
+                      }
+                  } elseif ($trx->status === 'Batal') {
+                      $icon = '❌';
+                      $bg = 'linear-gradient(135deg, #6b7280, #9ca3af)';
+                      $title = 'Sewa Dibatalkan';
+                      $desc = 'Order #' . $trx->id . ' dibatalkan';
+                      $targetUrl = route('admin.riwayat');
+                  }
+                  
+                  $notifId = "activity_{$trx->id}_{$trx->status}";
+                @endphp
+                <a href="{{ $targetUrl }}" class="notif-item unread" data-notif-id="{{ $notifId }}">
+                  <div class="notif-avatar" style="background: {{ $bg }}; display:flex; align-items:center; justify-content:center; color:#fff; font-size: 16px;">
+                    {{ $icon }}
                   </div>
                   <div class="notif-info">
                     <div class="notif-item-top">
-                      <span class="notif-user">{{ $order->user?->nama ?? 'Pelanggan' }}</span>
-                      <span class="notif-time">{{ $order->created_at->diffForHumans() }}</span>
+                      <span class="notif-user" style="font-weight: 700; color: var(--text-1);">{{ $title }}</span>
+                      <span class="notif-time">{{ $trx->created_at->diffForHumans() }}</span>
                     </div>
-                    <div class="notif-kostum">📦 {{ $order->detailTransaksi->first()?->kostum?->nama_kostum ?? 'Kostum' }}</div>
-                    <div class="notif-item-bot">
-                      <span class="notif-id">#TRX-{{ $order->id }}</span>
-                      <span class="notif-rp">Rp {{ number_format($order->total_biaya, 0, ',', '.') }}</span>
-                    </div>
+                    <div class="notif-kostum" style="font-size: 11px; color: var(--text-2); margin-top: 2px;">{{ $desc }}</div>
                   </div>
                   <div class="notif-unread-dot"></div>
                 </a>
               @empty
                 <div style="padding: 20px; text-align: center; color: var(--text-3); font-size: 13px;">
-                  Tidak ada pesanan menunggu pembayaran.
+                  Tidak ada aktivitas baru.
                 </div>
               @endforelse
             </div><!-- /notif-list -->

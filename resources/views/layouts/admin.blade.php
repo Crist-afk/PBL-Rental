@@ -186,7 +186,12 @@
     <a class="nav-item {{ request()->routeIs('admin.pembayaran') ? 'active' : '' }}" href="{{ route('admin.pembayaran') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
       Payment Validation
-      <span class="badge">5</span>
+      @php
+        $pendingPaymentsCount = \App\Models\Transaksi::where('status', 'Menunggu Pembayaran')->count();
+      @endphp
+      @if($pendingPaymentsCount > 0)
+        <span class="badge">{{ $pendingPaymentsCount }}</span>
+      @endif
     </a>
     <a class="nav-item {{ request()->routeIs('admin.pengembalian') ? 'active' : '' }}" href="{{ route('admin.pengembalian') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>

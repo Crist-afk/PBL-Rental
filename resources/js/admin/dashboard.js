@@ -99,6 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const notifBtn      = document.getElementById('notifBtn');
     const notifDropdown = document.getElementById('notifDropdown');
     const notifBadge    = document.getElementById('notifBadge');
+    const notifHeaderCount = document.getElementById('notifHeaderCount');
+    const notifMarkAllRead = document.getElementById('notifMarkAllRead');
 
     if (!notifBtn || !notifDropdown) return;
 
@@ -112,28 +114,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close when clicking outside
     document.addEventListener('click', (e) => {
-        if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+        if (notifBtn && !notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
             notifDropdown.classList.remove('open');
             notifBtn.classList.remove('active');
         }
     });
 
-    // Mark individual item as read on click (visual feedback before navigation)
-    document.querySelectorAll('.notif-item').forEach(item => {
-        item.addEventListener('click', () => {
-            item.classList.remove('unread');
-            const dot = item.querySelector('.notif-unread-dot');
-            if (dot) dot.style.display = 'none';
+    // Load read notifications from localStorage
+    let readNotifs = [];
+    try {
+        readNotifs = JSON.parse(localStorage.getItem('read_admin_notifications')) || [];
+    } catch (e) {
+        readNotifs = [];
+    }
 
-            // Decrement badge count
-            if (notifBadge) {
-                const currentCount = parseInt(notifBadge.textContent, 10);
-                if (currentCount > 1) {
-                    notifBadge.textContent = currentCount - 1;
-                } else {
-                    notifBadge.style.display = 'none';
-                }
+    const notifItems = document.querySelectorAll('.notif-item');
+    
+    function updateNotifCounts() {
+        let unreadCount = 0;
+        notifItems.forEach(item => {
+            const notifId = item.getAttribute('data-notif-id');
+            const dot = item.querySelector('.notif-unread-dot');
+            if (readNotifs.includes(notifId)) {
+                item.classList.remove('unread');
+                if (dot) dot.style.display = 'none';
+            } else {
+                item.classList.add('unread');
+                if (dot) dot.style.display = 'block';
+                unreadCount++;
             }
         });
+
+        if (notifBadge) {
+            if (unreadCount > 0) {
+                notifBadge.textContent = unreadCount;
+                notifBadge.style.display = 'flex'; // Use flex to center text properly
+            } else {
+                notifBadge.style.display = 'none';
+            }
+        }
+
+        if (notifHeaderCount) {
+            notifHeaderCount.textContent = `${unreadCount} belum dibaca`;
+        }
+    }
+
+    // Initialize counts on page load
+    updateNotifCounts();
+
+    // Click handler for individual item
+    notifItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            const notifId = item.getAttribute('data-notif-id');
+            if (notifId && !readNotifs.includes(notifId)) {
+                readNotifs.push(notifId);
+                localStorage.setItem('read_admin_notifications', JSON.stringify(readNotifs));
+            }
+            updateNotifCounts();
+        });
     });
+
+    // Mark all as read
+    if (notifMarkAllRead) {
+        notifMarkAllRead.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            notifItems.forEach(item => {
+                const notifId = item.getAttribute('data-notif-id');
+                if (notifId && !readNotifs.includes(notifId)) {
+                    readNotifs.push(notifId);
+                }
+            });
+            localStorage.setItem('read_admin_notifications', JSON.stringify(readNotifs));
+            updateNotifCounts();
+        });
+    }
 });

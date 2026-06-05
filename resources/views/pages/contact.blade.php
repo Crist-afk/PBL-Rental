@@ -56,43 +56,51 @@
             </div>
 
             <div class="glass-card p-8 md:p-10 rounded-[2rem] border-2 border-dark-chocolate/10 shadow-xl h-fit reveal delay-300" data-reveal="right">
-                <h3 class="text-2xl font-bold text-dark-chocolate mb-2">Send a Message</h3>
-                <p class="text-sm text-dark-chocolate/70 font-medium mb-8">Fill out the form below and your message will be forwarded to our email.</p>
+                <h3 class="text-2xl font-bold text-dark-chocolate mb-2">Need Help?</h3>
+                <p class="text-sm text-dark-chocolate/70 font-medium mb-8">Direct message support is not available in this version. Please contact the support team by WhatsApp for the fastest response.</p>
 
-                <form action="#" method="POST" class="space-y-5">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block mb-1 text-sm font-bold text-dark-chocolate">Full Name</label>
-                            <input type="text" class="w-full p-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium" placeholder="Enter your name">
+                <div class="space-y-5">
+                    <div class="p-5 bg-white/60 border-2 border-dark-chocolate/10 rounded-2xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-sakura rounded-full flex items-center justify-center text-dark-chocolate shadow-sm flex-shrink-0">
+                                <i class="fa-solid fa-shirt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark-chocolate">Rental Questions</h4>
+                                <p class="text-sm text-dark-chocolate/70 font-medium mt-1">Ask about costume availability, sizes, booking dates, and payment proof status.</p>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block mb-1 text-sm font-bold text-dark-chocolate">Active Email</label>
-                            <input type="email" class="w-full p-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium" placeholder="example@email.com">
+                    </div>
+
+                    <div class="p-5 bg-white/60 border-2 border-dark-chocolate/10 rounded-2xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-sakura rounded-full flex items-center justify-center text-dark-chocolate shadow-sm flex-shrink-0">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark-chocolate">Account or Booking Issues</h4>
+                                <p class="text-sm text-dark-chocolate/70 font-medium mt-1">Include your registered email and transaction ID so the team can check your request quickly.</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block mb-1 text-sm font-bold text-dark-chocolate">Question Subject</label>
-                        <select class="w-full p-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium">
-                            <option value="">-- Choose Topic --</option>
-                            <option value="sewa">Costume Rental</option>
-                            <option value="vendor">Vendor Partnership</option>
-                            <option value="teknis">Technical Help / Error</option>
-                            <option value="lainnya">Other</option>
-                        </select>
+                    <div class="p-5 bg-white/60 border-2 border-dark-chocolate/10 rounded-2xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-sakura rounded-full flex items-center justify-center text-dark-chocolate shadow-sm flex-shrink-0">
+                                <i class="fa-solid fa-handshake"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark-chocolate">Partnership Requests</h4>
+                                <p class="text-sm text-dark-chocolate/70 font-medium mt-1">For vendor or event collaboration, send a short introduction and your preferred contact method.</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block mb-1 text-sm font-bold text-dark-chocolate">Your Message</label>
-                        <textarea rows="5" class="w-full p-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium resize-none" placeholder="Write your question or concern in detail here..."></textarea>
+                    <div class="mt-8 rounded-2xl bg-dark-chocolate/5 border border-dark-chocolate/10 px-5 py-4">
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-aloewood mb-2">Recommended details</p>
+                        <p class="text-sm text-dark-chocolate/70 font-medium leading-relaxed">Name, registered email, transaction ID if available, costume name, rental date, and a brief explanation of the issue.</p>
                     </div>
-
-                    <button type="button" class="w-full bg-dark-chocolate hover:bg-black text-misty-rose font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex justify-center items-center gap-2 mt-4">
-                        <span>Send Message Now</span>
-                        <i class="fa-solid fa-paper-plane text-sm"></i>
-                    </button>
-                </form>
+                </div>
             </div>
 
         </div>

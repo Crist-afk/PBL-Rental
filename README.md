@@ -1,59 +1,188 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CosRent - PBL Rental
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+CosRent is a Laravel-based costume rental web application for the PBL-Rental project. It supports customer browsing and booking, payment proof uploads, admin payment validation, return recording, rental history, invoices, customer profiles, and a community forum.
 
-## About Laravel
+## Tech Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.2+
+- Laravel 12
+- MySQL or MariaDB
+- Blade templates
+- Vite
+- Tailwind CSS
+- JavaScript
+- Laravel filesystem public disk for uploaded images
+- Laravel mail for forgot-password reset links
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Main Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Customer authentication: register, login, remember me, forgot password, logout
+- Role-based customer/admin redirects and admin middleware
+- Customer profile: name, phone, bio, avatar, cover photo, password change, account deactivation
+- Product catalog: listing, detail page, categories, search, size and stock display
+- Booking: selected costume size, rental date validation, total price calculation, pending payment status
+- Payment proof upload for customer transactions
+- Admin payment validation: approve/reject pending payments
+- Return management: record returns, restore stock, calculate late fines
+- Rental history and invoice pages
+- Forum: posts, categories, comments, replies, moderation delete actions
+- Admin management: dashboard, costume/category management, user management, profile settings
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+1. Clone the project and enter the project directory.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone <repository-url>
+cd PBL-Rental
+```
 
-## Laravel Sponsors
+2. Install PHP dependencies.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+3. Install frontend dependencies and build assets.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+npm install
+npm run build
+```
 
-## Contributing
+4. Create the environment file.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+```
 
-## Code of Conduct
+On Windows PowerShell:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```powershell
+Copy-Item .env.example .env
+```
 
-## Security Vulnerabilities
+5. Generate the Laravel application key.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan key:generate
+```
 
-## License
+## Database Setup
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Create a MySQL database for the project, for example:
+
+```sql
+CREATE DATABASE cosrent CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+2. Update `.env` with your local database credentials.
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=cosrent
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password
+```
+
+3. Run migrations and seeders.
+
+```bash
+php artisan migrate --seed
+```
+
+The default seeder creates development/demo users and sample costume data. Review `database/seeders/DatabaseSeeder.php` for the current seeded admin account and change seeded credentials before any public deployment.
+
+## File Uploads
+
+CosRent stores avatars, cover photos, costume images, forum images, and payment proof images on Laravel's public disk. Create the public storage symlink after setup:
+
+```bash
+php artisan storage:link
+```
+
+Make sure the server can write to:
+
+- `storage/`
+- `bootstrap/cache/`
+
+Uploaded files are served through `public/storage`, so the web server must expose the Laravel `public` directory.
+
+## Mail Setup
+
+Forgot-password reset links require mail configuration. Production should use SMTP or another real mail provider.
+
+Example production-style settings:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USERNAME=your_smtp_username
+MAIL_PASSWORD=your_smtp_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=no-reply@example.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+For local development, you may set `MAIL_MAILER=log` to write reset links to the Laravel log instead of sending email.
+
+## Local Run
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+If you are actively editing frontend assets, run Vite in another terminal:
+
+```bash
+npm run dev
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Deployment Notes
+
+- Set the web server document root to the Laravel `public` directory.
+- Copy `.env.example` to `.env` and fill in production values.
+- Set `APP_ENV=production`.
+- Set `APP_DEBUG=false`.
+- Set a real `APP_URL`.
+- Use a secure database user and password.
+- Configure a real mail provider for password reset emails.
+- Set `FILESYSTEM_DISK=public`.
+- Run `php artisan storage:link`.
+- Run `composer install --no-dev --optimize-autoloader`.
+- Run `npm install` and `npm run build`, or build assets in CI and deploy the built files.
+- Run `php artisan migrate --force` on deployment. Use `php artisan migrate --seed` only when intentionally seeding demo/default data.
+- Cache production configuration after `.env` is final:
+
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+- If using `database` session, cache, or queue drivers, make sure migrations have been run.
+- Ensure `storage/` and `bootstrap/cache/` are writable by the web server user.
+- Do not commit real `.env` files, production passwords, API keys, SMTP passwords, or database credentials.
+
+## Useful Commands
+
+```bash
+php artisan migrate
+php artisan migrate --seed
+php artisan storage:link
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan test
+```

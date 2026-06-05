@@ -117,6 +117,7 @@ class DashboardPelangganController extends Controller
         }
 
         $isBooked = DetailTransaksi::where('kostum_id', $request->kostum_id)
+            ->where('ukuran', $size)
             ->whereHas('transaksi', function ($query) use ($request) {
                 $query->whereIn('status', ['Menunggu Pembayaran', 'Disewa'])
                     ->where('tanggal_mulai', '<=', $request->tanggal_kembali)

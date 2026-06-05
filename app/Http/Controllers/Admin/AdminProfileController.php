@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kostum;
+use App\Models\Transaksi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +15,13 @@ class AdminProfileController extends Controller
 {
     public function edit()
     {
-        return view('admin.profile');
+        $profileStats = [
+            'total_customers' => User::where('role', 'pelanggan')->count(),
+            'total_transactions' => Transaksi::count(),
+            'total_costumes' => Kostum::count(),
+        ];
+
+        return view('admin.profile', compact('profileStats'));
     }
 
     public function update(Request $request)

@@ -429,24 +429,24 @@
                 {{-- Quick Stats Grid --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                     <div class="bg-[var(--bg-card,var(--card-bg,#fff))] rounded-2xl border border-[var(--border-color)] shadow-sm p-5 flex flex-col justify-between transition-all duration-300 ease-in-out">
-                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Total Users</span>
-                        <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">128</span>
-                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Registered customers</span>
+                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Total Customers</span>
+                        <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">{{ number_format($profileStats['total_customers'] ?? 0) }}</span>
+                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Customer accounts</span>
                         <div class="mt-3">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold">
                                 <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-green-100 rounded-full">
                                     <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                     </svg>
                                 </div>
-                                +12 this month
+                                Live data
                             </span>
                         </div>
                     </div>
                     <div class="bg-[var(--bg-card,var(--card-bg,#fff))] rounded-2xl border border-[var(--border-color)] shadow-sm p-5 flex flex-col justify-between transition-all duration-300 ease-in-out">
-                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Active Transactions</span>
-                        <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">34</span>
-                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Currently ongoing</span>
+                        <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Total Transactions</span>
+                        <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">{{ number_format($profileStats['total_transactions'] ?? 0) }}</span>
+                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">All transaction statuses</span>
                         <div class="mt-3">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold">
                                 <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-amber-100 rounded-full">
@@ -454,14 +454,14 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
-                                5 waiting
+                                Live data
                             </span>
                         </div>
                     </div>
                     <div class="bg-[var(--bg-card,var(--card-bg,#fff))] rounded-2xl border border-[var(--border-color)] shadow-sm p-5 flex flex-col justify-between transition-all duration-300 ease-in-out">
                         <span class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-2 transition-all duration-300 ease-in-out">Total Costumes</span>
-                        <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">72</span>
-                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Available in catalog</span>
+                        <span class="text-3xl font-extrabold text-stone-900 [.dark-mode_&]:text-white transition-all duration-300 ease-in-out">{{ number_format($profileStats['total_costumes'] ?? 0) }}</span>
+                        <span class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 font-medium mt-1 transition-all duration-300 ease-in-out">Catalog records</span>
                         <div class="mt-3">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[var(--bg-card,var(--card-bg,#fff))] text-stone-900 [.dark-mode_&]:text-white rounded-full text-xs font-bold transition-all duration-300 ease-in-out">
                                 <div class="w-5 h-5 shrink-0 flex items-center justify-center bg-[var(--bg-card,var(--card-bg,#fff))] rounded-full transition-all duration-300 ease-in-out">
@@ -469,7 +469,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                     </svg>
                                 </div>
-                                8 currently rented
+                                Live data
                             </span>
                         </div>
                     </div>
@@ -534,42 +534,47 @@
                         </div>
                     </div>
 
-                    {{-- Recent Activity --}}
+                    {{-- Profile Management --}}
                     <div class="bg-[var(--bg-card,var(--card-bg,#fff))] rounded-2xl border border-[var(--border-color)] shadow-sm p-6 transition-all duration-300 ease-in-out">
                         <h3 class="text-xs font-bold tracking-wider uppercase text-stone-600 [.dark-mode_&]:text-stone-300 mb-4 flex items-center gap-2 transition-all duration-300 ease-in-out">
                             <div class="w-8 h-8 shrink-0 flex items-center justify-center bg-[var(--bg-card,var(--card-bg,#fff))] rounded-full transition-all duration-300 ease-in-out">
                                 <svg class="w-4 h-4 text-stone-600 [.dark-mode_&]:text-stone-300 transition-all duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m4-2a8 8 0 11-16 0 8 8 0 0116 0z"/>
                                 </svg>
                             </div>
-                            Activity History
+                            Profile Management
                         </h3>
-                        <div class="space-y-4">
+                        <div class="space-y-3 text-sm">
                             <div class="flex items-start gap-3 pb-3 border-b border-[var(--border-color)] last:border-0 last:pb-0 transition-all duration-300 ease-in-out">
                                 <div class="w-8 h-8 shrink-0 flex items-center justify-center bg-[var(--bg-card,var(--card-bg,#fff))] rounded-full transition-all duration-300 ease-in-out">
-                                    <div class="w-2 h-2 rounded-full bg-[var(--text-primary,#443025)] transition-all duration-300 ease-in-out"></div>
+                                    <svg class="w-4 h-4 text-stone-600 [.dark-mode_&]:text-stone-300 transition-all duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                    </svg>
                                 </div>
                                 <div class="pt-1.5">
-                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Validated payment #TRX-0087</p>
-                                    <p class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">Today, 10:32</p>
+                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Profile updates are saved from the account information form.</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 pb-3 border-b border-[var(--border-color)] last:border-0 last:pb-0 transition-all duration-300 ease-in-out">
                                 <div class="w-8 h-8 shrink-0 flex items-center justify-center bg-[var(--bg-card,var(--card-bg,#fff))] rounded-full transition-all duration-300 ease-in-out">
-                                    <div class="w-2 h-2 rounded-full bg-[var(--text-secondary,#8B5A2B)] transition-all duration-300 ease-in-out"></div>
+                                    <svg class="w-4 h-4 text-stone-600 [.dark-mode_&]:text-stone-300 transition-all duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 11V8a5 5 0 00-10 0v3m-1 0h12a1 1 0 011 1v7a1 1 0 01-1 1H6a1 1 0 01-1-1v-7a1 1 0 011-1z"/>
+                                    </svg>
                                 </div>
                                 <div class="pt-1.5">
-                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Added costume: "Naruto Sage Mode"</p>
-                                    <p class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">Yesterday, 15:14</p>
+                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Password changes require the current admin password.</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3 pb-3 border-b border-[var(--border-color)] last:border-0 last:pb-0 transition-all duration-300 ease-in-out">
                                 <div class="w-8 h-8 shrink-0 flex items-center justify-center bg-[var(--bg-card,var(--card-bg,#fff))] rounded-full transition-all duration-300 ease-in-out">
-                                    <div class="w-2 h-2 rounded-full bg-[var(--text-secondary,#8B5A2B)] transition-all duration-300 ease-in-out"></div>
+                                    <svg class="w-4 h-4 text-stone-600 [.dark-mode_&]:text-stone-300 transition-all duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
                                 </div>
                                 <div class="pt-1.5">
-                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Signed in to admin panel</p>
-                                    <p class="text-xs text-stone-600 [.dark-mode_&]:text-stone-300 mt-1 transition-all duration-300 ease-in-out">23 Apr 2026, 08:22</p>
+                                    <p class="text-sm font-medium text-stone-900 [.dark-mode_&]:text-white leading-tight transition-all duration-300 ease-in-out">Avatar and cover uploads replace the previous image safely.</p>
                                 </div>
                             </div>
                         </div>

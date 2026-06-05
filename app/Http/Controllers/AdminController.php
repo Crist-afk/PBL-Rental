@@ -212,6 +212,7 @@ class AdminController extends Controller
     public function pembayaran(Request $request)
     {
         $filter = $request->get('status', 'semua');
+        $search = trim($request->string('q')->toString());
 
         $query = Transaksi::with(['user', 'detailTransaksi.kostum'])->latest();
 
@@ -221,6 +222,21 @@ class AdminController extends Controller
             $query->where('status', 'Disewa');
         } elseif ($filter === 'ditolak') {
             $query->where('status', 'Batal');
+        }
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                if (is_numeric($search)) {
+                    $q->orWhere('id', (int) $search);
+                }
+
+                $q->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('nama', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%');
+                })->orWhereHas('detailTransaksi.kostum', function ($kostumQuery) use ($search) {
+                    $kostumQuery->where('nama_kostum', 'like', '%' . $search . '%');
+                });
+            });
         }
 
         $transaksis = $query->paginate(15)->withQueryString();
@@ -243,6 +259,10 @@ class AdminController extends Controller
 
         if ($transaksi->status !== 'Menunggu Pembayaran') {
             return back()->with('error', 'Only transactions waiting for payment can be approved.');
+        }
+
+        if (empty($transaksi->bukti_pembayaran)) {
+            return back()->with('error', 'Payment proof is required before approving this transaction.');
         }
 
         $request->validate([
@@ -318,6 +338,7 @@ class AdminController extends Controller
     public function pengembalian(Request $request)
     {
         $filter = $request->get('filter', 'semua');
+        $search = trim($request->string('q')->toString());
 
         // Ambil transaksi yang statusnya Disewa (belum dikembalikan) atau Selesai (sudah)
         $query = Transaksi::with(['user', 'detailTransaksi.kostum', 'pengembalian'])
@@ -355,6 +376,21 @@ class AdminController extends Controller
                 })->orWhere(function ($legacyQuery) {
                     $legacyQuery->whereDoesntHave('pengembalian')
                         ->where('total_denda', '>', 0);
+                });
+            });
+        }
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                if (is_numeric($search)) {
+                    $q->orWhere('id', (int) $search);
+                }
+
+                $q->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('nama', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%');
+                })->orWhereHas('detailTransaksi.kostum', function ($kostumQuery) use ($search) {
+                    $kostumQuery->where('nama_kostum', 'like', '%' . $search . '%');
                 });
             });
         }
@@ -409,7 +445,7 @@ class AdminController extends Controller
             $hariTerlambat = 0;
             $totalDenda    = 0;
         } else {
-            $hariTerlambat = $tanggalKembali->diffInDays($tanggalSelesai);
+            $hariTerlambat = (int) abs($tanggalSelesai->diffInDays($tanggalKembali));
             $totalDenda    = $hariTerlambat * $dendaPerHari;
         }
 
@@ -500,7 +536,8 @@ class AdminController extends Controller
     // =====================================================================
     public function riwayat(Request $request)
     {
-        $query = User::where('role', 'pelanggan')
+        $query = User::withTrashed()
+            ->where('role', 'pelanggan')
             ->withCount('transaksi')
             ->withSum('transaksi', 'total_biaya')
             ->orderByDesc('transaksi_count');
@@ -531,7 +568,9 @@ class AdminController extends Controller
     // =====================================================================
     public function riwayatUser($id)
     {
-        $user = User::where('role', 'pelanggan')->findOrFail($id);
+        $user = User::withTrashed()
+            ->where('role', 'pelanggan')
+            ->findOrFail($id);
 
         $transaksis = Transaksi::with(['detailTransaksi.kostum', 'pengembalian'])
             ->where('user_id', $id)

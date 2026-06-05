@@ -1,27 +1,37 @@
 // ── ANIMATE BARS ON DASHBOARD LOAD ──
 window.addEventListener('load', () => {
     const bars = [
-        { el: document.getElementById('bar1'), w: 32 },
-        { el: document.getElementById('bar2'), w: 12 },
-        { el: document.getElementById('bar3'), w: 87 },
+        { el: document.getElementById('bar1') },
+        { el: document.getElementById('bar2') },
+        { el: document.getElementById('bar3') },
     ];
-    bars.forEach(({ el, w }, i) => {
-        if(el) {
+    bars.forEach(({ el }, i) => {
+        if (el) {
+            const w = parseFloat(el.getAttribute('data-width')) || 0;
             el.style.width = '0';
             setTimeout(() => { el.style.width = w + '%'; }, 400 + i * 150);
         }
     });
 
-    // ── POPULAR COSTUMES LINE CHART ──
+    // ── POPULAR COSTUMES LINE CHART (DYNAMIC DATA) ──
     const ctx = document.getElementById('popularCostumesChart');
     if (ctx) {
+        let labels = [];
+        let values = [];
+        try {
+            labels = JSON.parse(ctx.getAttribute('data-labels')) || [];
+            values = JSON.parse(ctx.getAttribute('data-values')) || [];
+        } catch (e) {
+            console.error('Failed to parse chart data', e);
+        }
+
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: labels,
                 datasets: [{
-                    label: 'Rentals',
-                    data: [65, 85, 73, 110, 95, 130],
+                    label: 'Kostum Dipesan',
+                    data: values,
                     borderColor: '#EC9C9D', // var(--blue) from layout
                     backgroundColor: 'rgba(236, 156, 157, 0.2)',
                     borderWidth: 3,
@@ -51,7 +61,7 @@ window.addEventListener('load', () => {
                         displayColors: false,
                         callbacks: {
                             label: function(context) {
-                                return context.parsed.y + ' Times Rented';
+                                return context.parsed.y + ' Dipesan';
                             }
                         }
                     }
@@ -68,7 +78,9 @@ window.addEventListener('load', () => {
                             font: {
                                 family: "'JetBrains Mono', monospace",
                                 size: 10
-                            }
+                            },
+                            stepSize: 1,
+                            precision: 0
                         }
                     },
                     x: {
@@ -93,6 +105,7 @@ window.addEventListener('load', () => {
         });
     }
 });
+
 
 // ── NOTIFICATION SYSTEM ──
 document.addEventListener('DOMContentLoaded', () => {

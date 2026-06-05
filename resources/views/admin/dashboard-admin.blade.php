@@ -229,31 +229,31 @@
 
           <div class="stat-bar-item">
             <div class="stat-bar-header">
-              <span>Conversion Rate</span>
-              <strong>3.2%</strong>
+              <span>Pelanggan Tepat Waktu Kembali</span>
+              <strong>{{ $persen_tepat_waktu }}%</strong>
             </div>
             <div class="bar-track">
-              <div class="bar-fill blue" style="width: 32%" id="bar1"></div>
+              <div class="bar-fill blue" data-width="{{ $persen_tepat_waktu }}" style="width: 0%" id="bar1"></div>
             </div>
           </div>
 
           <div class="stat-bar-item">
             <div class="stat-bar-header">
               <span>Tingkat Keterlambatan</span>
-              <strong>12%</strong>
+              <strong>{{ $tingkat_keterlambatan }}%</strong>
             </div>
             <div class="bar-track">
-              <div class="bar-fill orange" style="width: 12%" id="bar2"></div>
+              <div class="bar-fill orange" data-width="{{ $tingkat_keterlambatan }}" style="width: 0%" id="bar2"></div>
             </div>
           </div>
 
           <div class="stat-bar-item">
             <div class="stat-bar-header">
-              <span>Kepuasan Pelanggan</span>
-              <strong>8.7k</strong>
+              <span>Akun Terdaftar</span>
+              <strong>{{ $total_akun }}</strong>
             </div>
             <div class="bar-track">
-              <div class="bar-fill green" style="width: 87%" id="bar3"></div>
+              <div class="bar-fill green" data-width="100" style="width: 0%" id="bar3"></div>
             </div>
           </div>
         </div>
@@ -261,11 +261,11 @@
         <!-- POPULAR COSTUMES CHART -->
         <div class="card">
           <div class="card-header">
-            <span class="card-title">Kostum Terpopuler</span>
+            <span class="card-title">Kostum Dipesan per Bulan</span>
           </div>
 
           <div class="chart-container" style="position: relative; height: 250px; width: 100%;">
-            <canvas id="popularCostumesChart"></canvas>
+            <canvas id="popularCostumesChart" data-labels="{{ json_encode($bulanLabels) }}" data-values="{{ json_encode($kostumPerBulan) }}"></canvas>
           </div>
         </div>
 

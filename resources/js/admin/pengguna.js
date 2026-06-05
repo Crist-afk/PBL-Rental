@@ -150,6 +150,59 @@ document.addEventListener('click', (e) => {
         document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
     }
 });
+// ── TOGGLE ACTIVE MODAL LOGIC ──
+const toggleActiveModalOverlay = document.getElementById('toggleActiveModalOverlay');
+let currentToggleActiveUserId = null;
+
+function openToggleActiveModal(userId, name, isActive) {
+    currentToggleActiveUserId = userId;
+    const title = isActive ? 'Nonaktifkan Akun Pengguna?' : 'Aktifkan Akun Pengguna?';
+    const text = isActive
+        ? `Apakah Anda yakin ingin menonaktifkan akun <strong style="color:var(--text-1);">${name}</strong>? Pengguna tidak akan bisa login ke dalam situs.`
+        : `Apakah Anda yakin ingin mengaktifkan kembali akun <strong style="color:var(--text-1);">${name}</strong>? Pengguna akan bisa login kembali ke dalam situs.`;
+    const btnText = isActive ? 'Ya, Nonaktifkan Akun' : 'Ya, Aktifkan Akun';
+    const btnBg = isActive ? 'var(--red)' : 'var(--green)';
+    const iconBg = isActive ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)';
+    const iconColor = isActive ? 'var(--red)' : 'var(--green)';
+
+    document.getElementById('toggleActiveModalTitle').textContent = title;
+    document.getElementById('toggleActiveModalText').innerHTML = text;
+    
+    const confirmBtn = document.getElementById('btnConfirmToggleActive');
+    confirmBtn.textContent = btnText;
+    confirmBtn.style.background = btnBg;
+    confirmBtn.style.boxShadow = `0 4px 12px ${isActive ? 'rgba(239, 68, 68, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`;
+
+    const iconDiv = document.getElementById('toggleActiveModalIcon');
+    iconDiv.style.background = iconBg;
+    iconDiv.style.color = iconColor;
+    // Update SVG in icon
+    iconDiv.innerHTML = isActive 
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px; height:32px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px; height:32px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+
+    toggleActiveModalOverlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeToggleActiveModal() {
+    toggleActiveModalOverlay.classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+function confirmToggleActive() {
+    if (currentToggleActiveUserId) {
+        const form = document.getElementById('toggleActiveUserForm');
+        form.action = `/admin/pengguna/${currentToggleActiveUserId}/toggle-active`;
+        form.submit();
+    }
+}
+
+if (toggleActiveModalOverlay) {
+    toggleActiveModalOverlay.addEventListener('click', (e) => {
+        if (e.target === toggleActiveModalOverlay) closeToggleActiveModal();
+    });
+}
 
 // ── EXPOSE KE GLOBAL ──
 window.openModal  = openModal;
@@ -158,3 +211,6 @@ window.toggleDrop = toggleDrop;
 window.openDeleteModal = openDeleteModal;
 window.closeDeleteModal = closeDeleteModal;
 window.confirmDelete = confirmDelete;
+window.openToggleActiveModal = openToggleActiveModal;
+window.closeToggleActiveModal = closeToggleActiveModal;
+window.confirmToggleActive = confirmToggleActive;

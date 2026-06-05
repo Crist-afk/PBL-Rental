@@ -27,6 +27,46 @@ class AdminController extends Controller
             'total_pendapatan'  => Transaksi::whereIn('status', ['Disewa', 'Selesai'])->sum('total_biaya'),
         ];
 
+        // ── Statistik Cepat (data nyata) ────────────────────────────────
+        $totalSelesai = Transaksi::where('status', 'Selesai')->count();
+
+        // Pelanggan tepat waktu: transaksi Selesai yang punya pengembalian on-time
+        // (tanggal_kembali_aktual <= tanggal_selesai)
+        $tepat_waktu = Pengembalian::whereHas('transaksi', function ($q) {
+            $q->where('status', 'Selesai')
+              ->whereColumn('pengembalian.tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
+        })->count();
+
+        $persen_tepat_waktu = $totalSelesai > 0
+            ? round(($tepat_waktu / $totalSelesai) * 100, 1)
+            : 0;
+
+        // Tingkat keterlambatan (%) dari semua yang sudah selesai
+        $terlambat_count = Pengembalian::whereHas('transaksi', function ($q) {
+            $q->where('status', 'Selesai')
+              ->whereColumn('pengembalian.tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
+        })->count();
+
+        $tingkat_keterlambatan = $totalSelesai > 0
+            ? round(($terlambat_count / $totalSelesai) * 100, 1)
+            : 0;
+
+        // Total akun terdaftar
+        $total_akun = User::count();
+
+        // ── Chart: Kostum dipesan per bulan (12 bulan terakhir) ──────────
+        $kostumPerBulan = [];
+        $bulanLabels    = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $date  = now()->subMonths($i);
+            $bulanLabels[] = $date->format('M Y');
+            $kostumPerBulan[] = DetailTransaksi::whereHas('transaksi', function ($q) use ($date) {
+                $q->whereIn('status', ['Disewa', 'Selesai'])
+                  ->whereYear('created_at', $date->year)
+                  ->whereMonth('created_at', $date->month);
+            })->count();
+        }
+
         $transaksi_terbaru = Transaksi::with(['user', 'detailTransaksi.kostum', 'pengembalian'])
             ->orderBy('created_at', 'desc')
             ->limit(5)
@@ -38,7 +78,16 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
-        return view('admin.dashboard-admin', compact('stats', 'transaksi_terbaru', 'pesanan_masuk'));
+        return view('admin.dashboard-admin', compact(
+            'stats',
+            'transaksi_terbaru',
+            'pesanan_masuk',
+            'persen_tepat_waktu',
+            'tingkat_keterlambatan',
+            'total_akun',
+            'bulanLabels',
+            'kostumPerBulan'
+        ));
     }
 
     // =====================================================================
@@ -351,22 +400,22 @@ class AdminController extends Controller
             $query->where('status', 'Selesai')
                 ->where(function ($q) {
                     $q->whereHas('pengembalian', function ($returnQuery) {
-                        $returnQuery->whereColumn('tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
+                        $returnQuery->whereColumn('pengembalian.tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
                     })->orWhere(function ($legacyQuery) {
                         $legacyQuery->whereDoesntHave('pengembalian')
-                            ->whereNotNull('tanggal_kembali_aktual')
-                            ->whereColumn('tanggal_kembali_aktual', '<=', 'tanggal_selesai');
+                            ->whereNotNull('transaksi.tanggal_kembali_aktual')
+                            ->whereColumn('transaksi.tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
                     });
                 });
         } elseif ($filter === 'terlambat') {
             $query->where('status', 'Selesai')
                 ->where(function ($q) {
                     $q->whereHas('pengembalian', function ($returnQuery) {
-                        $returnQuery->whereColumn('tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
+                        $returnQuery->whereColumn('pengembalian.tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
                     })->orWhere(function ($legacyQuery) {
                         $legacyQuery->whereDoesntHave('pengembalian')
-                            ->whereNotNull('tanggal_kembali_aktual')
-                            ->whereColumn('tanggal_kembali_aktual', '>', 'tanggal_selesai');
+                            ->whereNotNull('transaksi.tanggal_kembali_aktual')
+                            ->whereColumn('transaksi.tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
                     });
                 });
         } elseif ($filter === 'denda') {
@@ -529,6 +578,16 @@ class AdminController extends Controller
         $user->delete();
 
         return redirect()->route('admin.pengguna')->with('success', "User account '{$user->nama}' deleted successfully.");
+    }
+
+    public function penggunaToggleActive($id)
+    {
+        $user = User::where('role', 'pelanggan')->findOrFail($id);
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        $status = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        return redirect()->route('admin.pengguna')->with('success', "Akun '{$user->nama}' berhasil {$status}.");
     }
 
     // =====================================================================

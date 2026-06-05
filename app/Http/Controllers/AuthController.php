@@ -58,10 +58,9 @@ class AuthController extends Controller
         $existingUser = User::withTrashed()
             ->where('email', $request->email)
             ->first();
-
         if ($existingUser && (! $existingUser->is_active || $existingUser->trashed())) {
             return back()->withErrors([
-                'email' => 'This account has been deactivated.',
+                'email' => 'your account has been deactivated due to actions you have taken',
             ])->onlyInput('email');
         }
 

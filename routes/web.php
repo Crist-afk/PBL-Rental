@@ -84,12 +84,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // ── Riwayat ──
     Route::get('/riwayat', [AdminController::class, 'riwayat'])->name('riwayat');
     Route::get('/riwayat/user/{id}', [AdminController::class, 'riwayatUser'])->name('riwayat.user');
-
     // ── Pengguna ──
     Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
     Route::delete('/pengguna/{id}', [AdminController::class, 'penggunaDestroy'])->name('pengguna.destroy');
-
-    // ── Profil Admin ──
+    Route::patch('/pengguna/{id}/toggle-active', [AdminController::class, 'penggunaToggleActive'])->name('pengguna.toggle-active');
     Route::get('/profil', [AdminProfileController::class, 'edit'])->name('profile');
     Route::put('/profil', [AdminProfileController::class, 'update'])->name('profile.update');
     Route::put('/profil/password', [AdminProfileController::class, 'updatePassword'])->name('profile.password.update');

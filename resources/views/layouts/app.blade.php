@@ -39,10 +39,17 @@
 
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Mempertebal centang success SweetAlert2 */
+        .swal2-popup .swal2-success [class^=swal2-success-line] {
+            height: 8px !important;
+            border-radius: 4px !important;
+        }
+    </style>
     <script>
         @if(session('success'))
             Swal.fire({
-                title: 'Berhasil!',
+                title: 'Success!',
                 text: "{{ session('success') }}",
                 icon: 'success',
                 confirmButtonColor: '#443025',

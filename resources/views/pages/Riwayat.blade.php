@@ -97,6 +97,12 @@
                             @endif
                         </h3>
                         
+                        @if($item->status === 'Batal' && !empty($item->catatan_admin))
+                            <p class="text-xs font-bold text-red-500 mt-2 bg-red-50 p-3 rounded-lg border border-red-100 inline-block w-full">
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i> Reason: {{ $item->catatan_admin }}
+                            </p>
+                        @endif
+                        
                         <div class="flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-6 text-sm font-bold text-dark-chocolate/60">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-sakura/10 flex items-center justify-center text-sakura"><i class="fa-regular fa-calendar-plus"></i></div>

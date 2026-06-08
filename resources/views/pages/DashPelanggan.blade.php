@@ -69,6 +69,11 @@
                             </div>
                             <p class="text-sm font-bold text-aloewood mt-1 uppercase tracking-wide">Size {{ $rental['size'] }}</p>
                             <p class="text-xs font-medium text-dark-chocolate/70 mt-1"><i class="fa-regular fa-clock mr-1"></i> Return {{ $rental['return_date'] }}</p>
+                            @if($rental['status'] === 'Canceled' && !empty($rental['catatan_admin']))
+                                <p class="text-xs font-bold text-red-500 mt-2 bg-red-50 p-2 rounded-lg border border-red-100">
+                                    <i class="fa-solid fa-circle-exclamation mr-1"></i> Reason: {{ $rental['catatan_admin'] }}
+                                </p>
+                            @endif
                         </div>
                         <div class="text-left sm:text-right w-full sm:w-auto flex justify-between sm:block border-t sm:border-0 border-dark-chocolate/10 pt-4 sm:pt-0 mt-4 sm:mt-0 gap-4">
                             <div>
@@ -158,7 +163,7 @@
                             </a>
                         </div>
                         @empty
-                        <p class="text-sm text-center text-dark-chocolate/50 py-4">Belum ada riwayat transaksi.</p>
+                        <p class="text-sm text-center text-dark-chocolate/50 py-4">No transaction history yet.</p>
                         @endforelse
                     </div>
                 </div>

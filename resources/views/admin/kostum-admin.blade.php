@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'CosRent — Kelola Kostum & Kategori')
+@section('title', 'CosRent — Manage Costumes & Categories')
 
 @push('styles')
     @vite(['resources/css/admin/kostum.css', 'resources/js/admin/kostum.js'])
@@ -65,7 +65,7 @@
 
       @if($errors->any())
         <div class="alert alert-error" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-weight: 500; animation: fadeIn 0.4s;">
-          <div style="font-weight: 700; margin-bottom: 6px;">Oops! Terjadi kesalahan input:</div>
+          <div style="font-weight: 700; margin-bottom: 6px;">Oops! Input error occurred:</div>
           <ul style="margin: 0; padding-left: 20px;">
             @foreach($errors->all() as $error)
               <li>{{ $error }}</li>
@@ -77,31 +77,31 @@
       <!-- PAGE HEADER -->
       <div class="page-header">
         <div>
-          <h1 class="page-title">Kelola Kostum &amp; Kategori</h1>
-          <p class="page-sub">Atur katalog produk dan kategori penyewaan</p>
+          <h1 class="page-title">Manage Costumes &amp; Categories</h1>
+          <p class="page-sub">Manage the product catalog and rental categories</p>
         </div>
         <div class="header-btns">
           <button class="btn btn-primary" id="openModalBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Tambah Kostum Baru
+            Add New Costume
           </button>
           <button class="btn btn-secondary" onclick="openAddCategoryModal()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            Kelola Kategori
+            Manage Categories
           </button>
         </div>
       </div>
 
       <!-- CATEGORY TABS -->
       <div class="tabs" id="categoryTabs">
-        <a href="{{ route('admin.kostum', ['q' => request('q')]) }}" class="tab {{ !request('kategori_id') ? 'active' : '' }}" style="text-decoration: none;">Semua</a>
+        <a href="{{ route('admin.kostum', ['q' => request('q')]) }}" class="tab {{ !request('kategori_id') ? 'active' : '' }}" style="text-decoration: none;">All</a>
         @foreach($kategoris as $kat)
           <a href="{{ route('admin.kostum', ['kategori_id' => $kat->id, 'q' => request('q')]) }}" class="tab {{ request('kategori_id') == $kat->id ? 'active' : '' }}" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
             {{ $kat->nama_kategori }}
             <span style="font-size: 10px; background: rgba(255,255,255,0.15); padding: 1px 6px; border-radius: 10px; display: inline-block;">{{ $kat->kostum_count ?? $kat->kostum()->count() }}</span>
           </a>
         @endforeach
-        <button class="tab add" onclick="openAddCategoryModal()">+ Tambah Kategori</button>
+        <button class="tab add" onclick="openAddCategoryModal()">+ Add Category</button>
       </div>
 
       <!-- TOOLBAR -->
@@ -112,7 +112,7 @@
           @endif
           <div class="search-wrap" style="width: 100%;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input class="search-input" type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama kostum..." />
+            <input class="search-input" type="text" name="q" value="{{ request('q') }}" placeholder="Search costume name..." />
           </div>
         </form>
 
@@ -132,9 +132,9 @@
           <div class="costume-card">
             <div class="card-img" style="background: url('{{ $kostum->gambar_url }}') center/cover;">
               @if($kostum->stok > 0)
-                <span class="status-badge tersedia">Tersedia</span>
+                <span class="status-badge tersedia">Available</span>
               @else
-                <span class="status-badge tidak">Habis</span>
+                <span class="status-badge tidak">Out of Stock</span>
               @endif
             </div>
             <div class="card-body">
@@ -145,18 +145,18 @@
               <div class="card-price">Rp</div>
               <div>
                 <span class="price-val">{{ number_format($kostum->harga_sewa, 0, ',', '.') }}</span>
-                <span class="price-unit"> /hari</span>
+                <span class="price-unit"> /day</span>
               </div>
-              <div class="card-stock" style="margin-top:4px; font-size:11px; font-weight:700; color:var(--text-3);">STOK: {{ $kostum->stok }} UNIT ({{ $kostum->ukuran }})</div>
+              <div class="card-stock" style="margin-top:4px; font-size:11px; font-weight:700; color:var(--text-3);">STOCK: {{ $kostum->stok }} UNIT ({{ $kostum->ukuran }})</div>
               <div class="card-actions">
                 <button class="act-btn edit" onclick="event.stopPropagation(); openEditFormModal({{ json_encode($kostum) }})">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>UBAH
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>EDIT
                 </button>
                 <button class="act-btn lihat" onclick="event.stopPropagation(); openViewFormModal({{ json_encode($kostum) }})">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>DETAIL
                 </button>
                 <button class="act-btn hapus" onclick="event.stopPropagation(); openDeleteFormModal({{ $kostum->id }}, '{{ addslashes($kostum->nama_kostum) }}')">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>HAPUS
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>DELETE
                 </button>
               </div>
             </div>
@@ -164,15 +164,15 @@
         @empty
           <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: 12px; border: 1px dashed var(--border); color: var(--text-3);">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.5;"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            <div style="font-size: 16px; font-weight: 600; color: var(--text-2);">Tidak Ada Kostum</div>
-            <div style="font-size: 13px; margin-top: 4px;">Katalog kostum kosong atau filter pencarian tidak menemukan hasil.</div>
+            <div style="font-size: 16px; font-weight: 600; color: var(--text-2);">No Costumes Found</div>
+            <div style="font-size: 13px; margin-top: 4px;">The costume catalog is empty or the search filter returned no results.</div>
           </div>
         @endforelse
       </div>
 
       <!-- PAGINATION -->
       <div class="pagination-bar" style="margin-top: 24px;">
-        <span class="pagination-info">Menampilkan {{ $kostums->firstItem() ?? 0 }}-{{ $kostums->lastItem() ?? 0 }} dari {{ $kostums->total() }} kostum</span>
+        <span class="pagination-info">Showing {{ $kostums->firstItem() ?? 0 }}-{{ $kostums->lastItem() ?? 0 }} of {{ $kostums->total() }} costumes</span>
         <div class="pagination-container">
           {{ $kostums->links() }}
         </div>
@@ -186,7 +186,7 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" id="modalBox">
     <div class="modal-header">
-      <span class="modal-title">Tambah Kostum Baru</span>
+      <span class="modal-title">Add New Costume</span>
       <div class="modal-close" id="closeModalBtn">✕</div>
     </div>
     <form action="{{ route('admin.kostum.store') }}" method="POST" enctype="multipart/form-data" id="addKostumForm">
@@ -195,13 +195,13 @@
         <!-- Row 1 -->
         <div class="form-row">
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Nama Kostum</label>
-            <input class="form-input" type="text" name="nama_kostum" placeholder="Contoh: Kostum Spiderman" required />
+            <label class="form-label">Costume Name</label>
+            <input class="form-input" type="text" name="nama_kostum" placeholder="e.g., Spiderman Costume" required />
           </div>
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Kategori</label>
+            <label class="form-label">Category</label>
             <select class="form-select form-input" name="kategori_id" required>
-              <option value="" disabled selected>Pilih Kategori</option>
+              <option value="" disabled selected>Select Category</option>
               @foreach($kategoris as $kat)
                 <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
               @endforeach
@@ -212,47 +212,47 @@
         <!-- Row 2 -->
         <div class="form-row" style="margin-top:16px">
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Harga Sewa Per Hari</label>
+            <label class="form-label">Rental Price Per Day</label>
             <div class="price-input-wrap">
               <span class="price-prefix">Rp</span>
               <input class="form-input" type="number" name="harga_sewa" placeholder="0" min="0" required />
             </div>
           </div>
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Jumlah Stok</label>
+            <label class="form-label">Stock Quantity</label>
             <input class="form-input" type="number" name="stok" placeholder="0" min="0" required />
           </div>
         </div>
 
         <!-- Ukuran -->
         <div class="form-group" style="margin-top:16px">
-          <label class="form-label">Ukuran Tersedia (Pisahkan dengan koma, contoh: S, M, L)</label>
+          <label class="form-label">Available Sizes (Separate with comma, e.g., S, M, L)</label>
           <input class="form-input" type="text" name="ukuran" placeholder="S, M, L, XL" required />
         </div>
 
         <!-- Deskripsi -->
         <div class="form-group">
-          <label class="form-label">Deskripsi / Kelengkapan Kostum</label>
-          <textarea class="form-textarea" name="kelengkapan" placeholder="Jelaskan detail aksesoris yang didapat, wig, senjata, dll..."></textarea>
+          <label class="form-label">Description / Costume Accessories</label>
+          <textarea class="form-textarea" name="kelengkapan" placeholder="Describe the included accessories, wig, weapons, etc..."></textarea>
         </div>
 
         <!-- Upload -->
         <div class="form-group">
-          <label class="form-label">Upload Foto Kostum</label>
+          <label class="form-label">Upload Costume Photo</label>
           <input type="file" name="gambar" accept="image/*" style="display: none;" id="addGambarInput" onchange="previewImageFile(this, 'addUploadZoneText')">
           <div class="upload-zone" onclick="document.getElementById('addGambarInput').click()" style="cursor: pointer;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span id="addUploadZoneText">Klik untuk unggah foto atau seret &amp; letakkan</span>
-            <span style="font-size:11px;color:var(--text-3)">PNG, JPG, WEBP — Maks. 5MB</span>
+            <span id="addUploadZoneText">Click to upload photo or drag &amp; drop</span>
+            <span style="font-size:11px;color:var(--text-3)">PNG, JPG, WEBP — Max. 5MB</span>
           </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-ghost" id="cancelBtn">Batal</button>
+        <button type="button" class="btn btn-ghost" id="cancelBtn">Cancel</button>
         <button type="submit" class="btn btn-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          Simpan Kostum
+          Save Costume
         </button>
       </div>
     </form>
@@ -263,7 +263,7 @@
 <div class="modal-overlay" id="modalEdit">
   <div class="modal" id="modalEditBox">
     <div class="modal-header">
-      <span class="modal-title">Edit Data Kostum</span>
+      <span class="modal-title">Edit Costume Data</span>
       <div class="modal-close" onclick="closeModal('modalEdit')">✕</div>
     </div>
     <form action="" method="POST" enctype="multipart/form-data" id="editKostumForm">
@@ -273,11 +273,11 @@
         <!-- Row 1 -->
         <div class="form-row">
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Nama Kostum</label>
+            <label class="form-label">Costume Name</label>
             <input class="form-input" type="text" name="nama_kostum" id="edit_nama_kostum" required />
           </div>
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Kategori</label>
+            <label class="form-label">Category</label>
             <select class="form-select form-input" name="kategori_id" id="edit_kategori_id" required>
               @foreach($kategoris as $kat)
                 <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
@@ -289,51 +289,51 @@
         <!-- Row 2 -->
         <div class="form-row" style="margin-top:16px">
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Harga Sewa Per Hari</label>
+            <label class="form-label">Rental Price Per Day</label>
             <div class="price-input-wrap">
               <span class="price-prefix">Rp</span>
               <input class="form-input" type="number" name="harga_sewa" id="edit_harga_sewa" min="0" required />
             </div>
           </div>
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Jumlah Stok</label>
+            <label class="form-label">Stock Quantity</label>
             <input class="form-input" type="number" name="stok" id="edit_stok" min="0" required />
           </div>
         </div>
 
         <!-- Ukuran -->
         <div class="form-group" style="margin-top:16px">
-          <label class="form-label">Ukuran Tersedia (Pisahkan dengan koma, contoh: S, M, L)</label>
+          <label class="form-label">Available Sizes (Separate with comma, e.g., S, M, L)</label>
           <input class="form-input" type="text" name="ukuran" id="edit_ukuran" required />
         </div>
 
         <!-- Deskripsi -->
         <div class="form-group">
-          <label class="form-label">Deskripsi / Kelengkapan Kostum</label>
+          <label class="form-label">Description / Costume Accessories</label>
           <textarea class="form-textarea" name="kelengkapan" id="edit_kelengkapan"></textarea>
         </div>
 
         <!-- Upload -->
         <div class="form-group">
-          <label class="form-label">Foto Kostum Saat Ini / Ganti</label>
+          <label class="form-label">Current Costume Photo / Replace</label>
           <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 8px;">
             <img src="" id="edit_preview_img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); display: none;">
-            <div style="font-size: 12px; color: var(--text-2);" id="edit_no_image_text">Belum ada gambar</div>
+            <div style="font-size: 12px; color: var(--text-2);" id="edit_no_image_text">No image yet</div>
           </div>
           <input type="file" name="gambar" accept="image/*" style="display: none;" id="editGambarInput" onchange="previewImageFile(this, 'editUploadZoneText')">
           <div class="upload-zone" onclick="document.getElementById('editGambarInput').click()" style="cursor: pointer;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span id="editUploadZoneText">Klik untuk ganti foto atau seret &amp; letakkan</span>
-            <span style="font-size:11px;color:var(--text-3)">PNG, JPG, WEBP — Maks. 5MB</span>
+            <span id="editUploadZoneText">Click to replace photo or drag &amp; drop</span>
+            <span style="font-size:11px;color:var(--text-3)">PNG, JPG, WEBP — Max. 5MB</span>
           </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modalEdit')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalEdit')">Cancel</button>
         <button type="submit" class="btn btn-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          Simpan Perubahan
+          Save Changes
         </button>
       </div>
     </form>
@@ -344,7 +344,7 @@
 <div class="modal-overlay" id="modalView">
   <div class="modal" id="modalViewBox">
     <div class="modal-header">
-      <span class="modal-title">Detail Kostum</span>
+      <span class="modal-title">Costume Details</span>
       <div class="modal-close" onclick="closeModal('modalView')">✕</div>
     </div>
     <div class="modal-body">
@@ -358,11 +358,11 @@
           
           <div style="margin-top:16px;display:flex;gap:24px;">
             <div>
-              <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;font-weight:600;letter-spacing:0.5px;">Harga Sewa</div>
-              <div style="font-size:16px;font-weight:700;color:var(--text-1);font-family:'JetBrains Mono', monospace;margin-top:2px;" id="view_harga">Rp 150.000 <span style="font-size:12px;color:var(--text-3);font-family:'Sora',sans-serif;">/hari</span></div>
+              <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;font-weight:600;letter-spacing:0.5px;">Rental Price</div>
+              <div style="font-size:16px;font-weight:700;color:var(--text-1);font-family:'JetBrains Mono', monospace;margin-top:2px;" id="view_harga">Rp 150.000 <span style="font-size:12px;color:var(--text-3);font-family:'Sora',sans-serif;">/day</span></div>
             </div>
             <div>
-              <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;font-weight:600;letter-spacing:0.5px;">Stok Tersedia</div>
+              <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;font-weight:600;letter-spacing:0.5px;">Available Stock</div>
               <div style="font-size:16px;font-weight:700;color:var(--text-1);font-family:'JetBrains Mono', monospace;margin-top:2px;" id="view_stok">3 Unit</div>
             </div>
           </div>
@@ -370,19 +370,19 @@
       </div>
       
       <div style="margin-top:24px;">
-        <div style="font-size:11.5px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Ukuran Tersedia</div>
+        <div style="font-size:11.5px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Available Sizes</div>
         <div style="display:flex;gap:8px;flex-wrap: wrap;" id="view_ukuran_badges">
           <!-- badges filled dynamically -->
         </div>
       </div>
 
       <div style="margin-top:20px;">
-        <div style="font-size:11.5px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Deskripsi / Kelengkapan</div>
+        <div style="font-size:11.5px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Description / Accessories</div>
         <p style="font-size:13px;color:var(--text-2);line-height:1.6;white-space: pre-line; background: var(--bg-body); padding: 12px; border-radius: 8px; border: 1px solid var(--border);" id="view_kelengkapan">-</p>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary" onclick="closeModal('modalView')">Tutup</button>
+      <button class="btn btn-primary" onclick="closeModal('modalView')">Close</button>
     </div>
   </div>
 </div>
@@ -397,13 +397,13 @@
         <div style="width:64px;height:64px;background:rgba(248,113,113,0.15);color:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px;height:32px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
         </div>
-        <h3 style="font-size:18px;font-weight:700;color:var(--text-1);margin-bottom:8px;">Hapus Kostum?</h3>
-        <p style="font-size:13.5px;color:var(--text-2);line-height:1.5;">Apakah Anda yakin ingin menghapus <strong id="delete_kostum_name">Kostum Spiderman</strong>? Data yang dihapus tidak dapat dikembalikan.</p>
+        <h3 style="font-size:18px;font-weight:700;color:var(--text-1);margin-bottom:8px;">Delete Costume?</h3>
+        <p style="font-size:13.5px;color:var(--text-2);line-height:1.5;">Are you sure you want to delete <strong id="delete_kostum_name">Spiderman Costume</strong>? Deleted data cannot be recovered.</p>
       </div>
       <div class="modal-footer" style="justify-content:center;border-top:none;padding-top:0;">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modalDelete')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalDelete')">Cancel</button>
         <button type="submit" class="btn btn-primary" style="background:var(--red);border-color:var(--red);box-shadow:0 4px 12px rgba(248,113,113,0.3);">
-          Ya, Hapus
+          Yes, Delete
         </button>
       </div>
     </form>
@@ -414,13 +414,13 @@
 <div class="modal-overlay" id="modalAddCategory">
   <div class="modal" id="modalAddCategoryBox" style="width:420px;">
     <div class="modal-header">
-      <span class="modal-title">Manajemen Kategori</span>
+      <span class="modal-title">Category Management</span>
       <div class="modal-close" onclick="closeModal('modalAddCategory')">✕</div>
     </div>
     <div class="modal-body">
       <!-- Daftar Kategori Saat Ini -->
       <div style="margin-bottom: 20px;">
-        <div style="font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;margin-bottom:8px;">Daftar Kategori Saat Ini</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;margin-bottom:8px;">Current Categories</div>
         <div style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; background: var(--bg-body); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
           @foreach($kategoris as $kat)
             <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border);">
@@ -430,10 +430,10 @@
                   <span style="font-size: 11px; color: var(--text-3); display: block;">Franchise: {{ $kat->franchise }}</span>
                 @endif
               </div>
-              <form action="{{ route('admin.kategori.destroy', $kat->id) }}" method="POST" onsubmit="return confirm('Hapus kategori {{ $kat->nama_kategori }}? Kostum di kategori ini juga akan ikut terhapus!')">
+              <form action="{{ route('admin.kategori.destroy', $kat->id) }}" method="POST" onsubmit="return confirm('Delete category {{ $kat->nama_kategori }}? Costumes in this category will also be deleted!')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" style="background: none; border: none; color: var(--red); cursor: pointer; display: flex; align-items: center;" title="Hapus Kategori">
+                <button type="submit" style="background: none; border: none; color: var(--red); cursor: pointer; display: flex; align-items: center;" title="Delete Category">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
                 </button>
               </form>
@@ -447,19 +447,19 @@
       <!-- Form Tambah Kategori -->
       <form action="{{ route('admin.kategori.store') }}" method="POST" id="addCategoryForm">
         @csrf
-        <div style="font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;margin-bottom:8px;">Tambah Kategori Baru</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;margin-bottom:8px;">Add New Category</div>
         <div class="form-group" style="margin-bottom:12px">
-          <label class="form-label">Nama Kategori</label>
-          <input class="form-input" type="text" name="nama_kategori" placeholder="Contoh: Genshin Impact" required />
+          <label class="form-label">Category Name</label>
+          <input class="form-input" type="text" name="nama_kategori" placeholder="e.g., Genshin Impact" required />
         </div>
         <div class="form-group" style="margin-bottom:0">
-          <label class="form-label">Franchise (Opsional)</label>
-          <input class="form-input" type="text" name="franchise" placeholder="Contoh: HoYoverse" />
+          <label class="form-label">Franchise (Optional)</label>
+          <input class="form-input" type="text" name="franchise" placeholder="e.g., HoYoverse" />
         </div>
         <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
           <button type="submit" class="btn btn-primary" style="width: 100%;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-            Simpan Kategori Baru
+            Save New Category
           </button>
         </div>
       </form>
@@ -474,7 +474,7 @@
     function previewImageFile(input, textId) {
         const textSpan = document.getElementById(textId);
         if (input.files && input.files[0]) {
-            textSpan.textContent = "Foto dipilih: " + input.files[0].name;
+            textSpan.textContent = "Photo selected: " + input.files[0].name;
             textSpan.style.color = "var(--blue)";
         }
     }
@@ -519,10 +519,10 @@
         
         // Format Currency
         const hargaFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(kostum.harga_sewa);
-        document.getElementById('view_harga').innerHTML = hargaFormatted + ' <span style="font-size:12px;color:var(--text-3);font-family:\'Sora\',sans-serif;">/hari</span>';
+        document.getElementById('view_harga').innerHTML = hargaFormatted + ' <span style="font-size:12px;color:var(--text-3);font-family:\'Sora\',sans-serif;">/day</span>';
         
         document.getElementById('view_stok').textContent = kostum.stok + ' Unit';
-        document.getElementById('view_kelengkapan').textContent = kostum.kelengkapan || 'Tidak ada kelengkapan/deskripsi khusus.';
+        document.getElementById('view_kelengkapan').textContent = kostum.kelengkapan || 'No special accessories/description.';
 
         // Render ukuran badges
         const badgesContainer = document.getElementById('view_ukuran_badges');
@@ -536,7 +536,7 @@
                 badgesContainer.appendChild(badge);
             });
         } else {
-            badgesContainer.innerHTML = '<span style="color:var(--text-3); font-size:13px; font-style:italic;">Tidak ada ukuran tersedia</span>';
+            badgesContainer.innerHTML = '<span style="color:var(--text-3); font-size:13px; font-style:italic;">No sizes available</span>';
         }
 
         // Image

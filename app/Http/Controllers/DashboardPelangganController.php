@@ -24,10 +24,10 @@ class DashboardPelangganController extends Controller
             'total_rentals'  => Transaksi::where('user_id', $userId)->count(),
         ];
 
-        // Active Rentals (Kostum Sedang Disewa & Menunggu Pembayaran)
+        // Active Rentals (Kostum Sedang Disewa & Menunggu Pembayaran & Batal)
         $current_rentals = Transaksi::with(['detailTransaksi.kostum'])
             ->where('user_id', $userId)
-            ->whereIn('status', ['Menunggu Pembayaran', 'Disewa'])
+            ->whereIn('status', ['Menunggu Pembayaran', 'Disewa', 'Batal'])
             ->get()
             ->map(function ($t) {
                 $firstDetail = $t->detailTransaksi->first();
@@ -42,7 +42,8 @@ class DashboardPelangganController extends Controller
                     'price'       => $t->total_biaya,
                     'image'       => $kostum ? $kostum->gambar_url : null,
                     'status'      => $t->status_label,
-                    'status_color'=> $t->status_color
+                    'status_color'=> $t->status_color,
+                    'catatan_admin'=> $t->catatan_admin
                 ];
             });
 

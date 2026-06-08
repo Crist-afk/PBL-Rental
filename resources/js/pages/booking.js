@@ -1,6 +1,6 @@
 if (window.bookingSuccessMessage) {
     Swal.fire({
-        title: 'Berhasil!',
+        title: 'Success!',
         text: window.bookingSuccessMessage,
         icon: 'success',
         confirmButtonText: 'OK',
@@ -77,13 +77,13 @@ if (window.bookingSuccessMessage) {
                     label.innerHTML = `
                         <input type="radio" name="size" value="${size}" class="peer sr-only" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''} ${isChecked ? 'required' : ''}>
                         <div class="min-w-[3rem] px-4 py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/10 font-black text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition-all duration-300 shadow-sm ${isDisabled ? '' : 'hover:scale-105 hover:border-sakura/50'} bg-white/40 peer-checked:shadow-sakura/20 peer-checked:shadow-lg">
-                            ${size} ${isDisabled ? '<span class="text-[10px] ml-1 font-bold text-red-500">(Habis)</span>' : ''}
+                            ${size} ${isDisabled ? '<span class="text-[10px] ml-1 font-bold text-red-500">(Out of Stock)</span>' : ''}
                         </div>
                     `;
                     sizeContainer.appendChild(label);
                 });
             } else if (sizeContainer) {
-                sizeContainer.innerHTML = '<p class="text-sm font-medium text-dark-chocolate/50 italic py-2">Pilih kostum terlebih dahulu untuk melihat ukuran.</p>';
+                sizeContainer.innerHTML = '<p class="text-sm font-medium text-dark-chocolate/50 italic py-2">Select a costume first to see available sizes.</p>';
             }
         }
 

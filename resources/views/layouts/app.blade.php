@@ -40,10 +40,13 @@
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        /* Mempertebal centang success SweetAlert2 */
+        /* Mempertebal centang dan lingkaran success SweetAlert2 */
         .swal2-popup .swal2-success [class^=swal2-success-line] {
-            height: 8px !important;
-            border-radius: 4px !important;
+            height: 10px !important;
+            border-radius: 5px !important;
+        }
+        .swal2-popup .swal2-success .swal2-success-ring {
+            border-width: 10px !important;
         }
     </style>
     <script>

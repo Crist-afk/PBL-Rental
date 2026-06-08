@@ -158,6 +158,18 @@ class DashboardPelangganController extends Controller
                 'harga_sewa_saat_transaksi' => $total_biaya
             ]);
 
+            // ===== DECREASE COSTUME STOCK =====
+            if ($size) {
+                $stokPerUkuran = $kostum->stok_per_ukuran;
+                if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
+                    $stokPerUkuran[$size] -= 1;
+                    $kostum->stok_per_ukuran = $stokPerUkuran;
+                }
+            }
+            $kostum->stok -= 1;
+            $kostum->save();
+            // ===============================
+
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('dashboard.pelanggan')->with('success', 'Booking created successfully! Please wait for payment confirmation.');

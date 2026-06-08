@@ -321,30 +321,7 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            foreach ($transaksi->detailTransaksi as $detail) {
-                $kostum = $detail->kostum;
-                if ($kostum) {
-                    if ($kostum->stok <= 0) {
-                        \Illuminate\Support\Facades\DB::rollBack();
-                        return back()->with('error', "Failed to approve. Costume '{$kostum->nama_kostum}' is out of stock.");
-                    }
-
-                    if ($detail->ukuran) {
-                        $stokPerUkuran = $kostum->stok_per_ukuran;
-                        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$detail->ukuran])) {
-                            if ($stokPerUkuran[$detail->ukuran] <= 0) {
-                                \Illuminate\Support\Facades\DB::rollBack();
-                                return back()->with('error', "Failed to approve. Costume '{$kostum->nama_kostum}' in size '{$detail->ukuran}' is out of stock.");
-                            }
-                            $stokPerUkuran[$detail->ukuran] -= 1;
-                            $kostum->stok_per_ukuran = $stokPerUkuran;
-                        }
-                    }
-
-                    $kostum->stok -= 1;
-                    $kostum->save();
-                }
-            }
+            // Stock has been decreased when user books the costume (in DashboardPelangganController)
 
             $transaksi->update([
                 'status'         => 'Disewa',
@@ -373,12 +350,38 @@ class AdminController extends Controller
             'catatan_admin' => 'nullable|string|max:500',
         ]);
 
-        $transaksi->update([
-            'status'        => 'Batal',
-            'catatan_admin' => $request->catatan_admin,
-        ]);
+        try {
+            \Illuminate\Support\Facades\DB::beginTransaction();
 
-        return redirect()->route('admin.pembayaran')->with('success', "Payment #TRX-{$id} rejected successfully.");
+            // Return costume stock because the transaction is rejected
+            foreach ($transaksi->detailTransaksi as $detail) {
+                $kostum = $detail->kostum;
+                if ($kostum) {
+                    if ($detail->ukuran) {
+                        $stokPerUkuran = $kostum->stok_per_ukuran;
+                        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$detail->ukuran])) {
+                            $stokPerUkuran[$detail->ukuran] += 1;
+                            $kostum->stok_per_ukuran = $stokPerUkuran;
+                        }
+                    }
+                    $kostum->stok += 1;
+                    $kostum->save();
+                }
+            }
+
+            $transaksi->update([
+                'status'        => 'Batal',
+                'catatan_admin' => $request->catatan_admin,
+            ]);
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            return redirect()->route('admin.pembayaran')->with('success', "Payment #TRX-{$id} rejected successfully.");
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            return back()->with('error', "An error occurred: " . $e->getMessage());
+        }
     }
 
     // =====================================================================

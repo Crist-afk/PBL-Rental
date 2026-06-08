@@ -144,7 +144,7 @@
                             {{-- Info Stok yang muncul saat ukuran diklik --}}
                             <div id="stock-info" class="hidden mt-3 px-4 py-2 bg-sakura/10 rounded-xl border border-sakura/20 text-sm font-bold text-dark-chocolate flex items-center gap-2 transition-all duration-300">
                                 <i class="fa-solid fa-box-open text-sakura"></i>
-                                <span>Sisa stok ukuran <span id="selected-size-text" class="text-sakura"></span>: <span class="text-sakura">{{ $kostum->stok }}</span> unit</span>
+                                <span>Remaining stock for size <span id="selected-size-text" class="text-sakura"></span>: <span class="text-sakura">{{ $kostum->stok }}</span> unit(s)</span>
                             </div>
                         </div>
 
@@ -301,11 +301,11 @@
                                 if (sisaStok <= 0) {
                                     sewaBtn.disabled = true;
                                     sewaBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                                    sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> Stok Ukuran Habis';
+                                    sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> Size Out of Stock';
                                 } else {
                                     sewaBtn.disabled = false;
                                     sewaBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                    sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Sewa Sekarang';
+                                    sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Rent Now';
                                 }
                             }
                         }

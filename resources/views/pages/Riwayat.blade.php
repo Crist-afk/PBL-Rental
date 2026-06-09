@@ -44,25 +44,14 @@
         <!-- History List -->
         <div class="space-y-8 w-full">
             @php
-                $statusColors = [
-                    'Menunggu Pembayaran' => 'bg-amber-100 text-amber-700 border-amber-200',
-                    'Disewa' => 'bg-blue-100 text-blue-700 border-blue-200',
-                    'Selesai' => 'bg-green-100 text-green-700 border-green-200',
-                    'Batal' => 'bg-red-100 text-red-700 border-red-200',
-                ];
-                $statusLabels = [
-                    'Menunggu Pembayaran' => 'Waiting for Payment',
-                    'Disewa' => 'Rented',
-                    'Selesai' => 'Completed',
-                    'Batal' => 'Canceled',
-                ];
+                // Status colors and labels are sourced from Transaksi model accessors
             @endphp
 
             @forelse($historyItems as $item)
                 @php
                     $firstDetail = $item->detailTransaksi->first();
                     $kostum = $firstDetail ? $firstDetail->kostum : null;
-                    $statusColor = $statusColors[$item->status] ?? 'bg-gray-100 text-gray-700 border-gray-200';
+                    $statusColor = $item->status_color;
                     $penalty = $item->pengembalian?->total_denda ?? $item->total_denda;
                     
                     $dendaBerjalan = 0;
@@ -90,8 +79,11 @@
                     <div class="flex-grow w-full text-center lg:text-left space-y-4">
                         <div class="flex flex-wrap justify-center lg:justify-start items-center gap-3">
                             <span class="bg-dark-chocolate/10 px-3 py-1 rounded-lg text-[10px] font-black text-dark-chocolate tracking-widest">TRX-{{ str_pad($item->id, 5, '0', STR_PAD_LEFT) }}</span>
-                            <span class="px-4 py-1 rounded-full text-[10px] font-black border {{ $statusColor }} uppercase tracking-wider">
-                                {{ $statusLabels[$item->status] ?? $item->status }}
+                            <span class="px-4 py-1 rounded-full text-[10px] font-black border {{ $statusColor }} uppercase tracking-wider flex items-center gap-1">
+                                @if($item->status === 'Selesai')
+                                    <i class="fa-solid fa-rotate-left text-[8px]"></i>
+                                @endif
+                                {{ $item->status_label }}
                             </span>
                         </div>
                         

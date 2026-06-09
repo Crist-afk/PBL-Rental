@@ -168,7 +168,10 @@
                                 </p>
                             </div>
                             <a href="{{ route('riwayat.faktur', $t->id) }}"
-                               class="flex-shrink-0 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $t->status_color }} hover:opacity-80 transition whitespace-nowrap">
+                               class="flex-shrink-0 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $t->status_color }} hover:opacity-80 transition whitespace-nowrap flex items-center gap-1">
+                                @if($t->status === 'Selesai')
+                                    <i class="fa-solid fa-rotate-left text-[8px]"></i>
+                                @endif
                                 {{ $t->status_label }}
                             </a>
                         </div>

@@ -64,6 +64,15 @@
                     $kostum = $firstDetail ? $firstDetail->kostum : null;
                     $statusColor = $statusColors[$item->status] ?? 'bg-gray-100 text-gray-700 border-gray-200';
                     $penalty = $item->pengembalian?->total_denda ?? $item->total_denda;
+                    
+                    $dendaBerjalan = 0;
+                    $daysLate = 0;
+                    if (in_array($item->status, ['Disewa', 'Menunggu Pembayaran']) && \Carbon\Carbon::now()->startOfDay()->greaterThan(\Carbon\Carbon::parse($item->tanggal_selesai)->startOfDay())) {
+                        $daysLate = \Carbon\Carbon::parse($item->tanggal_selesai)->startOfDay()->diffInDays(\Carbon\Carbon::now()->startOfDay());
+                        $dendaBerjalan = $daysLate * 50000;
+                        $penalty += $dendaBerjalan;
+                    }
+                    
                     $totalCost = $item->total_biaya + $penalty;
                 @endphp
                 <article class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-6 md:p-10 shadow-lg bg-white/60 flex flex-col lg:flex-row gap-10 items-center lg:items-center w-full">
@@ -103,6 +112,12 @@
                             </p>
                         @endif
                         
+                        @if($item->status === 'Menunggu Pembayaran')
+                            <p class="text-xs font-bold text-amber-600 mt-2 bg-amber-50 p-3 rounded-lg border border-amber-200 inline-block w-full">
+                                <i class="fa-solid fa-clock mr-1"></i> Pay before: {{ \Carbon\Carbon::parse($item->created_at)->addDays(2)->format('d M Y, H:i') }}
+                            </p>
+                        @endif
+                        
                         <div class="flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-6 text-sm font-bold text-dark-chocolate/60">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-sakura/10 flex items-center justify-center text-sakura"><i class="fa-regular fa-calendar-plus"></i></div>
@@ -121,7 +136,11 @@
                             <p class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-1 opacity-60">Total Cost</p>
                             <p class="text-4xl font-black text-sakura tracking-tighter">Rp {{ number_format($totalCost, 0, ',', '.') }}</p>
                             @if($penalty > 0)
-                                <p class="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] mt-1">Includes penalty Rp {{ number_format($penalty, 0, ',', '.') }}</p>
+                                @if(isset($dendaBerjalan) && $dendaBerjalan > 0)
+                                    <p class="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] mt-1">Late {{ $daysLate }} Days (Penalty Rp {{ number_format($penalty, 0, ',', '.') }})</p>
+                                @else
+                                    <p class="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] mt-1">Includes penalty Rp {{ number_format($penalty, 0, ',', '.') }}</p>
+                                @endif
                             @endif
                         </div>
                         

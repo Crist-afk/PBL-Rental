@@ -69,6 +69,16 @@
                             </div>
                             <p class="text-sm font-bold text-aloewood mt-1 uppercase tracking-wide">Size {{ $rental['size'] }}</p>
                             <p class="text-xs font-medium text-dark-chocolate/70 mt-1"><i class="fa-regular fa-clock mr-1"></i> Return {{ $rental['return_date'] }}</p>
+                            @if($rental['raw_status'] === 'Menunggu Pembayaran')
+                                <p class="text-xs font-bold text-amber-600 mt-2 bg-amber-50 p-2 rounded-lg border border-amber-200">
+                                    <i class="fa-solid fa-clock mr-1"></i> Pay before: {{ $rental['payment_deadline'] }}
+                                </p>
+                            @endif
+                            @if($rental['denda'] > 0)
+                                <p class="text-xs font-bold text-red-500 mt-2 bg-red-50 p-2 rounded-lg border border-red-100">
+                                    <i class="fa-solid fa-circle-exclamation mr-1"></i> Late Penalty: {{ $rental['days_late'] }} Days (Rp {{ number_format($rental['denda'], 0, ',', '.') }})
+                                </p>
+                            @endif
                             @if($rental['status'] === 'Canceled' && !empty($rental['catatan_admin']))
                                 <p class="text-xs font-bold text-red-500 mt-2 bg-red-50 p-2 rounded-lg border border-red-100">
                                     <i class="fa-solid fa-circle-exclamation mr-1"></i> Reason: {{ $rental['catatan_admin'] }}

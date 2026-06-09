@@ -34,6 +34,14 @@ class DashboardPelangganController extends Controller
                 $kostum = $firstDetail ? $firstDetail->kostum : null;
                 $size = $firstDetail?->ukuran ?? 'N/A';
 
+                // Calculate running fine if late
+                $denda = 0;
+                $daysLate = 0;
+                if (in_array($t->status, ['Disewa', 'Menunggu Pembayaran']) && \Carbon\Carbon::now()->startOfDay()->greaterThan(\Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay())) {
+                    $daysLate = \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay()->diffInDays(\Carbon\Carbon::now()->startOfDay());
+                    $denda = $daysLate * 50000;
+                }
+
                 return [
                     'id'          => $t->id,
                     'title'       => $kostum ? $kostum->nama_kostum : 'Transaksi #' . $t->id,
@@ -42,8 +50,12 @@ class DashboardPelangganController extends Controller
                     'price'       => $t->total_biaya,
                     'image'       => $kostum ? $kostum->gambar_url : null,
                     'status'      => $t->status_label,
+                    'raw_status'  => $t->status,
                     'status_color'=> $t->status_color,
-                    'catatan_admin'=> $t->catatan_admin
+                    'catatan_admin'=> $t->catatan_admin,
+                    'denda'       => $denda,
+                    'days_late'   => $daysLate,
+                    'payment_deadline' => \Carbon\Carbon::parse($t->created_at)->addDays(2)->format('d M Y, H:i'),
                 ];
             });
 

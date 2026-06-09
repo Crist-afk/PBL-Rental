@@ -30,7 +30,7 @@ window.addEventListener('load', () => {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Kostum Dipesan',
+                    label: 'Rented Costumes',
                     data: values,
                     borderColor: '#EC9C9D', // var(--blue) from layout
                     backgroundColor: 'rgba(236, 156, 157, 0.2)',
@@ -61,7 +61,7 @@ window.addEventListener('load', () => {
                         displayColors: false,
                         callbacks: {
                             label: function(context) {
-                                return context.parsed.y + ' Dipesan';
+                                return context.parsed.y + ' Rented';
                             }
                         }
                     }
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (notifHeaderCount) {
-            notifHeaderCount.textContent = `${unreadCount} belum dibaca`;
+            notifHeaderCount.textContent = `${unreadCount} unread`;
         }
     }
 

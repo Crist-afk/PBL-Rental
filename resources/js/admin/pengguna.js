@@ -156,11 +156,11 @@ let currentToggleActiveUserId = null;
 
 function openToggleActiveModal(userId, name, isActive) {
     currentToggleActiveUserId = userId;
-    const title = isActive ? 'Nonaktifkan Akun Pengguna?' : 'Aktifkan Akun Pengguna?';
+    const title = isActive ? 'Deactivate User Account?' : 'Activate User Account?';
     const text = isActive
-        ? `Apakah Anda yakin ingin menonaktifkan akun <strong style="color:var(--text-1);">${name}</strong>? Pengguna tidak akan bisa login ke dalam situs.`
-        : `Apakah Anda yakin ingin mengaktifkan kembali akun <strong style="color:var(--text-1);">${name}</strong>? Pengguna akan bisa login kembali ke dalam situs.`;
-    const btnText = isActive ? 'Ya, Nonaktifkan Akun' : 'Ya, Aktifkan Akun';
+        ? `Are you sure you want to deactivate the account <strong style="color:var(--text-1);">${name}</strong>? The user will not be able to log in to the site.`
+        : `Are you sure you want to reactivate the account <strong style="color:var(--text-1);">${name}</strong>? The user will be able to log in to the site again.`;
+    const btnText = isActive ? 'Yes, Deactivate Account' : 'Yes, Activate Account';
     const btnBg = isActive ? 'var(--red)' : 'var(--green)';
     const iconBg = isActive ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)';
     const iconColor = isActive ? 'var(--red)' : 'var(--green)';

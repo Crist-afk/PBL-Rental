@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'CosRent — Validasi Pembayaran')
+@section('title', 'CosRent — Payment Validation')
 
 @push('styles')
     @vite(['resources/css/admin/pembayaran.css', 'resources/js/admin/pembayaran.js'])

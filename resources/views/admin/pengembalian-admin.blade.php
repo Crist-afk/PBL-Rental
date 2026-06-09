@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'CosRent — Pengembalian & Denda')
+@section('title', 'CosRent — Returns & Penalties')
 
 @push('styles')
     @vite(['resources/css/admin/pengembalian.css', 'resources/js/admin/pengembalian.js'])
@@ -56,35 +56,35 @@
         </div>
       @endif
 
-      <h1 class="page-title">Catat Pengembalian &amp; Denda</h1>
-      <p class="page-subtitle">Pantau jadwal pengembalian dan kelola keterlambatan penyewa</p>
+      <h1 class="page-title">Record Returns &amp; Penalties</h1>
+      <p class="page-subtitle">Monitor return schedules and manage tenant delays</p>
 
       <!-- STAT CARDS -->
       <div class="stats-grid">
         <div class="stat-card">
           <div>
-            <div class="stat-label">Harus Kembali Hari Ini</div>
+            <div class="stat-label">Must Return Today</div>
             <div class="stat-value red">{{ $stats['harus_kembali'] }}</div>
           </div>
           <div class="stat-icon red">⚠️</div>
         </div>
         <div class="stat-card">
           <div>
-            <div class="stat-label">Sudah Kembali Hari Ini</div>
+            <div class="stat-label">Returned Today</div>
             <div class="stat-value green">{{ $stats['sudah_kembali'] }}</div>
           </div>
           <div class="stat-icon green">✅</div>
         </div>
         <div class="stat-card">
           <div>
-            <div class="stat-label">Sewa Sangat Terlambat</div>
+            <div class="stat-label">Very Late Rentals</div>
             <div class="stat-value orange">{{ $stats['terlambat'] }}</div>
           </div>
           <div class="stat-icon orange">🕐</div>
         </div>
         <div class="stat-card">
           <div>
-            <div class="stat-label">Total Denda Terkumpul</div>
+            <div class="stat-label">Total Fines Collected</div>
             <div class="stat-value purple" style="font-size:20px">Rp {{ number_format($stats['total_denda'], 0, ',', '.') }}</div>
           </div>
           <div class="stat-icon purple">💲</div>
@@ -93,11 +93,11 @@
 
       <!-- FILTER TABS -->
       <div class="filter-tabs">
-        <a href="{{ route('admin.pengembalian', ['filter' => 'semua', 'q' => request('q')]) }}" class="tab {{ $filter === 'semua' ? 'active' : '' }}" style="text-decoration: none;">SEMUA</a>
-        <a href="{{ route('admin.pengembalian', ['filter' => 'belum', 'q' => request('q')]) }}" class="tab {{ $filter === 'belum' ? 'active' : '' }}" style="text-decoration: none;">BELUM DIKEMBALIKAN</a>
-        <a href="{{ route('admin.pengembalian', ['filter' => 'tepat', 'q' => request('q')]) }}" class="tab {{ $filter === 'tepat' ? 'active' : '' }}" style="text-decoration: none;">TEPAT WAKTU</a>
-        <a href="{{ route('admin.pengembalian', ['filter' => 'terlambat', 'q' => request('q')]) }}" class="tab {{ $filter === 'terlambat' ? 'active' : '' }}" style="text-decoration: none;">TERLAMBAT</a>
-        <a href="{{ route('admin.pengembalian', ['filter' => 'denda', 'q' => request('q')]) }}" class="tab {{ $filter === 'denda' ? 'active' : '' }}" style="text-decoration: none;">DENGAN DENDA</a>
+        <a href="{{ route('admin.pengembalian', ['filter' => 'semua', 'q' => request('q')]) }}" class="tab {{ $filter === 'semua' ? 'active' : '' }}" style="text-decoration: none;">ALL</a>
+        <a href="{{ route('admin.pengembalian', ['filter' => 'belum', 'q' => request('q')]) }}" class="tab {{ $filter === 'belum' ? 'active' : '' }}" style="text-decoration: none;">NOT YET RETURNED</a>
+        <a href="{{ route('admin.pengembalian', ['filter' => 'tepat', 'q' => request('q')]) }}" class="tab {{ $filter === 'tepat' ? 'active' : '' }}" style="text-decoration: none;">ON TIME</a>
+        <a href="{{ route('admin.pengembalian', ['filter' => 'terlambat', 'q' => request('q')]) }}" class="tab {{ $filter === 'terlambat' ? 'active' : '' }}" style="text-decoration: none;">LATE</a>
+        <a href="{{ route('admin.pengembalian', ['filter' => 'denda', 'q' => request('q')]) }}" class="tab {{ $filter === 'denda' ? 'active' : '' }}" style="text-decoration: none;">WITH FINES</a>
       </div>
 
       <!-- SEARCH ROW -->
@@ -106,7 +106,7 @@
           <input type="hidden" name="filter" value="{{ $filter }}">
           <div class="search-wrap" style="width: 100%;">
             <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama pelanggan atau ID order..."/>
+            <input type="text" name="q" value="{{ request('q') }}" placeholder="Search customer name or order ID..."/>
           </div>
         </form>
       </div>
@@ -116,23 +116,23 @@
         <table>
           <thead>
             <tr>
-              <th>ID<br>PESANAN</th>
-              <th>PELANGGAN</th>
-              <th>KOSTUM</th>
-              <th>TGL<br>MULAI SEWA</th>
-              <th>TGL WAJIB<br>KEMBALI</th>
-              <th>TGL AKTUAL<br>KEMBALI</th>
-              <th>KONDISI<br>KOSTUM</th>
-              <th>KETERLAMBATAN</th>
-              <th>DENDA</th>
+              <th>ORDER<br>ID</th>
+              <th>CUSTOMER</th>
+              <th>COSTUME</th>
+              <th>RENTAL<br>START DATE</th>
+              <th>REQUIRED<br>RETURN DATE</th>
+              <th>ACTUAL<br>RETURN DATE</th>
+              <th>COSTUME<br>CONDITION</th>
+              <th>DELAY</th>
+              <th>FINE</th>
               <th>STATUS</th>
-              <th>AKSI</th>
+              <th>ACTION</th>
             </tr>
           </thead>
           <tbody>
             @forelse($transaksis as $t)
               @php
-                $custName = $t->user?->nama ?? 'Pelanggan';
+                $custName = $t->user?->nama ?? 'Customer';
                 $kostumNames = [];
                 foreach($t->detailTransaksi as $dt) {
                     if($dt->kostum) {
@@ -170,32 +170,32 @@
                     <span class="date-normal">{{ $tanggalKembali->format('d M Y') }}</span>
                   @else
                     @if($isTerlambat)
-                      <span class="date-muted" style="color:#ef4444;font-weight:700;">TERLAMBAT!</span>
+                      <span class="date-muted" style="color:#ef4444;font-weight:700;">LATE!</span>
                     @else
-                      <span class="date-muted">Belum Kembali</span>
+                      <span class="date-muted">Not Returned</span>
                     @endif
                   @endif
                 </td>
                 <td>
                   @if($t->status === 'Selesai')
                     @if($kondisiBarang === 'Baik')
-                      <span class="kondisi-display baik" style="font-size:9px;padding:4px 8px;border-radius:6px;">BAIK</span>
+                      <span class="kondisi-display baik" style="font-size:9px;padding:4px 8px;border-radius:6px;">GOOD</span>
                     @elseif($kondisiBarang === 'Lecet')
-                      <span class="kondisi-display lecet" style="font-size:9px;padding:4px 8px;border-radius:6px;">LECET</span>
+                      <span class="kondisi-display lecet" style="font-size:9px;padding:4px 8px;border-radius:6px;">SCUFFED</span>
                     @elseif($kondisiBarang === 'Rusak')
-                      <span class="kondisi-display rusak" style="font-size:9px;padding:4px 8px;border-radius:6px;background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">RUSAK</span>
+                      <span class="kondisi-display rusak" style="font-size:9px;padding:4px 8px;border-radius:6px;background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">DAMAGED</span>
                     @else
                       <span style="color:#4b5a7a">â€“</span>
                     @endif
                   @else
                     <button type="button" class="kondisi-btn-action" style="font-size: 9px; padding: 4px 8px; border-radius: 6px; background: rgba(124, 58, 237, 0.1); color: #7c3aed; border: 1px dashed #7c3aed; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: all 0.2s;" onmouseover="this.style.background='rgba(124, 58, 237, 0.2)'" onmouseout="this.style.background='rgba(124, 58, 237, 0.1)'" onclick="openKembaliFormModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }})">
-                      📝 CATAT KEMBALI
+                      📝 RECORD RETURN
                     </button>
                   @endif
                 </td>
                 <td>
                   @if($isTerlambat)
-                    <span class="late-days red">{{ $hariTerlambat }} hari</span>
+                    <span class="late-days red">{{ $hariTerlambat }} days</span>
                   @else
                     <span style="color:#4b5a7a">–</span>
                   @endif
@@ -216,21 +216,21 @@
                   @if($t->status === 'Disewa')
                     @if($isTerlambat)
                       <span class="badge-status terlambat" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#ef4444;">
-                        <span class="bico">⚠️</span>SANGAT TELAT
+                        <span class="bico">⚠️</span>VERY LATE
                       </span>
                     @else
                       <span class="badge-status belum">
-                        <span class="bico">🟡</span>BELUM KEMBALI
+                        <span class="bico">🟡</span>NOT RETURNED
                       </span>
                     @endif
                   @else
                     @if($totalDenda > 0)
                       <span class="badge-status terlambat">
-                        <span class="bico">🔴</span>TERLAMBAT
+                        <span class="bico">🔴</span>LATE
                       </span>
                     @else
                       <span class="badge-status tepat">
-                        <span class="bico">✅</span>TEPAT WAKTU
+                        <span class="bico">✅</span>ON TIME
                       </span>
                     @endif
                   @endif
@@ -241,17 +241,17 @@
                       <span class="btn-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                       </span>
-                      <span class="btn-label">CATAT KEMBALI</span>
+                      <span class="btn-label">RECORD RETURN</span>
                     </button>
                   @else
-                    <button class="btn-action detail" onclick="openDetailFormModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }}, {{ $isTerlambat ? 'true' : 'false' }}, {{ $hariTerlambat }})">👁 LIHAT DETAIL</button>
+                    <button class="btn-action detail" onclick="openDetailFormModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }}, {{ $isTerlambat ? 'true' : 'false' }}, {{ $hariTerlambat }})">👁 VIEW DETAILS</button>
                   @endif
                 </td>
               </tr>
             @empty
               <tr>
                 <td colspan="11" style="text-align: center; padding: 48px; color: var(--text-3); font-weight: 500;">
-                  Tidak ada transaksi sewa aktif/selesai ditemukan.
+                  No active/completed rental transactions found.
                 </td>
               </tr>
             @endforelse
@@ -261,7 +261,7 @@
 
       <!-- PAGINATION -->
       <div class="pagination-bar" style="margin-top: 16px;">
-        <span class="pagination-info">Menampilkan {{ $transaksis->firstItem() ?? 0 }}-{{ $transaksis->lastItem() ?? 0 }} dari {{ $transaksis->total() }} pesanan</span>
+        <span class="pagination-info">Showing {{ $transaksis->firstItem() ?? 0 }}-{{ $transaksis->lastItem() ?? 0 }} of {{ $transaksis->total() }} orders</span>
         <div class="pagination-container">
           {{ $transaksis->links() }}
         </div>
@@ -283,37 +283,37 @@
       <div class="modal-body">
         <div class="field-row">
           <div class="field">
-            <label>ID Order</label>
+            <label>Order ID</label>
             <div class="field-val highlight" id="kembali-order-id">#TRX-000</div>
           </div>
           <div class="field">
-            <label>Penyewa</label>
+            <label>Tenant</label>
             <div class="field-val" id="kembali-penyewa">Pelanggan</div>
           </div>
         </div>
         <div class="field">
-          <label>Kostum</label>
+          <label>Costume</label>
           <div class="field-val" id="kembali-kostum">Gaun Cinderella</div>
         </div>
         <div class="field-row" style="margin-top: 12px;">
           <div class="field">
-            <label>Tanggal Wajib Kembali</label>
+            <label>Required Return Date</label>
             <div class="field-val" id="kembali-wajib" style="color: var(--orange); font-weight: bold;">20/04/2026</div>
           </div>
           <div class="field">
-            <label>Tanggal Aktual Pengembalian</label>
+            <label>Actual Return Date</label>
             <input type="date" name="tanggal_kembali_aktual" id="kembali-tgl" value="" onchange="hitungKembaliDenda()" required class="form-input" style="background: var(--bg-body); color: var(--text-1); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-family: inherit; width: 100%; box-sizing: border-box;"/>
           </div>
         </div>
         <div class="field" style="margin-top: 12px;">
-          <label style="font-weight: 600;">Kondisi Kostum <span style="color: var(--red);">*</span></label>
+          <label style="font-weight: 600;">Costume Condition <span style="color: var(--red);">*</span></label>
           <div class="kondisi-row" style="margin-top: 6px;">
-            <button type="button" class="kondisi-btn baik" onclick="selectKondisi('Baik')">Baik</button>
-            <button type="button" class="kondisi-btn lecet" onclick="selectKondisi('Lecet')">Lecet</button>
-            <button type="button" class="kondisi-btn rusak" onclick="selectKondisi('Rusak')">Rusak</button>
+            <button type="button" class="kondisi-btn baik" onclick="selectKondisi('Baik')">Good</button>
+            <button type="button" class="kondisi-btn lecet" onclick="selectKondisi('Lecet')">Scuffed</button>
+            <button type="button" class="kondisi-btn rusak" onclick="selectKondisi('Rusak')">Damaged</button>
           </div>
           <input type="hidden" name="kondisi_kostum" id="kembali_kondisi_input" required value="Baik">
-          <div style="font-size: 11px; color: var(--text-3); margin-top: 6px;">Pilih kondisi kostum saat diterima kembali.</div>
+          <div style="font-size: 11px; color: var(--text-3); margin-top: 6px;">Select the condition of the costume when received back.</div>
         </div>
         
         <!-- Panel: Kembali Lebih Awal (hijau) -->
@@ -321,8 +321,8 @@
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 22px;">✅</span>
             <div>
-              <div style="font-weight: 700; color: #10b981; font-size: 13px;">PENGEMBALIAN LEBIH AWAL</div>
-              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Kostum dikembalikan <strong id="kembali-early-days">0 hari</strong> sebelum jadwal wajib. <strong style="color:#10b981;">Tidak ada denda.</strong></div>
+              <div style="font-weight: 700; color: #10b981; font-size: 13px;">EARLY RETURN</div>
+              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Costume returned <strong id="kembali-early-days">0 days</strong> before the required schedule. <strong style="color:#10b981;">No fine.</strong></div>
             </div>
           </div>
         </div>
@@ -332,8 +332,8 @@
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 22px;">🎯</span>
             <div>
-              <div style="font-weight: 700; color: var(--blue); font-size: 13px;">TEPAT WAKTU</div>
-              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Kostum dikembalikan tepat sesuai jadwal. <strong style="color:var(--blue);">Tidak ada denda.</strong></div>
+              <div style="font-weight: 700; color: var(--blue); font-size: 13px;">ON TIME</div>
+              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Costume returned exactly on schedule. <strong style="color:var(--blue);">No fine.</strong></div>
             </div>
           </div>
         </div>
@@ -342,30 +342,30 @@
         <div class="kalkulasi" id="kembali-kalk" style="display:none; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 14px 16px; margin-top: 16px;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
             <span style="font-size:18px;">⚠️</span>
-            <span style="font-weight:700; color: var(--red); font-size:13px;">PENGEMBALIAN TERLAMBAT</span>
+            <span style="font-weight:700; color: var(--red); font-size:13px;">LATE RETURN</span>
           </div>
           <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
-            <span style="color:var(--text-2);">Hari Terlambat</span>
-            <span id="kembali-hari" style="color: var(--red); font-weight: 700;">0 HARI</span>
+            <span style="color:var(--text-2);">Days Late</span>
+            <span id="kembali-hari" style="color: var(--red); font-weight: 700;">0 DAYS</span>
           </div>
           <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-3);">
-            <span>Denda per Hari</span>
+            <span>Fine per Day</span>
             <span>Rp 50.000</span>
           </div>
           <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(239,68,68,0.2); padding-top: 10px; font-weight: 700; font-size: 15px;">
-            <span>ESTIMASI DENDA</span>
+            <span>ESTIMATED FINE</span>
             <span id="kembali-total" style="color: var(--red);">Rp 0</span>
           </div>
         </div>
         
         <div class="field" style="margin-top: 16px;">
-          <label>Catatan Admin</label>
-          <textarea class="form-textarea" name="catatan_admin" id="kembali_catatan" placeholder="Opsional: Keterangan kondisi kostum saat kembali, dll..." style="width: 100%; height: 60px; box-sizing: border-box;"></textarea>
+          <label>Admin Notes</label>
+          <textarea class="form-textarea" name="catatan_admin" id="kembali_catatan" placeholder="Optional: Description of costume condition upon return, etc..." style="width: 100%; height: 60px; box-sizing: border-box;"></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn-batal" onclick="closeModal('modalKembali')">BATAL</button>
-        <button type="submit" class="btn-simpan" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">✓ KONFIRMASI KOSTUM KEMBALI KE TOKO</button>
+        <button type="button" class="btn-batal" onclick="closeModal('modalKembali')">CANCEL</button>
+        <button type="submit" class="btn-simpan" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">✓ CONFIRM COSTUME RETURNED TO STORE</button>
       </div>
     </form>
   </div>
@@ -378,8 +378,8 @@
       <div class="detail-header-left" style="display: flex; align-items: center; gap: 12px;">
         <div class="detail-header-icon" style="font-size: 24px;">📋</div>
         <div>
-          <span class="modal-title">Detail Pengembalian Kostum</span>
-          <div class="detail-subtitle" style="font-size: 11px; color: var(--text-3);">Ringkasan lengkap transaksi sewa</div>
+          <span class="modal-title">Costume Return Details</span>
+          <div class="detail-subtitle" style="font-size: 11px; color: var(--text-3);">Complete summary of rental transaction</div>
         </div>
       </div>
       <button class="modal-close" onclick="closeModal('modalDetail')">✕</button>
@@ -388,24 +388,24 @@
 
       <!-- SECTION: Info Order & Penyewa -->
       <div class="detail-section" style="margin-bottom: 20px;">
-        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">📌 Informasi Order</div>
+        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">📌 Order Information</div>
         <div class="field-row" style="display: flex; gap: 16px; margin-bottom: 10px;">
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">ID Order</label>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Order ID</label>
             <div class="field-val highlight" id="detail-order-id" style="font-weight: 700; color: var(--blue); font-size: 15px;">#TRX-000</div>
           </div>
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Status Transaksi</label>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Transaction Status</label>
             <div id="detail-status-badge"></div>
           </div>
         </div>
         <div class="field-row" style="display: flex; gap: 16px;">
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Nama Penyewa</label>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Tenant Name</label>
             <div class="field-val" id="detail-penyewa" style="font-size: 13px; font-weight: 600; color: var(--text-1);">Pelanggan</div>
           </div>
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Kostum Disewa</label>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Rented Costume</label>
             <div class="field-val" id="detail-kostum" style="font-size: 13px; font-weight: 600; color: var(--text-1); white-space: normal; word-break: break-word;">Kostum</div>
           </div>
         </div>
@@ -413,20 +413,20 @@
 
       <!-- SECTION: Timeline Sewa -->
       <div class="detail-section" style="margin-bottom: 20px;">
-        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">📅 Timeline Penyewaan</div>
+        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">📅 Rental Timeline</div>
         <div class="timeline-grid" style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 8px;">
           <div class="timeline-item" style="text-align: center;">
-            <div class="timeline-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Mulai Sewa</div>
+            <div class="timeline-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Start Rent</div>
             <div class="timeline-val" id="detail-tgl-mulai" style="font-size: 12px; font-weight: 600; color: var(--text-1); margin-top: 4px;">15/04/2026</div>
           </div>
           <div class="timeline-connector" style="height: 1px; background: var(--border); width: 20px;"></div>
           <div class="timeline-item" style="text-align: center;">
-            <div class="timeline-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Wajib Kembali</div>
+            <div class="timeline-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Required Return</div>
             <div class="timeline-val warn" id="detail-tgl-wajib" style="font-size: 12px; font-weight: 600; color: var(--orange); margin-top: 4px;">18/04/2026</div>
           </div>
           <div class="timeline-connector" style="height: 1px; background: var(--border); width: 20px;"></div>
           <div class="timeline-item" style="text-align: center;">
-            <div class="timeline-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Aktual Kembali</div>
+            <div class="timeline-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Actual Return</div>
             <div class="timeline-val" id="detail-tgl-aktual" style="font-size: 12px; font-weight: 600; color: var(--blue); margin-top: 4px;">18/04/2026</div>
           </div>
         </div>
@@ -434,28 +434,28 @@
 
       <!-- SECTION: Kondisi & Denda -->
       <div class="detail-section" style="margin-bottom: 20px;">
-        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">🎭 Kondisi &amp; Biaya</div>
+        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">🎭 Condition &amp; Cost</div>
         <div class="field-row" style="display: flex; gap: 16px; margin-bottom: 12px;">
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Kondisi Saat Kembali</label>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Condition Upon Return</label>
             <div id="detail-kondisi-badge" style="display: inline-block; margin-top: 4px;">BAIK</div>
           </div>
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Keterlambatan</label>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Delay</label>
             <div class="field-val" id="detail-terlambat" style="font-size: 13px; font-weight: 700; color: var(--text-1); margin-top: 4px;">Tepat Waktu</div>
           </div>
         </div>
         <div class="detail-biaya-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 10px;">
           <div class="biaya-card" style="background: var(--bg-body); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: center;">
-            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Biaya Sewa</div>
+            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Rental Cost</div>
             <div class="biaya-val" id="detail-biaya-sewa" style="font-size: 14px; font-weight: 700; color: var(--text-1); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
           <div class="biaya-card denda" style="background: var(--bg-body); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: center;">
-            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Total Denda</div>
+            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Total Fine</div>
             <div class="biaya-val denda" id="detail-denda" style="font-size: 14px; font-weight: 700; color: var(--red); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
           <div class="biaya-card total" style="background: rgba(59,130,246,0.06); padding: 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.15); text-align: center;">
-            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Total Biaya</div>
+            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Total Cost</div>
             <div class="biaya-val total" id="detail-total" style="font-size: 14px; font-weight: 700; color: var(--blue); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
         </div>
@@ -463,18 +463,18 @@
 
       <!-- SECTION: Status Pembayaran -->
       <div class="detail-section">
-        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">💳 Informasi Tambahan</div>
+        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">💳 Additional Information</div>
         <div class="field">
-          <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Catatan Admin</label>
+          <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Admin Notes</label>
           <div class="field-val" id="detail-catatan-admin" style="font-size: 13px; color: var(--text-2); font-style: italic; background: var(--bg-body); padding: 10px; border-radius: 8px; border: 1px solid var(--border); margin-top: 4px; min-height: 40px; white-space: pre-line;">
-            Tidak ada catatan.
+            No notes.
           </div>
         </div>
       </div>
 
     </div>
     <div class="modal-footer" style="justify-content: flex-end;">
-      <button class="btn btn-ghost" onclick="closeModal('modalDetail')">TUTUP</button>
+      <button class="btn btn-ghost" onclick="closeModal('modalDetail')">CLOSE</button>
     </div>
   </div>
 </div>

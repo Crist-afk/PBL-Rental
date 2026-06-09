@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'CosRent — Riwayat Penyewaan')
+@section('title', 'CosRent — Rental History')
 
 @push('styles')
     @vite(['resources/css/admin/riwayat.css', 'resources/js/admin/riwayat.js'])
@@ -54,15 +54,15 @@
   <main class="main">
     <div class="main-inner" style="display:flex;flex-direction:column;height:100%;">
 
-      <h1 class="page-title">Riwayat Penyewaan</h1>
-      <p class="page-subtitle">Pantau seluruh aktivitas sewa per pelanggan dengan detail presisi</p>
+      <h1 class="page-title">Rental History</h1>
+      <p class="page-subtitle">Monitor all rental activities per customer with precise details</p>
 
       <!-- SEARCH -->
       <form action="{{ route('admin.riwayat') }}" method="GET" style="margin-bottom: 24px;">
         <div class="search-row">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama pelanggan, email, atau nomor HP..."/>
-          <button class="btn-cari" type="submit">CARI DATA</button>
+          <input type="text" name="q" value="{{ request('q') }}" placeholder="Search customer name, email, or phone number..."/>
+          <button class="btn-cari" type="submit">SEARCH</button>
         </div>
       </form>
 
@@ -71,7 +71,7 @@
         <div class="stat-card">
           <div class="stat-icon-wrap blue">👥</div>
           <div>
-            <div class="stat-label">Total Pelanggan Aktif</div>
+            <div class="stat-label">Total Active Customers</div>
             <div class="stat-value">{{ $stats['total_pelanggan'] }}</div>
           </div>
           <div class="stat-bg-icon">👥</div>
@@ -79,7 +79,7 @@
         <div class="stat-card">
           <div class="stat-icon-wrap green">📦</div>
           <div>
-            <div class="stat-label">Total Order Bulan Ini</div>
+            <div class="stat-label">Total Orders This Month</div>
             <div class="stat-value">{{ $stats['total_order_bulan'] }}</div>
           </div>
           <div class="stat-bg-icon">📦</div>
@@ -87,7 +87,7 @@
         <div class="stat-card">
           <div class="stat-icon-wrap yellow">🏆</div>
           <div>
-            <div class="stat-label">Pelanggan Paling Aktif</div>
+            <div class="stat-label">Most Active Customer</div>
             <div class="stat-value highlight" style="font-size: 13px;">
               @if($pengguna->first())
                 {{ $pengguna->first()->nama }} ({{ $pengguna->first()->transaksi_count }} order)
@@ -106,13 +106,13 @@
         <!-- PELANGGAN LIST -->
         <div class="panel">
           <div class="panel-header">
-            <div class="panel-title">Daftar Pelanggan Terbaru</div>
+            <div class="panel-title">Recent Customer List</div>
           </div>
           <div class="list-head">
-            <span>Pelanggan</span>
-            <span>Total Pesanan</span>
-            <span>Terakhir Sewa</span>
-            <span>Total Bayar</span>
+            <span>Customer</span>
+            <span>Total Orders</span>
+            <span>Last Rental</span>
+            <span>Total Paid</span>
             <span></span>
           </div>
           <div class="pelanggan-list">
@@ -138,7 +138,7 @@
               </div>
             @empty
               <div style="padding: 40px; text-align: center; color: var(--text-3);">
-                Tidak ada pelanggan ditemukan.
+                No customers found.
               </div>
             @endforelse
           </div>
@@ -156,8 +156,8 @@
           <!-- Empty state -->
           <div class="empty-state" id="emptyState">
             <div class="empty-icon">👥</div>
-            <div class="empty-title">Pilih Pelanggan</div>
-            <div class="empty-desc">Klik salah satu pelanggan di daftar sebelah kiri untuk melihat detail riwayat penyewaan secara lengkap.</div>
+            <div class="empty-title">Select Customer</div>
+            <div class="empty-desc">Click on a customer in the list on the left to see complete rental history details.</div>
           </div>
 
           <!-- Customer detail -->
@@ -171,14 +171,14 @@
                   <span class="cust-contact">📞 <span id="custPhone">0812-XXXX-XXXX</span></span>
                 </div>
                 <div class="cust-meta">
-                  <span class="cust-join">Bergabung: <span id="custJoin">Januari 2025</span></span>
-                  <span class="badge-aktif">PELANGGAN AKTIF</span>
+                  <span class="cust-join">Joined: <span id="custJoin">Januari 2025</span></span>
+                  <span class="badge-aktif">ACTIVE CUSTOMER</span>
                 </div>
               </div>
             </div>
 
             <div class="timeline-header">
-              <span class="timeline-title">Timeline Penyewaan</span>
+              <span class="timeline-title">Rental Timeline</span>
               <div class="timeline-actions">
                 <div class="btn-tl-icon" title="Download" onclick="exportPDF()">⬇</div>
                 <div class="btn-tl-icon" title="Export Excel" onclick="exportExcel()">📄</div>
@@ -190,8 +190,8 @@
             </div>
 
             <div class="export-footer">
-              <button class="btn-export-foot" onclick="exportPDF()">⬇ Ekspor PDF</button>
-              <button class="btn-export-foot" onclick="exportExcel()">📄 Ekspor Excel</button>
+              <button class="btn-export-foot" onclick="exportPDF()">⬇ Export PDF</button>
+              <button class="btn-export-foot" onclick="exportExcel()">📄 Export Excel</button>
             </div>
           </div>
         </div>

@@ -108,21 +108,37 @@ class AdminController extends Controller
             $query->where('nama_kostum', 'like', '%' . $request->q . '%');
         }
 
+        // Filter by size — only show costumes that include this size
+        $sizeFilter = $request->get('size');
+        if ($sizeFilter) {
+            $query->where('ukuran', 'regexp', '(^|,)[[:space:]]*' . preg_quote($sizeFilter) . '([[:space:]]*|,|$)');
+        }
+
+        // Collect all distinct sizes across all costumes for the size filter UI
+        $allSizes = Kostum::whereNotNull('ukuran')
+            ->pluck('ukuran')
+            ->flatMap(fn($u) => array_map('trim', explode(',', $u)))
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values();
+
         $kostums = $query->paginate(12)->withQueryString();
 
-        return view('admin.kostum-admin', compact('kostums', 'kategoris'));
+        return view('admin.kostum-admin', compact('kostums', 'kategoris', 'allSizes', 'sizeFilter'));
     }
 
     public function kostumStore(Request $request)
     {
         $request->validate([
-            'nama_kostum'  => 'required|string|max:255',
-            'kategori_id'  => 'required|exists:kategori,id',
-            'harga_sewa'   => 'required|integer|min:0',
-            'stok'         => 'required|integer|min:0',
-            'ukuran'       => 'required|string|max:50',
-            'kelengkapan'  => 'nullable|string',
-            'gambar'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'nama_kostum'          => 'required|string|max:255',
+            'kategori_id'          => 'required|exists:kategori,id',
+            'harga_sewa'           => 'required|integer|min:0',
+            'ukuran'               => 'required|string|max:255',
+            'stok_per_ukuran'      => 'required|array|min:1',
+            'stok_per_ukuran.*'    => 'required|integer|min:0',
+            'kelengkapan'          => 'nullable|string',
+            'gambar'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         $gambar = null;
@@ -130,25 +146,27 @@ class AdminController extends Controller
             $gambar = $request->file('gambar')->store('kostum', 'public');
         }
 
-        $ukuranArr = array_map('trim', explode(',', $request->ukuran));
+        // Build stok_per_ukuran and total stok from per-size inputs
+        $rawStokPerUkuran = $request->input('stok_per_ukuran', []);
         $stokPerUkuran = [];
-        $totalUkuran = count($ukuranArr);
-        if ($totalUkuran > 0 && $request->stok > 0) {
-            $baseStok = floor($request->stok / $totalUkuran);
-            $sisaStok = $request->stok % $totalUkuran;
-            foreach ($ukuranArr as $index => $u) {
-                if (!empty($u)) {
-                    $stokPerUkuran[$u] = (int)($baseStok + ($index < $sisaStok ? 1 : 0));
-                }
+        $totalStok = 0;
+        foreach ($rawStokPerUkuran as $size => $qty) {
+            $size = trim($size);
+            if ($size !== '') {
+                $stokPerUkuran[$size] = (int) $qty;
+                $totalStok += (int) $qty;
             }
         }
+
+        // Build ukuran string from the size keys (ensures consistency)
+        $ukuranStr = implode(', ', array_keys($stokPerUkuran));
 
         Kostum::create([
             'nama_kostum'     => $request->nama_kostum,
             'kategori_id'     => $request->kategori_id,
             'harga_sewa'      => $request->harga_sewa,
-            'stok'            => $request->stok,
-            'ukuran'          => $request->ukuran,
+            'stok'            => $totalStok,
+            'ukuran'          => $ukuranStr,
             'stok_per_ukuran' => $stokPerUkuran,
             'kelengkapan'     => $request->kelengkapan,
             'gambar'          => $gambar,
@@ -162,13 +180,14 @@ class AdminController extends Controller
         $kostum = Kostum::findOrFail($id);
 
         $request->validate([
-            'nama_kostum'  => 'required|string|max:255',
-            'kategori_id'  => 'required|exists:kategori,id',
-            'harga_sewa'   => 'required|integer|min:0',
-            'stok'         => 'required|integer|min:0',
-            'ukuran'       => 'required|string|max:50',
-            'kelengkapan'  => 'nullable|string',
-            'gambar'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'nama_kostum'          => 'required|string|max:255',
+            'kategori_id'          => 'required|exists:kategori,id',
+            'harga_sewa'           => 'required|integer|min:0',
+            'ukuran'               => 'required|string|max:255',
+            'stok_per_ukuran'      => 'required|array|min:1',
+            'stok_per_ukuran.*'    => 'required|integer|min:0',
+            'kelengkapan'          => 'nullable|string',
+            'gambar'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         $gambar = $kostum->gambar;
@@ -181,25 +200,27 @@ class AdminController extends Controller
             $gambar = $request->file('gambar')->store('kostum', 'public');
         }
 
-        $ukuranArr = array_map('trim', explode(',', $request->ukuran));
+        // Build stok_per_ukuran and total stok from per-size inputs
+        $rawStokPerUkuran = $request->input('stok_per_ukuran', []);
         $stokPerUkuran = [];
-        $totalUkuran = count($ukuranArr);
-        if ($totalUkuran > 0 && $request->stok > 0) {
-            $baseStok = floor($request->stok / $totalUkuran);
-            $sisaStok = $request->stok % $totalUkuran;
-            foreach ($ukuranArr as $index => $u) {
-                if (!empty($u)) {
-                    $stokPerUkuran[$u] = (int)($baseStok + ($index < $sisaStok ? 1 : 0));
-                }
+        $totalStok = 0;
+        foreach ($rawStokPerUkuran as $size => $qty) {
+            $size = trim($size);
+            if ($size !== '') {
+                $stokPerUkuran[$size] = (int) $qty;
+                $totalStok += (int) $qty;
             }
         }
+
+        // Build ukuran string from the size keys
+        $ukuranStr = implode(', ', array_keys($stokPerUkuran));
 
         $kostum->update([
             'nama_kostum'     => $request->nama_kostum,
             'kategori_id'     => $request->kategori_id,
             'harga_sewa'      => $request->harga_sewa,
-            'stok'            => $request->stok,
-            'ukuran'          => $request->ukuran,
+            'stok'            => $totalStok,
+            'ukuran'          => $ukuranStr,
             'stok_per_ukuran' => $stokPerUkuran,
             'kelengkapan'     => $request->kelengkapan,
             'gambar'          => $gambar,

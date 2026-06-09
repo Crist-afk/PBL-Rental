@@ -48,14 +48,23 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ── MODAL ──
+    // ── MODAL (Add) ──
     const overlay = document.getElementById('modalOverlay');
     if (overlay) {
         const openBtn = document.getElementById('openModalBtn');
         const closeBtn = document.getElementById('closeModalBtn');
         const cancelBtn = document.getElementById('cancelBtn');
 
-        if (openBtn) openBtn.addEventListener('click', () => overlay.classList.add('show'));
+        if (openBtn) openBtn.addEventListener('click', () => {
+            overlay.classList.add('show');
+            // Clear add form on open
+            const addContainer = document.getElementById('addSizeStockContainer');
+            if (addContainer) addContainer.innerHTML = '';
+            const addInput = document.getElementById('addUkuranInput');
+            if (addInput) addInput.value = '';
+            const addPreview = document.getElementById('addStockTotalPreview');
+            if (addPreview) addPreview.style.display = 'none';
+        });
         if (closeBtn) closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
         if (cancelBtn) cancelBtn.addEventListener('click', () => overlay.classList.remove('show'));
     }
@@ -66,6 +75,16 @@ window.addEventListener('DOMContentLoaded', () => {
             if (e.target === over) over.classList.remove('show'); 
         });
     });
+
+    // Search form auto-submit on Enter
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput) {
+        searchInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.target.closest('form').submit();
+            }
+        });
+    }
 });
 
 window.openEditModal = function() {

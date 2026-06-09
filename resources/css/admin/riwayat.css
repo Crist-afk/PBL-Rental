@@ -38,9 +38,10 @@
 .pelanggan-item:hover { background: rgba(236,156,157,0.08); }
 .pelanggan-item.selected { background: var(--bg-hover); border-left: 3px solid var(--brand-primary); }
 .p-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; color: #fff; flex-shrink: 0; }
-.p-info { display: flex; align-items: center; gap: 10px; }
-.p-name { font-size: 13px; font-weight: 600; color: var(--text-1); }
-.p-email { font-size: 11px; color: var(--text-3); }
+.p-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.p-info > div { min-width: 0; }
+.p-name { font-size: 13px; font-weight: 600; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.p-email { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .order-badge { background: var(--blue); color: #fff; border-radius: 5px; padding: 3px 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.4px; white-space: nowrap; }
 .p-date { font-size: 11px; color: var(--text-3); }
 .p-total { font-size: 12px; font-weight: 700; color: var(--text-1); font-family: 'JetBrains Mono', monospace; }

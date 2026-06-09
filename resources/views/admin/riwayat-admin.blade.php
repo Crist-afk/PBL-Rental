@@ -128,7 +128,18 @@
                   @endif
                   <div>
                     <div class="p-name">{{ $u->nama }}</div>
-                    <div class="p-email">{{ $u->email }}</div>
+                    @php
+                      $emailDisplay = $u->email;
+                      $parts = explode('@', $emailDisplay);
+                      if (count($parts) === 2) {
+                          $username = $parts[0];
+                          $domain = $parts[1];
+                          if (strlen($username) > 11) {
+                              $emailDisplay = substr($username, 0, 11) . '...' . '@' . $domain;
+                          }
+                      }
+                    @endphp
+                    <div class="p-email" title="{{ $u->email }}">{{ $emailDisplay }}</div>
                   </div>
                 </div>
                 <div><span class="order-badge">{{ $u->transaksi_count }} ORDER</span></div>

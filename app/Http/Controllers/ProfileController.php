@@ -112,7 +112,9 @@ class ProfileController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('profile')->with('success', 'Password updated successfully.');
+        return redirect()->route('profile')
+            ->with('success', 'Password updated successfully.')
+            ->with('password_success', 'Password updated successfully.');
     }
 
     public function destroyAccount(Request $request)

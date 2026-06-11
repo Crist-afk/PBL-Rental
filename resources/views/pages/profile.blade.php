@@ -4,6 +4,10 @@
 
 @section('content')
     <main class="flex-grow pt-28 pb-20 px-4 sm:px-6 max-w-5xl mx-auto w-full">
+        @php
+            $openSettingsTab = $errors->updatePassword->any() || $errors->deleteAccount->any() || session('password_success');
+        @endphp
+
         @if(session('success'))
             <div class="mb-6 flex items-center gap-3 rounded-2xl border-2 border-green-200 bg-green-100 p-4 font-bold text-green-800 shadow-sm">
                 <i class="fa-solid fa-circle-check text-xl"></i>
@@ -27,7 +31,7 @@
         <div class="mb-4 border-b-2 border-dark-chocolate/10">
             <ul class="flex flex-wrap -mb-px text-center text-sm font-bold" id="profile-tabs" data-tabs-toggle="#profile-tab-content" role="tablist">
                 <li class="me-2" role="presentation">
-                    <button class="inline-block rounded-t-lg border-b-4 border-sakura p-4 text-dark-chocolate hover:border-aloewood hover:text-aloewood" id="aktivitas-tab" data-tabs-target="#aktivitas" type="button" role="tab" aria-controls="aktivitas" aria-selected="true">
+                    <button class="inline-block rounded-t-lg border-b-4 p-4 hover:border-aloewood hover:text-aloewood {{ $openSettingsTab ? 'border-transparent text-dark-chocolate/60' : 'border-sakura text-dark-chocolate' }}" id="aktivitas-tab" data-tabs-target="#aktivitas" type="button" role="tab" aria-controls="aktivitas" aria-selected="{{ $openSettingsTab ? 'false' : 'true' }}">
                         <i class="fa-regular fa-comments mr-2"></i>Forum Activity
                     </button>
                 </li>
@@ -37,7 +41,7 @@
                     </button>
                 </li>
                 <li role="presentation">
-                    <button class="inline-block rounded-t-lg border-b-4 border-transparent p-4 text-dark-chocolate/60 hover:border-aloewood hover:text-aloewood" id="pengaturan-tab" data-tabs-target="#pengaturan" type="button" role="tab" aria-controls="pengaturan" aria-selected="false">
+                    <button class="inline-block rounded-t-lg border-b-4 p-4 hover:border-aloewood hover:text-aloewood {{ $openSettingsTab ? 'border-sakura text-dark-chocolate' : 'border-transparent text-dark-chocolate/60' }}" id="pengaturan-tab" data-tabs-target="#pengaturan" type="button" role="tab" aria-controls="pengaturan" aria-selected="{{ $openSettingsTab ? 'true' : 'false' }}">
                         <i class="fa-solid fa-gear mr-2"></i>Account Settings
                     </button>
                 </li>
@@ -53,3 +57,32 @@
 
     @include('pages.profile.partials._edit-profile-modal')
 @endsection
+
+@if($openSettingsTab)
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const tabIds = ['aktivitas', 'sewa', 'pengaturan'];
+                const activeTabId = 'pengaturan';
+
+                tabIds.forEach(function (tabId) {
+                    const panel = document.getElementById(tabId);
+                    const button = document.getElementById(tabId + '-tab');
+                    const isActive = tabId === activeTabId;
+
+                    if (panel) {
+                        panel.classList.toggle('hidden', !isActive);
+                    }
+
+                    if (button) {
+                        button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                        button.classList.toggle('border-sakura', isActive);
+                        button.classList.toggle('text-dark-chocolate', isActive);
+                        button.classList.toggle('border-transparent', !isActive);
+                        button.classList.toggle('text-dark-chocolate/60', !isActive);
+                    }
+                });
+            });
+        </script>
+    @endpush
+@endif

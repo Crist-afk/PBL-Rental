@@ -1,4 +1,4 @@
-<div class="hidden rounded-3xl border-2 border-dark-chocolate/10 bg-white p-6 shadow-sm" id="pengaturan" role="tabpanel" aria-labelledby="pengaturan-tab">
+<div class="{{ !empty($openSettingsTab) ? '' : 'hidden' }} rounded-3xl border-2 border-dark-chocolate/10 bg-white p-6 shadow-sm" id="pengaturan" role="tabpanel" aria-labelledby="pengaturan-tab">
     <h3 class="mb-6 text-xl font-bold text-dark-chocolate">Account Settings</h3>
 
     <div class="space-y-4">
@@ -7,6 +7,23 @@
                 <p class="font-bold text-dark-chocolate">Change Password</p>
                 <p class="mt-1 text-xs text-dark-chocolate/60">Use a strong password with at least 8 characters.</p>
             </div>
+
+            @if(session('password_success'))
+                <div class="mb-4 rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-700">
+                    <i class="fa-solid fa-circle-check mr-2"></i>{{ session('password_success') }}
+                </div>
+            @endif
+
+            @if($errors->updatePassword->any())
+                <div class="mb-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                    <p class="font-bold">Password could not be updated.</p>
+                    <ul class="mt-2 list-disc space-y-1 pl-5 font-medium">
+                        @foreach($errors->updatePassword->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form action="{{ route('profile.password.update') }}" method="POST" class="space-y-4">
                 @csrf

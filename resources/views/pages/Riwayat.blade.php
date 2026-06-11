@@ -53,6 +53,7 @@
                     $kostum = $firstDetail ? $firstDetail->kostum : null;
                     $statusColor = $item->status_color;
                     $penalty = $item->pengembalian?->total_denda ?? $item->total_denda;
+                    $hasPaymentProof = !empty($item->bukti_pembayaran);
                     
                     $dendaBerjalan = 0;
                     $daysLate = 0;
@@ -83,7 +84,11 @@
                                 @if($item->status === 'Selesai')
                                     <i class="fa-solid fa-rotate-left text-[8px]"></i>
                                 @endif
-                                {{ $item->status_label }}
+                                @if($item->status === 'Menunggu Pembayaran' && $hasPaymentProof)
+                                    Payment Proof Uploaded
+                                @else
+                                    {{ $item->status_label }}
+                                @endif
                             </span>
                         </div>
                         
@@ -106,7 +111,11 @@
                         
                         @if($item->status === 'Menunggu Pembayaran')
                             <p class="text-xs font-bold text-amber-600 mt-2 bg-amber-50 p-3 rounded-lg border border-amber-200 inline-block w-full">
-                                <i class="fa-solid fa-clock mr-1"></i> Pay before: {{ \Carbon\Carbon::parse($item->created_at)->addDays(2)->format('d M Y, H:i') }}
+                                @if($hasPaymentProof)
+                                    <i class="fa-solid fa-circle-check mr-1"></i> Waiting for admin validation
+                                @else
+                                    <i class="fa-solid fa-clock mr-1"></i> Pay before: {{ \Carbon\Carbon::parse($item->created_at)->addDays(2)->format('d M Y, H:i') }}
+                                @endif
                             </p>
                         @endif
                         
@@ -142,7 +151,7 @@
                             </a>
                             @if($item->status === 'Menunggu Pembayaran')
                             <button onclick="openUploadModal({{ $item->id }})" class="flex-1 lg:flex-none px-6 py-3 bg-sakura text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-sakura/80 transition-all shadow-xl text-center flex items-center justify-center">
-                                <i class="fa-solid fa-upload mr-2"></i>Upload Proof
+                                <i class="fa-solid fa-upload mr-2"></i>{{ $hasPaymentProof ? 'Replace Proof' : 'Upload Proof' }}
                             </button>
                             @endif
                             @if($kostum)

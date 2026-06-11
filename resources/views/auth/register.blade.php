@@ -23,6 +23,12 @@
                 <form action="{{ route('register.process') }}" method="POST" class="space-y-5">
                     @csrf
 
+                    @if ($errors->any())
+                        <div class="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-medium">
+                            Please check the form fields below.
+                        </div>
+                    @endif
+
                     <div>
                         <label for="name" class="block text-sm font-bold text-dark-chocolate mb-1">Full Name</label>
                         <div class="relative">
@@ -33,6 +39,9 @@
                                 class="w-full pl-11 pr-4 py-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium"
                                 placeholder="Example: Crist">
                         </div>
+                        @error('nama')
+                            <p class="mt-1 text-sm font-medium text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
@@ -45,6 +54,9 @@
                                 class="w-full pl-11 pr-4 py-3 bg-white border-2 border-dark-chocolate/10 text-dark-chocolate rounded-xl focus:ring-0 focus:border-sakura transition-colors font-medium"
                                 placeholder="crist@example.com">
                         </div>
+                        @error('email')
+                            <p class="mt-1 text-sm font-medium text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
@@ -60,6 +72,9 @@
                                 <i class="fa-regular fa-eye-slash" id="eyeIcon"></i>
                             </button>
                         </div>
+                        @error('password')
+                            <p class="mt-1 text-sm font-medium text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
@@ -75,6 +90,9 @@
                                 <i class="fa-regular fa-eye-slash" id="eyeIconConfirm"></i>
                             </button>
                         </div>
+                        @error('password_confirmation')
+                            <p class="mt-1 text-sm font-medium text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <button type="submit" class="w-full bg-dark-chocolate hover:bg-black text-misty-rose font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex justify-center items-center gap-2 mt-4">

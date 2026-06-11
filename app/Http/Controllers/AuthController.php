@@ -24,8 +24,8 @@ class AuthController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            // 'confirmed' otomatis mengecek kolom password_confirmation
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8',
+            'password_confirmation' => 'required|same:password',
         ]);
 
         // Membuat user baru di database. Pastikan password di-hash agar aman

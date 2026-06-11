@@ -237,7 +237,7 @@
 
 <!-- ── DETAIL & VALIDATION MODAL ── -->
 <div class="modal-overlay" id="validationModalOverlay">
-  <div class="modal" style="max-width: 800px; width: 90%;">
+  <div class="modal" style="max-width: 820px; width: 90%;">
     <div class="modal-header">
       <div>
         <div class="modal-order-id" id="mOrderId">#TRX-000</div>
@@ -247,78 +247,77 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </div>
     </div>
-    
-    <div class="modal-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;">
-      <!-- LEFT -->
-      <div>
-        <div class="modal-section-title">ORDER SUMMARY</div>
-        <div class="order-item-card">
-          <div class="order-item-icon" id="mItemIcon" style="font-size: 24px; display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: rgba(59,130,246,0.12); border-radius: 8px; color: var(--blue);">🎭</div>
-          <div style="flex: 1; min-width: 0;">
-            <div class="order-item-name" id="mKostum" style="font-weight: 700; font-size: 14px; white-space: normal; word-break: break-word;">Cosplay Costume</div>
-            <div class="order-item-date" id="mDate" style="font-size: 12px; color: var(--text-3); margin-top: 4px;">20 Apr 2026 (3 days)</div>
-          </div>
-        </div>
-        
-        <div class="total-row" style="margin-top: 16px; padding: 12px; background: var(--bg-body); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);">
-          <span class="total-lbl" style="font-weight: 600; color: var(--text-2);">Total Bill</span>
-          <span class="total-amt" id="mTotal" style="font-size: 18px; font-weight: 700; color: var(--text-1); font-family: 'JetBrains Mono', monospace;">Rp 0</span>
-        </div>
 
-        <div class="modal-section-title" style="margin-top: 24px;">TRANSFER DETAILS</div>
-        <div class="detail-grid" style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-          <div class="detail-item">
-            <div class="detail-lbl" style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">PAYMENT METHOD & AMOUNT</div>
-            <div class="detail-val" style="font-size: 14px; font-weight: 700; color: var(--text-1); margin-top: 2px;">Bank Transfer / Receipt Attached</div>
+    <div class="modal-body" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; padding: 0 32px 8px;">
+      <!-- LEFT COLUMN -->
+      <div style="display: flex; flex-direction: column; gap: 0;">
+
+        <div class="modal-section-title" style="margin-top:0;">ORDER SUMMARY</div>
+        <div class="order-item-card" style="display: flex; align-items: flex-start; gap: 14px;">
+          <div id="mItemIcon" style="font-size:24px; display:flex; align-items:center; justify-content:center; width:48px; height:48px; background:rgba(59,130,246,0.12); border-radius:10px; flex-shrink:0;">🎭</div>
+          <div style="flex:1; min-width:0;">
+            <div id="mKostum" style="font-weight:700; font-size:14px; color:#1f2937; word-break:break-word;">Cosplay Costume</div>
+            <div id="mDate" style="font-size:12px; color:#6b7280; margin-top:4px; font-family:'JetBrains Mono',monospace;">20 Apr 2026 (3 days)</div>
           </div>
         </div>
 
-        <!-- FORM UNTUK VALIDASI -->
-        <div id="validationFormContainer" style="margin-top: 20px;">
+        <div style="margin-top:14px; padding:14px 16px; background:var(--bg-body); border-radius:10px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px; font-weight:600; color:var(--text-2);">Total Bill</span>
+          <span id="mTotal" style="font-size:18px; font-weight:800; color:var(--text-1); font-family:'JetBrains Mono',monospace;">Rp 0</span>
+        </div>
+
+        <div class="modal-section-title" style="margin-top:24px;">TRANSFER DETAILS</div>
+        <div style="background:#fff; border-radius:10px; padding:14px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+          <div style="font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#9ca3af; margin-bottom:6px;">PAYMENT METHOD &amp; AMOUNT</div>
+          <div style="font-size:14px; font-weight:600; color:#1f2937;">Bank Transfer / Receipt Attached</div>
+        </div>
+
+        <!-- ADMIN NOTES (editable — only shown when pending) -->
+        <div id="validationFormContainer" style="margin-top:20px;">
           <form action="" method="POST" id="confirmPaymentForm">
             @csrf
-            <div class="modal-section-title">ADMIN NOTES</div>
-            <textarea class="form-textarea" name="catatan_admin" id="mCatatanAdmin" placeholder="Add notes if necessary (e.g., Transfer amount matches)..." style="width: 100%; height: 80px;"></textarea>
-            
-            <div style="margin-top: 20px; display: flex; gap: 12px;">
-              <button type="submit" id="btnApprove" name="action" value="setujui" class="btn btn-primary" style="flex: 1; background: #10b981; border-color: #10b981;">
-                🟢 Approve &amp; Rent
-              </button>
-              <button type="submit" id="btnReject" name="action" value="tolak" class="btn btn-primary" style="flex: 1; background: #ef4444; border-color: #ef4444;">
-                🔴 Reject / Cancel
-              </button>
-            </div>
+            <div class="modal-section-title" style="margin-top:0;">ADMIN NOTES</div>
+            <textarea class="form-textarea" name="catatan_admin" id="mCatatanAdmin"
+              placeholder="Add notes if necessary (e.g., Transfer amount matches)..."
+              style="width:100%; min-height:80px; resize:vertical;"></textarea>
           </form>
         </div>
 
-        <!-- READ-ONLY NOTES DISPLAY -->
-        <div id="readOnlyNotesContainer" style="margin-top: 20px; display: none;">
-          <div class="modal-section-title">ADMIN NOTES (SAVED)</div>
-          <div id="mSavedCatatanAdmin" style="font-size: 13px; color: var(--text-2); background: var(--bg-body); padding: 12px; border-radius: 8px; border: 1px solid var(--border); min-height: 50px;">
-            -
-          </div>
+        <!-- READ-ONLY NOTES (shown when already processed) -->
+        <div id="readOnlyNotesContainer" style="margin-top:20px; display:none;">
+          <div class="modal-section-title" style="margin-top:0;">ADMIN NOTES (SAVED)</div>
+          <div id="mSavedCatatanAdmin" style="font-size:13px; color:var(--text-2); background:var(--bg-body); padding:12px 14px; border-radius:10px; border:1px solid var(--border); min-height:50px;">-</div>
         </div>
       </div>
 
-      <!-- RIGHT -->
-      <div class="bukti-panel" style="display: flex; flex-direction: column; height: 100%;">
-        <div class="modal-section-title">CUSTOMER TRANSFER RECEIPT</div>
-        <div class="bukti-img-container" style="flex: 1; min-height: 250px; background: var(--bg-body); border-radius: 12px; border: 1px dashed var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
-          <img src="" id="mBuktiImg" style="max-width: 100%; max-height: 350px; object-fit: contain; display: none;">
-          <div id="mNoBuktiText" style="text-align: center; color: var(--text-3); font-size: 13px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 48px; height: 48px; margin-bottom: 8px; opacity: 0.5;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><br>
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="modal-section-title" style="margin-top:0;">CUSTOMER TRANSFER RECEIPT</div>
+        <div style="background:var(--bg-body); border-radius:12px; border:1px dashed var(--border); min-height:260px; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative;">
+          <img src="" id="mBuktiImg" style="max-width:100%; max-height:320px; object-fit:contain; display:none;">
+          <div id="mNoBuktiText" style="text-align:center; color:var(--text-3); font-size:13px; padding:24px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:44px; height:44px; margin-bottom:8px; opacity:0.4;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><br>
             Transfer receipt unavailable
           </div>
         </div>
-        <a href="" id="mFullResLink" target="_blank" class="btn-resolusi" style="margin-top: 12px; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <a href="" id="mFullResLink" target="_blank" class="btn-resolusi" style="display:none; text-decoration:none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           View Full Resolution
         </a>
       </div>
     </div>
 
-    <div class="modal-footer" id="validationModalFooter" style="justify-content: flex-end;">
-      <button class="btn btn-ghost" onclick="closeValidationModal()">Close</button>
+    <!-- FOOTER: shows Approve+Reject when pending, Close-only otherwise -->
+    <div class="modal-footer" id="validationModalFooter" style="display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:20px 32px 28px; border-top:1px solid rgba(255,255,255,0.06);">
+      <button type="button" class="btn btn-ghost" onclick="closeValidationModal()">Close</button>
+      <button type="button" id="mBtnReject" class="btn" style="display:none; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#f87171; font-weight:700; padding:10px 22px; border-radius:10px; cursor:pointer;"
+        onclick="document.getElementById('mCatatanAdmin').form && (document.getElementById('confirmPaymentForm').action = window._rejectUrl); document.getElementById('confirmPaymentForm').submit();">
+        🔴 Reject / Cancel
+      </button>
+      <button type="button" id="mBtnApprove" class="btn btn-primary" style="display:none; background:linear-gradient(135deg,#10b981,#059669); border-color:#059669; padding:10px 22px; font-weight:700; border-radius:10px;"
+        onclick="document.getElementById('confirmPaymentForm').action = window._approveUrl; document.getElementById('confirmPaymentForm').submit();">
+        🟢 Approve &amp; Rent
+      </button>
     </div>
   </div>
 </div>
@@ -369,23 +368,27 @@
           fullResLink.style.display = 'none';
       }
       
-      // Form Container VS Saved Notes Display based on transaction status
-      const formContainer = document.getElementById('validationFormContainer');
-      const readOnlyContainer = document.getElementById('readOnlyNotesContainer');
-      const confirmForm = document.getElementById('confirmPaymentForm');
+      // Buttons in footer
+      const btnApprove = document.getElementById('mBtnApprove');
+      const btnReject  = document.getElementById('mBtnReject');
+      const formContainer      = document.getElementById('validationFormContainer');
+      const readOnlyContainer  = document.getElementById('readOnlyNotesContainer');
       
       if (transaksi.status === 'Menunggu Pembayaran') {
-          formContainer.style.display = 'block';
+          formContainer.style.display    = 'block';
           readOnlyContainer.style.display = 'none';
           document.getElementById('mCatatanAdmin').value = transaksi.catatan_admin || '';
-          
-          // Use formAction directly on the buttons
-          document.getElementById('btnApprove').formAction = `/admin/pembayaran/${transaksi.id}/setujui`;
-          document.getElementById('btnReject').formAction = `/admin/pembayaran/${transaksi.id}/tolak`;
+          // Store URLs globally so footer buttons can access them
+          window._approveUrl = `/admin/pembayaran/${transaksi.id}/setujui`;
+          window._rejectUrl  = `/admin/pembayaran/${transaksi.id}/tolak`;
+          btnApprove.style.display = 'inline-flex';
+          btnReject.style.display  = 'inline-flex';
       } else {
-          formContainer.style.display = 'none';
+          formContainer.style.display    = 'none';
           readOnlyContainer.style.display = 'block';
           document.getElementById('mSavedCatatanAdmin').textContent = transaksi.catatan_admin || 'No admin notes.';
+          btnApprove.style.display = 'none';
+          btnReject.style.display  = 'none';
       }
       
       modal.classList.add('show');
@@ -395,11 +398,9 @@
       document.getElementById('validationModalOverlay').classList.remove('show');
   }
   
-  // Close overlays on click outside
+  // Close overlay on click outside
   document.getElementById('validationModalOverlay').addEventListener('click', function(e) {
-      if (e.target === this) {
-          closeValidationModal();
-      }
+      if (e.target === this) closeValidationModal();
   });
 </script>
 @endpush

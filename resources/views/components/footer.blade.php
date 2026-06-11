@@ -7,7 +7,7 @@
                 CosRent
             </div>
             <p class="text-sm opacity-80 mb-6 leading-relaxed">
-                Platform sewa kostum cosplay premium terlengkap di Indonesia. Kualitas kain terbaik, higienis, dan pilihan ukuran lengkap.
+                Indonesia's most complete premium cosplay costume rental platform. Best fabric quality, hygienic, and full range of sizes available.
             </p>
             <div class="flex gap-4">
                 <a href="https://www.instagram.com/nyan_cosrent?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="w-10 h-10 rounded-full border border-misty-rose/30 flex items-center justify-center hover:bg-sakura hover:text-stone-900 transition" aria-label="Instagram">
@@ -31,18 +31,18 @@
         </div>
 
         <div>
-            <h4 class="font-bold text-sakura mb-6 text-lg">Layanan Kami</h4>
+            <h4 class="font-bold text-sakura mb-6 text-lg">Our Services</h4>
             <ul class="space-y-4 text-sm opacity-90">
-                <li><a href="{{ Route::has('about') ? route('about') : '#' }}" class="hover:text-sakura transition">Tentang kami</a></li>
-                <li><a href="{{ Route::has('products.index') ? route('products.index') : (Route::has('product') ? route('product') : '#') }}" class="hover:text-sakura transition">Produk</a></li>
+                <li><a href="{{ Route::has('about') ? route('about') : '#' }}" class="hover:text-sakura transition">About Us</a></li>
+                <li><a href="{{ Route::has('products.index') ? route('products.index') : (Route::has('product') ? route('product') : '#') }}" class="hover:text-sakura transition">Products</a></li>
                 <li><a href="{{ Route::has('forum') ? route('forum') : '#' }}" class="hover:text-sakura transition">Forum</a></li>
-                <li><a href="{{ Route::has('contact') ? route('contact') : '#' }}" class="hover:text-sakura transition">Kontak</a></li>
-                <li><a href="{{ Route::has('login') ? route('login') : '#' }}" class="hover:text-sakura transition">Masuk</a></li>
+                <li><a href="{{ Route::has('contact') ? route('contact') : '#' }}" class="hover:text-sakura transition">Contact</a></li>
+                <li><a href="{{ Route::has('login') ? route('login') : '#' }}" class="hover:text-sakura transition">Login</a></li>
             </ul>
         </div>
 
         <div>
-            <h4 class="font-bold text-sakura mb-6 text-lg">Hubungi Kami</h4>
+            <h4 class="font-bold text-sakura mb-6 text-lg">Contact Us</h4>
             <ul class="space-y-4 text-sm opacity-90">
                 <li class="flex items-start gap-3">
                     <span class="mt-1">📍</span>
@@ -60,7 +60,7 @@
         </div>
 
         <div>
-            <h4 class="font-bold text-sakura mb-6 text-lg">Lokasi Toko</h4>
+            <h4 class="font-bold text-sakura mb-6 text-lg">Store Location</h4>
             <div class="w-full h-40 bg-stone-800 rounded-xl border border-misty-rose/20 relative overflow-hidden flex items-center justify-center">
                 <iframe 
                     src="https://maps.google.com/maps?q=Politeknik%20Negeri%20Batam&t=&z=15&ie=UTF8&iwloc=&output=embed" 
@@ -76,6 +76,6 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-misty-rose/10 text-center text-sm opacity-60">
-        © {{ date('Y') }} CosRent. Hak cipta dilindungi undang-undang. Dibuat dengan ❤️ untuk para Cosplayer.
+        © {{ date('Y') }} CosRent. All rights reserved. Made with ❤️ for Cosplayers.
     </div>
 </footer>

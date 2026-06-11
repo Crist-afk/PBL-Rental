@@ -388,11 +388,8 @@
         <!-- Sizes + Per-size Stock -->
         <div class="form-group" style="margin-top:16px">
           <label class="form-label">Available Sizes &amp; Stock Per Size</label>
-          <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
-            <input class="form-input" type="text" id="addUkuranInput" name="ukuran" placeholder="e.g. S, M, L, XL" required oninput="generateAddSizeInputs()" style="flex:1;" />
-            <button type="button" onclick="generateAddSizeInputs()" style="background:var(--blue);color:#fff;border:none;border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">Generate</button>
-          </div>
-          <div class="size-hint">Type sizes separated by comma, then set the stock for each size below.</div>
+          <input class="form-input" type="text" id="addUkuranInput" name="ukuran" placeholder="e.g. S, M, L, XL" required oninput="generateAddSizeInputs()" style="margin-bottom:10px;" />
+          <div class="size-hint">Type sizes separated by comma — stock fields will appear automatically below.</div>
 
           <div id="addSizeStockContainer" class="size-stock-inputs" style="margin-top:12px;"></div>
 

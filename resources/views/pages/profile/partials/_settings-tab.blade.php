@@ -68,6 +68,17 @@
                 <p class="mt-1 text-xs text-red-500/80">Your profile will be anonymized and you will no longer be able to log in. Rental history may be retained for business records, and forum content may remain visible as Deleted User.</p>
             </div>
 
+            @if($errors->deleteAccount->any())
+                <div class="mb-4 rounded-xl border border-red-200 bg-white p-4 text-sm text-red-700">
+                    <p class="font-bold">Account could not be deactivated.</p>
+                    <ul class="mt-2 list-disc space-y-1 pl-5 font-medium">
+                        @foreach($errors->deleteAccount->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('profile.account.destroy') }}" method="POST" class="space-y-4">
                 @csrf
                 @method('DELETE')

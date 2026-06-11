@@ -166,6 +166,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home')->with('success', 'Your account has been deactivated successfully.');
+        return redirect()->route('home')->with('success', 'Your account has been deactivated successfully. You have been logged out.');
     }
 }

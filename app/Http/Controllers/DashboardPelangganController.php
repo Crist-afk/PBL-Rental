@@ -55,7 +55,8 @@ class DashboardPelangganController extends Controller
                     'catatan_admin'=> $t->catatan_admin,
                     'denda'       => $denda,
                     'days_late'   => $daysLate,
-                    'payment_deadline' => \Carbon\Carbon::parse($t->created_at)->addDays(2)->format('d M Y, H:i'),
+                    'payment_deadline' => \Carbon\Carbon::parse($t->created_at)->addHours(12)->format('d M Y, H:i'),
+                    'has_payment_proof'=> !empty($t->bukti_pembayaran),
                 ];
             });
 

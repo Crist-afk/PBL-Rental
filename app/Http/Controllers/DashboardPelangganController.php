@@ -158,7 +158,6 @@ class DashboardPelangganController extends Controller
                 'tanggal_mulai'   => $request->tanggal_sewa,
                 'tanggal_selesai' => $request->tanggal_kembali,
                 'total_biaya'     => $total_biaya,
-                'total_denda'     => 0,
                 'status'          => 'Menunggu Pembayaran',
                 'catatan'         => $request->catatan,
             ]);

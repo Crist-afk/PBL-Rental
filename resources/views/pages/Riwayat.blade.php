@@ -52,7 +52,7 @@
                     $firstDetail = $item->detailTransaksi->first();
                     $kostum = $firstDetail ? $firstDetail->kostum : null;
                     $statusColor = $item->status_color;
-                    $penalty = $item->pengembalian?->total_denda ?? $item->total_denda;
+                    $penalty = $item->pengembalian?->total_denda ?? 0;
                     $hasPaymentProof = !empty($item->bukti_pembayaran);
                     
                     $dendaBerjalan = 0;

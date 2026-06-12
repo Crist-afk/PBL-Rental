@@ -422,34 +422,17 @@ class AdminController extends Controller
             $query->where('status', 'Disewa')->whereDoesntHave('pengembalian');
         } elseif ($filter === 'tepat') {
             $query->where('status', 'Selesai')
-                ->where(function ($q) {
-                    $q->whereHas('pengembalian', function ($returnQuery) {
-                        $returnQuery->whereColumn('pengembalian.tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
-                    })->orWhere(function ($legacyQuery) {
-                        $legacyQuery->whereDoesntHave('pengembalian')
-                            ->whereNotNull('transaksi.tanggal_kembali_aktual')
-                            ->whereColumn('transaksi.tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
-                    });
+                ->whereHas('pengembalian', function ($returnQuery) {
+                    $returnQuery->whereColumn('pengembalian.tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
                 });
         } elseif ($filter === 'terlambat') {
             $query->where('status', 'Selesai')
-                ->where(function ($q) {
-                    $q->whereHas('pengembalian', function ($returnQuery) {
-                        $returnQuery->whereColumn('pengembalian.tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
-                    })->orWhere(function ($legacyQuery) {
-                        $legacyQuery->whereDoesntHave('pengembalian')
-                            ->whereNotNull('transaksi.tanggal_kembali_aktual')
-                            ->whereColumn('transaksi.tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
-                    });
+                ->whereHas('pengembalian', function ($returnQuery) {
+                    $returnQuery->whereColumn('pengembalian.tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
                 });
         } elseif ($filter === 'denda') {
-            $query->where(function ($q) {
-                $q->whereHas('pengembalian', function ($returnQuery) {
-                    $returnQuery->where('total_denda', '>', 0);
-                })->orWhere(function ($legacyQuery) {
-                    $legacyQuery->whereDoesntHave('pengembalian')
-                        ->where('total_denda', '>', 0);
-                });
+            $query->whereHas('pengembalian', function ($returnQuery) {
+                $returnQuery->where('total_denda', '>', 0);
             });
         }
 
@@ -474,17 +457,10 @@ class AdminController extends Controller
         $stats = [
             'harus_kembali' => Transaksi::where('status', 'Disewa')
                                 ->whereDate('tanggal_selesai', today())->count(),
-            'sudah_kembali' => Pengembalian::whereDate('tanggal_kembali_aktual', today())->count()
-                                + Transaksi::where('status', 'Selesai')
-                                    ->whereDoesntHave('pengembalian')
-                                    ->whereDate('tanggal_kembali_aktual', today())
-                                    ->count(),
+            'sudah_kembali' => Pengembalian::whereDate('tanggal_kembali_aktual', today())->count(),
             'terlambat'     => Transaksi::where('status', 'Disewa')
                                 ->whereDate('tanggal_selesai', '<', today())->count(),
-            'total_denda'   => Pengembalian::whereMonth('created_at', now()->month)->sum('total_denda')
-                                + Transaksi::whereDoesntHave('pengembalian')
-                                    ->whereMonth('updated_at', now()->month)
-                                    ->sum('total_denda'),
+            'total_denda'   => Pengembalian::whereMonth('created_at', now()->month)->sum('total_denda'),
         ];
 
         return view('admin.pengembalian-admin', compact('transaksis', 'stats', 'filter'));
@@ -665,7 +641,7 @@ class AdminController extends Controller
                 if ($firstDetail?->ukuran) {
                     $kostumNama .= " ({$firstDetail->ukuran})";
                 }
-                $totalDenda = $t->pengembalian?->total_denda ?? $t->total_denda;
+                $totalDenda = $t->pengembalian?->total_denda ?? 0;
                 return [
                     'id'             => $t->id,
                     'kostum'         => $kostumNama,

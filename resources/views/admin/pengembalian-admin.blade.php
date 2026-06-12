@@ -143,9 +143,9 @@
                 
                 $tanggalSelesai = $t->tanggal_selesai;
                 $pengembalian = $t->pengembalian;
-                $tanggalKembali = $pengembalian?->tanggal_kembali_aktual ?? $t->tanggal_kembali_aktual;
-                $kondisiBarang = $pengembalian?->kondisi_barang ?? $t->kondisi_kostum;
-                $totalDenda = $pengembalian?->total_denda ?? $t->total_denda;
+                $tanggalKembali = $pengembalian?->tanggal_kembali_aktual;
+                $kondisiBarang = $pengembalian?->kondisi_barang;
+                $totalDenda = $pengembalian?->total_denda ?? 0;
                 $isTerlambat = false;
                 $hariTerlambat = 0;
                 
@@ -586,9 +586,9 @@
       document.getElementById('detail-tgl-wajib').textContent = tWajib.toLocaleDateString('id-ID', options);
       
       const pengembalian = transaksi.pengembalian || {};
-      const tanggalAktual = pengembalian.tanggal_kembali_aktual || transaksi.tanggal_kembali_aktual;
-      const kondisi = pengembalian.kondisi_barang || transaksi.kondisi_kostum;
-      const totalDenda = Number((pengembalian.total_denda != null ? pengembalian.total_denda : transaksi.total_denda) || 0);
+      const tanggalAktual = pengembalian.tanggal_kembali_aktual;
+      const kondisi = pengembalian.kondisi_barang;
+      const totalDenda = Number(pengembalian.total_denda || 0);
       const catatanQc = pengembalian.catatan_qc || transaksi.catatan_admin;
       const tAktual = tanggalAktual ? new Date(tanggalAktual) : null;
       document.getElementById('detail-tgl-aktual').textContent = tAktual ? tAktual.toLocaleDateString('id-ID', options) : 'Belum Kembali';

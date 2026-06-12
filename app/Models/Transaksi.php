@@ -13,19 +13,15 @@ class Transaksi extends Model
         'tanggal_mulai',
         'tanggal_selesai',
         'total_biaya',
-        'total_denda',
         'status',
         'catatan',
         'bukti_pembayaran',
         'catatan_admin',
-        'tanggal_kembali_aktual',
-        'kondisi_kostum',
     ];
 
     protected $casts = [
-        'tanggal_mulai'          => 'date',
-        'tanggal_selesai'        => 'date',
-        'tanggal_kembali_aktual' => 'date',
+        'tanggal_mulai'   => 'date',
+        'tanggal_selesai' => 'date',
     ];
 
     // ── Accessors: label & warna status yang konsisten ──────────────────

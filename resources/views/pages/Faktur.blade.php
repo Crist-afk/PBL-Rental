@@ -5,7 +5,7 @@
 @section('content')
     @php
         $pengembalian = $transaksi->pengembalian;
-        $returnPenalty = $pengembalian?->total_denda ?? $transaksi->total_denda;
+        $returnPenalty = $pengembalian?->total_denda ?? 0;
         $returnNote = $pengembalian?->catatan_qc;
     @endphp
 

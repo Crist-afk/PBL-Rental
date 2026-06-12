@@ -44,7 +44,6 @@ class TempSeeder extends Seeder
                 'tanggal_mulai' => $t['start'],
                 'tanggal_selesai' => $t['end'],
                 'total_biaya' => $t['price'],
-                'total_denda' => 0,
                 'status' => $status
             ]);
             

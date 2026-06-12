@@ -45,7 +45,7 @@
                   $bg = 'linear-gradient(135deg, #3b82f6, #60a5fa)';
                   $title = 'Transaction Activity';
                   $desc = 'Order #' . $trx->id . ' by ' . ($trx->user?->nama ?? 'Customer');
-                  $totalDenda = $trx->pengembalian?->total_denda ?? $trx->total_denda;
+                  $totalDenda = $trx->pengembalian?->total_denda ?? 0;
                   $targetUrl = '#';
 
                   if ($trx->status === 'Menunggu Pembayaran') {
@@ -172,7 +172,7 @@
             $bg = 'rgba(59,130,246,0.12)';
             $title = 'Transaction Activity';
             $desc = 'Order #' . $trx->id . ' by ' . ($trx->user?->nama ?? 'Customer');
-            $totalDenda = $trx->pengembalian?->total_denda ?? $trx->total_denda;
+            $totalDenda = $trx->pengembalian?->total_denda ?? 0;
             
             if ($trx->status === 'Menunggu Pembayaran') {
                 $icon = '💵';

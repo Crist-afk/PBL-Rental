@@ -221,6 +221,37 @@
       <!-- RIGHT PANEL -->
       <div class="right-panel">
 
+        <!-- LOW STOCK ALERT -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">⚠️ Low Stock Alert</span>
+            <a class="card-link" href="{{ route('admin.kostum', ['low_stock' => 1]) }}">Manage All →</a>
+          </div>
+          <div class="low-stock-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+            @forelse($stok_hampir_habis as $kostum)
+              <a href="{{ route('admin.kostum', ['q' => $kostum->nama_kostum]) }}" class="low-stock-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--bg-hover); border-radius: var(--radius-sm); border-left: 3px solid {{ $kostum->stok === 0 ? '#ef4444' : '#f59e0b' }}; text-decoration: none; transition: transform var(--transition), background var(--transition);" onmouseover="this.style.background='var(--brand-surface-strong)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background='var(--bg-hover)'; this.style.transform='none'">
+                <div class="low-stock-info" style="min-width: 0; flex: 1; padding-right: 8px;">
+                  <div class="low-stock-name" style="font-size: 13px; font-weight: 600; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $kostum->nama_kostum }}</div>
+                  <div class="low-stock-cat" style="font-size: 11px; color: var(--text-3); margin-top: 2px;">{{ $kostum->kategori?->nama_kategori ?? 'Uncategorized' }}</div>
+                </div>
+                <div class="low-stock-badge">
+                  @if($kostum->stok === 0)
+                    <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 3px 8px; border-radius: 6px; white-space: nowrap;">Out of Stock</span>
+                  @else
+                    <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 3px 8px; border-radius: 6px; white-space: nowrap;">1 Unit Left</span>
+                  @endif
+                </div>
+              </a>
+            @empty
+              <div class="low-stock-empty" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 10px; text-align: center;">
+                <span style="font-size: 24px;">🟢</span>
+                <div style="font-size: 13px; font-weight: 600; color: var(--text-2);">All costumes are in good stock.</div>
+                <div style="font-size: 11px; color: var(--text-3);">Inventory level looks healthy!</div>
+              </div>
+            @endforelse
+          </div>
+        </div>
+
         <!-- QUICK STATS -->
         <div class="card">
           <div class="card-header">

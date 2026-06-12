@@ -207,9 +207,9 @@
 
       <!-- CATEGORY TABS -->
       <div class="tabs" id="categoryTabs">
-        <a href="{{ route('admin.kostum', ['q' => request('q'), 'size' => request('size')]) }}" class="tab {{ !request('kategori_id') ? 'active' : '' }}" style="text-decoration: none;">All</a>
+        <a href="{{ route('admin.kostum', ['q' => request('q'), 'size' => request('size'), 'low_stock' => request('low_stock')]) }}" class="tab {{ !request('kategori_id') ? 'active' : '' }}" style="text-decoration: none;">All</a>
         @foreach($kategoris as $kat)
-          <a href="{{ route('admin.kostum', ['kategori_id' => $kat->id, 'q' => request('q'), 'size' => request('size')]) }}" class="tab {{ request('kategori_id') == $kat->id ? 'active' : '' }}" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
+          <a href="{{ route('admin.kostum', ['kategori_id' => $kat->id, 'q' => request('q'), 'size' => request('size'), 'low_stock' => request('low_stock')]) }}" class="tab {{ request('kategori_id') == $kat->id ? 'active' : '' }}" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
             {{ $kat->nama_kategori }}
             <span style="font-size: 10px; background: rgba(255,255,255,0.15); padding: 1px 6px; border-radius: 10px; display: inline-block;">{{ $kat->kostum_count ?? $kat->kostum()->count() }}</span>
           </a>
@@ -226,6 +226,9 @@
           @if(request('size'))
             <input type="hidden" name="size" value="{{ request('size') }}" id="sizeFilterHidden">
           @endif
+          @if(request('low_stock'))
+            <input type="hidden" name="low_stock" value="1">
+          @endif
           <div class="search-wrap" style="width: 100%;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input class="search-input" type="text" name="q" value="{{ request('q') }}" placeholder="Search costume name..." />
@@ -233,6 +236,14 @@
         </form>
 
         <div class="toolbar-right">
+          <!-- LOW STOCK TOGGLE -->
+          <a href="{{ route('admin.kostum', array_filter(array_merge(request()->query(), ['low_stock' => $lowStockFilter ? null : 1]))) }}"
+             class="dropdown-btn {{ $lowStockFilter ? 'open' : '' }}"
+             style="text-decoration: none; display: flex; align-items: center; gap: 8px; {{ $lowStockFilter ? 'border-color: #fb923c; color: #fb923c; background: rgba(251, 146, 60, 0.1); font-weight: 700;' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>{{ $lowStockFilter ? 'All Stock' : 'Low Stock Only' }}</span>
+          </a>
+
           <!-- SIZE FILTER DROPDOWN -->
           <div class="dropdown-wrap" id="sizeDrop">
             <button class="dropdown-btn {{ $sizeFilter ? 'open' : '' }}" onclick="toggleDrop('sizeDrop')" type="button">
@@ -257,23 +268,34 @@
         </div>
       </div>
 
-      <!-- ACTIVE SIZE FILTER BADGE -->
-      @if($sizeFilter)
-        <a href="{{ route('admin.kostum', array_filter(['kategori_id' => request('kategori_id'), 'q' => request('q')])) }}" class="size-filter-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:11px;height:11px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          Filtered by size: <strong>{{ strtoupper($sizeFilter) }}</strong> &nbsp;— click to clear
-        </a>
-      @endif
+      <!-- ACTIVE FILTER BADGES -->
+      <div class="active-filters-wrap" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;">
+        @if($sizeFilter)
+          <a href="{{ route('admin.kostum', array_filter(array_merge(request()->query(), ['size' => null]))) }}" class="size-filter-badge" style="margin-bottom: 0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:11px;height:11px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Filtered by size: <strong>{{ strtoupper($sizeFilter) }}</strong> &nbsp;— click to clear
+          </a>
+        @endif
+
+        @if($lowStockFilter)
+          <a href="{{ route('admin.kostum', array_filter(array_merge(request()->query(), ['low_stock' => null]))) }}" class="size-filter-badge" style="margin-bottom: 0; background: rgba(251, 146, 60, 0.15); color: #fb923c; border-color: rgba(251, 146, 60, 0.3);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:11px;height:11px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Filtered by: <strong>Low Stock Only</strong> &nbsp;— click to clear
+          </a>
+        @endif
+      </div>
 
       <!-- COSTUME GRID -->
       <div class="costume-grid">
         @forelse($kostums as $kostum)
           <div class="costume-card">
             <div class="card-img" style="background: url('{{ $kostum->gambar_url }}') center/cover;">
-              @if($kostum->stok > 0)
-                <span class="status-badge tersedia">Available</span>
-              @else
+              @if($kostum->stok === 0)
                 <span class="status-badge tidak">Out of Stock</span>
+              @elseif($kostum->stok === 1)
+                <span class="status-badge disewa" style="background: rgba(251, 146, 60, 0.15); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.3);">Low Stock</span>
+              @else
+                <span class="status-badge tersedia">Available</span>
               @endif
             </div>
             <div class="card-body">

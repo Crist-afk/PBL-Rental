@@ -78,6 +78,14 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
+        // Query costumes with stock <= 1 (Low Stock)
+        $stok_hampir_habis = Kostum::with('kategori')
+            ->where('stok', '<=', 1)
+            ->orderBy('stok', 'asc')
+            ->latest()
+            ->limit(5)
+            ->get();
+
         return view('admin.dashboard-admin', compact(
             'stats',
             'transaksi_terbaru',
@@ -86,7 +94,8 @@ class AdminController extends Controller
             'tingkat_keterlambatan',
             'total_akun',
             'bulanLabels',
-            'kostumPerBulan'
+            'kostumPerBulan',
+            'stok_hampir_habis'
         ));
     }
 
@@ -114,6 +123,12 @@ class AdminController extends Controller
             $query->where('ukuran', 'regexp', '(^|,)[[:space:]]*' . preg_quote($sizeFilter) . '([[:space:]]*|,|$)');
         }
 
+        // Filter by low stock (stok <= 1)
+        $lowStockFilter = $request->boolean('low_stock');
+        if ($lowStockFilter) {
+            $query->where('stok', '<=', 1);
+        }
+
         // Collect all distinct sizes across all costumes for the size filter UI
         $allSizes = Kostum::whereNotNull('ukuran')
             ->pluck('ukuran')
@@ -125,7 +140,7 @@ class AdminController extends Controller
 
         $kostums = $query->paginate(12)->withQueryString();
 
-        return view('admin.kostum-admin', compact('kostums', 'kategoris', 'allSizes', 'sizeFilter'));
+        return view('admin.kostum-admin', compact('kostums', 'kategoris', 'allSizes', 'sizeFilter', 'lowStockFilter'));
     }
 
     public function kostumStore(Request $request)

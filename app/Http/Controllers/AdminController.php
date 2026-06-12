@@ -9,6 +9,7 @@ use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
 use App\Models\Pengembalian;
 use App\Models\User;
+use App\Models\ForumPost;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -88,6 +89,16 @@ class AdminController extends Controller
             'bulanLabels',
             'kostumPerBulan'
         ));
+    }
+
+    public function forum()
+    {
+        $posts = ForumPost::with(['user', 'category'])
+            ->withCount('comments')
+            ->latest()
+            ->paginate(15);
+
+        return view('admin.forum-admin', compact('posts'));
     }
 
     // =====================================================================

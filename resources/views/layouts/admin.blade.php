@@ -205,7 +205,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
       Manage User Accounts
     </a>
-    <a class="nav-item {{ request()->routeIs('forum', 'forum.show') ? 'active' : '' }}" href="{{ route('forum') }}">
+    <a class="nav-item {{ request()->routeIs('admin.forum') ? 'active' : '' }}" href="{{ route('admin.forum') }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"></path></svg>
       Forum
     </a>
@@ -325,7 +325,8 @@
         'admin.pembayaran': 'Payment Validation',
         'admin.pengembalian': 'Returns & Penalties',
         'admin.riwayat': 'Rental History',
-        'admin.pengguna': 'Manage Users'
+        'admin.pengguna': 'Manage Users',
+        'admin.forum': 'Forum Moderation'
     };
 
     // Intercept admin sidebar navigation links

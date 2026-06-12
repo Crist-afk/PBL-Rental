@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardPelangganController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use App\Http\Controllers\PasswordResetController;
 */
 
 // [1] ROUTE PUBLIK
-Route::view('/', 'pages.home')->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/contact', 'pages.contact')->name('contact');
 
@@ -61,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
 // ==================== ADMIN ====================
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/forum', [AdminController::class, 'forum'])->name('forum');
 
     // ── Kostum CRUD ──
     Route::get('/kostum', [AdminController::class, 'kostum'])->name('kostum');

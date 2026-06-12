@@ -167,75 +167,37 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <!-- Card 1: Raiden Shogun -->
-            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-                <div class="h-64 bg-dark-chocolate relative">
-                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Popular</span>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAyRb2yyqRYDoVriPxVzLrslGO3PT0rJ6G1g&s" alt="Raiden Shogun" class="w-full h-full object-cover opacity-90">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <span class="text-sakura text-xs font-bold tracking-wider mb-1">GENSHIN IMPACT</span>
-                    <h3 class="font-bold text-xl mb-4">Raiden Shogun</h3>
-                    <div class="flex justify-between items-center mb-6 mt-auto">
-                        <span class="font-bold text-lg">Rp 180.000</span>
-                        <span class="text-xs font-medium text-dark-chocolate/60">Size: M, L</span>
-                    </div>
-                    <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Costume Details</a>
-                </div>
+        @if($featuredKostums->isEmpty())
+            <div class="glass-card rounded-3xl border-2 border-dashed border-dark-chocolate/20 p-12 text-center shadow-lg">
+                <h3 class="text-2xl font-bold text-dark-chocolate mb-2">No Costumes Yet</h3>
+                <p class="font-medium text-dark-chocolate/60">Popular picks will appear here after costumes are added.</p>
             </div>
-
-            <!-- Card 2: Monkey D. Luffy -->
-            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-                <div class="h-64 bg-dark-chocolate relative">
-                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Popular</span>
-                    <img src="https://down-id.img.susercontent.com/file/id-11134207-7r98u-llolhikoxc3w2e" alt="Monkey D. Luffy" class="w-full h-full object-cover opacity-90">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <span class="text-sakura text-xs font-bold tracking-wider mb-1">ONE PIECE</span>
-                    <h3 class="font-bold text-xl mb-4">Monkey D. Luffy</h3>
-                    <div class="flex justify-between items-center mb-6 mt-auto">
-                        <span class="font-bold text-lg">Rp 120.000</span>
-                        <span class="text-xs font-medium text-dark-chocolate/60">Size: All Size</span>
+        @else
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                @foreach($featuredKostums as $kostum)
+                    <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
+                        <div class="h-64 bg-dark-chocolate relative">
+                            <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Popular</span>
+                            <img src="{{ $kostum->gambar_url }}"
+                                 alt="{{ $kostum->nama_kostum }}"
+                                 class="w-full h-full object-cover opacity-90"
+                                 onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=No+Image';">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <span class="text-sakura text-xs font-bold tracking-wider mb-1 uppercase">
+                                {{ $kostum->kategori->nama_kategori ?? 'Uncategorized' }}
+                            </span>
+                            <h3 class="font-bold text-xl mb-4 line-clamp-2">{{ $kostum->nama_kostum }}</h3>
+                            <div class="flex justify-between items-center gap-3 mb-6 mt-auto">
+                                <span class="font-bold text-lg">Rp {{ number_format($kostum->harga_sewa, 0, ',', '.') }}</span>
+                                <span class="text-xs font-medium text-dark-chocolate/60 text-right">Size: {{ $kostum->ukuran }}</span>
+                            </div>
+                            <a href="{{ Auth::check() ? route('products.show', $kostum->id) : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Costume Details</a>
+                        </div>
                     </div>
-                    <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Costume Details</a>
-                </div>
+                @endforeach
             </div>
-
-            <!-- Card 3: Kafka -->
-            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-                <div class="h-64 bg-dark-chocolate relative">
-                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Popular</span>
-                    <img src="https://img.lazcdn.com/g/p/d0c4c82bfe98cbd19ceb04a0ae34f0ae.jpg_720x720q80.jpg" alt="Kafka" class="w-full h-full object-cover opacity-90">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <span class="text-sakura text-xs font-bold tracking-wider mb-1">HONKAI: STAR RAIL</span>
-                    <h3 class="font-bold text-xl mb-4">Kafka</h3>
-                    <div class="flex justify-between items-center mb-6 mt-auto">
-                        <span class="font-bold text-lg">Rp 200.000</span>
-                        <span class="text-xs font-medium text-dark-chocolate/60">Size: S, M, L</span>
-                    </div>
-                    <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Costume Details</a>
-                </div>
-            </div>
-
-            <!-- Card 4: Spider-Man -->
-            <div class="glass-card rounded-3xl overflow-hidden border-2 border-dark-chocolate/20 shadow-lg flex flex-col">
-                <div class="h-64 bg-dark-chocolate relative">
-                    <span class="absolute top-4 left-4 bg-sakura text-dark-chocolate text-xs font-bold px-3 py-1 rounded-full z-10">Popular</span>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdpITVxwRDN82bcorTgLgb7VW0kbodTzzadA&s" alt="Spider-Man" class="w-full h-full object-cover opacity-90">
-                </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <span class="text-sakura text-xs font-bold tracking-wider mb-1">MARVEL</span>
-                    <h3 class="font-bold text-xl mb-4">Spider-Man</h3>
-                    <div class="flex justify-between items-center mb-6 mt-auto">
-                        <span class="font-bold text-lg">Rp 150.000</span>
-                        <span class="text-xs font-medium text-dark-chocolate/60">Size: L, XL</span>
-                    </div>
-                    <a href="{{ Auth::check() ? route('products.index') : route('login') }}" class="block w-full text-center bg-dark-chocolate text-misty-rose py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Costume Details</a>
-                </div>
-            </div>
-        </div>
+        @endif
     </section>
 
     <section class="py-10 px-6 max-w-7xl mx-auto">

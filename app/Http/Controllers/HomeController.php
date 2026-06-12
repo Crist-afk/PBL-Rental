@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Kostum;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // Memanggil file view resources/views/home.blade.php
-        return view('pages.home');
+        $featuredKostums = Kostum::with('kategori')
+            ->where('stok', '>', 0)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('pages.home', compact('featuredKostums'));
     }
 
     public function product()

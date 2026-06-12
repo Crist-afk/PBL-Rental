@@ -242,9 +242,10 @@
 
   </main>
 
+@push('modals')
 <!-- ── DETAIL & VALIDATION MODAL ── -->
 <div class="modal-overlay" id="validationModalOverlay">
-  <div class="modal" style="max-width: 820px; width: 90%;">
+  <div class="modal">
     <div class="modal-header">
       <div>
         <div class="modal-order-id" id="mOrderId">#TRX-000</div>
@@ -255,7 +256,7 @@
       </div>
     </div>
 
-    <div class="modal-body" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; padding: 0 32px 8px;">
+    <div class="modal-body">
       <!-- LEFT COLUMN -->
       <div style="display: flex; flex-direction: column; gap: 0;">
 
@@ -315,7 +316,7 @@
     </div>
 
     <!-- FOOTER: shows Approve+Reject when pending, Close-only otherwise -->
-    <div class="modal-footer" id="validationModalFooter" style="display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:20px 32px 28px; border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="modal-footer" id="validationModalFooter">
       <button type="button" class="btn btn-ghost" onclick="closeValidationModal()">Close</button>
       <button type="button" id="mBtnReject" class="btn" style="display:none; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#f87171; font-weight:700; padding:10px 22px; border-radius:10px; cursor:pointer;"
         onclick="document.getElementById('mCatatanAdmin').form && (document.getElementById('confirmPaymentForm').action = window._rejectUrl); document.getElementById('confirmPaymentForm').submit();">
@@ -328,6 +329,7 @@
     </div>
   </div>
 </div>
+@endpush
 @endsection
 
 @push('scripts')

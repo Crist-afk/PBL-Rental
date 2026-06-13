@@ -246,4 +246,41 @@ class DashboardPelangganController extends Controller
 
         return back()->with('error', 'Failed to upload payment proof.');
     }
+
+    /**
+     * Menampilkan Halaman Denda (Penalty)
+     */
+    public function penalty()
+    {
+        $userId = Auth::id();
+
+        $late_rentals = Transaksi::with(['detailTransaksi.kostum'])
+            ->where('user_id', $userId)
+            ->whereIn('status', ['Disewa', 'Menunggu Pembayaran'])
+            ->get()
+            ->filter(function ($t) {
+                return \Carbon\Carbon::now()->startOfDay()->greaterThan(\Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay());
+            })
+            ->map(function ($t) {
+                $firstDetail = $t->detailTransaksi->first();
+                $kostum = $firstDetail ? $firstDetail->kostum : null;
+                $size = $firstDetail?->ukuran ?? 'N/A';
+
+                $daysLate = \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay()->diffInDays(\Carbon\Carbon::now()->startOfDay());
+                $denda = $daysLate * 50000;
+
+                return [
+                    'id'          => $t->id,
+                    'title'       => $kostum ? $kostum->nama_kostum : 'Transaksi #' . $t->id,
+                    'size'        => $size,
+                    'return_date' => \Carbon\Carbon::parse($t->tanggal_selesai)->format('d F Y'),
+                    'image'       => $kostum ? $kostum->gambar_url : null,
+                    'denda'       => $denda,
+                    'days_late'   => $daysLate,
+                ];
+            })
+            ->values();
+
+        return view('pages.Penalty', compact('late_rentals'));
+    }
 }

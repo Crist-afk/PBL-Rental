@@ -141,6 +141,15 @@
                                 <p class="text-[10px] opacity-70">View all transactions</p>
                             </div>
                         </a>
+                        <a href="{{ route('penalty.index') }}" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-4 rounded-[1.5rem] flex items-center gap-4 border-2 border-dark-chocolate/10 group">
+                            <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center text-xl text-red-500 group-hover:bg-red-500 group-hover:text-misty-rose transition">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm">Late Penalty</p>
+                                <p class="text-[10px] opacity-70">View late costume fees</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
 

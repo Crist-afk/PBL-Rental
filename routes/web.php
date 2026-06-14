@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/booking', [DashboardPelangganController::class, 'booking'])->name('booking.index');
     Route::post('/booking', [DashboardPelangganController::class, 'storeBooking'])->name('booking.store');
     Route::get('/riwayat', [DashboardPelangganController::class, 'riwayat'])->name('riwayat.index');
+    Route::get('/penalty', [DashboardPelangganController::class, 'penalty'])->name('penalty.index');
     Route::get('/riwayat/{id}/faktur', [DashboardPelangganController::class, 'faktur'])->name('riwayat.faktur');
     Route::post('/riwayat/{id}/upload-bukti', [DashboardPelangganController::class, 'uploadBukti'])->name('riwayat.upload_bukti');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

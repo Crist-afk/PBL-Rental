@@ -90,9 +90,15 @@
                                 <span class="block text-[10px] font-bold text-dark-chocolate/60 uppercase tracking-widest">Total Price</span>
                                 <span class="font-bold text-xl text-dark-chocolate">Rp {{ number_format($rental['price'], 0, ',', '.') }}</span>
                             </div>
+                            @if($rental['raw_status'] === 'Menunggu Pembayaran')
+                            <button onclick="openUploadModal({{ $rental['id'] }})" class="bg-sakura text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-sakura/80 transition sm:mt-3 whitespace-nowrap inline-flex items-center justify-center">
+                                <i class="fa-solid fa-upload mr-1"></i> {{ $rental['has_payment_proof'] ? 'Replace Proof' : 'Upload Proof' }}
+                            </button>
+                            @else
                             <a href="{{ route('riwayat.faktur', $rental['id']) }}" class="bg-dark-chocolate text-misty-rose px-6 py-2.5 rounded-full text-sm font-bold hover:bg-black transition sm:mt-3 whitespace-nowrap inline-flex items-center justify-center">
-                                <i class="fa-solid fa-receipt mr-1"></i> Detail
+                                <i class="fa-solid fa-receipt mr-1"></i> Invoice
                             </a>
+                            @endif
                         </div>
                     </article>
                     @empty
@@ -133,6 +139,15 @@
                             <div>
                                 <p class="font-bold text-sm">Rental History</p>
                                 <p class="text-[10px] opacity-70">View all transactions</p>
+                            </div>
+                        </a>
+                        <a href="{{ route('penalty.index') }}" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-4 rounded-[1.5rem] flex items-center gap-4 border-2 border-dark-chocolate/10 group">
+                            <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center text-xl text-red-500 group-hover:bg-red-500 group-hover:text-misty-rose transition">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm">Late Penalty</p>
+                                <p class="text-[10px] opacity-70">View late costume fees</p>
                             </div>
                         </a>
                     </div>
@@ -204,4 +219,69 @@
             </div>
         </div>
     </main>
+
+    <!-- Upload Bukti Modal -->
+    <div id="uploadModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center transition-opacity opacity-0">
+        <div class="glass-card rounded-[2.5rem] w-full max-w-lg bg-white/90 p-8 shadow-2xl transform scale-95 transition-transform duration-300 mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-black text-dark-chocolate">Upload Payment Proof</h3>
+                <button onclick="closeUploadModal()" class="text-dark-chocolate/50 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="uploadForm" action="" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                <p class="text-sm text-dark-chocolate/70 mb-4 font-medium">
+                    Please upload your payment proof (format: JPG/PNG, max 2MB).
+                </p>
+                <div class="flex flex-col gap-2">
+                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" accept="image/png, image/jpeg, image/jpg" required
+                        class="block w-full text-sm text-dark-chocolate/70 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:uppercase file:tracking-[0.1em] file:bg-sakura/10 file:text-sakura hover:file:bg-sakura/20 transition-colors">
+                </div>
+                
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="closeUploadModal()" class="flex-1 py-3 px-4 rounded-full border border-dark-chocolate/20 text-dark-chocolate font-black text-[10px] uppercase tracking-[0.2em] hover:bg-dark-chocolate/5 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 py-3 px-4 rounded-full bg-sakura text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-sakura/80 transition-shadow shadow-lg shadow-sakura/30">
+                        Upload
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+<script>
+    function openUploadModal(transactionId) {
+        const modal = document.getElementById('uploadModal');
+        const form = document.getElementById('uploadForm');
+        
+        // Update form action URL dynamically
+        form.action = `/riwayat/${transactionId}/upload-bukti`;
+        
+        // Show modal with animation
+        modal.classList.remove('hidden');
+        // Trigger reflow
+        void modal.offsetWidth;
+        modal.classList.remove('opacity-0');
+        modal.querySelector('.glass-card').classList.remove('scale-95');
+    }
+
+    function closeUploadModal() {
+        const modal = document.getElementById('uploadModal');
+        
+        // Hide modal with animation
+        modal.classList.add('opacity-0');
+        modal.querySelector('.glass-card').classList.add('scale-95');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            // Reset form
+            document.getElementById('uploadForm').reset();
+        }, 300);
+    }
+</script>
+@endpush

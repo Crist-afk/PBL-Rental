@@ -114,7 +114,7 @@
                                 @if($hasPaymentProof)
                                     <i class="fa-solid fa-circle-check mr-1"></i> Waiting for admin validation
                                 @else
-                                    <i class="fa-solid fa-clock mr-1"></i> Pay before: {{ \Carbon\Carbon::parse($item->created_at)->addDays(2)->format('d M Y, H:i') }}
+                                    <i class="fa-solid fa-clock mr-1"></i> Pay before: {{ \Carbon\Carbon::parse($item->created_at)->addHours(12)->format('d M Y, H:i') }}
                                 @endif
                             </p>
                         @endif
@@ -146,23 +146,17 @@
                         </div>
                         
                         <div class="flex flex-wrap gap-3 w-full lg:w-auto">
+                            @if($item->status !== 'Menunggu Pembayaran')
                             <a href="{{ route('riwayat.faktur', $item->id) }}" class="flex-1 lg:flex-none px-6 py-3 bg-white/80 border-2 border-dark-chocolate/5 rounded-full text-[10px] font-black text-dark-chocolate uppercase tracking-[0.2em] hover:bg-dark-chocolate hover:text-white transition-all shadow-sm flex items-center justify-center">
                                 <i class="fa-solid fa-file-invoice mr-2"></i>Invoice
                             </a>
+                            @endif
                             @if($item->status === 'Menunggu Pembayaran')
                             <button onclick="openUploadModal({{ $item->id }})" class="flex-1 lg:flex-none px-6 py-3 bg-sakura text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-sakura/80 transition-all shadow-xl text-center flex items-center justify-center">
                                 <i class="fa-solid fa-upload mr-2"></i>{{ $hasPaymentProof ? 'Replace Proof' : 'Upload Proof' }}
                             </button>
                             @endif
-                            @if($kostum)
-                            <a href="{{ route('products.show', $kostum->id) }}" class="flex-1 lg:flex-none px-8 py-3 bg-dark-chocolate text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-black transition-all shadow-xl text-center flex items-center justify-center">
-                                Detail
-                            </a>
-                            @else
-                            <button disabled class="flex-1 lg:flex-none px-8 py-3 bg-dark-chocolate/50 text-white/70 rounded-full text-[10px] font-black uppercase tracking-[0.2em] cursor-not-allowed shadow-xl">
-                                Detail
-                            </button>
-                            @endif
+
                         </div>
                     </div>
                 </article>

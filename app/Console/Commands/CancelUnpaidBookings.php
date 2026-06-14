@@ -21,14 +21,14 @@ class CancelUnpaidBookings extends Command
      *
      * @var string
      */
-    protected $description = 'Cancel bookings that have been waiting for payment for more than 2 days';
+    protected $description = 'Cancel bookings that have been waiting for payment for more than 12 hours';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $deadline = Carbon::now()->subDays(2);
+        $deadline = Carbon::now()->subHours(12);
 
         $expiredTransactions = Transaksi::with('detailTransaksi.kostum')
             ->where('status', 'Menunggu Pembayaran')
@@ -58,7 +58,7 @@ class CancelUnpaidBookings extends Command
 
                 $transaksi->update([
                     'status'        => 'Batal',
-                    'catatan_admin' => 'Auto-canceled: Exceeded 2-day payment deadline',
+                    'catatan_admin' => 'Auto-canceled: Exceeded 12-hour payment deadline',
                 ]);
 
                 DB::commit();

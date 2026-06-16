@@ -94,7 +94,7 @@
                             <button onclick="openUploadModal({{ $rental['id'] }})" class="bg-sakura text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-sakura/80 transition sm:mt-3 whitespace-nowrap inline-flex items-center justify-center">
                                 <i class="fa-solid fa-upload mr-1"></i> {{ $rental['has_payment_proof'] ? 'Replace Proof' : 'Upload Proof' }}
                             </button>
-                            @else
+                            @elseif(!($rental['raw_status'] === 'Batal' && str_contains($rental['catatan_admin'] ?? '', 'Auto-canceled')))
                             <a href="{{ route('riwayat.faktur', $rental['id']) }}" class="bg-dark-chocolate text-misty-rose px-6 py-2.5 rounded-full text-sm font-bold hover:bg-black transition sm:mt-3 whitespace-nowrap inline-flex items-center justify-center">
                                 <i class="fa-solid fa-receipt mr-1"></i> Invoice
                             </a>

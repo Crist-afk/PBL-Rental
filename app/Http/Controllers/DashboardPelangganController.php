@@ -215,6 +215,10 @@ class DashboardPelangganController extends Controller
             ->where('user_id', Auth::id())
             ->findOrFail($id);
 
+        if ($transaksi->status === 'Batal' && str_contains($transaksi->catatan_admin ?? '', 'Auto-canceled')) {
+            return redirect()->route('riwayat.index')->with('error', 'Invoice not available for auto-canceled transactions.');
+        }
+
         return view('pages.Faktur', compact('transaksi'));
     }
 

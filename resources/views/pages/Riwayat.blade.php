@@ -146,7 +146,7 @@
                         </div>
                         
                         <div class="flex flex-wrap gap-3 w-full lg:w-auto">
-                            @if($item->status !== 'Menunggu Pembayaran')
+                            @if($item->status !== 'Menunggu Pembayaran' && !($item->status === 'Batal' && str_contains($item->catatan_admin ?? '', 'Auto-canceled')))
                             <a href="{{ route('riwayat.faktur', $item->id) }}" class="flex-1 lg:flex-none px-6 py-3 bg-white/80 border-2 border-dark-chocolate/5 rounded-full text-[10px] font-black text-dark-chocolate uppercase tracking-[0.2em] hover:bg-dark-chocolate hover:text-white transition-all shadow-sm flex items-center justify-center">
                                 <i class="fa-solid fa-file-invoice mr-2"></i>Invoice
                             </a>

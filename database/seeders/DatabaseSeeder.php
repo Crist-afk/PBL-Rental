@@ -166,6 +166,32 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        \App\Models\Kostum::updateOrCreate(
+            ['nama_kostum' => 'Son Goku'],
+            [
+                'kategori_id' => $anime->id,
+                'stok' => 4,
+                'stok_per_ukuran' => ['L' => 2, 'XL' => 2],
+                'harga_sewa' => 200000,
+                'ukuran' => 'L, XL',
+                'kelengkapan' => 'Orange Gi Top, Blue Inner Undershirt, Matching Orange Baggy Pants, Blue Waist Sash Tie, Pair of Blue Wristbands',
+                'gambar' => 'kostum/LCBrkbsVEGwBWITf3ic20Wfvsxo0MAKDRfF3sYC0.jpg',
+            ]
+        );
+
+        \App\Models\Kostum::updateOrCreate(
+            ['nama_kostum' => 'Yoichi Isagi'],
+            [
+                'kategori_id' => $anime->id,
+                'stok' => 3,
+                'stok_per_ukuran' => ['M' => 1, 'L' => 1, 'XL' => 1],
+                'harga_sewa' => 150000,
+                'ukuran' => 'M, L, XL',
+                'kelengkapan' => 'Blue Team Z Soccer Jersey, Matching Blue Soccer Shorts, Full-Body Black Bodysuit',
+                'gambar' => 'kostum/u8WztvXnYyuM7UcBrcQAKxv8igEel05KtkK3QrKW.jpg',
+            ]
+        );
+
         $this->command->info('Kategori dan Kostum dummy berhasil ditambahkan!');
     }
 }

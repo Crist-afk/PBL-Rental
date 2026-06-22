@@ -53,10 +53,10 @@ class DatabaseSeeder extends Seeder
             ['nama_kostum' => 'Gojo Satoru'],
             [
                 'kategori_id' => $anime->id,
-                'stok' => 3,
-                'stok_per_ukuran' => ['L' => 1, 'XL' => 2],
+                'stok' => 31,
+                'stok_per_ukuran' => ['L' => 11, 'XL' => 10, 'XXL' => 10],
                 'harga_sewa' => 150000,
-                'ukuran' => 'L, XL',
+                'ukuran' => 'L, XL, XXL',
                 'kelengkapan' => 'Wig, Eye Patch, Jujutsu High Uniform',
                 'gambar' => 'kostum/gojo.jpg',
             ]
@@ -92,10 +92,10 @@ class DatabaseSeeder extends Seeder
             ['nama_kostum' => 'Raiden Shogun'],
             [
                 'kategori_id' => $game->id,
-                'stok' => 1,
-                'stok_per_ukuran' => ['M' => 1],
+                'stok' => 4,
+                'stok_per_ukuran' => ['M' => 1, 'L' => 1, 'XL' => 2],
                 'harga_sewa' => 250000,
-                'ukuran' => 'M',
+                'ukuran' => 'M, L, XL',
                 'kelengkapan' => 'Wig, Kimono, Obi, Hairpiece, Tabi',
                 'gambar' => 'kostum/raiden.jpg',
             ]
@@ -124,6 +124,45 @@ class DatabaseSeeder extends Seeder
                 'ukuran' => 'M, L',
                 'kelengkapan' => 'Wig, Shrine Maiden Outfit, Accessories',
                 'gambar' => 'kostum/yae.jpg',
+            ]
+        );
+
+        \App\Models\Kostum::updateOrCreate(
+            ['nama_kostum' => 'Saitama'],
+            [
+                'kategori_id' => $anime->id,
+                'stok' => 4,
+                'stok_per_ukuran' => ['M' => 1, 'L' => 2, 'XL' => 1],
+                'harga_sewa' => 180000,
+                'ukuran' => 'M, L, XL',
+                'kelengkapan' => 'Full Set',
+                'gambar' => 'kostum/sNz4TMcfuxlsUhygTohbYtD1noAeGF74o8hblkkc.jpg',
+            ]
+        );
+
+        \App\Models\Kostum::updateOrCreate(
+            ['nama_kostum' => 'Anya Forger'],
+            [
+                'kategori_id' => $anime->id,
+                'stok' => 6,
+                'stok_per_ukuran' => ['M' => 2, 'L' => 2, 'XL' => 2],
+                'harga_sewa' => 150000,
+                'ukuran' => 'M, L, XL',
+                'kelengkapan' => 'Eden Academy Uniform Dress, Detachable White Collar with Red Ribbon Tie, Character Pink Wig, Pair of Anya\'s Signature Hair Ornaments, Pair of Over-Knee White Socks',
+                'gambar' => 'kostum/AfWzRkT9xKv7XW9SH9VAVG0qgvxDUFQGTupQeHTq.jpg',
+            ]
+        );
+
+        \App\Models\Kostum::updateOrCreate(
+            ['nama_kostum' => 'Geto Suguru'],
+            [
+                'kategori_id' => $anime->id,
+                'stok' => 3,
+                'stok_per_ukuran' => ['M' => 1, 'L' => 1, 'XL' => 1],
+                'harga_sewa' => 160000,
+                'ukuran' => 'M, L, XL',
+                'kelengkapan' => 'Jujutsu High School Uniform Jacket, Matching Baggy Hakama-style Pants, Character Black Wig',
+                'gambar' => 'kostum/vsQetkpy3qBCvDqgwqxPuBaoHoerolvxLmZlJvRW.jpg',
             ]
         );
 

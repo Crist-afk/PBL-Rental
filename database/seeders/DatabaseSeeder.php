@@ -192,6 +192,20 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        \App\Models\Kostum::updateOrCreate(
+            ['nama_kostum' => 'Michael Kaiser'],
+            [
+                'kategori_id' => $anime->id,
+                'stok' => 4,
+                'stok_per_ukuran' => ['M' => 1, 'L' => 2, 'XL' => 1],
+                'harga_sewa' => 150000,
+                'ukuran' => 'M, L, XL',
+                'kelengkapan' => 'Bastard München Soccer Jersey (with "KAISER 10" print on the back and gold trim details), Matching Black Soccer Shorts (with number 10 print)',
+                'gambar' => 'kostum/WKNcY7kBqPBcRIWYSmU7dv5nku7MaaBloI8KkD2W.jpg',
+            ]
+        );
+
         $this->command->info('Kategori dan Kostum dummy berhasil ditambahkan!');
     }
 }
+

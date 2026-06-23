@@ -178,14 +178,16 @@
                 </td>
                 <td>
                   @if($t->status === 'Selesai')
-                    @if($kondisiBarang === 'Baik')
+                    @if($kondisiBarang === 'Baik' || $kondisiBarang === 'GOOD')
                       <span class="kondisi-display baik" style="font-size:9px;padding:4px 8px;border-radius:6px;">GOOD</span>
-                    @elseif($kondisiBarang === 'Lecet')
-                      <span class="kondisi-display lecet" style="font-size:9px;padding:4px 8px;border-radius:6px;">SCUFFED</span>
-                    @elseif($kondisiBarang === 'Rusak')
-                      <span class="kondisi-display rusak" style="font-size:9px;padding:4px 8px;border-radius:6px;background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">DAMAGED</span>
+                    @elseif($kondisiBarang === 'Rusak Ringan' || $kondisiBarang === 'Lecet' || $kondisiBarang === 'MINOR DAMAGE')
+                      <span class="kondisi-display rusak-ringan" style="font-size:9px;padding:4px 8px;border-radius:6px;">MINOR DAMAGE</span>
+                    @elseif($kondisiBarang === 'Rusak Berat' || $kondisiBarang === 'Rusak' || $kondisiBarang === 'SEVERE DAMAGE')
+                      <span class="kondisi-display rusak-berat" style="font-size:9px;padding:4px 8px;border-radius:6px;">SEVERE DAMAGE</span>
+                    @elseif($kondisiBarang === 'Aksesoris Hilang' || $kondisiBarang === 'MISSING ACCESSORIES')
+                      <span class="kondisi-display aksesoris-hilang" style="font-size:9px;padding:4px 8px;border-radius:6px;">MISSING ACCESSORIES</span>
                     @else
-                      <span style="color:#4b5a7a">â€“</span>
+                      <span style="color:#4b5a7a">-</span>
                     @endif
                   @else
                     <button type="button" class="kondisi-btn-action" style="font-size: 9px; padding: 4px 8px; border-radius: 6px; background: rgba(124, 58, 237, 0.1); color: #7c3aed; border: 1px dashed #7c3aed; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: all 0.2s;" onmouseover="this.style.background='rgba(124, 58, 237, 0.2)'" onmouseout="this.style.background='rgba(124, 58, 237, 0.1)'" onclick="openKembaliFormModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }})">
@@ -224,7 +226,7 @@
                       </span>
                     @endif
                   @else
-                    @if($totalDenda > 0)
+                    @if($isTerlambat || ($pengembalian?->denda_keterlambatan ?? 0) > 0)
                       <span class="badge-status terlambat">
                         <span class="bico">🔴</span>LATE
                       </span>
@@ -307,13 +309,14 @@
         </div>
         <div class="field" style="margin-top: 12px;">
           <label style="font-weight: 600;">Costume Condition <span style="color: var(--red);">*</span></label>
-          <div class="kondisi-row" style="margin-top: 6px;">
-            <button type="button" class="kondisi-btn baik" onclick="selectKondisi('Baik')">Good</button>
-            <button type="button" class="kondisi-btn lecet" onclick="selectKondisi('Lecet')">Scuffed</button>
-            <button type="button" class="kondisi-btn rusak" onclick="selectKondisi('Rusak')">Damaged</button>
+          <div class="kondisi-row" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="kondisi-btn baik" data-kondisi="GOOD" onclick="selectKondisi('GOOD', 0)">✅ GOOD</button>
+            <button type="button" class="kondisi-btn lecet" data-kondisi="MINOR DAMAGE" onclick="selectKondisi('MINOR DAMAGE', 25000)">⚠️ MINOR DAMAGE</button>
+            <button type="button" class="kondisi-btn rusak" data-kondisi="SEVERE DAMAGE" onclick="selectKondisi('SEVERE DAMAGE', 100000)">🔴 SEVERE DAMAGE</button>
+            <button type="button" class="kondisi-btn aksesori" data-kondisi="MISSING ACCESSORIES" onclick="selectKondisi('MISSING ACCESSORIES', 75000)" style="background:rgba(139,92,246,0.12);color:#8b5cf6;">💔 MISSING ACCESSORIES</button>
           </div>
-          <input type="hidden" name="kondisi_kostum" id="kembali_kondisi_input" required value="Baik">
-          <div style="font-size: 11px; color: var(--text-3); margin-top: 6px;">Select the condition of the costume when received back.</div>
+          <input type="hidden" name="kondisi_kostum" id="kembali_kondisi_input" required value="GOOD">
+          <div style="font-size: 11px; color: var(--text-3); margin-top: 6px;">Select the condition of the costume upon return.</div>
         </div>
         
         <!-- Panel: Kembali Lebih Awal (hijau) -->
@@ -321,8 +324,8 @@
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 22px;">✅</span>
             <div>
-              <div style="font-weight: 700; color: #10b981; font-size: 13px;">EARLY RETURN</div>
-              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Costume returned <strong id="kembali-early-days">0 days</strong> before the required schedule. <strong style="color:#10b981;">No fine.</strong></div>
+              <div style="font-weight: 700; color: #10b981; font-size: 13px;">KEMBALI LEBIH AWAL</div>
+              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Kostum dikembalikan <strong id="kembali-early-days">0 hari</strong> lebih awal dari jadwal. <strong style="color:#10b981;">Tidak ada denda keterlambatan.</strong></div>
             </div>
           </div>
         </div>
@@ -332,8 +335,8 @@
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 22px;">🎯</span>
             <div>
-              <div style="font-weight: 700; color: var(--blue); font-size: 13px;">ON TIME</div>
-              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Costume returned exactly on schedule. <strong style="color:var(--blue);">No fine.</strong></div>
+              <div style="font-weight: 700; color: var(--blue); font-size: 13px;">TEPAT WAKTU</div>
+              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Kostum dikembalikan tepat pada jadwal. <strong style="color:var(--blue);">Tidak ada denda keterlambatan.</strong></div>
             </div>
           </div>
         </div>
@@ -342,30 +345,57 @@
         <div class="kalkulasi" id="kembali-kalk" style="display:none; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 14px 16px; margin-top: 16px;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
             <span style="font-size:18px;">⚠️</span>
-            <span style="font-weight:700; color: var(--red); font-size:13px;">LATE RETURN</span>
+            <span style="font-weight:700; color: var(--red); font-size:13px;">TERLAMBAT</span>
           </div>
           <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
-            <span style="color:var(--text-2);">Days Late</span>
-            <span id="kembali-hari" style="color: var(--red); font-weight: 700;">0 DAYS</span>
+            <span style="color:var(--text-2);">Hari Terlambat</span>
+            <span id="kembali-hari" style="color: var(--red); font-weight: 700;">0 HARI</span>
           </div>
-          <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-3);">
-            <span>Fine per Day</span>
+          <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 13px; color: var(--text-3);">
+            <span>Denda per Hari</span>
             <span>Rp 50.000</span>
           </div>
-          <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(239,68,68,0.2); padding-top: 10px; font-weight: 700; font-size: 15px;">
-            <span>ESTIMATED FINE</span>
-            <span id="kembali-total" style="color: var(--red);">Rp 0</span>
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(239,68,68,0.2); padding-top: 8px; font-size: 13px;">
+            <span style="color:var(--text-2);">Denda Keterlambatan</span>
+            <span id="kembali-denda-terlambat" style="color: var(--red); font-weight: 700;">Rp 0</span>
           </div>
         </div>
-        
-        <div class="field" style="margin-top: 16px;">
-          <label>Admin Notes</label>
-          <textarea class="form-textarea" name="catatan_admin" id="kembali_catatan" placeholder="Optional: Description of costume condition upon return, etc..." style="width: 100%; height: 60px; box-sizing: border-box;"></textarea>
+
+        <!-- Section: Denda Kerusakan (Manual Admin) -->
+        <div style="margin-top: 16px; background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.2); border-radius: 10px; padding: 14px 16px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <span style="font-size:16px;">🔧</span>
+            <span style="font-weight:700; color:#8b5cf6; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">Denda Kerusakan (Input Manual)</span>
+          </div>
+          <div style="font-size:11px; color:var(--text-3); margin-bottom:10px;">Sistem tidak bisa menilai kerusakan fisik. Admin yang menentukan nominal berdasarkan kondisi kostum yang diperiksa.</div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">
+            <button type="button" onclick="setDendaKerusakan(0)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(16,185,129,0.3);background:rgba(16,185,129,0.1);color:#10b981;font-size:11px;font-weight:700;cursor:pointer;">✅ Baik (Rp 0)</button>
+            <button type="button" onclick="setDendaKerusakan(25000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1);color:#f59e0b;font-size:11px;font-weight:700;cursor:pointer;">⚠️ Ringan (Rp 25.000)</button>
+            <button type="button" onclick="setDendaKerusakan(100000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.1);color:#ef4444;font-size:11px;font-weight:700;cursor:pointer;">🔴 Berat (Rp 100.000)</button>
+            <button type="button" onclick="setDendaKerusakan(75000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(139,92,246,0.3);background:rgba(139,92,246,0.1);color:#8b5cf6;font-size:11px;font-weight:700;cursor:pointer;">💔 Aksesoris (Rp 75.000)</button>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:12px; color:var(--text-3); white-space:nowrap;">Nominal (Rp):</span>
+            <input type="number" name="denda_kerusakan" id="kembali_denda_kerusakan" value="0" min="0" step="1000"
+              oninput="hitungTotalDenda()"
+              style="flex:1;background:var(--bg-body);border:1px solid rgba(139,92,246,0.4);border-radius:8px;padding:8px 12px;color:var(--text-1);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;outline:none;">
+          </div>
+        </div>
+
+        <!-- Total Denda Keseluruhan -->
+        <div id="kembali-total-denda-row" style="margin-top: 12px; background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px; font-weight:700; color:var(--text-2);">⚡ TOTAL DENDA</span>
+          <span id="kembali-grand-total" style="font-size:16px; font-weight:900; color:var(--red); font-family:'JetBrains Mono',monospace;">Rp 0</span>
+        </div>
+
+        <div class="field" style="margin-top: 14px;">
+          <label>Catatan Admin</label>
+          <textarea class="form-textarea" name="catatan_admin" id="kembali_catatan" placeholder="Opsional: deskripsi kondisi kostum saat dikembalikan, bagian yang rusak, dll..." style="width: 100%; height: 60px; box-sizing: border-box;"></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn-batal" onclick="closeModal('modalKembali')">CANCEL</button>
-        <button type="submit" class="btn-simpan" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">✓ CONFIRM COSTUME RETURNED TO STORE</button>
+        <button type="button" class="btn-batal" onclick="closeModal('modalKembali')">BATAL</button>
+        <button type="submit" class="btn-simpan" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">✓ Konfirmasi Kostum Kembali</button>
       </div>
     </form>
   </div>
@@ -434,29 +464,38 @@
 
       <!-- SECTION: Kondisi & Denda -->
       <div class="detail-section" style="margin-bottom: 20px;">
-        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">🎭 Condition &amp; Cost</div>
+        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">🎭 Kondisi & Biaya</div>
         <div class="field-row" style="display: flex; gap: 16px; margin-bottom: 12px;">
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Condition Upon Return</label>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Kondisi Saat Dikembalikan</label>
             <div id="detail-kondisi-badge" style="display: inline-block; margin-top: 4px;">BAIK</div>
           </div>
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Delay</label>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Keterlambatan</label>
             <div class="field-val" id="detail-terlambat" style="font-size: 13px; font-weight: 700; color: var(--text-1); margin-top: 4px;">Tepat Waktu</div>
           </div>
         </div>
-        <div class="detail-biaya-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 10px;">
-          <div class="biaya-card" style="background: var(--bg-body); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: center;">
-            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Rental Cost</div>
-            <div class="biaya-val" id="detail-biaya-sewa" style="font-size: 14px; font-weight: 700; color: var(--text-1); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
+        {{-- Breakdown biaya: 5 kolom --}}
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 8px; margin-top: 10px;">
+          <div class="biaya-card" style="background: var(--bg-body); padding: 8px; border-radius: 8px; border: 1px solid var(--border); text-align: center;">
+            <div class="biaya-label" style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Biaya Sewa</div>
+            <div class="biaya-val" id="detail-biaya-sewa" style="font-size: 12px; font-weight: 700; color: var(--text-1); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
-          <div class="biaya-card denda" style="background: var(--bg-body); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: center;">
-            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Total Fine</div>
-            <div class="biaya-val denda" id="detail-denda" style="font-size: 14px; font-weight: 700; color: var(--red); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
+          <div style="background: rgba(239,68,68,0.05); padding: 8px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.2); text-align: center;">
+            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">⏰ Terlambat</div>
+            <div id="detail-denda-terlambat" style="font-size: 12px; font-weight: 700; color: var(--red); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
-          <div class="biaya-card total" style="background: rgba(59,130,246,0.06); padding: 10px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.15); text-align: center;">
-            <div class="biaya-label" style="font-size: 10px; color: var(--text-3); text-transform: uppercase;">Total Cost</div>
-            <div class="biaya-val total" id="detail-total" style="font-size: 14px; font-weight: 700; color: var(--blue); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
+          <div style="background: rgba(139,92,246,0.05); padding: 8px; border-radius: 8px; border: 1px solid rgba(139,92,246,0.2); text-align: center;">
+            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">🔧 Kerusakan</div>
+            <div id="detail-denda-kerusakan" style="font-size: 12px; font-weight: 700; color: #8b5cf6; margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
+          </div>
+          <div style="background: rgba(239,68,68,0.08); padding: 8px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.25); text-align: center;">
+            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Total Denda</div>
+            <div class="biaya-val denda" id="detail-denda" style="font-size: 12px; font-weight: 700; color: var(--red); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
+          </div>
+          <div class="biaya-card total" style="background: rgba(59,130,246,0.06); padding: 8px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.15); text-align: center;">
+            <div class="biaya-label" style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Total Bayar</div>
+            <div class="biaya-val total" id="detail-total" style="font-size: 12px; font-weight: 700; color: var(--blue); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
         </div>
       </div>
@@ -482,161 +521,8 @@
 
 @push('scripts')
 <script>
-  let currentTransaksi = null;
-
-  window.selectKondisi = function(val) {
-      document.getElementById('kembali_kondisi_input').value = val;
-      const buttons = document.querySelectorAll('.kondisi-btn');
-      buttons.forEach(btn => {
-          btn.classList.remove('selected');
-          if (btn.classList.contains(val.toLowerCase())) {
-              btn.classList.add('selected');
-          }
-      });
-  }
-
-  window.openKembaliFormModal = function(transaksi, kostumDesc) {
-      currentTransaksi = transaksi;
-      const modal = document.getElementById('modalKembali');
-      const form = modal.querySelector('form');
-      form.action = `/admin/pengembalian/${transaksi.id}/kembali`;
-
-      document.getElementById('kembali-order-id').textContent = '#TRX-' + transaksi.id;
-      document.getElementById('kembali-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
-      document.getElementById('kembali-kostum').textContent = kostumDesc;
-
-      const tSelesai = new Date(transaksi.tanggal_selesai);
-      document.getElementById('kembali-wajib').textContent = tSelesai.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-
-      // Set tanggal kembali default = hari ini
-      const todayStr = new Date().toISOString().split('T')[0];
-      document.getElementById('kembali-tgl').value = todayStr;
-
-      // Reset kondisi ke 'Baik'
-      selectKondisi('Baik');
-      document.getElementById('kembali_catatan').value = '';
-
-      // Sembunyikan semua panel info
-      document.getElementById('kembali-early').style.display  = 'none';
-      document.getElementById('kembali-ontime').style.display = 'none';
-      document.getElementById('kembali-kalk').style.display   = 'none';
-
-      hitungKembaliDenda();
-      modal.classList.add('open');
-
-      // Fokus ke tanggal input
-      setTimeout(() => {
-          const tglInput = document.getElementById('kembali-tgl');
-          if (tglInput) tglInput.focus();
-      }, 200);
-  }
-
-  window.hitungKembaliDenda = function() {
-      if (!currentTransaksi) return;
-
-      const tSelesai = new Date(currentTransaksi.tanggal_selesai);
-      tSelesai.setHours(0,0,0,0);
-
-      const tKembaliVal = document.getElementById('kembali-tgl').value;
-      if (!tKembaliVal) return;
-
-      const tKembali = new Date(tKembaliVal);
-      tKembali.setHours(0,0,0,0);
-
-      const panelEarly  = document.getElementById('kembali-early');
-      const panelOntime = document.getElementById('kembali-ontime');
-      const panelLate   = document.getElementById('kembali-kalk');
-
-      const diffMs   = tKembali - tSelesai;
-      const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
-
-      // Sembunyikan semua panel dulu
-      panelEarly.style.display  = 'none';
-      panelOntime.style.display = 'none';
-      panelLate.style.display   = 'none';
-
-      if (diffDays < 0) {
-          // Kembali lebih awal
-          document.getElementById('kembali-early-days').textContent = Math.abs(diffDays) + ' hari';
-          panelEarly.style.display = 'block';
-      } else if (diffDays === 0) {
-          // Tepat waktu
-          panelOntime.style.display = 'block';
-      } else {
-          // Terlambat
-          document.getElementById('kembali-hari').textContent = diffDays + ' HARI';
-          const dendaVal = diffDays * 50000;
-          document.getElementById('kembali-total').textContent =
-              new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dendaVal);
-          panelLate.style.display = 'block';
-      }
-  }
-
-  window.openDetailFormModal = function(transaksi, kostumDesc, isTerlambat, hariTerlambat) {
-      document.getElementById('detail-order-id').textContent = '#TRX-' + transaksi.id;
-      document.getElementById('detail-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
-      document.getElementById('detail-kostum').textContent = kostumDesc;
-      
-      const options = { day: 'numeric', month: 'short', year: 'numeric' };
-      
-      const tMulai = new Date(transaksi.tanggal_mulai);
-      document.getElementById('detail-tgl-mulai').textContent = tMulai.toLocaleDateString('id-ID', options);
-      
-      const tWajib = new Date(transaksi.tanggal_selesai);
-      document.getElementById('detail-tgl-wajib').textContent = tWajib.toLocaleDateString('id-ID', options);
-      
-      const pengembalian = transaksi.pengembalian || {};
-      const tanggalAktual = pengembalian.tanggal_kembali_aktual;
-      const kondisi = pengembalian.kondisi_barang;
-      const totalDenda = Number(pengembalian.total_denda || 0);
-      const catatanQc = pengembalian.catatan_qc || transaksi.catatan_admin;
-      const tAktual = tanggalAktual ? new Date(tanggalAktual) : null;
-      document.getElementById('detail-tgl-aktual').textContent = tAktual ? tAktual.toLocaleDateString('id-ID', options) : 'Belum Kembali';
-      
-      // Status & Kondisi badges
-      const statusBadge = document.getElementById('detail-status-badge');
-      if (transaksi.status === 'Selesai') {
-          statusBadge.innerHTML = '<span class="badge-status tepat"><span class="bico">✅</span>SELESAI</span>';
-      } else {
-          statusBadge.innerHTML = '<span class="badge-status belum"><span class="bico">🟡</span>BELUM KEMBALI</span>';
-      }
-      
-      const kondisiBadge = document.getElementById('detail-kondisi-badge');
-      kondisiBadge.className = 'kondisi-display';
-      if (kondisi) {
-          const kLower = kondisi.toLowerCase();
-          kondisiBadge.classList.add(kLower);
-          kondisiBadge.textContent = kondisi.toUpperCase();
-          kondisiBadge.style.display = 'inline-block';
-      } else {
-          kondisiBadge.style.display = 'none';
-      }
-      
-      // Terlambat text
-      const terlambatVal = document.getElementById('detail-terlambat');
-      if (isTerlambat || (totalDenda > 0)) {
-          terlambatVal.textContent = `Terlambat ${hariTerlambat || Math.ceil(totalDenda / 50000)} Hari`;
-          terlambatVal.style.color = 'var(--red)';
-      } else {
-          terlambatVal.textContent = 'Tepat Waktu';
-          terlambatVal.style.color = 'var(--green)';
-      }
-      
-      // Biaya
-      const fmt = (v) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(v);
-      document.getElementById('detail-biaya-sewa').textContent = fmt(transaksi.total_biaya);
-      document.getElementById('detail-denda').textContent = fmt(totalDenda);
-      document.getElementById('detail-total').textContent = fmt(Number(transaksi.total_biaya) + totalDenda);
-      
-      // Notes
-      document.getElementById('detail-catatan-admin').textContent = catatanQc || 'Tidak ada catatan admin.';
-      
-      const modal = document.getElementById('modalDetail');
-      modal.classList.add('open');
-  }
-
-  window.closeModal = function(id) {
-      document.getElementById(id).classList.remove('open');
-  }
+  // Konfigurasi URL dasar untuk digunakan oleh pengembalian.js
+  // Menggunakan url() Laravel agar kompatibel dengan subdirectory hosting
+  window._adminPengembalianBase = '{{ url('/admin/pengembalian') }}';
 </script>
 @endpush

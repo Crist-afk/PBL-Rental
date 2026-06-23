@@ -597,6 +597,7 @@ class AdminController extends Controller
         $request->validate([
             'tanggal_kembali_aktual' => 'required|date',
             'kondisi_kostum'         => 'required|string|max:255',
+            'denda_kerusakan'        => 'nullable|integer|min:0',
             'catatan_admin'          => 'nullable|string|max:1000',
         ]);
 
@@ -604,16 +605,20 @@ class AdminController extends Controller
         $tanggalKembali = Carbon::parse($request->tanggal_kembali_aktual)->startOfDay();
         $dendaPerHari   = 50000;
 
-        // Hitung denda otomatis
+        // Hitung denda keterlambatan OTOMATIS berdasarkan selisih tanggal
         if ($tanggalKembali->lte($tanggalSelesai)) {
-            $hariTerlambat = 0;
-            $totalDenda    = 0;
+            $hariTerlambat      = 0;
+            $dendaKeterlambatan = 0;
         } else {
-            $hariTerlambat = (int) abs($tanggalSelesai->diffInDays($tanggalKembali));
-            $totalDenda    = $hariTerlambat * $dendaPerHari;
+            $hariTerlambat      = (int) abs($tanggalSelesai->diffInDays($tanggalKembali));
+            $dendaKeterlambatan = $hariTerlambat * $dendaPerHari;
         }
 
-        $totalDenda = max(0, $totalDenda);
+        // Denda kerusakan diinput MANUAL oleh admin berdasarkan kondisi fisik kostum
+        $dendaKerusakan = max(0, (int) ($request->denda_kerusakan ?? 0));
+
+        // Total denda = keterlambatan (auto) + kerusakan (manual)
+        $totalDenda = max(0, $dendaKeterlambatan + $dendaKerusakan);
 
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
@@ -639,8 +644,8 @@ class AdminController extends Controller
                 'tanggal_kembali_aktual' => $request->tanggal_kembali_aktual,
                 'kondisi_barang'         => $request->kondisi_kostum,
                 'catatan_qc'             => $request->catatan_admin,
-                'denda_keterlambatan'    => $totalDenda,
-                'denda_kerusakan'        => 0,
+                'denda_keterlambatan'    => $dendaKeterlambatan,
+                'denda_kerusakan'        => $dendaKerusakan,
                 'total_denda'            => $totalDenda,
             ]);
 
@@ -654,9 +659,18 @@ class AdminController extends Controller
             return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
         }
 
+        // Pesan sukses dengan breakdown denda
+        $msg = "Pengembalian #TRX-{$id} berhasil dicatat.";
+        if ($dendaKeterlambatan > 0 || $dendaKerusakan > 0) {
+            $msg .= " | Denda Keterlambatan: Rp " . number_format($dendaKeterlambatan, 0, ',', '.');
+            $msg .= " + Denda Kerusakan: Rp " . number_format($dendaKerusakan, 0, ',', '.');
+            $msg .= " = Total: Rp " . number_format($totalDenda, 0, ',', '.');
+        } else {
+            $msg .= ' Tepat waktu & kondisi baik, tidak ada denda.';
+        }
+
         return redirect()->route('admin.pengembalian')
-            ->with('success', "Pengembalian #TRX-{$id} berhasil dicatat." .
-                ($totalDenda > 0 ? " Denda: Rp " . number_format($totalDenda, 0, ',', '.') : ' Tepat waktu, tidak ada denda.'));
+            ->with('success', $msg);
     }
 
     // =====================================================================

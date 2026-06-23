@@ -1,188 +1,227 @@
-// ── TAB ──
-window.setTab = function(el) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
+let currentTransaksi = null;
+let currentDendaKeterlambatan = 0; // simpan nilai keterlambatan untuk total
+
+const fmt = (v) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(v);
+
+// Pilih kondisi kostum + set preset denda kerusakan
+window.selectKondisi = function(val, presetDenda) {
+    const hiddenInput = document.getElementById('kembali_kondisi_input');
+    if (hiddenInput) hiddenInput.value = val;
+
+    // Update active button
+    document.querySelectorAll('#modalKembali .kondisi-btn').forEach(btn => {
+        btn.classList.remove('selected');
+        if ((btn.dataset.kondisi || '').toLowerCase() === val.toLowerCase()) {
+            btn.classList.add('selected');
+        }
+    });
+
+    // Set preset denda kerusakan
+    if (presetDenda !== undefined) {
+        window.setDendaKerusakan(presetDenda);
+    }
 }
 
-// ── MODAL DENDA ──
-window.openModalDenda = function(orderId, penyewa, kostum, tglWajib, hariTerlambat, dendaPerHari) {
-    document.getElementById('denda-order-id').textContent = '#' + orderId;
-    document.getElementById('denda-penyewa').textContent = penyewa;
-    document.getElementById('denda-kostum').textContent = kostum;
-    document.getElementById('denda-hari').textContent = hariTerlambat + ' DAYS';
-    document.getElementById('denda-perhari').textContent = 'Rp ' + dendaPerHari.toLocaleString('id-ID');
-    document.getElementById('denda-total').textContent = 'Rp ' + (hariTerlambat * dendaPerHari).toLocaleString('id-ID');
-
-    // Reset kondisi
-    document.querySelectorAll('#modalDenda .kondisi-btn').forEach(b => b.classList.remove('selected'));
-    document.querySelector('#modalDenda .kondisi-btn.baik').classList.add('selected');
-
-    document.getElementById('modalDenda').classList.add('open');
+// Set nilai denda kerusakan dan update total
+window.setDendaKerusakan = function(val) {
+    const input = document.getElementById('kembali_denda_kerusakan');
+    if (input) {
+        input.value = val;
+        window.hitungTotalDenda();
+    }
 }
 
-// ── MODAL KEMBALI ──
-let kembaliWajibDate = null;
+// Hitung dan tampilkan grand total denda (keterlambatan + kerusakan)
+window.hitungTotalDenda = function() {
+    const kerusakanInput = document.getElementById('kembali_denda_kerusakan');
+    const kerusakan = parseInt(kerusakanInput ? kerusakanInput.value : 0, 10) || 0;
+    const total = currentDendaKeterlambatan + kerusakan;
+    const el = document.getElementById('kembali-grand-total');
+    if (el) el.textContent = fmt(total);
+}
 
-window.openModalKembali = function(orderId, penyewa, kostum, tglWajib) {
-    document.getElementById('kembali-order-id').textContent = '#' + orderId;
-    document.getElementById('kembali-penyewa').textContent = penyewa;
-    document.getElementById('kembali-kostum').textContent = kostum;
-    document.getElementById('kembali-wajib').textContent = tglWajib;
+window.openKembaliFormModal = function(transaksi, kostumDesc) {
+    currentTransaksi = transaksi;
+    currentDendaKeterlambatan = 0;
+    const modal = document.getElementById('modalKembali');
+    const form = modal.querySelector('form');
+    
+    // Gunakan window._adminPengembalianBase yang dinonaktifkan / diset dari blade
+    const baseUrl = window._adminPengembalianBase || '/admin/pengembalian';
+    form.action = `${baseUrl}/${transaksi.id}/kembali`;
 
-    const parts = tglWajib.split('/');
-    kembaliWajibDate = new Date(parts[2], parts[1] - 1, parts[0]);
+    document.getElementById('kembali-order-id').textContent = '#TRX-' + transaksi.id;
+    document.getElementById('kembali-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
+    document.getElementById('kembali-kostum').textContent = kostumDesc;
 
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    document.getElementById('kembali-tgl').value = `${yyyy}-${mm}-${dd}`;
-    document.getElementById('kembali-kalk').style.display = 'none';
+    const tSelesai = new Date(transaksi.tanggal_selesai);
+    document.getElementById('kembali-wajib').textContent = tSelesai.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 
-    document.querySelectorAll('#modalKembali .kondisi-btn').forEach(b => b.classList.remove('selected'));
-    document.querySelector('#modalKembali .kondisi-btn.baik').classList.add('selected');
+    // Set tanggal kembali default = hari ini
+    const todayStr = new Date().toISOString().split('T')[0];
+    document.getElementById('kembali-tgl').value = todayStr;
 
-    hitungKembaliDenda();
-    document.getElementById('modalKembali').classList.add('open');
+    // Reset kondisi ke 'GOOD' dan denda kerusakan ke 0
+    window.selectKondisi('GOOD', 0);
+    const catatanInput = document.getElementById('kembali_catatan');
+    if (catatanInput) catatanInput.value = '';
+    const kerusakanInput = document.getElementById('kembali_denda_kerusakan');
+    if (kerusakanInput) kerusakanInput.value = 0;
+
+    // Sembunyikan semua panel info
+    document.getElementById('kembali-early').style.display  = 'none';
+    document.getElementById('kembali-ontime').style.display = 'none';
+    document.getElementById('kembali-kalk').style.display   = 'none';
+
+    window.hitungKembaliDenda();
+    modal.classList.add('open');
+
+    // Fokus ke tanggal input
+    setTimeout(() => {
+        const tglInput = document.getElementById('kembali-tgl');
+        if (tglInput) tglInput.focus();
+    }, 200);
 }
 
 window.hitungKembaliDenda = function() {
-    const tglInput = document.getElementById('kembali-tgl').value;
-    if (!tglInput || !kembaliWajibDate) return;
-    const aktual = new Date(tglInput);
-    const diff = Math.floor((aktual - kembaliWajibDate) / (1000 * 60 * 60 * 24));
-    const kalk = document.getElementById('kembali-kalk');
-    if (diff > 0) {
-        kalk.style.display = 'block';
-        document.getElementById('kembali-hari').textContent = diff + ' DAYS';
-        document.getElementById('kembali-total').textContent = 'Rp ' + (diff * 50000).toLocaleString('id-ID');
+    if (!currentTransaksi) return;
+
+    const tSelesai = new Date(currentTransaksi.tanggal_selesai);
+    tSelesai.setHours(0,0,0,0);
+
+    const tKembaliVal = document.getElementById('kembali-tgl').value;
+    if (!tKembaliVal) return;
+
+    const tKembali = new Date(tKembaliVal);
+    tKembali.setHours(0,0,0,0);
+
+    const panelEarly  = document.getElementById('kembali-early');
+    const panelOntime = document.getElementById('kembali-ontime');
+    const panelLate   = document.getElementById('kembali-kalk');
+
+    const diffMs   = tKembali - tSelesai;
+    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+    // Sembunyikan semua panel dulu
+    panelEarly.style.display  = 'none';
+    panelOntime.style.display = 'none';
+    panelLate.style.display   = 'none';
+
+    if (diffDays < 0) {
+        // Kembali lebih awal — tidak ada denda keterlambatan
+        currentDendaKeterlambatan = 0;
+        document.getElementById('kembali-early-days').textContent = Math.abs(diffDays) + ' hari';
+        panelEarly.style.display = 'block';
+    } else if (diffDays === 0) {
+        // Tepat waktu
+        currentDendaKeterlambatan = 0;
+        panelOntime.style.display = 'block';
     } else {
-        kalk.style.display = 'none';
+        // Terlambat — hitung denda otomatis
+        currentDendaKeterlambatan = diffDays * 50000;
+        document.getElementById('kembali-hari').textContent = diffDays + ' HARI';
+        document.getElementById('kembali-denda-terlambat').textContent = fmt(currentDendaKeterlambatan);
+        panelLate.style.display = 'block';
     }
+
+    // Update grand total setelah menghitung keterlambatan
+    window.hitungTotalDenda();
+}
+
+window.openDetailFormModal = function(transaksi, kostumDesc, isTerlambat, hariTerlambat) {
+    document.getElementById('detail-order-id').textContent = '#TRX-' + transaksi.id;
+    document.getElementById('detail-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
+    document.getElementById('detail-kostum').textContent = kostumDesc;
+
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+
+    const tMulai = new Date(transaksi.tanggal_mulai);
+    document.getElementById('detail-tgl-mulai').textContent = tMulai.toLocaleDateString('id-ID', options);
+
+    const tWajib = new Date(transaksi.tanggal_selesai);
+    document.getElementById('detail-tgl-wajib').textContent = tWajib.toLocaleDateString('id-ID', options);
+
+    const pengembalian = transaksi.pengembalian || {};
+    const tanggalAktual = pengembalian.tanggal_kembali_aktual;
+    const kondisi = pengembalian.kondisi_barang;
+    const dendaKeterlambatan = Number(pengembalian.denda_keterlambatan || 0);
+    const dendaKerusakan     = Number(pengembalian.denda_kerusakan || 0);
+    const totalDenda         = Number(pengembalian.total_denda || 0);
+    const catatanQc = pengembalian.catatan_qc || transaksi.catatan_admin;
+
+    const tAktual = tanggalAktual ? new Date(tanggalAktual) : null;
+    document.getElementById('detail-tgl-aktual').textContent = tAktual ? tAktual.toLocaleDateString('id-ID', options) : 'Belum Kembali';
+
+    // Status badge
+    const statusBadge = document.getElementById('detail-status-badge');
+    if (transaksi.status === 'Selesai') {
+        statusBadge.innerHTML = '<span class="badge-status tepat"><span class="bico">✅</span>SELESAI</span>';
+    } else {
+        statusBadge.innerHTML = '<span class="badge-status belum"><span class="bico">🟡</span>BELUM KEMBALI</span>';
+    }
+
+    // Kondisi badge
+    const kondisiBadge = document.getElementById('detail-kondisi-badge');
+    kondisiBadge.className = 'kondisi-display';
+    if (kondisi) {
+        let displayKondisi = kondisi;
+        let kLower = kondisi.toLowerCase().replace(' ', '-');
+        if (kLower === 'lecet' || kLower === 'rusak-ringan' || kLower === 'minor-damage') {
+            displayKondisi = 'Minor Damage';
+            kLower = 'rusak-ringan';
+        } else if (kLower === 'rusak' || kLower === 'rusak-berat' || kLower === 'severe-damage') {
+            displayKondisi = 'Severe Damage';
+            kLower = 'rusak-berat';
+        } else if (kLower === 'baik' || kLower === 'good') {
+            displayKondisi = 'Good';
+            kLower = 'baik';
+        } else if (kLower === 'aksesoris-hilang' || kLower === 'missing-accessories') {
+            displayKondisi = 'Missing Accessories';
+            kLower = 'aksesoris-hilang';
+        }
+        kondisiBadge.classList.add(kLower);
+        kondisiBadge.textContent = displayKondisi.toUpperCase();
+        kondisiBadge.style.display = 'inline-block';
+    } else {
+        kondisiBadge.style.display = 'none';
+    }
+
+    // Terlambat text
+    const terlambatVal = document.getElementById('detail-terlambat');
+    if (isTerlambat || dendaKeterlambatan > 0) {
+        const hari = hariTerlambat || Math.ceil(dendaKeterlambatan / 50000);
+        terlambatVal.textContent = `Terlambat ${hari} Hari`;
+        terlambatVal.style.color = 'var(--red)';
+    } else {
+        terlambatVal.textContent = 'Tepat Waktu';
+        terlambatVal.style.color = 'var(--green)';
+    }
+
+    // Biaya breakdown
+    document.getElementById('detail-biaya-sewa').textContent      = fmt(transaksi.total_biaya);
+    document.getElementById('detail-denda-terlambat').textContent  = fmt(dendaKeterlambatan);
+    document.getElementById('detail-denda-kerusakan').textContent  = fmt(dendaKerusakan);
+    document.getElementById('detail-denda').textContent            = fmt(totalDenda);
+    document.getElementById('detail-total').textContent            = fmt(Number(transaksi.total_biaya) + totalDenda);
+
+    // Notes
+    document.getElementById('detail-catatan-admin').textContent = catatanQc || 'Tidak ada catatan admin.';
+
+    const modal = document.getElementById('modalDetail');
+    modal.classList.add('open');
 }
 
 window.closeModal = function(id) {
     document.getElementById(id).classList.remove('open');
 }
 
-window.selectKondisi = function(val) {
-    const modalDenda = document.getElementById('modalDenda');
-    if (modalDenda) {
-        modalDenda.querySelectorAll('.kondisi-btn').forEach(b => b.classList.remove('selected'));
-        const target = modalDenda.querySelector('.kondisi-btn.' + (typeof val === 'string' ? val.toLowerCase() : ''));
-        if (target) target.classList.add('selected');
-    }
-    // Also handle the kembali modal kondisi by value
-    const hiddenInput = document.getElementById('kembali_kondisi_input');
-    if (hiddenInput && typeof val === 'string') {
-        hiddenInput.value = val;
-        document.querySelectorAll('.kondisi-btn').forEach(btn => {
-            btn.classList.remove('selected');
-            if (btn.classList.contains(val.toLowerCase())) {
-                btn.classList.add('selected');
-            }
-        });
-    }
-}
-
-window.selectKondisiK = function(val) {
-    const modalKembali = document.getElementById('modalKembali');
-    if (modalKembali) {
-        modalKembali.querySelectorAll('.kondisi-btn').forEach(b => b.classList.remove('selected'));
-        const target = modalKembali.querySelector('.kondisi-btn.' + (typeof val === 'string' ? val.toLowerCase() : ''));
-        if (target) target.classList.add('selected');
-    }
-}
-
-window.simpanDenda = function() {
-    alert('✅ Return & penalty data saved successfully!');
-    window.closeModal('modalDenda');
-}
-
-window.simpanKembali = function() {
-    alert('✅ Costume return recorded successfully!');
-    window.closeModal('modalKembali');
-}
-
 // Close overlay on backdrop click
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) overlay.classList.remove('open');
+            if (e.target === overlay) {
+                overlay.classList.remove('open');
+            }
         });
     });
 });
-
-// ── MODAL DETAIL ──
-window.openModalDetail = function(orderId, penyewa, kostum, tglMulai, tglWajib, tglAktual, status, kondisi, biayaSewa, denda, statusBayar) {
-    // Info Order
-    document.getElementById('detail-order-id').textContent = '#' + orderId;
-    document.getElementById('detail-penyewa').textContent = penyewa;
-    document.getElementById('detail-kostum').textContent = kostum;
-
-    // Status Badge
-    const isTepat = status.toLowerCase().includes('tepat');
-    const statusBadgeEl = document.getElementById('detail-status-badge');
-    if (isTepat) {
-        statusBadgeEl.innerHTML = '<span class="badge-detail-tepat">✅ ON TIME</span>';
-    } else {
-        statusBadgeEl.innerHTML = '<span class="badge-detail-terlambat">🔴 LATE</span>';
-    }
-
-    // Timeline
-    document.getElementById('detail-tgl-mulai').textContent = tglMulai;
-    document.getElementById('detail-tgl-wajib').textContent = tglWajib;
-    document.getElementById('detail-tgl-aktual').textContent = tglAktual;
-
-    // Kondisi
-    const kondisiEl = document.getElementById('detail-kondisi-badge');
-    const k = kondisi.toLowerCase();
-    kondisiEl.className = 'kondisi-display ' + (k === 'baik' ? 'baik' : k === 'lecet' ? 'lecet' : 'rusak');
-    const kondisiMap = {
-        'baik': 'GOOD',
-        'lecet': 'SCRATCHED',
-        'rusak': 'DAMAGED'
-    };
-    kondisiEl.textContent = kondisiMap[k] || kondisi.toUpperCase();
-
-    // Keterlambatan
-    const terlambatEl = document.getElementById('detail-terlambat');
-    if (isTepat) {
-        terlambatEl.textContent = '✓ On Time';
-        terlambatEl.style.color = 'var(--green)';
-    } else {
-        terlambatEl.textContent = status;
-        terlambatEl.style.color = 'var(--red)';
-    }
-
-    // Biaya
-    document.getElementById('detail-biaya-sewa').textContent = biayaSewa;
-    document.getElementById('detail-denda').textContent = denda;
-
-    // Total Tagihan: parse and sum if possible
-    const cleanNum = s => parseInt(s.replace(/[^\d]/g, '')) || 0;
-    const total = cleanNum(biayaSewa) + cleanNum(denda);
-    document.getElementById('detail-total').textContent = 'Rp ' + total.toLocaleString('id-ID');
-
-    // Payment Badge
-    const paymentEl = document.getElementById('detail-payment-badge');
-    if (statusBayar.toLowerCase() === 'lunas') {
-        paymentEl.innerHTML = '<span class="badge-lunas">✅ PAID</span>';
-    } else {
-        paymentEl.innerHTML = '<span class="badge-belum-detail">💲 UNPAID</span>';
-    }
-
-    document.getElementById('modalDetail').classList.add('open');
-}
-  function setStatusDenda(status) {
-    const unpaid = document.getElementById('opt-unpaid');
-    const paid = document.getElementById('opt-paid');
-    
-    if (status === 'paid') {
-      paid.classList.add('active');
-      unpaid.classList.remove('active');
-    } else {
-      unpaid.classList.add('active');
-      paid.classList.remove('active');
-    }
-  }

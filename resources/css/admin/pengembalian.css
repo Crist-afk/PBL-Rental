@@ -150,14 +150,16 @@ tbody tr:hover td { background: rgba(236,156,157,0.08); }
 .field input[type="text"] { background: var(--bg-card2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: var(--text-1); font-family: 'Sora', sans-serif; outline: none; width: 100%; transition: border-color var(--tr); }
 .field input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
 
-.kondisi-row { display: flex; gap: 8px; }
-.kondisi-btn { flex: 1; border: 2px solid transparent; border-radius: var(--radius-sm); padding: 10px 0; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; font-family: 'Sora', sans-serif; transition: all var(--tr); }
+.kondisi-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.kondisi-btn { flex: 1; min-width: 80px; border: 2px solid transparent; border-radius: var(--radius-sm); padding: 8px 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; cursor: pointer; font-family: 'Sora', sans-serif; transition: all var(--tr); text-align: center; }
 .kondisi-btn.baik  { background: rgba(16,185,129,0.12); color: var(--green); }
 .kondisi-btn.baik.selected  { background: var(--green); color: #fff; border-color: var(--green); }
 .kondisi-btn.lecet { background: rgba(245,158,11,0.12); color: var(--amber); }
 .kondisi-btn.lecet.selected { background: var(--amber); color: #000; border-color: var(--amber); }
 .kondisi-btn.rusak { background: rgba(239,68,68,0.12); color: var(--red); }
 .kondisi-btn.rusak.selected { background: var(--red); color: #fff; border-color: var(--red); }
+.kondisi-btn.aksesori { background: rgba(139,92,246,0.12); color: #8b5cf6; }
+.kondisi-btn.aksesori.selected { background: #8b5cf6; color: #fff; border-color: #8b5cf6; }
 
 .kalkulasi { background: var(--bg-card2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
 .kalk-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-2); margin-bottom: 8px; }
@@ -224,10 +226,13 @@ tbody tr:hover td { background: rgba(236,156,157,0.08); }
 .biaya-val.total { color: var(--blue); }
 
 /* ── KONDISI DISPLAY (readonly) ── */
-.kondisi-display { display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; }
-.kondisi-display.baik  { background: rgba(16,185,129,0.2); color: var(--green); border: 1px solid rgba(16,185,129,0.35); }
-.kondisi-display.lecet { background: rgba(245,158,11,0.2); color: var(--amber); border: 1px solid rgba(245,158,11,0.35); }
-.kondisi-display.rusak { background: rgba(239,68,68,0.2); color: var(--red); border: 1px solid rgba(239,68,68,0.35); }
+.kondisi-display { display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; }
+.kondisi-display.baik         { background: rgba(16,185,129,0.2); color: var(--green); border: 1px solid rgba(16,185,129,0.35); }
+.kondisi-display.rusak-ringan { background: rgba(245,158,11,0.2); color: var(--amber); border: 1px solid rgba(245,158,11,0.35); }
+.kondisi-display.lecet        { background: rgba(245,158,11,0.2); color: var(--amber); border: 1px solid rgba(245,158,11,0.35); }
+.kondisi-display.rusak-berat  { background: rgba(239,68,68,0.2); color: var(--red); border: 1px solid rgba(239,68,68,0.35); }
+.kondisi-display.rusak        { background: rgba(239,68,68,0.2); color: var(--red); border: 1px solid rgba(239,68,68,0.35); }
+.kondisi-display.aksesoris-hilang { background: rgba(139,92,246,0.2); color: #8b5cf6; border: 1px solid rgba(139,92,246,0.35); }
 
 /* ── PAYMENT BADGES ── */
 .badge-lunas  { background: rgba(16,185,129,0.15); color: var(--green); padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; border: 1px solid rgba(16,185,129,0.3); }

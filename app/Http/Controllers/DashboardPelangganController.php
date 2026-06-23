@@ -131,6 +131,8 @@ class DashboardPelangganController extends Controller
         ]);
 
         $kostum = Kostum::findOrFail($request->kostum_id);
+        $size = $request->size;
+        $stokPerUkuran = $kostum->stok_per_ukuran;
 
         // ================= NEW STOCK LOGIC =================
         // Get permanent stock for the size

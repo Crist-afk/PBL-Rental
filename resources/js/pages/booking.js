@@ -12,6 +12,7 @@ if (window.bookingSuccessMessage) {
         }
     });
 }
+console.log("Booking.js updated v2");
         const tglSewa = document.getElementById('tanggal_sewa');
         const tglKembali = document.getElementById('tanggal_kembali');
         const submitBtn = document.querySelector('button[type="submit"]');

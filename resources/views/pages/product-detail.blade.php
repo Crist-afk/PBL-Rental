@@ -264,54 +264,6 @@
 @push('scripts')
     @vite(['resources/js/pages/product-detail.js'])
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sizeRadios = document.querySelectorAll('input[name="size"]');
-            const stockInfo = document.getElementById('stock-info');
-            const selectedSizeText = document.getElementById('selected-size-text');
-            const stokValueSpan = stockInfo ? stockInfo.querySelector('span.text-sakura:last-child') : null;
-            const sewaBtn = document.getElementById('btn-sewa-sekarang'); // Tambahkan id ini ke button sewa jika belum ada
-
-            // Data stok per ukuran dari backend
-            const stokPerUkuran = {!! $kostum->stok_per_ukuran ? json_encode($kostum->stok_per_ukuran) : '{}' !!};
-            const totalStok = {{ $kostum->stok }};
-
-            if (sizeRadios.length > 0 && stockInfo && selectedSizeText) {
-                sizeRadios.forEach(radio => {
-                    radio.addEventListener('change', function() {
-                        if (this.checked) {
-                            const selectedSize = this.value;
-                            selectedSizeText.textContent = selectedSize;
-                            
-                            // Cek stok spesifik ukuran
-                            let sisaStok = 0;
-                            if (stokPerUkuran.hasOwnProperty(selectedSize)) {
-                                sisaStok = stokPerUkuran[selectedSize];
-                            } else {
-                                // Fallback jika tidak ada data JSON
-                                sisaStok = totalStok;
-                            }
-                            
-                            if (stokValueSpan) {
-                                stokValueSpan.textContent = sisaStok;
-                            }
-                            stockInfo.classList.remove('hidden');
-
-                            // Disable tombol sewa jika stok ukuran habis
-                            if (sewaBtn) {
-                                if (sisaStok <= 0) {
-                                    sewaBtn.disabled = true;
-                                    sewaBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                                    sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> Size Out of Stock';
-                                } else {
-                                    sewaBtn.disabled = false;
-                                    sewaBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                    sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Rent Now';
-                                }
-                            }
-                        }
-                    });
-                });
-            }
-        });
+        window.apiCheckAvailabilityUrl = "{{ route('api.check_availability') }}";
     </script>
 @endpush

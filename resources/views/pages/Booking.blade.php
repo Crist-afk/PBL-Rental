@@ -48,14 +48,15 @@
                                 <i class="fa-solid fa-mask text-sakura"></i> Choose Costume
                             </label>
                             <div class="relative group">
-                                <select id="kostum_id" name="kostum_id" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-pointer group-hover:border-sakura/50 relative z-10" required>
+                                <select id="kostum_id" disabled class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition appearance-none cursor-not-allowed group-hover:border-sakura/50 relative z-10 opacity-70" required>
                                     <option value="" disabled {{ !isset($kostum_id) ? 'selected' : '' }}>-- Search Costume --</option>
                                     @foreach($kostums as $k)
-                                        <option value="{{ $k->id }}" data-image="{{ $k->gambar_url }}" data-sizes="{{ $k->ukuran }}" data-stok-ukuran="{{ json_encode($k->stok_per_ukuran) }}" {{ (isset($kostum_id) && $kostum_id == $k->id) ? 'selected' : '' }}>
+                                        <option value="{{ $k->id }}" data-image="{{ $k->gambar_url }}" data-sizes="{{ $k->ukuran }}" {{ (isset($kostum_id) && $kostum_id == $k->id) ? 'selected' : '' }}>
                                             {{ $k->nama_kostum }} ({{ $k->kategori->nama_kategori ?? 'General' }})
                                         </option>
                                     @endforeach
                                 </select>
+                                <input type="hidden" name="kostum_id" value="{{ $kostum_id }}">
                                 <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-sakura z-20">
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </div>
@@ -96,20 +97,22 @@
                         <!-- Tanggal Sewa -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div class="space-y-4">
-                                <label for="tanggal_sewa" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
+                                <label for="tanggal_sewa_display" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
                                     <i class="fa-solid fa-calendar-plus text-sakura"></i> Rental Start
                                 </label>
                                 <div class="relative">
-                                    <input type="date" id="tanggal_sewa" name="tanggal_sewa" value="{{ $tanggal_sewa ?? '' }}" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
+                                    <input type="date" id="tanggal_sewa_display" value="{{ $tanggal_sewa ?? '' }}" disabled class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate outline-none cursor-not-allowed opacity-70">
+                                    <input type="hidden" id="tanggal_sewa" name="tanggal_sewa" value="{{ $tanggal_sewa ?? '' }}">
                                 </div>
                             </div>
 
                             <div class="space-y-4">
-                                <label for="tanggal_kembali" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
+                                <label for="tanggal_kembali_display" class="flex items-center gap-2 text-sm font-black text-dark-chocolate uppercase tracking-widest">
                                     <i class="fa-solid fa-calendar-check text-sakura"></i> Rental End
                                 </label>
                                 <div class="relative">
-                                    <input type="date" id="tanggal_kembali" name="tanggal_kembali" value="{{ $tanggal_kembali ?? '' }}" min="{{ date('Y-m-d') }}" class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition cursor-pointer" required>
+                                    <input type="date" id="tanggal_kembali_display" value="{{ $tanggal_kembali ?? '' }}" disabled class="w-full rounded-[1.5rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-4 font-bold text-dark-chocolate outline-none cursor-not-allowed opacity-70">
+                                    <input type="hidden" id="tanggal_kembali" name="tanggal_kembali" value="{{ $tanggal_kembali ?? '' }}">
                                 </div>
                             </div>
                         </div>
@@ -122,15 +125,21 @@
                             <textarea id="catatan" name="catatan" rows="4" placeholder="Example: Extra wig, delivery request, etc..." class="w-full rounded-[2rem] border-2 border-dark-chocolate/10 bg-white/60 px-6 py-5 font-medium text-dark-chocolate focus:border-sakura focus:ring-4 focus:ring-sakura/10 outline-none transition resize-none placeholder:text-dark-chocolate/30"></textarea>
                         </div>
 
-                        <!-- Submit Button -->
-                        <div class="pt-6">
-                            <button type="submit" class="group relative w-full overflow-hidden rounded-full bg-dark-chocolate p-5 text-center font-black text-misty-rose shadow-2xl transition-all duration-500 hover:scale-[1.02] active:scale-95">
+                        <!-- Submit and Cancel Buttons -->
+                        <div class="pt-6 flex flex-col sm:flex-row gap-4">
+                            <a href="{{ route('products.show', $kostum_id ?? 1) }}" class="group relative w-full sm:w-1/3 overflow-hidden rounded-full border-2 border-dark-chocolate/20 bg-white p-5 text-center font-black text-dark-chocolate transition-all duration-500 hover:border-dark-chocolate hover:bg-dark-chocolate/5 active:scale-95">
+                                <span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest">
+                                    Cancel
+                                </span>
+                            </a>
+                            <button type="submit" class="group relative w-full sm:w-2/3 overflow-hidden rounded-full bg-dark-chocolate p-5 text-center font-black text-misty-rose shadow-2xl transition-all duration-500 hover:scale-[1.02] active:scale-95">
                                 <div class="absolute inset-0 bg-gradient-to-r from-sakura to-aloewood opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
                                 <span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest">
                                     <i class="fa-solid fa-paper-plane animate-bounce-slow"></i> Confirm Booking
                                 </span>
                             </button>
-                            <div class="mt-6 flex items-center justify-center gap-2 text-dark-chocolate/40 font-bold text-[10px] uppercase tracking-[0.2em]">
+                        </div>
+                        <div class="mt-4 flex items-center justify-center gap-2 text-dark-chocolate/40 font-bold text-[10px] uppercase tracking-[0.2em]">
                                 <i class="fa-solid fa-shield-halved text-green-500"></i> Your Data Is Safe & Encrypted
                             </div>
                         </div>
@@ -139,12 +148,7 @@
             </form>
         </section>
 
-        <!-- Navigation Footer -->
-        <div class="mt-12 flex justify-center">
-            <a href="{{ route('dashboard.pelanggan') }}" class="inline-flex items-center gap-3 px-8 py-3 rounded-full bg-white/30 border border-white/50 text-dark-chocolate font-black text-xs uppercase tracking-widest hover:bg-white/50 transition-all duration-300 hover:shadow-lg">
-                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
-            </a>
-        </div>
+
 
         {{-- Size Chart Modal --}}
         <div id="sizeChartModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300">
@@ -208,6 +212,9 @@
     </main>
 
     @push('scripts')
+        <script>
+            window.apiCheckAvailabilityUrl = "{{ route('api.check_availability') }}";
+        </script>
         @vite(['resources/js/pages/booking.js'])
     @endpush
 

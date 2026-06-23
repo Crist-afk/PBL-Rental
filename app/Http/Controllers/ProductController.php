@@ -54,4 +54,57 @@ class ProductController extends Controller
 
         return view('pages.product-detail', compact('kostum'));
     }
+
+    /**
+     * Mengecek ketersediaan stok aktual berdasarkan tanggal dan ukuran
+     */
+    public function checkAvailability(Request $request)
+    {
+        $kostumId = $request->get('kostum_id');
+        $size = $request->get('size');
+        $start = $request->get('start');
+        $end = $request->get('end');
+
+        if (!$kostumId || !$size || !$start || !$end) {
+            return response()->json(['error' => 'Missing parameters'], 400);
+        }
+
+        $kostum = Kostum::find($kostumId);
+        if (!$kostum) {
+            return response()->json(['error' => 'Costume not found'], 404);
+        }
+
+        // Get permanent stock for the size
+        $stokPerUkuran = $kostum->stok_per_ukuran ?? [];
+        $stokPermanen = 0;
+        
+        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
+            $stokPermanen = $stokPerUkuran[$size];
+        } else {
+            $stokPermanen = $kostum->stok;
+        }
+
+        // Calculate booked count
+        $bookedCount = \App\Models\DetailTransaksi::where('kostum_id', $kostumId)
+            ->where('ukuran', $size)
+            ->whereHas('transaksi', function ($query) use ($start, $end) {
+                $query->whereIn('status', [
+                        'Menunggu Pembayaran',
+                        'Menunggu Verifikasi',
+                        'Sudah Dibayar',
+                        'Disewa',
+                    ])
+                    ->where('tanggal_mulai', '<=', $end)
+                    ->where('tanggal_selesai', '>=', $start);
+            })
+            ->count();
+
+        $stokAktual = max(0, $stokPermanen - $bookedCount);
+
+        return response()->json([
+            'stok_permanen' => $stokPermanen,
+            'booked_count' => $bookedCount,
+            'stok_aktual' => $stokAktual
+        ]);
+    }
 }

@@ -75,39 +75,39 @@
                                 <h3 class="font-bold text-xl text-dark-chocolate line-clamp-1">{{ $rental['title'] }}</h3>
                                 {{-- Status Badge per kondisi --}}
                                 @if($rental['raw_status'] === 'Menunggu Pembayaran')
-                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(239,68,68,0.1);color:#ef4444;border-color:rgba(239,68,68,0.3);">🔴 Belum Upload</span>
+                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(239,68,68,0.1);color:#ef4444;border-color:rgba(239,68,68,0.3);">🔴 Not Uploaded</span>
                                 @elseif($rental['raw_status'] === 'Menunggu Verifikasi')
-                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.3);">⏳ Menunggu Verifikasi</span>
+                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.3);">⏳ Waiting Verification</span>
                                 @elseif($rental['raw_status'] === 'Ditolak')
-                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(244,63,94,0.12);color:#f43f5e;border-color:rgba(244,63,94,0.3);">🚫 Bukti Ditolak</span>
+                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(244,63,94,0.12);color:#f43f5e;border-color:rgba(244,63,94,0.3);">🚫 Proof Rejected</span>
                                 @elseif($rental['raw_status'] === 'Sudah Dibayar')
-                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">✅ Sudah Dibayar</span>
+                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">✅ Paid</span>
                                 @elseif($rental['raw_status'] === 'Disewa')
-                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.3);">🎭 Sedang Disewa</span>
+                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.3);">🎭 Currently Rented</span>
                                 @endif
                             </div>
-                            <p class="text-sm font-bold text-aloewood mt-1 uppercase tracking-wide">Ukuran {{ $rental['size'] }}</p>
+                            <p class="text-sm font-bold text-aloewood mt-1 uppercase tracking-wide">Size {{ $rental['size'] }}</p>
 
                             {{-- Info kontekstual per status --}}
                             @if($rental['raw_status'] === 'Menunggu Pembayaran')
                                 <div class="mt-2 p-3 rounded-xl border" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);">
                                     <p class="text-xs font-bold" style="color:#ef4444;">
                                         <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-                                        ⚠️ Upload bukti pembayaran sebelum <strong>{{ $rental['payment_deadline'] }}</strong>
+                                        ⚠️ Upload payment proof before <strong>{{ $rental['payment_deadline'] }}</strong>
                                     </p>
                                     @if($rental['deadline_passed'] ?? false)
-                                        <p class="text-xs font-bold mt-1" style="color:#dc2626;">❌ Batas waktu telah lewat. Hubungi admin.</p>
+                                        <p class="text-xs font-bold mt-1" style="color:#dc2626;">❌ Deadline passed. Contact admin.</p>
                                     @endif
                                 </div>
                             @elseif($rental['raw_status'] === 'Ditolak')
                                 <div class="mt-2 p-3 rounded-xl border" style="background:rgba(244,63,94,0.06);border-color:rgba(244,63,94,0.25);">
                                     <p class="text-xs font-bold" style="color:#f43f5e;">
                                         <i class="fa-solid fa-circle-xmark mr-1"></i>
-                                        🚫 Bukti pembayaranmu ditolak oleh admin. Silakan upload ulang bukti yang benar.
+                                        🚫 Your payment proof was rejected by the admin. Please re-upload the correct proof.
                                     </p>
                                     @if(!empty($rental['catatan_admin']))
                                         <p class="text-xs font-semibold mt-2 p-2 rounded-lg" style="background:rgba(244,63,94,0.08);color:#e11d48;">
-                                            <i class="fa-solid fa-comment-dots mr-1"></i> Alasan: {{ $rental['catatan_admin'] }}
+                                            <i class="fa-solid fa-comment-dots mr-1"></i> Reason: {{ $rental['catatan_admin'] }}
                                         </p>
                                     @endif
                                 </div>
@@ -115,14 +115,14 @@
                                 <div class="mt-2 p-3 rounded-xl border" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2);">
                                     <p class="text-xs font-bold" style="color:#f59e0b;">
                                         <i class="fa-regular fa-clock mr-1"></i>
-                                        ⏳ Bukti pembayaran sedang diverifikasi oleh admin. Mohon tunggu.
+                                        ⏳ Payment proof is being verified by the admin. Please wait.
                                     </p>
                                 </div>
                             @elseif($rental['raw_status'] === 'Sudah Dibayar')
                                 <div class="mt-2 p-3 rounded-xl border" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.2);">
                                     <p class="text-xs font-bold" style="color:#10b981;">
                                         <i class="fa-solid fa-check-circle mr-1"></i>
-                                        ✅ Pembayaran diterima! Silakan ambil kostum pada <strong>{{ $rental['start_date'] ?? '-' }}</strong>
+                                        ✅ Payment received! Please pick up the costume on <strong>{{ $rental['start_date'] ?? '-' }}</strong>
                                     </p>
                                 </div>
                             @elseif($rental['raw_status'] === 'Disewa')
@@ -130,12 +130,12 @@
                                     <div class="mt-2 p-3 rounded-xl border" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);">
                                         <p class="text-xs font-bold" style="color:#ef4444;">
                                             <i class="fa-solid fa-circle-exclamation mr-1"></i>
-                                            Keterlambatan: {{ $rental['days_late'] }} hari — Denda: Rp {{ number_format($rental['denda'], 0, ',', '.') }}
+                                            Late: {{ $rental['days_late'] }} days — Fine: Rp {{ number_format($rental['denda'], 0, ',', '.') }}
                                         </p>
                                     </div>
                                 @else
                                     <p class="text-xs font-medium text-dark-chocolate/60 mt-2">
-                                        <i class="fa-regular fa-clock mr-1"></i> Kembalikan sebelum <strong>{{ $rental['return_date'] }}</strong>
+                                        <i class="fa-regular fa-clock mr-1"></i> Return before <strong>{{ $rental['return_date'] }}</strong>
                                     </p>
                                 @endif
                             @endif
@@ -149,16 +149,16 @@
                         </div>
                         <div class="text-left sm:text-right w-full sm:w-auto flex justify-between sm:block border-t sm:border-0 border-dark-chocolate/10 pt-4 sm:pt-0 mt-4 sm:mt-0 gap-4">
                             <div>
-                                <span class="block text-[10px] font-bold text-dark-chocolate/60 uppercase tracking-widest">Total Biaya</span>
+                                <span class="block text-[10px] font-bold text-dark-chocolate/60 uppercase tracking-widest">Total Cost</span>
                                 <span class="font-bold text-xl text-dark-chocolate">Rp {{ number_format($rental['price'], 0, ',', '.') }}</span>
                             </div>
                             @if($rental['raw_status'] === 'Menunggu Pembayaran')
                             <button onclick="openUploadModal({{ $rental['id'] }})" class="bg-sakura text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-sakura/80 transition sm:mt-3 whitespace-nowrap inline-flex items-center justify-center">
-                                <i class="fa-solid fa-upload mr-1"></i> {{ $rental['has_payment_proof'] ? 'Ganti Bukti' : 'Upload Bukti' }}
+                                <i class="fa-solid fa-upload mr-1"></i> {{ $rental['has_payment_proof'] ? 'Change Proof' : 'Upload Proof' }}
                             </button>
                             @elseif($rental['raw_status'] === 'Ditolak')
                             <button onclick="openUploadModal({{ $rental['id'] }})" class="px-6 py-2.5 rounded-full text-sm font-bold transition sm:mt-3 whitespace-nowrap inline-flex items-center justify-center" style="background:#f43f5e;color:#fff;">
-                                <i class="fa-solid fa-rotate-right mr-1"></i> Upload Ulang
+                                <i class="fa-solid fa-rotate-right mr-1"></i> Re-upload
                             </button>
                             @elseif($rental['raw_status'] !== 'Menunggu Verifikasi')
                             <a href="{{ route('riwayat.faktur', $rental['id']) }}" class="bg-dark-chocolate text-misty-rose px-6 py-2.5 rounded-full text-sm font-bold hover:bg-black transition sm:mt-3 whitespace-nowrap inline-flex items-center justify-center">
@@ -172,10 +172,10 @@
                             <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-sakura/20 text-2xl text-dark-chocolate mb-4">
                                 <i class="fa-solid fa-box-open"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-dark-chocolate">Belum ada kostum yang disewa.</h3>
-                            <p class="mt-2 text-sm font-medium text-dark-chocolate/70">Mulai petualangan cosplay kamu dengan menyewa kostum sekarang!</p>
+                            <h3 class="text-xl font-bold text-dark-chocolate">No rented costumes yet.</h3>
+                            <p class="mt-2 text-sm font-medium text-dark-chocolate/70">Start your cosplay adventure by renting a costume now!</p>
                             <a href="{{ route('products.index') }}" class="inline-block mt-6 bg-dark-chocolate text-misty-rose px-8 py-3 rounded-full text-sm font-bold hover:bg-black transition">
-                                Lihat Katalog
+                                View Catalog
                             </a>
                         </div>
                     @endforelse
@@ -184,17 +184,17 @@
                 {{-- CARA MENYEWA --}}
                 <div class="glass-card rounded-[2rem] p-6 md:p-8 border-2 border-dark-chocolate/10 shadow-xl mt-4">
                     <h3 class="font-bold text-lg text-dark-chocolate mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-info text-aloewood"></i> Cara Menyewa Kostum
+                        <i class="fa-solid fa-circle-info text-aloewood"></i> How to Rent a Costume
                     </h3>
                     <ol class="space-y-3">
                         @foreach([
-                            ['Pilih kostum', 'Temukan kostum yang kamu inginkan di katalog.'],
-                            ['Pilih ukuran & tanggal', 'Tentukan ukuran dan tanggal mulai / selesai sewa.'],
-                            ['Booking', 'Klik tombol Booking untuk membuat pesanan.'],
-                            ['Upload bukti pembayaran', 'Transfer sesuai nominal, lalu upload foto bukti transfer.'],
-                            ['Tunggu verifikasi admin', 'Admin akan memverifikasi bukti pembayaranmu.'],
-                            ['Ambil kostum', 'Datangi toko pada tanggal mulai sewa dan ambil kostumnya.'],
-                            ['Kembalikan tepat waktu', 'Kembalikan sebelum tanggal selesai untuk menghindari denda Rp 50.000/hari.'],
+                            ['Choose a costume', 'Find the costume you want in the catalog.'],
+                            ['Choose size & date', 'Determine the size and rental start / end dates.'],
+                            ['Booking', 'Click the Booking button to place an order.'],
+                            ['Upload payment proof', 'Transfer according to the nominal amount, then upload a photo of the transfer proof.'],
+                            ['Wait for admin verification', 'The admin will verify your payment proof.'],
+                            ['Pick up costume', 'Visit the store on the rental start date and pick up the costume.'],
+                            ['Return on time', 'Return before the end date to avoid a late fee of Rp 50.000/day.'],
                         ] as $i => [$step, $desc])
                         <li class="flex items-start gap-3">
                             <span class="flex-shrink-0 w-6 h-6 rounded-full bg-dark-chocolate text-misty-rose text-xs font-bold flex items-center justify-center mt-0.5">{{ $i + 1 }}</span>
@@ -206,7 +206,7 @@
                         @endforeach
                     </ol>
                     <p class="mt-4 text-xs font-bold text-aloewood border-t border-dark-chocolate/10 pt-3">
-                        <i class="fa-solid fa-lightbulb mr-1"></i> Disarankan memesan minimal H-3 sebelum acara cosplay.
+                        <i class="fa-solid fa-lightbulb mr-1"></i> It is recommended to book at least 3 days before the cosplay event.
                     </p>
                 </div>
             </div>
@@ -218,15 +218,6 @@
                 <div class="glass-card rounded-[2rem] p-6 md:p-8 border-2 border-dark-chocolate/10 shadow-xl">
                     <h3 class="font-bold text-xl mb-6 text-dark-chocolate"><i class="fa-solid fa-user-gear text-sakura mr-2"></i>Customer Menu</h3>
                     <div class="grid grid-cols-1 gap-4">
-                        <a href="{{ route('booking.index') }}" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-4 rounded-[1.5rem] flex items-center gap-4 border-2 border-dark-chocolate/10 group">
-                            <div class="w-12 h-12 bg-sakura/20 rounded-xl flex items-center justify-center text-xl text-sakura group-hover:bg-sakura group-hover:text-dark-chocolate transition">
-                                <i class="fa-solid fa-calendar-check"></i>
-                            </div>
-                            <div>
-                                <p class="font-bold text-sm">Booking Form</p>
-                                <p class="text-[10px] opacity-70">Book a costume now</p>
-                            </div>
-                        </a>
                         <a href="{{ route('riwayat.index') }}" class="glass-card hover:bg-dark-chocolate hover:border-dark-chocolate hover:text-misty-rose transition p-4 rounded-[1.5rem] flex items-center gap-4 border-2 border-dark-chocolate/10 group">
                             <div class="w-12 h-12 bg-aloewood/20 rounded-xl flex items-center justify-center text-xl text-aloewood group-hover:bg-aloewood group-hover:text-dark-chocolate transition">
                                 <i class="fa-solid fa-clock-rotate-left"></i>
@@ -379,4 +370,11 @@
         }, 300);
     }
 </script>
+@if(session('open_upload_modal'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        openUploadModal({{ session('open_upload_modal') }});
+    });
+</script>
+@endif
 @endpush

@@ -24,6 +24,7 @@ Route::view('/contact', 'pages.contact')->name('contact');
 
 // ==================== ROUTE PRODUK ====================
 Route::get('/product', [ProductController::class, 'index'])->name('products.index');
+Route::get('/api/check-availability', [ProductController::class, 'checkAvailability'])->name('api.check_availability');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
 // Legacy redirect aliases (kept for backwards-compatible URLs)
 Route::redirect('/products', '/product', 301);

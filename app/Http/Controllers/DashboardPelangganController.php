@@ -103,7 +103,11 @@ class DashboardPelangganController extends Controller
      */
     public function booking(Request $request)
     {
-        $kostums = Kostum::all();
+        if (!$request->has(['kostum_id', 'size', 'tanggal_sewa', 'tanggal_kembali'])) {
+            return redirect()->route('products.index')->with('error', 'Please select a costume first from the catalog.');
+        }
+
+        $kostums = Kostum::where('id', $request->query('kostum_id'))->get();
         
         return view('pages.Booking', [
             'kostums' => $kostums,
@@ -128,22 +132,17 @@ class DashboardPelangganController extends Controller
 
         $kostum = Kostum::findOrFail($request->kostum_id);
 
-        // Cek stok per ukuran
-        $stokPerUkuran = $kostum->stok_per_ukuran ?? [];
-        $size = $request->size;
-
+        // ================= NEW STOCK LOGIC =================
+        // Get permanent stock for the size
+        $stokPermanen = 0;
         if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
-            if ($stokPerUkuran[$size] <= 0) {
-                return back()->with('error', 'Costume size ' . $size . ' is out of stock.')->withInput();
-            }
+            $stokPermanen = $stokPerUkuran[$size];
         } else {
-            // Fallback ke stok umum jika stok_per_ukuran tidak ada/tidak sesuai
-            if ($kostum->stok <= 0) {
-                return back()->with('error', 'Costume is out of stock.')->withInput();
-            }
+            $stokPermanen = $kostum->stok;
         }
 
-        $isBooked = DetailTransaksi::where('kostum_id', $request->kostum_id)
+        // Calculate booked count for overlapping dates
+        $bookedCount = DetailTransaksi::where('kostum_id', $request->kostum_id)
             ->where('ukuran', $size)
             ->whereHas('transaksi', function ($query) use ($request) {
                 // Cek konflik booking untuk semua status aktif
@@ -156,10 +155,12 @@ class DashboardPelangganController extends Controller
                     ->where('tanggal_mulai', '<=', $request->tanggal_kembali)
                     ->where('tanggal_selesai', '>=', $request->tanggal_sewa);
             })
-            ->exists();
+            ->count();
 
-        if ($isBooked) {
-            return back()->with('error', 'Costume is already booked for those dates.')->withInput();
+        $stokAktual = $stokPermanen - $bookedCount;
+
+        if ($stokAktual <= 0) {
+            return back()->with('error', 'Costume size ' . $size . ' is fully booked for those dates.')->withInput();
         }
 
         try {
@@ -190,21 +191,17 @@ class DashboardPelangganController extends Controller
                 'harga_sewa_saat_transaksi' => $total_biaya
             ]);
 
-            // ===== DECREASE COSTUME STOCK =====
-            if ($size) {
-                $stokPerUkuran = $kostum->stok_per_ukuran;
-                if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
-                    $stokPerUkuran[$size] -= 1;
-                    $kostum->stok_per_ukuran = $stokPerUkuran;
-                }
-            }
-            $kostum->stok -= 1;
-            $kostum->save();
-            // ===============================
+            // ===============================================
+            // TIDAK ADA PENGURANGAN STOK DI DATABASE KARENA
+            // STOK ADALAH STOK PERMANEN (DICEK SECARA DINAMIS)
+            // ===============================================
 
             \Illuminate\Support\Facades\DB::commit();
 
-            return redirect()->route('dashboard.pelanggan')->with('success', 'Booking created successfully! Please wait for payment confirmation.');
+            return redirect()->route('dashboard.pelanggan')->with([
+                'success' => 'Booking created successfully! Please upload your payment proof.',
+                'open_upload_modal' => $transaksi->id
+            ]);
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();

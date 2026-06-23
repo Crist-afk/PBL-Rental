@@ -14,13 +14,59 @@ if (window.bookingSuccessMessage) {
 }
         const tglSewa = document.getElementById('tanggal_sewa');
         const tglKembali = document.getElementById('tanggal_kembali');
+        const submitBtn = document.querySelector('button[type="submit"]');
+
+        function checkAvailability() {
+            const kostumSelect = document.getElementById('kostum_id');
+            const sizeRadio = document.querySelector('input[name="size"]:checked');
+            
+            if (!kostumSelect.value || !sizeRadio || !tglSewa.value || !tglKembali.value) return;
+
+            const selectedSize = sizeRadio.value;
+            const originalBtnContent = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest"><i class="fa-solid fa-spinner fa-spin"></i> Checking Stock...</span>';
+
+            fetch(`${window.apiCheckAvailabilityUrl}?kostum_id=${kostumSelect.value}&size=${encodeURIComponent(selectedSize)}&start=${tglSewa.value}&end=${tglKembali.value}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error);
+                        return;
+                    }
+                    
+                    const infoLabel = sizeRadio.nextElementSibling;
+                    const stockSpan = infoLabel.querySelector('.stock-status');
+                    
+                    if (data.stok_aktual <= 0) {
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                        submitBtn.innerHTML = '<span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest"><i class="fa-solid fa-ban"></i> Out of Stock</span>';
+                        if (stockSpan) stockSpan.innerHTML = '<span class="text-[10px] ml-1 font-bold text-red-500">(Out of Stock for these dates)</span>';
+                    } else {
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        submitBtn.innerHTML = '<span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest"><i class="fa-solid fa-paper-plane animate-bounce-slow"></i> Confirm Booking</span>';
+                        if (stockSpan) stockSpan.innerHTML = `<span class="text-[10px] ml-1 font-bold text-sakura">(${data.stok_aktual} left)</span>`;
+                    }
+                })
+                .catch(err => {
+                    console.error("Error checking availability:", err);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span class="relative flex items-center justify-center gap-3 text-xl uppercase tracking-widest"><i class="fa-solid fa-paper-plane animate-bounce-slow"></i> Confirm Booking</span>';
+                });
+        }
 
         tglSewa.addEventListener('change', function() {
             tglKembali.min = this.value;
             if (tglKembali.value && tglKembali.value < this.value) {
                 tglKembali.value = this.value;
             }
+            checkAvailability();
         });
+
+        tglKembali.addEventListener('change', checkAvailability);
 
         // Costume Preview Logic
         const kostumSelect = document.getElementById('kostum_id');
@@ -33,11 +79,6 @@ if (window.bookingSuccessMessage) {
             const imageUrl = selectedOption.getAttribute('data-image');
             const costumeName = selectedOption.text;
             const sizesString = selectedOption.getAttribute('data-sizes');
-            const stokUkuranStr = selectedOption.getAttribute('data-stok-ukuran');
-            let stokUkuran = {};
-            try {
-                if (stokUkuranStr) stokUkuran = JSON.parse(stokUkuranStr);
-            } catch (e) {}
 
             if (imageUrl) {
                 previewImage.src = imageUrl;
@@ -57,31 +98,32 @@ if (window.bookingSuccessMessage) {
                 
                 sizeContainer.innerHTML = '';
                 
-                // Find first available size to check if no valid size is selected
-                const availableSizes = finalSizes.filter(size => {
-                    const sisaStok = stokUkuran.hasOwnProperty(size) ? stokUkuran[size] : 1;
-                    return sisaStok > 0;
-                });
-                
-                if (availableSizes.length > 0 && (!selectedSize || !availableSizes.includes(selectedSize))) {
-                    selectedSize = availableSizes[0];
+                if (finalSizes.length > 0 && (!selectedSize || !finalSizes.includes(selectedSize))) {
+                    selectedSize = finalSizes[0];
                 }
 
                 finalSizes.forEach((size, index) => {
-                    const sisaStok = stokUkuran.hasOwnProperty(size) ? stokUkuran[size] : 1;
-                    const isDisabled = sisaStok <= 0;
-                    const isChecked = !isDisabled && selectedSize === size;
+                    const isChecked = selectedSize === size;
+                    
+                    // Jika ini bukan size yang dipilih, jangan render (Lock)
+                    if (!isChecked) return;
                     
                     const label = document.createElement('label');
-                    label.className = isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer';
+                    label.className = 'cursor-not-allowed opacity-60 pointer-events-none'; // Locked styling
                     label.innerHTML = `
-                        <input type="radio" name="size" value="${size}" class="peer sr-only" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''} ${isChecked ? 'required' : ''}>
-                        <div class="min-w-[3rem] px-4 py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/10 font-black text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition-all duration-300 shadow-sm ${isDisabled ? '' : 'hover:scale-105 hover:border-sakura/50'} bg-white/40 peer-checked:shadow-sakura/20 peer-checked:shadow-lg">
-                            ${size} ${isDisabled ? '<span class="text-[10px] ml-1 font-bold text-red-500">(Out of Stock)</span>' : ''}
+                        <input type="radio" name="size" value="${size}" class="peer sr-only size-radio-btn" ${isChecked ? 'checked' : ''} required>
+                        <div class="min-w-[3rem] px-4 py-4 flex items-center justify-center rounded-2xl border-2 border-dark-chocolate/20 bg-dark-chocolate/5 font-black text-dark-chocolate/60 transition-all duration-300">
+                            ${size} <span class="stock-status"></span>
                         </div>
                     `;
                     sizeContainer.appendChild(label);
                 });
+                
+                document.querySelectorAll('.size-radio-btn').forEach(radio => {
+                    radio.addEventListener('change', checkAvailability);
+                });
+                
+                checkAvailability();
             } else if (sizeContainer) {
                 sizeContainer.innerHTML = '<p class="text-sm font-medium text-dark-chocolate/50 italic py-2">Select a costume first to see available sizes.</p>';
             }

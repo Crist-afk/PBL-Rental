@@ -455,21 +455,10 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // Kembalikan stok kostum
-            foreach ($transaksi->detailTransaksi as $detail) {
-                $kostum = $detail->kostum;
-                if ($kostum) {
-                    if ($detail->ukuran) {
-                        $stokPerUkuran = $kostum->stok_per_ukuran;
-                        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$detail->ukuran])) {
-                            $stokPerUkuran[$detail->ukuran] += 1;
-                            $kostum->stok_per_ukuran = $stokPerUkuran;
-                        }
-                    }
-                    $kostum->stok += 1;
-                    $kostum->save();
-                }
-            }
+            // ===============================================
+            // TIDAK ADA PENAMBAHAN STOK DI DATABASE KARENA
+            // STOK ADALAH STOK PERMANEN (DICEK SECARA DINAMIS)
+            // ===============================================
 
             $transaksi->update([
                 'status'        => 'Batal',
@@ -623,21 +612,10 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // Kembalikan stok kostum
-            foreach ($transaksi->detailTransaksi as $detail) {
-                $kostum = $detail->kostum;
-                if ($kostum) {
-                    if ($detail->ukuran) {
-                        $stokPerUkuran = $kostum->stok_per_ukuran;
-                        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$detail->ukuran])) {
-                            $stokPerUkuran[$detail->ukuran] += 1;
-                            $kostum->stok_per_ukuran = $stokPerUkuran;
-                        }
-                    }
-                    $kostum->stok += 1;
-                    $kostum->save();
-                }
-            }
+            // ===============================================
+            // TIDAK ADA PENAMBAHAN STOK DI DATABASE KARENA
+            // STOK ADALAH STOK PERMANEN (DICEK SECARA DINAMIS)
+            // ===============================================
 
             Pengembalian::create([
                 'transaksi_id'           => $transaksi->id,

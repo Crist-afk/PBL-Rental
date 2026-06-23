@@ -79,6 +79,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/pembayaran', [AdminController::class, 'pembayaran'])->name('pembayaran');
     Route::post('/pembayaran/{id}/setujui', [AdminController::class, 'pembayaranSetujui'])->name('pembayaran.setujui');
     Route::post('/pembayaran/{id}/tolak', [AdminController::class, 'pembayaranTolak'])->name('pembayaran.tolak');
+    Route::post('/pembayaran/{id}/batal', [AdminController::class, 'pembayaranBatal'])->name('pembayaran.batal');
+    Route::post('/pembayaran/{id}/konfirmasi-ambil', [AdminController::class, 'konfirmasiPengambilan'])->name('pembayaran.konfirmasi_ambil');
 
     // ── Pengembalian ──
     Route::get('/pengembalian', [AdminController::class, 'pengembalian'])->name('pengembalian');

@@ -54,16 +54,18 @@
                     $statusColor = $item->status_color;
                     $penalty = $item->pengembalian?->total_denda ?? 0;
                     $hasPaymentProof = !empty($item->bukti_pembayaran);
-                    
+
+                    // Denda berjalan hanya untuk status Disewa (sudah diambil)
                     $dendaBerjalan = 0;
                     $daysLate = 0;
-                    if (in_array($item->status, ['Disewa', 'Menunggu Pembayaran']) && \Carbon\Carbon::now()->startOfDay()->greaterThan(\Carbon\Carbon::parse($item->tanggal_selesai)->startOfDay())) {
+                    if ($item->status === 'Disewa' && \Carbon\Carbon::now()->startOfDay()->greaterThan(\Carbon\Carbon::parse($item->tanggal_selesai)->startOfDay())) {
                         $daysLate = \Carbon\Carbon::parse($item->tanggal_selesai)->startOfDay()->diffInDays(\Carbon\Carbon::now()->startOfDay());
                         $dendaBerjalan = $daysLate * 50000;
                         $penalty += $dendaBerjalan;
                     }
-                    
+
                     $totalCost = $item->total_biaya + $penalty;
+                    $paymentDeadline = \Carbon\Carbon::parse($item->created_at)->addHours(12);
                 @endphp
                 <article class="glass-card rounded-[2.5rem] border-2 border-dark-chocolate/10 p-6 md:p-10 shadow-lg bg-white/60 flex flex-col lg:flex-row gap-10 items-center lg:items-center w-full">
                     
@@ -103,19 +105,28 @@
                             @endif
                         </h3>
                         
-                        @if($item->status === 'Batal' && !empty($item->catatan_admin))
-                            <p class="text-xs font-bold text-red-500 mt-2 bg-red-50 p-3 rounded-lg border border-red-100 inline-block w-full">
-                                <i class="fa-solid fa-circle-exclamation mr-1"></i> Reason: {{ $item->catatan_admin }}
-                            </p>
-                        @endif
-                        
+                        {{-- Info kontekstual berdasarkan status --}}
                         @if($item->status === 'Menunggu Pembayaran')
-                            <p class="text-xs font-bold text-amber-600 mt-2 bg-amber-50 p-3 rounded-lg border border-amber-200 inline-block w-full">
-                                @if($hasPaymentProof)
-                                    <i class="fa-solid fa-circle-check mr-1"></i> Waiting for admin validation
-                                @else
-                                    <i class="fa-solid fa-clock mr-1"></i> Pay before: {{ \Carbon\Carbon::parse($item->created_at)->addHours(12)->format('d M Y, H:i') }}
+                            <div class="text-xs font-bold mt-2 p-3 rounded-xl border inline-block w-full" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);color:#ef4444;">
+                                <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                                ⚠️ Upload bukti pembayaran sebelum <strong>{{ $paymentDeadline->format('d M Y, H:i') }}</strong>
+                                @if($paymentDeadline->isPast())
+                                    — <span style="color:#dc2626;">Batas waktu lewat, hubungi admin.</span>
                                 @endif
+                            </div>
+                        @elseif($item->status === 'Menunggu Verifikasi')
+                            <div class="text-xs font-bold mt-2 p-3 rounded-xl border inline-block w-full" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2);color:#f59e0b;">
+                                <i class="fa-regular fa-clock mr-1"></i>
+                                ⏳ Bukti pembayaran sedang diverifikasi admin. Mohon tunggu.
+                            </div>
+                        @elseif($item->status === 'Sudah Dibayar')
+                            <div class="text-xs font-bold mt-2 p-3 rounded-xl border inline-block w-full" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.2);color:#10b981;">
+                                <i class="fa-solid fa-check-circle mr-1"></i>
+                                ✅ Pembayaran diterima! Silakan ambil kostum pada tanggal mulai sewa.
+                            </div>
+                        @elseif($item->status === 'Batal' && !empty($item->catatan_admin))
+                            <p class="text-xs font-bold text-red-500 mt-2 bg-red-50 p-3 rounded-lg border border-red-100 inline-block w-full">
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i> Alasan: {{ $item->catatan_admin }}
                             </p>
                         @endif
                         
@@ -145,18 +156,20 @@
                             @endif
                         </div>
                         
+                        {{-- Action Buttons --}}
                         <div class="flex flex-wrap gap-3 w-full lg:w-auto">
-                            @if($item->status !== 'Menunggu Pembayaran' && !($item->status === 'Batal' && str_contains($item->catatan_admin ?? '', 'Auto-canceled')))
+                            {{-- Tombol Invoice: tampilkan untuk status selain Menunggu Pembayaran & Menunggu Verifikasi --}}
+                            @if(!in_array($item->status, ['Menunggu Pembayaran', 'Menunggu Verifikasi']))
                             <a href="{{ route('riwayat.faktur', $item->id) }}" class="flex-1 lg:flex-none px-6 py-3 bg-white/80 border-2 border-dark-chocolate/5 rounded-full text-[10px] font-black text-dark-chocolate uppercase tracking-[0.2em] hover:bg-dark-chocolate hover:text-white transition-all shadow-sm flex items-center justify-center">
                                 <i class="fa-solid fa-file-invoice mr-2"></i>Invoice
                             </a>
                             @endif
+                            {{-- Tombol Upload: hanya untuk Menunggu Pembayaran --}}
                             @if($item->status === 'Menunggu Pembayaran')
                             <button onclick="openUploadModal({{ $item->id }})" class="flex-1 lg:flex-none px-6 py-3 bg-sakura text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-sakura/80 transition-all shadow-xl text-center flex items-center justify-center">
-                                <i class="fa-solid fa-upload mr-2"></i>{{ $hasPaymentProof ? 'Replace Proof' : 'Upload Proof' }}
+                                <i class="fa-solid fa-upload mr-2"></i>{{ $hasPaymentProof ? 'Ganti Bukti' : 'Upload Bukti' }}
                             </button>
                             @endif
-
                         </div>
                     </div>
                 </article>

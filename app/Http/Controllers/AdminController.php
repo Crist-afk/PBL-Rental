@@ -21,18 +21,18 @@ class AdminController extends Controller
     public function dashboard()
     {
         $stats = [
-            'total_kostum'      => Kostum::count(),
-            'total_pelanggan'   => User::where('role', 'pelanggan')->count(),
-            'sewa_aktif'        => Transaksi::where('status', 'Disewa')->count(),
-            'menunggu_bayar'    => Transaksi::where('status', 'Menunggu Pembayaran')->count(),
-            'total_pendapatan'  => Transaksi::whereIn('status', ['Disewa', 'Selesai'])->sum('total_biaya'),
+            'total_kostum'         => Kostum::count(),
+            'total_pelanggan'      => User::where('role', 'pelanggan')->count(),
+            'sewa_aktif'           => Transaksi::where('status', 'Disewa')->count(),
+            'menunggu_verifikasi'  => Transaksi::where('status', 'Menunggu Verifikasi')->count(),
+            'sudah_dibayar'        => Transaksi::where('status', 'Sudah Dibayar')->count(),
+            'menunggu_bayar'       => Transaksi::where('status', 'Menunggu Pembayaran')->count(),
+            'total_pendapatan'     => Transaksi::whereIn('status', ['Sudah Dibayar', 'Disewa', 'Selesai'])->sum('total_biaya'),
         ];
 
-        // ── Statistik Cepat (data nyata) ────────────────────────────────
+        // ── Statistik Cepat ─────────────────────────────────────────────
         $totalSelesai = Transaksi::where('status', 'Selesai')->count();
 
-        // Pelanggan tepat waktu: transaksi Selesai yang punya pengembalian on-time
-        // (tanggal_kembali_aktual <= tanggal_selesai)
         $tepat_waktu = Pengembalian::whereHas('transaksi', function ($q) {
             $q->where('status', 'Selesai')
               ->whereColumn('pengembalian.tanggal_kembali_aktual', '<=', 'transaksi.tanggal_selesai');
@@ -42,7 +42,6 @@ class AdminController extends Controller
             ? round(($tepat_waktu / $totalSelesai) * 100, 1)
             : 0;
 
-        // Tingkat keterlambatan (%) dari semua yang sudah selesai
         $terlambat_count = Pengembalian::whereHas('transaksi', function ($q) {
             $q->where('status', 'Selesai')
               ->whereColumn('pengembalian.tanggal_kembali_aktual', '>', 'transaksi.tanggal_selesai');
@@ -52,17 +51,16 @@ class AdminController extends Controller
             ? round(($terlambat_count / $totalSelesai) * 100, 1)
             : 0;
 
-        // Total akun terdaftar
         $total_akun = User::count();
 
-        // ── Chart: Kostum dipesan per bulan (12 bulan terakhir) ──────────
+        // ── Chart: Kostum dipesan per bulan ─────────────────────────────
         $kostumPerBulan = [];
         $bulanLabels    = [];
         for ($i = 11; $i >= 0; $i--) {
             $date  = now()->subMonths($i);
             $bulanLabels[] = $date->format('M Y');
             $kostumPerBulan[] = DetailTransaksi::whereHas('transaksi', function ($q) use ($date) {
-                $q->whereIn('status', ['Disewa', 'Selesai'])
+                $q->whereIn('status', ['Sudah Dibayar', 'Disewa', 'Selesai'])
                   ->whereYear('created_at', $date->year)
                   ->whereMonth('created_at', $date->month);
             })->count();
@@ -73,13 +71,24 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
+        // Pesanan yang butuh perhatian admin: Menunggu Verifikasi
         $pesanan_masuk = Transaksi::with(['user', 'detailTransaksi.kostum'])
-            ->where('status', 'Menunggu Pembayaran')
+            ->whereIn('status', ['Menunggu Verifikasi', 'Menunggu Pembayaran'])
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
-        // Query costumes with stock <= 1 (Low Stock)
+        // Top 5 kostum terlaris
+        $top_kostum = DetailTransaksi::with('kostum')
+            ->selectRaw('kostum_id, COUNT(*) as total_sewa')
+            ->whereHas('transaksi', function ($q) {
+                $q->whereIn('status', ['Sudah Dibayar', 'Disewa', 'Selesai']);
+            })
+            ->groupBy('kostum_id')
+            ->orderByDesc('total_sewa')
+            ->limit(5)
+            ->get();
+
         $stok_hampir_habis = Kostum::with('kategori')
             ->where('stok', '<=', 1)
             ->orderBy('stok', 'asc')
@@ -96,7 +105,8 @@ class AdminController extends Controller
             'total_akun',
             'bulanLabels',
             'kostumPerBulan',
-            'stok_hampir_habis'
+            'stok_hampir_habis',
+            'top_kostum'
         ));
     }
 
@@ -118,29 +128,24 @@ class AdminController extends Controller
         $kategoris  = Kategori::orderBy('nama_kategori')->get();
         $query      = Kostum::with('kategori')->latest();
 
-        // Filter kategori via tab
         if ($request->has('kategori_id') && $request->kategori_id) {
             $query->where('kategori_id', $request->kategori_id);
         }
 
-        // Search
         if ($request->has('q') && $request->q) {
             $query->where('nama_kostum', 'like', '%' . $request->q . '%');
         }
 
-        // Filter by size — only show costumes that include this size
         $sizeFilter = $request->get('size');
         if ($sizeFilter) {
             $query->where('ukuran', 'regexp', '(^|,)[[:space:]]*' . preg_quote($sizeFilter) . '([[:space:]]*|,|$)');
         }
 
-        // Filter by low stock (stok <= 1)
         $lowStockFilter = $request->boolean('low_stock');
         if ($lowStockFilter) {
             $query->where('stok', '<=', 1);
         }
 
-        // Collect all distinct sizes across all costumes for the size filter UI
         $allSizes = Kostum::whereNotNull('ukuran')
             ->pluck('ukuran')
             ->flatMap(fn($u) => array_map('trim', explode(',', $u)))
@@ -172,7 +177,6 @@ class AdminController extends Controller
             $gambar = $request->file('gambar')->store('kostum', 'public');
         }
 
-        // Build stok_per_ukuran and total stok from per-size inputs
         $rawStokPerUkuran = $request->input('stok_per_ukuran', []);
         $stokPerUkuran = [];
         $totalStok = 0;
@@ -184,7 +188,6 @@ class AdminController extends Controller
             }
         }
 
-        // Build ukuran string from the size keys (ensures consistency)
         $ukuranStr = implode(', ', array_keys($stokPerUkuran));
 
         Kostum::create([
@@ -218,7 +221,6 @@ class AdminController extends Controller
 
         $gambar = $kostum->gambar;
 
-        // Hapus gambar lama jika ada gambar baru & gambar lama bukan URL eksternal
         if ($request->hasFile('gambar')) {
             if ($gambar && !filter_var($gambar, FILTER_VALIDATE_URL)) {
                 Storage::disk('public')->delete($gambar);
@@ -226,7 +228,6 @@ class AdminController extends Controller
             $gambar = $request->file('gambar')->store('kostum', 'public');
         }
 
-        // Build stok_per_ukuran and total stok from per-size inputs
         $rawStokPerUkuran = $request->input('stok_per_ukuran', []);
         $stokPerUkuran = [];
         $totalStok = 0;
@@ -238,7 +239,6 @@ class AdminController extends Controller
             }
         }
 
-        // Build ukuran string from the size keys
         $ukuranStr = implode(', ', array_keys($stokPerUkuran));
 
         $kostum->update([
@@ -259,7 +259,6 @@ class AdminController extends Controller
     {
         $kostum = Kostum::findOrFail($id);
 
-        // Hapus file foto lokal jika ada
         if ($kostum->gambar && !filter_var($kostum->gambar, FILTER_VALIDATE_URL)) {
             Storage::disk('public')->delete($kostum->gambar);
         }
@@ -291,7 +290,6 @@ class AdminController extends Controller
     {
         $kategori = Kategori::findOrFail($id);
 
-        // Cek apakah masih ada kostum di kategori ini
         if ($kategori->kostum()->count() > 0) {
             return redirect()->route('admin.kostum')
                 ->with('error', 'Category cannot be deleted because it still has costumes!');
@@ -312,20 +310,21 @@ class AdminController extends Controller
 
         $query = Transaksi::with(['user', 'detailTransaksi.kostum'])->latest();
 
-        if ($filter === 'menunggu') {
-            $query->where('status', 'Menunggu Pembayaran');
-        } elseif ($filter === 'dikonfirmasi') {
-            $query->where('status', 'Disewa');
-        } elseif ($filter === 'ditolak') {
-            $query->where('status', 'Batal');
-        }
+        // Filter berdasarkan tab yang dipilih
+        match ($filter) {
+            'belum_upload'       => $query->where('status', 'Menunggu Pembayaran'),
+            'menunggu_verifikasi'=> $query->where('status', 'Menunggu Verifikasi'),
+            'sudah_dibayar'      => $query->where('status', 'Sudah Dibayar'),
+            'disewa'             => $query->where('status', 'Disewa'),
+            'ditolak'            => $query->where('status', 'Ditolak'),
+            default              => null, // 'semua' — tidak filter
+        };
 
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 if (is_numeric($search)) {
                     $q->orWhere('id', (int) $search);
                 }
-
                 $q->orWhereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('nama', 'like', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%');
@@ -338,27 +337,33 @@ class AdminController extends Controller
         $transaksis = $query->paginate(15)->withQueryString();
 
         $stats = [
-            'menunggu'    => Transaksi::where('status', 'Menunggu Pembayaran')->count(),
-            'dikonfirmasi'=> Transaksi::where('status', 'Disewa')->count(),
-            'ditolak'     => Transaksi::where('status', 'Batal')->count(),
-            'pendapatan'  => Transaksi::whereIn('status', ['Disewa', 'Selesai'])
-                                ->whereDate('created_at', today())
-                                ->sum('total_biaya'),
+            'belum_upload'        => Transaksi::where('status', 'Menunggu Pembayaran')->count(),
+            'menunggu_verifikasi' => Transaksi::where('status', 'Menunggu Verifikasi')->count(),
+            'sudah_dibayar'       => Transaksi::where('status', 'Sudah Dibayar')->count(),
+            'disewa'              => Transaksi::where('status', 'Disewa')->count(),
+            'ditolak'             => Transaksi::where('status', 'Ditolak')->count(),
+            'pendapatan'          => Transaksi::whereIn('status', ['Sudah Dibayar', 'Disewa', 'Selesai'])
+                                        ->whereDate('created_at', today())
+                                        ->sum('total_biaya'),
         ];
 
         return view('admin.pembayaran-admin', compact('transaksis', 'stats', 'filter'));
     }
 
+    /**
+     * Admin approve bukti pembayaran → status: Sudah Dibayar
+     * (Kostum BELUM diambil, hanya pembayaran terverifikasi)
+     */
     public function pembayaranSetujui(Request $request, $id)
     {
         $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
 
-        if ($transaksi->status !== 'Menunggu Pembayaran') {
-            return back()->with('error', 'Only transactions waiting for payment can be approved.');
+        if ($transaksi->status !== 'Menunggu Verifikasi') {
+            return back()->with('error', 'Hanya transaksi yang menunggu verifikasi yang bisa disetujui.');
         }
 
         if (empty($transaksi->bukti_pembayaran)) {
-            return back()->with('error', 'Payment proof is required before approving this transaction.');
+            return back()->with('error', 'Bukti pembayaran diperlukan sebelum menyetujui transaksi ini.');
         }
 
         $request->validate([
@@ -368,29 +373,79 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // Stock has been decreased when user books the costume (in DashboardPelangganController)
-
+            // Status berubah ke 'Sudah Dibayar' — kostum belum diambil
+            // Stok TIDAK berubah di sini (sudah dikurangi saat booking)
             $transaksi->update([
-                'status'         => 'Disewa',
-                'catatan_admin'  => $request->catatan_admin,
+                'status'        => 'Sudah Dibayar',
+                'catatan_admin' => $request->catatan_admin,
             ]);
 
             \Illuminate\Support\Facades\DB::commit();
 
-            return redirect()->route('admin.pembayaran')->with('success', "Payment #TRX-{$id} confirmed successfully!");
+            return redirect()->route('admin.pembayaran')
+                ->with('success', "Pembayaran #TRX-{$id} berhasil diverifikasi! Silakan konfirmasi saat kostum diambil.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "An error occurred: " . $e->getMessage());
+            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
         }
     }
 
+    /**
+     * Admin tolak bukti pembayaran → status: Menunggu Pembayaran
+     * (Pelanggan bisa upload ulang bukti yang benar)
+     */
     public function pembayaranTolak(Request $request, $id)
     {
         $transaksi = Transaksi::findOrFail($id);
 
-        if ($transaksi->status !== 'Menunggu Pembayaran') {
-            return back()->with('error', 'Only transactions waiting for payment can be rejected.');
+        if ($transaksi->status !== 'Menunggu Verifikasi') {
+            return back()->with('error', 'Hanya transaksi yang menunggu verifikasi yang bisa ditolak.');
+        }
+
+        $request->validate([
+            'catatan_admin' => 'required|string|max:500',
+        ]);
+
+        try {
+            \Illuminate\Support\Facades\DB::beginTransaction();
+
+            // Hapus bukti lama agar pelanggan upload ulang yang benar
+            if ($transaksi->bukti_pembayaran &&
+                \Illuminate\Support\Facades\Storage::disk('public')->exists($transaksi->bukti_pembayaran)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($transaksi->bukti_pembayaran);
+            }
+
+            // Set status ke 'Ditolak' — pelanggan bisa lihat alasan & upload ulang
+            // Stok TIDAK dikembalikan — slot tetap reserved, pelanggan masih bisa re-upload
+            $transaksi->update([
+                'status'             => 'Ditolak',
+                'bukti_pembayaran'   => null,
+                'catatan_admin'      => $request->catatan_admin,
+            ]);
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            return redirect()->route('admin.pembayaran', ['status' => 'ditolak'])
+                ->with('success', "Bukti pembayaran #TRX-{$id} ditolak. Pelanggan diminta upload ulang.");
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Admin batalkan transaksi sepenuhnya → status: Batal
+     * Stok dikembalikan. Digunakan untuk pembatalan permanen.
+     */
+    public function pembayaranBatal(Request $request, $id)
+    {
+        $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
+
+        // Hanya bisa batalkan jika belum disewa / belum diambil
+        if (!in_array($transaksi->status, ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Sudah Dibayar'])) {
+            return back()->with('error', 'Transaksi tidak bisa dibatalkan dalam status ini.');
         }
 
         $request->validate([
@@ -400,7 +455,7 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // Return costume stock because the transaction is rejected
+            // Kembalikan stok kostum
             foreach ($transaksi->detailTransaksi as $detail) {
                 $kostum = $detail->kostum;
                 if ($kostum) {
@@ -418,28 +473,65 @@ class AdminController extends Controller
 
             $transaksi->update([
                 'status'        => 'Batal',
+                'catatan_admin' => $request->catatan_admin ?? 'Transaksi dibatalkan oleh admin.',
+            ]);
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            return redirect()->route('admin.pembayaran')
+                ->with('success', "Transaksi #TRX-{$id} berhasil dibatalkan dan stok dikembalikan.");
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Admin konfirmasi kostum sudah diambil pelanggan → status: Disewa
+     * Ini adalah momen kostum benar-benar keluar dari toko.
+     */
+    public function konfirmasiPengambilan(Request $request, $id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        if ($transaksi->status !== 'Sudah Dibayar') {
+            return back()->with('error', 'Hanya transaksi berstatus "Sudah Dibayar" yang bisa dikonfirmasi pengambilannya.');
+        }
+
+        $request->validate([
+            'catatan_admin' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            \Illuminate\Support\Facades\DB::beginTransaction();
+
+            // Kostum diambil — status berubah ke Disewa
+            $transaksi->update([
+                'status'        => 'Disewa',
                 'catatan_admin' => $request->catatan_admin,
             ]);
 
             \Illuminate\Support\Facades\DB::commit();
 
-            return redirect()->route('admin.pembayaran')->with('success', "Payment #TRX-{$id} rejected successfully.");
+            return redirect()->route('admin.pembayaran')
+                ->with('success', "Kostum #TRX-{$id} telah dikonfirmasi diambil oleh pelanggan. Status: Sedang Disewa.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "An error occurred: " . $e->getMessage());
+            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
         }
     }
 
     // =====================================================================
-    // PENGEMBALIAN — READ + CATAT KEMBALI + DENDA
+    // PENGEMBALIAN — READ + CATAT KEMBALI + DENDA OTOMATIS
     // =====================================================================
     public function pengembalian(Request $request)
     {
         $filter = $request->get('filter', 'semua');
         $search = trim($request->string('q')->toString());
 
-        // Ambil transaksi yang statusnya Disewa (belum dikembalikan) atau Selesai (sudah)
+        // Hanya tampilkan transaksi Disewa (sudah diambil) atau Selesai
         $query = Transaksi::with(['user', 'detailTransaksi.kostum', 'pengembalian'])
             ->whereIn('status', ['Disewa', 'Selesai'])
             ->latest();
@@ -467,7 +559,6 @@ class AdminController extends Controller
                 if (is_numeric($search)) {
                     $q->orWhere('id', (int) $search);
                 }
-
                 $q->orWhereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('nama', 'like', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%');
@@ -479,7 +570,6 @@ class AdminController extends Controller
 
         $transaksis = $query->paginate(15)->withQueryString();
 
-        // Hitung stat cards
         $stats = [
             'harus_kembali' => Transaksi::where('status', 'Disewa')
                                 ->whereDate('tanggal_selesai', today())->count(),
@@ -497,11 +587,11 @@ class AdminController extends Controller
         $transaksi = Transaksi::with(['detailTransaksi.kostum', 'pengembalian'])->findOrFail($id);
 
         if ($transaksi->status !== 'Disewa') {
-            return back()->with('error', 'Only active rentals can be returned.');
+            return back()->with('error', 'Hanya kostum yang sedang disewa yang bisa dicatat pengembaliannya.');
         }
 
         if ($transaksi->pengembalian) {
-            return back()->with('error', 'This rental has already been returned.');
+            return back()->with('error', 'Transaksi ini sudah dicatat pengembaliannya.');
         }
 
         $request->validate([
@@ -510,12 +600,11 @@ class AdminController extends Controller
             'catatan_admin'          => 'nullable|string|max:1000',
         ]);
 
-        // Normalisasi ke awal hari agar perbandingan tanggal tidak terpengaruh komponen waktu
         $tanggalSelesai = Carbon::parse($transaksi->tanggal_selesai)->startOfDay();
         $tanggalKembali = Carbon::parse($request->tanggal_kembali_aktual)->startOfDay();
-        $dendaPerHari   = 50000; // Rp 50.000 per hari keterlambatan
+        $dendaPerHari   = 50000;
 
-        // VALIDASI BISNIS: Jika kembali tepat waktu atau lebih awal, TIDAK ada denda
+        // Hitung denda otomatis
         if ($tanggalKembali->lte($tanggalSelesai)) {
             $hariTerlambat = 0;
             $totalDenda    = 0;
@@ -524,7 +613,6 @@ class AdminController extends Controller
             $totalDenda    = $hariTerlambat * $dendaPerHari;
         }
 
-        // Safety net: pastikan denda tidak pernah bernilai negatif
         $totalDenda = max(0, $totalDenda);
 
         try {
@@ -547,13 +635,13 @@ class AdminController extends Controller
             }
 
             Pengembalian::create([
-                'transaksi_id'             => $transaksi->id,
-                'tanggal_kembali_aktual'   => $request->tanggal_kembali_aktual,
-                'kondisi_barang'           => $request->kondisi_kostum,
-                'catatan_qc'               => $request->catatan_admin,
-                'denda_keterlambatan'      => $totalDenda,
-                'denda_kerusakan'          => 0,
-                'total_denda'              => $totalDenda,
+                'transaksi_id'           => $transaksi->id,
+                'tanggal_kembali_aktual' => $request->tanggal_kembali_aktual,
+                'kondisi_barang'         => $request->kondisi_kostum,
+                'catatan_qc'             => $request->catatan_admin,
+                'denda_keterlambatan'    => $totalDenda,
+                'denda_kerusakan'        => 0,
+                'total_denda'            => $totalDenda,
             ]);
 
             $transaksi->update([
@@ -563,12 +651,12 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::commit();
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "An error occurred: " . $e->getMessage());
+            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
         }
 
         return redirect()->route('admin.pengembalian')
-            ->with('success', "Return #TRX-{$id} recorded successfully." .
-                ($totalDenda > 0 ? " Fine: Rp " . number_format($totalDenda, 0, ',', '.') : ''));
+            ->with('success', "Pengembalian #TRX-{$id} berhasil dicatat." .
+                ($totalDenda > 0 ? " Denda: Rp " . number_format($totalDenda, 0, ',', '.') : ' Tepat waktu, tidak ada denda.'));
     }
 
     // =====================================================================
@@ -585,7 +673,6 @@ class AdminController extends Controller
             });
         }
 
-        // Sorting
         $sort = $request->get('sort', 'terbaru');
         if ($sort === 'terlama') {
             $query->oldest();
@@ -603,7 +690,7 @@ class AdminController extends Controller
         $user = User::where('role', 'pelanggan')->findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.pengguna')->with('success', "User account '{$user->nama}' deleted successfully.");
+        return redirect()->route('admin.pengguna')->with('success', "Akun pengguna '{$user->nama}' berhasil dihapus.");
     }
 
     public function penggunaToggleActive($id)
@@ -637,9 +724,9 @@ class AdminController extends Controller
         $pengguna = $query->paginate(20)->withQueryString();
 
         $stats = [
-            'total_pelanggan' => User::where('role', 'pelanggan')->count(),
+            'total_pelanggan'   => User::where('role', 'pelanggan')->count(),
             'total_order_bulan' => Transaksi::whereMonth('created_at', now()->month)->count(),
-            'pelanggan_aktif' => User::where('role', 'pelanggan')
+            'pelanggan_aktif'   => User::where('role', 'pelanggan')
                 ->whereHas('transaksi', function ($q) {
                     $q->where('status', 'Disewa');
                 })->count(),
@@ -669,29 +756,30 @@ class AdminController extends Controller
                 }
                 $totalDenda = $t->pengembalian?->total_denda ?? 0;
                 return [
-                    'id'             => $t->id,
-                    'kostum'         => $kostumNama,
-                    'tanggal_mulai'  => $t->tanggal_mulai?->format('d/m/Y'),
-                    'tanggal_selesai'=> $t->tanggal_selesai?->format('d/m/Y'),
-                    'durasi'         => $t->tanggal_mulai && $t->tanggal_selesai
-                                        ? $t->tanggal_mulai->diffInDays($t->tanggal_selesai) . ' hari'
-                                        : '-',
-                    'total_biaya'    => $t->total_biaya,
-                    'total_denda'    => $totalDenda,
-                    'status'         => $t->status,
+                    'id'              => $t->id,
+                    'kostum'          => $kostumNama,
+                    'tanggal_mulai'   => $t->tanggal_mulai?->format('d/m/Y'),
+                    'tanggal_selesai' => $t->tanggal_selesai?->format('d/m/Y'),
+                    'durasi'          => $t->tanggal_mulai && $t->tanggal_selesai
+                                         ? $t->tanggal_mulai->diffInDays($t->tanggal_selesai) . ' hari'
+                                         : '-',
+                    'total_biaya'     => $t->total_biaya,
+                    'total_denda'     => $totalDenda,
+                    'status'          => $t->status,
+                    'status_label'    => $t->status_label,
                 ];
             });
 
         return response()->json([
             'user'      => [
-                'id'        => $user->id,
-                'nama'      => $user->nama,
-                'email'     => $user->email,
-                'no_hp'     => $user->no_hp,
-                'avatar'    => $user->avatar
-                                ? asset('storage/' . $user->avatar)
-                                : null,
-                'join'      => $user->created_at->format('F Y'),
+                'id'              => $user->id,
+                'nama'            => $user->nama,
+                'email'           => $user->email,
+                'no_hp'           => $user->no_hp,
+                'avatar'          => $user->avatar
+                                      ? asset('storage/' . $user->avatar)
+                                      : null,
+                'join'            => $user->created_at->format('F Y'),
                 'total_transaksi' => $transaksis->count(),
                 'total_selesai'   => $transaksis->where('status', 'Selesai')->count(),
                 'total_disewa'    => $transaksis->where('status', 'Disewa')->count(),

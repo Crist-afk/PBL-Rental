@@ -49,34 +49,46 @@
                   $targetUrl = '#';
 
                   if ($trx->status === 'Menunggu Pembayaran') {
-                      $icon = '💵';
-                      $bg = 'linear-gradient(135deg, #a78bfa, #c084fc)';
-                      $title = 'New Payment';
-                      $desc = 'Awaiting confirmation #' . $trx->id;
-                      $targetUrl = route('admin.pembayaran');
-                  } elseif ($trx->status === 'Disewa') {
-                      $icon = '👕';
+                      $icon = '🔴';
+                      $bg = 'linear-gradient(135deg, #ef4444, #f87171)';
+                      $title = 'Belum Upload Bukti';
+                      $desc = 'Pesanan #' . $trx->id . ' belum upload bukti';
+                      $targetUrl = route('admin.pembayaran', ['status' => 'belum_upload']);
+                  } elseif ($trx->status === 'Menunggu Verifikasi') {
+                      $icon = '⏳';
+                      $bg = 'linear-gradient(135deg, #f59e0b, #fbbf24)';
+                      $title = 'Menunggu Verifikasi';
+                      $desc = 'Bukti pembayaran #' . $trx->id . ' perlu diverifikasi';
+                      $targetUrl = route('admin.pembayaran', ['status' => 'menunggu_verifikasi']);
+                  } elseif ($trx->status === 'Sudah Dibayar') {
+                      $icon = '✅';
                       $bg = 'linear-gradient(135deg, #10b981, #34d399)';
-                      $title = 'Rental Approved';
-                      $desc = 'Order #' . $trx->id . ' actively rented';
+                      $title = 'Sudah Dibayar';
+                      $desc = 'Pesanan #' . $trx->id . ' siap diambil pelanggan';
+                      $targetUrl = route('admin.pembayaran', ['status' => 'sudah_dibayar']);
+                  } elseif ($trx->status === 'Disewa') {
+                      $icon = '🎭';
+                      $bg = 'linear-gradient(135deg, #3b82f6, #60a5fa)';
+                      $title = 'Kostum Diambil';
+                      $desc = 'Pesanan #' . $trx->id . ' sedang disewa';
                       $targetUrl = route('admin.pengembalian');
                   } elseif ($trx->status === 'Selesai') {
                       $icon = '↩️';
                       $bg = 'linear-gradient(135deg, #f97316, #fb923c)';
-                      $title = 'Costume Returned';
-                      $desc = 'Order #' . $trx->id . ' completed';
+                      $title = 'Kostum Dikembalikan';
+                      $desc = 'Pesanan #' . $trx->id . ' selesai';
                       $targetUrl = route('admin.pengembalian');
                       if ($totalDenda > 0) {
                           $icon = '⚠️';
                           $bg = 'linear-gradient(135deg, #ef4444, #f87171)';
-                          $title = 'Late & Fined';
-                          $desc = 'Order #' . $trx->id . ' fine Rp' . number_format($totalDenda, 0, ',', '.');
+                          $title = 'Terlambat & Didenda';
+                          $desc = 'Pesanan #' . $trx->id . ' denda Rp' . number_format($totalDenda, 0, ',', '.');
                       }
                   } elseif ($trx->status === 'Batal') {
                       $icon = '❌';
                       $bg = 'linear-gradient(135deg, #6b7280, #9ca3af)';
-                      $title = 'Rental Cancelled';
-                      $desc = 'Order #' . $trx->id . ' cancelled';
+                      $title = 'Dibatalkan';
+                      $desc = 'Pesanan #' . $trx->id . ' dibatalkan';
                       $targetUrl = route('admin.riwayat');
                   }
                   
@@ -124,36 +136,65 @@
       </div>
     </div>
 
-    <!-- STAT CARDS -->
-    <div class="stats-grid">
+    {{-- STAT CARDS --}}
+    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+      {{-- Pendapatan --}}
       <div class="stat-card">
         <div class="stat-top">
           <div class="stat-icon green">💰</div>
         </div>
         <div class="stat-value">Rp {{ number_format($stats['total_pendapatan'], 0, ',', '.') }}</div>
-        <div class="stat-label">Total Revenue</div>
+        <div class="stat-label">Total Pendapatan</div>
       </div>
+      {{-- Sedang Disewa --}}
       <div class="stat-card">
         <div class="stat-top">
-          <div class="stat-icon blue">👕</div>
+          <div class="stat-icon blue">🎭</div>
         </div>
         <div class="stat-value">{{ $stats['sewa_aktif'] }}</div>
-        <div class="stat-label">Actively Rented Costumes</div>
+        <div class="stat-label">Sedang Disewa</div>
       </div>
-      <div class="stat-card">
+      {{-- Sudah Dibayar (belum ambil) --}}
+      <a href="{{ route('admin.pembayaran', ['status' => 'sudah_dibayar']) }}" style="text-decoration:none;">
+      <div class="stat-card" style="border-left: 3px solid #10b981; cursor:pointer;">
         <div class="stat-top">
-          <div class="stat-icon purple">🛍️</div>
+          <div class="stat-icon" style="background:rgba(16,185,129,0.15);">✅</div>
         </div>
-        <div class="stat-value">{{ $stats['menunggu_bayar'] }}</div>
-        <div class="stat-label">Awaiting Payment</div>
+        <div class="stat-value" style="color:#10b981;">{{ $stats['sudah_dibayar'] }}</div>
+        <div class="stat-label">Sudah Dibayar (Belum Ambil)</div>
       </div>
+      </a>
+      {{-- Menunggu Verifikasi --}}
+      <a href="{{ route('admin.pembayaran', ['status' => 'menunggu_verifikasi']) }}" style="text-decoration:none;">
+      <div class="stat-card" style="border-left: 3px solid #f59e0b; cursor:pointer;">
+        <div class="stat-top">
+          <div class="stat-icon" style="background:rgba(245,158,11,0.15);">⏳</div>
+          @if($stats['menunggu_verifikasi'] > 0)
+            <span style="font-size:10px;font-weight:800;background:#f59e0b;color:#fff;border-radius:999px;padding:2px 8px;">PERLU AKSI</span>
+          @endif
+        </div>
+        <div class="stat-value" style="color:#f59e0b;">{{ $stats['menunggu_verifikasi'] }}</div>
+        <div class="stat-label">Menunggu Verifikasi</div>
+      </div>
+      </a>
+      {{-- Total Kostum --}}
       <div class="stat-card">
         <div class="stat-top">
           <div class="stat-icon orange">📦</div>
         </div>
         <div class="stat-value">{{ $stats['total_kostum'] }}</div>
-        <div class="stat-label">Total Costumes</div>
+        <div class="stat-label">Total Kostum</div>
       </div>
+      {{-- Belum Upload Bukti --}}
+      <a href="{{ route('admin.pembayaran', ['status' => 'belum_upload']) }}" style="text-decoration:none;">
+      <div class="stat-card" style="border-left: 3px solid #ef4444; cursor:pointer;">
+        <div class="stat-top">
+          <div class="stat-icon" style="background:rgba(239,68,68,0.12);">🔴</div>
+        </div>
+        <div class="stat-value" style="color:#ef4444;">{{ $stats['menunggu_bayar'] }}</div>
+        <div class="stat-label">Belum Upload Bukti</div>
+      </div>
+      </a>
     </div>
 
     <!-- CONTENT GRID -->
@@ -170,40 +211,43 @@
           @php
             $icon = '📦';
             $bg = 'rgba(59,130,246,0.12)';
-            $title = 'Transaction Activity';
-            $desc = 'Order #' . $trx->id . ' by ' . ($trx->user?->nama ?? 'Customer');
+            $title = 'Aktivitas Transaksi';
+            $desc = 'Pesanan #' . $trx->id . ' oleh ' . ($trx->user?->nama ?? 'Pelanggan');
             $totalDenda = $trx->pengembalian?->total_denda ?? 0;
-            
+
             if ($trx->status === 'Menunggu Pembayaran') {
-                $icon = '💵';
-                $bg = 'rgba(167,139,250,0.12)';
-                $title = 'New payment uploaded';
-                $desc = 'Awaiting payment confirmation #TRX-' . $trx->id;
+                $icon = '🔴'; $bg = 'rgba(239,68,68,0.12)';
+                $title = 'Belum Upload Bukti';
+                $desc = 'Pesanan #TRX-' . $trx->id . ' belum upload bukti transfer';
+            } elseif ($trx->status === 'Menunggu Verifikasi') {
+                $icon = '⏳'; $bg = 'rgba(245,158,11,0.12)';
+                $title = 'Menunggu Verifikasi';
+                $desc = 'Bukti pembayaran #TRX-' . $trx->id . ' perlu diverifikasi admin';
+            } elseif ($trx->status === 'Sudah Dibayar') {
+                $icon = '✅'; $bg = 'rgba(16,185,129,0.12)';
+                $title = 'Sudah Dibayar';
+                $desc = 'Pesanan #TRX-' . $trx->id . ' siap diambil pelanggan';
             } elseif ($trx->status === 'Disewa') {
-                $icon = '👕';
-                $bg = 'rgba(34,211,165,0.12)';
-                $title = 'Rental approved';
-                $desc = 'Order #TRX-' . $trx->id . ' is actively rented';
+                $icon = '🎭'; $bg = 'rgba(59,130,246,0.12)';
+                $title = 'Kostum Sedang Disewa';
+                $desc = 'Pesanan #TRX-' . $trx->id . ' sudah diambil pelanggan';
             } elseif ($trx->status === 'Selesai') {
-                $icon = '↩️';
-                $bg = 'rgba(251,146,60,0.12)';
-                $title = 'Costume returned';
-                $desc = 'Rental #TRX-' . $trx->id . ' has been completed';
+                $icon = '↩️'; $bg = 'rgba(251,146,60,0.12)';
+                $title = 'Kostum Dikembalikan';
+                $desc = 'Pesanan #TRX-' . $trx->id . ' selesai';
                 if ($totalDenda > 0) {
-                    $icon = '⚠️';
-                    $bg = 'rgba(248,113,113,0.12)';
-                    $title = 'Late return';
-                    $desc = 'Rental #TRX-' . $trx->id . ' incurred a fine of Rp ' . number_format($totalDenda, 0, ',', '.');
+                    $icon = '⚠️'; $bg = 'rgba(248,113,113,0.12)';
+                    $title = 'Terlambat & Didenda';
+                    $desc = 'Pesanan #TRX-' . $trx->id . ' denda Rp ' . number_format($totalDenda, 0, ',', '.');
                 }
             } elseif ($trx->status === 'Batal') {
-                $icon = '❌';
-                $bg = 'rgba(248,113,113,0.12)';
-                $title = 'Order cancelled';
-                $desc = 'Order #TRX-' . $trx->id . ' has been cancelled';
+                $icon = '❌'; $bg = 'rgba(107,114,128,0.12)';
+                $title = 'Pesanan Dibatalkan';
+                $desc = 'Pesanan #TRX-' . $trx->id . ' dibatalkan';
             }
           @endphp
           
-          <a href="{{ $trx->status === 'Menunggu Pembayaran' ? route('admin.pembayaran') : ($trx->status === 'Disewa' || $trx->status === 'Selesai' ? route('admin.pengembalian') : '#') }}" class="activity-item" style="text-decoration: none;">
+          <a href="{{ $trx->status === 'Menunggu Pembayaran' ? route('admin.pembayaran', ['status' => 'belum_upload']) : ($trx->status === 'Menunggu Verifikasi' ? route('admin.pembayaran', ['status' => 'menunggu_verifikasi']) : ($trx->status === 'Sudah Dibayar' ? route('admin.pembayaran', ['status' => 'sudah_dibayar']) : ($trx->status === 'Disewa' || $trx->status === 'Selesai' ? route('admin.pengembalian') : '#'))) }}" class="activity-item" style="text-decoration: none;">
             <div class="activity-icon" style="background: {{ $bg }}">{{ $icon }}</div>
             <div class="activity-info">
               <div class="activity-title">{{ $title }}</div>
@@ -289,10 +333,36 @@
           </div>
         </div>
 
+        {{-- TOP 5 KOSTUM TERLARIS --}}
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🏆 Top 5 Kostum Terlaris</span>
+            <a class="card-link" href="{{ route('admin.kostum') }}">Lihat Semua →</a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;">
+            @forelse($top_kostum as $idx => $item)
+              <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--bg-hover);border-radius:var(--radius-sm);">
+                <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;
+                  background:{{ ['linear-gradient(135deg,#f59e0b,#fbbf24)','linear-gradient(135deg,#94a3b8,#cbd5e1)','linear-gradient(135deg,#b45309,#d97706)','rgba(59,130,246,0.2)','rgba(107,114,128,0.15)'][$idx] ?? 'rgba(107,114,128,0.15)' }};
+                  color:{{ $idx < 3 ? '#fff' : 'var(--text-2)' }};">
+                  {{ $idx === 0 ? '🥇' : ($idx === 1 ? '🥈' : ($idx === 2 ? '🥉' : ($idx + 1))) }}
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:13px;font-weight:600;color:var(--text-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $item->kostum?->nama_kostum ?? 'N/A' }}</div>
+                  <div style="font-size:11px;color:var(--text-3);margin-top:1px;">{{ $item->kostum?->kategori?->nama_kategori ?? '-' }}</div>
+                </div>
+                <div style="font-size:11px;font-weight:800;background:rgba(59,130,246,0.12);color:#3b82f6;border-radius:999px;padding:3px 10px;white-space:nowrap;">{{ $item->total_sewa }}x disewa</div>
+              </div>
+            @empty
+              <div style="padding:20px;text-align:center;color:var(--text-3);font-size:13px;">Belum ada data sewa.</div>
+            @endforelse
+          </div>
+        </div>
+
         <!-- POPULAR COSTUMES CHART -->
         <div class="card">
           <div class="card-header">
-            <span class="card-title">Costumes Ordered per Month</span>
+            <span class="card-title">Kostum Dipesan per Bulan</span>
           </div>
 
           <div class="chart-container" style="position: relative; height: 250px; width: 100%;">

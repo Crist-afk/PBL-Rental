@@ -15,16 +15,20 @@ window.openCalendar = function(e) {
     e.stopPropagation();
     const btn = document.getElementById('dateRangeBtn');
     const popup = document.getElementById('calPopup');
+    if (!btn || !popup) return;
     const rect = btn.getBoundingClientRect();
     popup.style.top = (rect.bottom + window.scrollY + 6) + 'px';
     popup.style.left = rect.left + 'px';
-    document.getElementById('calOverlay').classList.add('show');
+    const overlay = document.getElementById('calOverlay');
+    if (overlay) overlay.classList.add('show');
     renderCal();
 }
 
 window.closeCalendar = function(e) {
-    if (!e || e.target === document.getElementById('calOverlay'))
-        document.getElementById('calOverlay').classList.remove('show');
+    if (!e || e.target === document.getElementById('calOverlay')) {
+        const overlay = document.getElementById('calOverlay');
+        if (overlay) overlay.classList.remove('show');
+    }
 }
 
 window.changeMonth = function(d) {
@@ -35,8 +39,11 @@ window.changeMonth = function(d) {
 }
 
 function renderCal() {
-    document.getElementById('calTitle').textContent = MONTHS[calMonth] + ' ' + calYear;
+    const titleEl = document.getElementById('calTitle');
     const grid = document.getElementById('calGrid');
+    if (!titleEl || !grid) return;
+
+    titleEl.textContent = MONTHS[calMonth] + ' ' + calYear;
     grid.innerHTML = '';
     DAYS.forEach(d => { const el = document.createElement('div'); el.className = 'cal-dow'; el.textContent = d; grid.appendChild(el); });
     const first = new Date(calYear, calMonth, 1).getDay();
@@ -56,9 +63,11 @@ function renderCal() {
         grid.appendChild(el);
     }
     const hint = document.getElementById('calHint');
-    if (!selFrom) hint.textContent = 'Select start date';
-    else if (!selTo) hint.textContent = 'Select end date';
-    else hint.textContent = fmt(selFrom) + ' — ' + fmt(selTo);
+    if (hint) {
+        if (!selFrom) hint.textContent = 'Select start date';
+        else if (!selTo) hint.textContent = 'Select end date';
+        else hint.textContent = fmt(selFrom) + ' — ' + fmt(selTo);
+    }
 }
 
 function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
@@ -73,56 +82,198 @@ function fmt(d) { return d.getDate().toString().padStart(2, '0') + '/' + (d.getM
 
 window.resetCalendar = function() {
     selFrom = null; selTo = null; pickingFrom = true;
-    document.getElementById('dateFrom').textContent = 'dd/mm/yyyy';
-    document.getElementById('dateTo').textContent = 'dd/mm/yyyy';
+    const from = document.getElementById('dateFrom');
+    const to = document.getElementById('dateTo');
+    if (from) from.textContent = 'dd/mm/yyyy';
+    if (to) to.textContent = 'dd/mm/yyyy';
     renderCal();
 }
 
 window.applyCalendar = function() {
-    if (selFrom) { const f = document.getElementById('dateFrom'); f.textContent = fmt(selFrom); f.classList.add('filled'); }
-    if (selTo) { const t = document.getElementById('dateTo'); t.textContent = fmt(selTo); t.classList.add('filled'); }
+    if (selFrom) { const f = document.getElementById('dateFrom'); if (f) { f.textContent = fmt(selFrom); f.classList.add('filled'); } }
+    if (selTo) { const t = document.getElementById('dateTo'); if (t) { t.textContent = fmt(selTo); t.classList.add('filled'); } }
     window.closeCalendar({ target: document.getElementById('calOverlay') });
 }
 
-// ── MODAL ──
-window.openModal = function(id, cust, kostum, total, bank, pengirim, status) {
-    document.getElementById('mOrderId').textContent = '#' + id;
-    document.getElementById('mCustName').textContent = cust;
-    document.getElementById('mKostum').textContent = kostum;
-    document.getElementById('mTotal').textContent = 'Rp ' + total;
-    document.getElementById('mBank').textContent = bank;
-    document.getElementById('mPengirim').textContent = pengirim;
-    document.getElementById('mNominal').textContent = 'Rp ' + total;
-    const icons = { 'Batman + Joker (2 kostum)': '🦸', 'Gaun Cinderella': '👗', 'Kostum Naruto': '🥷', 'Baju Kimono': '👘', 'default': '🎭' };
-    document.getElementById('mItemIcon').textContent = icons[kostum] || icons['default'];
-    const footer = document.getElementById('mFooter');
-    if (status === 'menunggu') {
-        footer.innerHTML = `
-      <button class="btn-tolak-modal" onclick="closeModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:15px;height:15px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        REJECT PAYMENT
-      </button>
-      <button class="btn-konfirmasi" onclick="closeModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:15px;height:15px"><polyline points="20 6 9 17 4 12"/></svg>
-        CONFIRM PAYMENT
-      </button>`;
-    } else {
-        footer.innerHTML = `
-      <button class="btn-detail" style="grid-column:1/-1;padding:14px;font-size:13px;justify-content:center" onclick="closeModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Close
-      </button>`;
+// ── HELPER: dapatkan base URL admin pembayaran ──
+// Prioritaskan nilai dari blade (window._adminPembayaranBase), fallback ke pathname
+function getAdminPembayaranBase() {
+    if (window._adminPembayaranBase) {
+        return window._adminPembayaranBase;
     }
-    document.getElementById('modalOverlay').classList.add('show');
+    // Fallback: ambil path tanpa query string, strip trailing slash
+    return window.location.origin + window.location.pathname.replace(/\/$/, '');
 }
 
-window.closeModal = function() { document.getElementById('modalOverlay').classList.remove('show'); }
+// ── VALIDATION MODAL (Verifikasi + Detail) ──
+window.openValidationModal = function(transaksi, kostumDesc, durasi) {
+    const modal = document.getElementById('validationModalOverlay');
+    if (!modal) return;
 
-document.addEventListener('DOMContentLoaded', () => {
-    const modalOverlay = document.getElementById('modalOverlay');
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', e => {
-            if (e.target === modalOverlay) window.closeModal();
-        });
+    document.getElementById('mOrderId').textContent = '#TRX-' + transaksi.id;
+    document.getElementById('mCustName').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
+    document.getElementById('mKostum').textContent = kostumDesc;
+
+    const tMulai  = new Date(transaksi.tanggal_mulai);
+    const tSelesai = new Date(transaksi.tanggal_selesai);
+    const opts = { day: 'numeric', month: 'short', year: 'numeric' };
+    document.getElementById('mDate').textContent =
+        tMulai.toLocaleDateString('id-ID', opts) + ' - ' + tSelesai.toLocaleDateString('id-ID', opts) + ' (' + durasi + ')';
+
+    const totalFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(transaksi.total_biaya);
+    document.getElementById('mTotal').textContent = totalFormatted;
+
+    // Bukti Transfer
+    const buktiImg   = document.getElementById('mBuktiImg');
+    const noBuktiTxt = document.getElementById('mNoBuktiText');
+    const fullRes    = document.getElementById('mFullResLink');
+    if (transaksi.bukti_pembayaran) {
+        const imgUrl = transaksi.bukti_pembayaran.startsWith('http')
+            ? transaksi.bukti_pembayaran
+            : '/storage/' + transaksi.bukti_pembayaran;
+        buktiImg.src = imgUrl;
+        buktiImg.style.display = 'block';
+        noBuktiTxt.style.display = 'none';
+        fullRes.href = imgUrl;
+        fullRes.style.display = 'flex';
+    } else {
+        buktiImg.style.display = 'none';
+        noBuktiTxt.style.display = 'block';
+        fullRes.style.display = 'none';
     }
-});
+
+    const btnApprove        = document.getElementById('mBtnApprove');
+    const btnReject         = document.getElementById('mBtnReject');
+    const formContainer     = document.getElementById('validationFormContainer');
+    const readOnlyContainer = document.getElementById('readOnlyNotesContainer');
+
+    const base = getAdminPembayaranBase();
+
+    if (transaksi.status === 'Menunggu Verifikasi') {
+        // Tampilkan form approve/reject
+        formContainer.style.display    = 'block';
+        readOnlyContainer.style.display = 'none';
+        document.getElementById('mCatatanAdmin').value = '';
+
+        // Bangun URL dengan base yang sudah terbukti benar
+        window._approveUrl = base + '/' + transaksi.id + '/setujui';
+        window._rejectUrl  = base + '/' + transaksi.id + '/tolak';
+
+        window._currentTrxId      = transaksi.id;
+        window._currentTransaksi  = transaksi;
+        window._currentKostumDesc = kostumDesc;
+        window._currentDurasi     = durasi;
+
+        if (btnApprove) btnApprove.style.display = 'inline-flex';
+        if (btnReject)  btnReject.style.display  = 'inline-flex';
+    } else {
+        // Read-only — tampilkan catatan admin yang tersimpan
+        formContainer.style.display    = 'none';
+        readOnlyContainer.style.display = 'block';
+        document.getElementById('mSavedCatatanAdmin').textContent =
+            transaksi.catatan_admin || 'Tidak ada catatan admin.';
+        if (btnApprove) btnApprove.style.display = 'none';
+        if (btnReject)  btnReject.style.display  = 'none';
+    }
+
+    modal.classList.add('show');
+}
+
+window.closeValidationModal = function() {
+    const modal = document.getElementById('validationModalOverlay');
+    if (modal) modal.classList.remove('show');
+}
+
+// ── REJECT: buka modal alasan penolakan ──
+window.submitRejectWithReason = function() {
+    // Pastikan _rejectUrl sudah di-set
+    if (!window._rejectUrl) {
+        alert('URL penolakan tidak ditemukan. Silakan coba buka modal lagi.');
+        return;
+    }
+
+    // Ambil catatan yang mungkin sudah diisi di modal validasi
+    const mCatatanAdmin = document.getElementById('mCatatanAdmin');
+    const noteVal = mCatatanAdmin ? mCatatanAdmin.value : '';
+
+    // Set action form SEBELUM menampilkan modal
+    const form = document.getElementById('tolakBuktiForm');
+    if (form) {
+        form.action = window._rejectUrl;
+        const textarea = form.querySelector('textarea[name="catatan_admin"]');
+        if (textarea) textarea.value = noteVal; // Copy note from previous modal
+    }
+
+    // Tutup modal validasi dahulu
+    window.closeValidationModal();
+
+    // Tampilkan modal tolak
+    const rejectOverlay = document.getElementById('tolakBuktiOverlay');
+    if (rejectOverlay) {
+        rejectOverlay.style.display = 'flex';
+        // Force reflow
+        rejectOverlay.offsetHeight;
+        rejectOverlay.classList.add('show');
+    }
+}
+
+// ── CANCEL REJECT: kembali ke modal validasi ──
+window.cancelReject = function() {
+    const rejectOverlay = document.getElementById('tolakBuktiOverlay');
+    if (rejectOverlay) {
+        rejectOverlay.classList.remove('show');
+        setTimeout(() => {
+            rejectOverlay.style.display = 'none';
+        }, 150);
+    }
+    if (window._currentTransaksi) {
+        openValidationModal(window._currentTransaksi, window._currentKostumDesc, window._currentDurasi);
+    }
+}
+
+// ── APPROVE: submit form konfirmasi pembayaran ──
+window.submitApproveForm = function() {
+    if (!window._approveUrl) {
+        alert('URL approve tidak ditemukan. Silakan coba buka modal lagi.');
+        return;
+    }
+    const form = document.getElementById('confirmPaymentForm');
+    if (form) {
+        form.action = window._approveUrl;
+        form.submit();
+    }
+}
+
+// ── KONFIRMASI PENGAMBILAN MODAL ──
+window.openKonfirmasiAmbilModal = function(trxId, custName, kostumDesc, tglMulai) {
+    var custEl    = document.getElementById('ambil-cust');
+    var kostumEl  = document.getElementById('ambil-kostum');
+    var tglEl     = document.getElementById('ambil-tgl');
+    var formEl    = document.getElementById('konfirmasiAmbilForm');
+    var overlay   = document.getElementById('konfirmasiAmbilOverlay');
+
+    if (custEl)   custEl.textContent   = custName;
+    if (kostumEl) kostumEl.textContent = kostumDesc;
+    if (tglEl)    tglEl.textContent    = tglMulai;
+    if (formEl)   formEl.action        = getAdminPembayaranBase() + '/' + trxId + '/konfirmasi-ambil';
+    if (overlay) {
+        overlay.style.display = 'flex';
+        // Force reflow
+        overlay.offsetHeight;
+        overlay.classList.add('show');
+    }
+}
+
+window.closeKonfirmasiAmbil = function() {
+    var overlay = document.getElementById('konfirmasiAmbilOverlay');
+    if (overlay) {
+        overlay.classList.remove('show');
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 150);
+    }
+}
+
+
+// ── OVERLAY CLICK-TO-CLOSE (dipasang di blade via DOMContentLoaded) ──
+// Listener ini sudah dipasang dari blade @push('scripts') agar tidak terjadi double-attach

@@ -20,43 +20,56 @@ class DashboardPelangganController extends Controller
 
         // Stats
         $stats = [
-            'active_rentals' => Transaksi::where('user_id', $userId)->where('status', 'Disewa')->count(),
+            'active_rentals' => Transaksi::where('user_id', $userId)
+                                 ->whereIn('status', ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Ditolak', 'Sudah Dibayar', 'Disewa'])
+                                 ->count(),
             'total_rentals'  => Transaksi::where('user_id', $userId)->count(),
         ];
 
-        // Active Rentals (Kostum Sedang Disewa & Menunggu Pembayaran & Batal)
+        // Active Rentals — semua status yang masih aktif (bukan Selesai/Batal)
         $current_rentals = Transaksi::with(['detailTransaksi.kostum'])
             ->where('user_id', $userId)
-            ->whereIn('status', ['Menunggu Pembayaran', 'Disewa', 'Batal'])
+            ->whereIn('status', ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Ditolak', 'Sudah Dibayar', 'Disewa'])
+            ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($t) {
                 $firstDetail = $t->detailTransaksi->first();
                 $kostum = $firstDetail ? $firstDetail->kostum : null;
                 $size = $firstDetail?->ukuran ?? 'N/A';
 
-                // Calculate running fine if late
+                // Hitung denda otomatis — hanya untuk status Disewa yang sudah lewat tanggal
                 $denda = 0;
                 $daysLate = 0;
-                if (in_array($t->status, ['Disewa', 'Menunggu Pembayaran']) && \Carbon\Carbon::now()->startOfDay()->greaterThan(\Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay())) {
-                    $daysLate = \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay()->diffInDays(\Carbon\Carbon::now()->startOfDay());
-                    $denda = $daysLate * 50000;
+                if ($t->status === 'Disewa') {
+                    $today      = \Carbon\Carbon::now()->startOfDay();
+                    $tglSelesai = \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay();
+                    if ($today->greaterThan($tglSelesai)) {
+                        $daysLate = $tglSelesai->diffInDays($today);
+                        $denda    = $daysLate * 50000;
+                    }
                 }
 
+                // Deadline upload pembayaran (12 jam sejak booking)
+                $paymentDeadline = \Carbon\Carbon::parse($t->created_at)->addHours(12);
+                $deadlinePassed  = $paymentDeadline->isPast();
+
                 return [
-                    'id'          => $t->id,
-                    'title'       => $kostum ? $kostum->nama_kostum : 'Transaksi #' . $t->id,
-                    'size'        => $size,
-                    'return_date' => \Carbon\Carbon::parse($t->tanggal_selesai)->format('d F Y'),
-                    'price'       => $t->total_biaya,
-                    'image'       => $kostum ? $kostum->gambar_url : null,
-                    'status'      => $t->status_label,
-                    'raw_status'  => $t->status,
-                    'status_color'=> $t->status_color,
-                    'catatan_admin'=> $t->catatan_admin,
-                    'denda'       => $denda,
-                    'days_late'   => $daysLate,
-                    'payment_deadline' => \Carbon\Carbon::parse($t->created_at)->addHours(12)->format('d M Y, H:i'),
-                    'has_payment_proof'=> !empty($t->bukti_pembayaran),
+                    'id'                 => $t->id,
+                    'title'              => $kostum ? $kostum->nama_kostum : 'Transaksi #' . $t->id,
+                    'size'               => $size,
+                    'start_date'         => \Carbon\Carbon::parse($t->tanggal_mulai)->format('d F Y'),
+                    'return_date'        => \Carbon\Carbon::parse($t->tanggal_selesai)->format('d F Y'),
+                    'price'              => $t->total_biaya,
+                    'image'              => $kostum ? $kostum->gambar_url : null,
+                    'status'             => $t->status_label,
+                    'raw_status'         => $t->status,
+                    'status_color'       => $t->status_color,
+                    'catatan_admin'      => $t->catatan_admin,
+                    'denda'              => $denda,
+                    'days_late'          => $daysLate,
+                    'payment_deadline'   => $paymentDeadline->format('d M Y, H:i'),
+                    'deadline_passed'    => $deadlinePassed,
+                    'has_payment_proof'  => !empty($t->bukti_pembayaran),
                 ];
             });
 
@@ -133,7 +146,13 @@ class DashboardPelangganController extends Controller
         $isBooked = DetailTransaksi::where('kostum_id', $request->kostum_id)
             ->where('ukuran', $size)
             ->whereHas('transaksi', function ($query) use ($request) {
-                $query->whereIn('status', ['Menunggu Pembayaran', 'Disewa'])
+                // Cek konflik booking untuk semua status aktif
+                $query->whereIn('status', [
+                        'Menunggu Pembayaran',
+                        'Menunggu Verifikasi',
+                        'Sudah Dibayar',
+                        'Disewa',
+                    ])
                     ->where('tanggal_mulai', '<=', $request->tanggal_kembali)
                     ->where('tanggal_selesai', '>=', $request->tanggal_sewa);
             })
@@ -231,24 +250,32 @@ class DashboardPelangganController extends Controller
             'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        // Izinkan upload untuk status Menunggu Pembayaran DAN Ditolak (re-upload setelah penolakan)
         $transaksi = Transaksi::where('user_id', Auth::id())
-            ->where('status', 'Menunggu Pembayaran')
+            ->whereIn('status', ['Menunggu Pembayaran', 'Ditolak'])
             ->findOrFail($id);
 
         if ($request->hasFile('bukti_pembayaran')) {
-            // Delete old file if exists
-            if ($transaksi->bukti_pembayaran && \Illuminate\Support\Facades\Storage::disk('public')->exists($transaksi->bukti_pembayaran)) {
+            // Hapus file lama jika ada
+            if ($transaksi->bukti_pembayaran &&
+                \Illuminate\Support\Facades\Storage::disk('public')->exists($transaksi->bukti_pembayaran)) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($transaksi->bukti_pembayaran);
             }
 
             $path = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
-            $transaksi->bukti_pembayaran = $path;
-            $transaksi->save();
 
-            return back()->with('success', 'Payment proof uploaded successfully. Waiting for admin confirmation.');
+            // Upload bukti → otomatis ubah status ke Menunggu Verifikasi
+            // catatan_admin dikosongkan karena ini adalah upload baru
+            $transaksi->update([
+                'bukti_pembayaran' => $path,
+                'status'           => 'Menunggu Verifikasi',
+                'catatan_admin'    => null,
+            ]);
+
+            return back()->with('success', 'Bukti pembayaran berhasil diupload! Menunggu verifikasi admin.');
         }
 
-        return back()->with('error', 'Failed to upload payment proof.');
+        return back()->with('error', 'Gagal mengupload bukti pembayaran.');
     }
 
     /**
@@ -258,19 +285,23 @@ class DashboardPelangganController extends Controller
     {
         $userId = Auth::id();
 
+        // Denda hanya berlaku untuk kostum yang sudah benar-benar diambil (status Disewa)
         $late_rentals = Transaksi::with(['detailTransaksi.kostum'])
             ->where('user_id', $userId)
-            ->whereIn('status', ['Disewa', 'Menunggu Pembayaran'])
+            ->where('status', 'Disewa') // Hanya yang sudah diambil
             ->get()
             ->filter(function ($t) {
-                return \Carbon\Carbon::now()->startOfDay()->greaterThan(\Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay());
+                return \Carbon\Carbon::now()->startOfDay()->greaterThan(
+                    \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay()
+                );
             })
             ->map(function ($t) {
                 $firstDetail = $t->detailTransaksi->first();
                 $kostum = $firstDetail ? $firstDetail->kostum : null;
                 $size = $firstDetail?->ukuran ?? 'N/A';
 
-                $daysLate = \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay()->diffInDays(\Carbon\Carbon::now()->startOfDay());
+                $daysLate = \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay()
+                    ->diffInDays(\Carbon\Carbon::now()->startOfDay());
                 $denda = $daysLate * 50000;
 
                 return [

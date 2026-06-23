@@ -65,7 +65,7 @@ class ProductController extends Controller
         $start = $request->get('start');
         $end = $request->get('end');
 
-        if (!$kostumId || !$size || !$start || !$end) {
+        if (!$kostumId || !$size) {
             return response()->json(['error' => 'Missing parameters'], 400);
         }
 
@@ -84,20 +84,23 @@ class ProductController extends Controller
             $stokPermanen = $kostum->stok;
         }
 
-        // Calculate booked count
-        $bookedCount = \App\Models\DetailTransaksi::where('kostum_id', $kostumId)
-            ->where('ukuran', $size)
-            ->whereHas('transaksi', function ($query) use ($start, $end) {
-                $query->whereIn('status', [
-                        'Menunggu Pembayaran',
-                        'Menunggu Verifikasi',
-                        'Sudah Dibayar',
-                        'Disewa',
-                    ])
-                    ->where('tanggal_mulai', '<=', $end)
-                    ->where('tanggal_selesai', '>=', $start);
-            })
-            ->count();
+        // Calculate booked count only if dates are provided
+        $bookedCount = 0;
+        if ($start && $end) {
+            $bookedCount = \App\Models\DetailTransaksi::where('kostum_id', $kostumId)
+                ->where('ukuran', $size)
+                ->whereHas('transaksi', function ($query) use ($start, $end) {
+                    $query->whereIn('status', [
+                            'Menunggu Pembayaran',
+                            'Menunggu Verifikasi',
+                            'Sudah Dibayar',
+                            'Disewa',
+                        ])
+                        ->where('tanggal_mulai', '<=', $end)
+                        ->where('tanggal_selesai', '>=', $start);
+                })
+                ->count();
+        }
 
         $stokAktual = max(0, $stokPermanen - $bookedCount);
 

@@ -8,17 +8,22 @@
     const kostumIdInput = document.querySelector('input[name="kostum_id"]');
 
     function checkAvailability() {
-        if (!kostumIdInput || !tglSewa.value || !tglKembali.value) return;
+        if (!kostumIdInput) return;
         
         let selectedSize = null;
         sizeRadios.forEach(r => { if (r.checked) selectedSize = r.value; });
         
         if (!selectedSize) return;
 
-        sewaBtn.disabled = true;
-        sewaBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking Stock...';
+        if (sewaBtn) {
+            sewaBtn.disabled = true;
+            sewaBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking Stock...';
+        }
 
-        fetch(`${window.apiCheckAvailabilityUrl}?kostum_id=${kostumIdInput.value}&size=${encodeURIComponent(selectedSize)}&start=${tglSewa.value}&end=${tglKembali.value}`)
+        const startParam = tglSewa ? tglSewa.value : '';
+        const endParam = tglKembali ? tglKembali.value : '';
+
+        fetch(`${window.apiCheckAvailabilityUrl}?kostum_id=${kostumIdInput.value}&size=${encodeURIComponent(selectedSize)}&start=${startParam}&end=${endParam}`)
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
@@ -30,20 +35,24 @@
                 if (stokValueSpan) stokValueSpan.textContent = data.stok_aktual;
                 stockInfo.classList.remove('hidden');
 
-                if (data.stok_aktual <= 0) {
-                    sewaBtn.disabled = true;
-                    sewaBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                    sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> Out of Stock for these dates';
-                } else {
-                    sewaBtn.disabled = false;
-                    sewaBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Rent Now';
+                if (sewaBtn) {
+                    if (data.stok_aktual <= 0) {
+                        sewaBtn.disabled = true;
+                        sewaBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                        sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> ' + (startParam ? 'Out of Stock for these dates' : 'Out of Stock');
+                    } else {
+                        sewaBtn.disabled = false;
+                        sewaBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Rent Now';
+                    }
                 }
             })
             .catch(err => {
                 console.error("Error checking availability:", err);
-                sewaBtn.disabled = false;
-                sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Rent Now';
+                if (sewaBtn) {
+                    sewaBtn.disabled = false;
+                    sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Rent Now';
+                }
             });
     }
 

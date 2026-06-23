@@ -132,10 +132,10 @@
                                     $availableSizes = $kostum->ukuran ? array_map('trim', explode(',', $kostum->ukuran)) : ['All Size'];
                                 @endphp
                                 @foreach($availableSizes as $size)
-                                    <label class="cursor-pointer">
+                                    <label class="{{ auth()->check() ? 'cursor-pointer' : 'cursor-not-allowed opacity-50' }}">
                                         <input type="radio" name="size" value="{{ $size }}" class="peer sr-only size-radio"
-                                               {{ $loop->first ? 'required' : '' }}>
-                                        <div class="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-xl border-2 border-dark-chocolate/20 font-bold text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition shadow-sm hover:border-sakura">
+                                               {{ $loop->first ? 'required' : '' }} {{ auth()->check() ? '' : 'disabled' }}>
+                                        <div class="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-xl border-2 border-dark-chocolate/20 font-bold text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition shadow-sm {{ auth()->check() ? 'hover:border-sakura' : '' }}">
                                             {{ $size }}
                                         </div>
                                     </label>
@@ -156,8 +156,8 @@
                                 </label>
                                 <input type="date" id="tanggal_sewa" name="tanggal_sewa"
                                        min="{{ date('Y-m-d') }}"
-                                       class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition"
-                                       required>
+                                       class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate outline-none transition {{ auth()->check() ? 'focus:border-sakura focus:ring-sakura' : 'opacity-50 cursor-not-allowed' }}"
+                                       required {{ auth()->check() ? '' : 'disabled' }}>
                             </div>
                             <div>
                                 <label for="tanggal_kembali" class="block text-sm font-bold text-dark-chocolate mb-2">
@@ -165,8 +165,8 @@
                                 </label>
                                 <input type="date" id="tanggal_kembali" name="tanggal_kembali"
                                        min="{{ date('Y-m-d') }}"
-                                       class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate focus:border-sakura focus:ring-sakura outline-none transition"
-                                       required>
+                                       class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate outline-none transition {{ auth()->check() ? 'focus:border-sakura focus:ring-sakura' : 'opacity-50 cursor-not-allowed' }}"
+                                       required {{ auth()->check() ? '' : 'disabled' }}>
                             </div>
                         </div>
 

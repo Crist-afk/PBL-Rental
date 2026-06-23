@@ -370,11 +370,4 @@
         }, 300);
     }
 </script>
-@if(session('open_upload_modal'))
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        openUploadModal({{ session('open_upload_modal') }});
-    });
-</script>
-@endif
 @endpush

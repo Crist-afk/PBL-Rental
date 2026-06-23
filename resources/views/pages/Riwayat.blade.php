@@ -261,4 +261,14 @@
         }, 300);
     }
 </script>
+<script>
+    // Auto-open modal if session variable exists
+    @if(session('open_upload_modal'))
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                openUploadModal({{ session('open_upload_modal') }});
+            }, 500); // Slight delay for smoother UX
+        });
+    @endif
+</script>
 @endpush

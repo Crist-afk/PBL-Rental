@@ -200,7 +200,7 @@ class DashboardPelangganController extends Controller
 
             \Illuminate\Support\Facades\DB::commit();
 
-            return redirect()->route('dashboard.pelanggan')->with([
+            return redirect()->route('riwayat.index')->with([
                 'success' => 'Booking created successfully! Please upload your payment proof.',
                 'open_upload_modal' => $transaksi->id
             ]);

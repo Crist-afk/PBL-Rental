@@ -40,21 +40,12 @@ class CancelUnpaidBookings extends Command
         foreach ($expiredTransactions as $transaksi) {
             DB::beginTransaction();
             try {
-                // Return costume stock because the transaction is canceled
-                foreach ($transaksi->detailTransaksi as $detail) {
-                    $kostum = $detail->kostum;
-                    if ($kostum) {
-                        if ($detail->ukuran) {
-                            $stokPerUkuran = $kostum->stok_per_ukuran;
-                            if (is_array($stokPerUkuran) && isset($stokPerUkuran[$detail->ukuran])) {
-                                $stokPerUkuran[$detail->ukuran] += 1;
-                                $kostum->stok_per_ukuran = $stokPerUkuran;
-                            }
-                        }
-                        $kostum->stok += 1;
-                        $kostum->save();
-                    }
-                }
+                // ===============================================
+                // TIDAK ADA PENAMBAHAN STOK DI DATABASE KARENA
+                // STOK ADALAH STOK PERMANEN (DICEK SECARA DINAMIS)
+                // Saat transaksi dibatalkan, slot booking otomatis
+                // "terbebaskan" karena status berubah dari aktif ke Batal.
+                // ===============================================
 
                 $transaksi->update([
                     'status'        => 'Batal',

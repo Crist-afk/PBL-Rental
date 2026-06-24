@@ -3,9 +3,38 @@
     const sizeRadios = document.querySelectorAll('input[name="size"]');
     const stockInfo = document.getElementById('stock-info');
     const selectedSizeText = document.getElementById('selected-size-text');
-    const stokValueSpan = stockInfo ? stockInfo.querySelector('span.text-sakura:last-child') : null;
+    const selectedSizeStock = document.getElementById('selected-size-stock');
     const sewaBtn = document.getElementById('btn-sewa-sekarang');
     const kostumIdInput = document.querySelector('input[name="kostum_id"]');
+
+    // Stok aktual per ukuran dari server (tanpa filter tanggal)
+    // Diisi dari window.stokAktualPerUkuran yang di-inject via blade
+    const stokAwalPerUkuran = window.stokAktualPerUkuran || {};
+
+    /**
+     * Tampilkan stok awal (dari server-side, tanpa tanggal)
+     * saat user memilih ukuran tapi belum mengisi tanggal.
+     */
+    function tampilkanStokAwal(size) {
+        if (!stockInfo || !selectedSizeText || !selectedSizeStock) return;
+        const stok = stokAwalPerUkuran[size] ?? '—';
+        selectedSizeText.textContent = size;
+        selectedSizeStock.textContent = stok;
+        stockInfo.classList.remove('hidden');
+
+        // Update tombol berdasarkan stok awal
+        if (sewaBtn) {
+            if (stok === '—' || stok > 0) {
+                sewaBtn.disabled = false;
+                sewaBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                sewaBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Rent Now';
+            } else {
+                sewaBtn.disabled = true;
+                sewaBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> Out of Stock';
+            }
+        }
+    }
 
     function checkAvailability() {
         if (!kostumIdInput) return;
@@ -15,13 +44,18 @@
         
         if (!selectedSize) return;
 
+        // Jika tanggal belum diisi, tampilkan stok awal dari server
+        const startParam = tglSewa ? tglSewa.value : '';
+        const endParam = tglKembali ? tglKembali.value : '';
+        if (!startParam || !endParam) {
+            tampilkanStokAwal(selectedSize);
+            return;
+        }
+
         if (sewaBtn) {
             sewaBtn.disabled = true;
             sewaBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking Stock...';
         }
-
-        const startParam = tglSewa ? tglSewa.value : '';
-        const endParam = tglKembali ? tglKembali.value : '';
 
         fetch(`${window.apiCheckAvailabilityUrl}?kostum_id=${kostumIdInput.value}&size=${encodeURIComponent(selectedSize)}&start=${startParam}&end=${endParam}`)
             .then(res => res.json())
@@ -31,15 +65,15 @@
                     return;
                 }
                 
-                selectedSizeText.textContent = selectedSize;
-                if (stokValueSpan) stokValueSpan.textContent = data.stok_aktual;
-                stockInfo.classList.remove('hidden');
+                if (selectedSizeText) selectedSizeText.textContent = selectedSize;
+                if (selectedSizeStock) selectedSizeStock.textContent = data.stok_aktual;
+                if (stockInfo) stockInfo.classList.remove('hidden');
 
                 if (sewaBtn) {
                     if (data.stok_aktual <= 0) {
                         sewaBtn.disabled = true;
                         sewaBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                        sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> ' + (startParam ? 'Out of Stock for these dates' : 'Out of Stock');
+                        sewaBtn.innerHTML = '<i class="fa-solid fa-ban"></i> Out of Stock for these dates';
                     } else {
                         sewaBtn.disabled = false;
                         sewaBtn.classList.remove('opacity-50', 'cursor-not-allowed');

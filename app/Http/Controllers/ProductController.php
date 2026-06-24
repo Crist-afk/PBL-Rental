@@ -52,7 +52,22 @@ class ProductController extends Controller
         // Eager-load relasi 'kategori' untuk menampilkan nama kategori di detail page
         $kostum = Kostum::with('kategori')->findOrFail($id);
 
-        return view('pages.product-detail', compact('kostum'));
+        // Hitung stok aktual per ukuran (tanpa filter tanggal = berdasarkan booking aktif hari ini)
+        // Tanggal tidak difilter di sini karena user belum memilih tanggal.
+        // Stok aktual realtime akan diperbarui via AJAX saat user memilih tanggal.
+        $stokAktualPerUkuran = [];
+        $availableSizes = $kostum->ukuran
+            ? array_map('trim', explode(',', $kostum->ukuran))
+            : ['All Size'];
+
+        foreach ($availableSizes as $size) {
+            $stokAktualPerUkuran[$size] = $kostum->getStokAktualBySize($size);
+        }
+
+        // Stok aktual total (untuk badge ketersediaan di header)
+        $stokAktualTotal = $kostum->getStokAktualTotal();
+
+        return view('pages.product-detail', compact('kostum', 'stokAktualPerUkuran', 'stokAktualTotal'));
     }
 
     /**

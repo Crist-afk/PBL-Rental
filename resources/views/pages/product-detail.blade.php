@@ -55,9 +55,9 @@
                         Rp {{ number_format($kostum->harga_sewa, 0, ',', '.') }}
                         <span class="text-lg font-medium text-dark-chocolate/60">/ day</span>
                     </span>
-                    @if($kostum->stok > 0)
+                    @if($stokAktualTotal > 0)
                         <span class="px-3 py-1 bg-green-100 text-green-700 font-bold text-xs rounded-full uppercase tracking-wider border border-green-200">
-                            Available ({{ $kostum->stok }} units)
+                            Available ({{ $stokAktualTotal }} units)
                         </span>
                     @else
                         <span class="px-3 py-1 bg-red-100 text-red-700 font-bold text-xs rounded-full uppercase tracking-wider border border-red-200">
@@ -112,7 +112,7 @@
                 </div>
 
                 {{-- ── Booking Form ── --}}
-                @if($kostum->stok > 0)
+                @if($stokAktualTotal > 0)
                     <form action="{{ route('booking.index') }}" method="GET"
                           class="space-y-6 bg-white/40 p-5 md:p-6 rounded-[2rem] border-2 border-dark-chocolate/10">
 
@@ -141,11 +141,17 @@
                                     </label>
                                 @endforeach
                             </div>
-                            {{-- Info Stok yang muncul saat ukuran diklik --}}
+                            {{-- Info Stok Aktual per Ukuran (tampil saat ukuran diklik, diperbarui AJAX saat tanggal dipilih) --}}
+                            @php
+                                $stokAktualJson = json_encode($stokAktualPerUkuran);
+                            @endphp
                             <div id="stock-info" class="hidden mt-3 px-4 py-2 bg-sakura/10 rounded-xl border border-sakura/20 text-sm font-bold text-dark-chocolate flex items-center gap-2 transition-all duration-300">
                                 <i class="fa-solid fa-box-open text-sakura"></i>
-                                <span>Remaining stock for size <span id="selected-size-text" class="text-sakura"></span>: <span class="text-sakura">{{ $kostum->stok }}</span> unit(s)</span>
+                                <span>Remaining stock for size <span id="selected-size-text" class="text-sakura"></span>: <span id="selected-size-stock" class="text-sakura">—</span> unit(s)</span>
                             </div>
+                            <script>
+                                window.stokAktualPerUkuran = {!! $stokAktualJson !!};
+                            </script>
                         </div>
 
                         {{-- Date Range --}}

@@ -94,6 +94,8 @@
                                     Rp {{ number_format($kostum->harga_sewa, 0, ',', '.') }}
                                 </span>
 
+                                {{-- Di catalog, cek stok permanen (user belum pilih tanggal).
+                                     Stok aktual akan dicek ketat saat user membuka halaman detail & booking. --}}
                                 @if($kostum->stok > 0)
                                     <a href="{{ route('products.show', $kostum->id) }}"
                                        class="rounded-full bg-dark-chocolate px-4 py-2 text-sm font-bold text-misty-rose transition hover:bg-black">

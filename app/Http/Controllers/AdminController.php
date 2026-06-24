@@ -468,7 +468,7 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('admin.pembayaran')
-                ->with('success', "Transaksi #TRX-{$id} berhasil dibatalkan dan stok dikembalikan.");
+                ->with('success', "Transaksi #TRX-{$id} berhasil dibatalkan. Slot stok otomatis tersedia kembali.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();

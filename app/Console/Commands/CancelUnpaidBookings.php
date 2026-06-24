@@ -41,11 +41,14 @@ class CancelUnpaidBookings extends Command
             DB::beginTransaction();
             try {
                 // ===============================================
-                // TIDAK ADA PENAMBAHAN STOK DI DATABASE KARENA
-                // STOK ADALAH STOK PERMANEN (DICEK SECARA DINAMIS)
-                // Saat transaksi dibatalkan, slot booking otomatis
-                // "terbebaskan" karena status berubah dari aktif ke Batal.
+                // Tambahkan kembali stok_aktual karena transaksi auto-canceled
                 // ===============================================
+                foreach ($transaksi->detailTransaksi as $detail) {
+                    if ($detail->kostum) {
+                        $size = $detail->ukuran ?? '';
+                        $detail->kostum->incrementStokAktual($size, 1);
+                    }
+                }
 
                 $transaksi->update([
                     'status'        => 'Batal',

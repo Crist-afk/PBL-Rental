@@ -89,39 +89,9 @@ class ProductController extends Controller
             return response()->json(['error' => 'Costume not found'], 404);
         }
 
-        // Get permanent stock for the size
-        $stokPerUkuran = $kostum->stok_per_ukuran ?? [];
-        $stokPermanen = 0;
-        
-        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
-            $stokPermanen = $stokPerUkuran[$size];
-        } else {
-            $stokPermanen = $kostum->stok;
-        }
-
-        // Calculate booked count only if dates are provided
-        $bookedCount = 0;
-        if ($start && $end) {
-            $bookedCount = \App\Models\DetailTransaksi::where('kostum_id', $kostumId)
-                ->where('ukuran', $size)
-                ->whereHas('transaksi', function ($query) use ($start, $end) {
-                    $query->whereIn('status', [
-                            'Menunggu Pembayaran',
-                            'Menunggu Verifikasi',
-                            'Sudah Dibayar',
-                            'Disewa',
-                        ])
-                        ->where('tanggal_mulai', '<=', $end)
-                        ->where('tanggal_selesai', '>=', $start);
-                })
-                ->count();
-        }
-
-        $stokAktual = max(0, $stokPermanen - $bookedCount);
+        $stokAktual = $kostum->getStokAktualBySize($size, $start, $end);
 
         return response()->json([
-            'stok_permanen' => $stokPermanen,
-            'booked_count' => $bookedCount,
             'stok_aktual' => $stokAktual
         ]);
     }

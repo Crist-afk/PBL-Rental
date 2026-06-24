@@ -290,9 +290,9 @@
         @forelse($kostums as $kostum)
           <div class="costume-card">
             <div class="card-img" style="background: url('{{ $kostum->gambar_url }}') center/cover;">
-              @if($kostum->stok === 0)
+              @if($kostum->stok_aktual === 0)
                 <span class="status-badge tidak">Out of Stock</span>
-              @elseif($kostum->stok === 1)
+              @elseif($kostum->stok_aktual === 1)
                 <span class="status-badge disewa" style="background: rgba(251, 146, 60, 0.15); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.3);">Low Stock</span>
               @else
                 <span class="status-badge tersedia">Available</span>
@@ -311,7 +311,7 @@
 
               {{-- Per-size stock chips --}}
               @php
-                $stokPerUkuran = $kostum->stok_per_ukuran;
+                $stokPerUkuran = $kostum->stok_permanen_per_ukuran;
                 $ukuranArr = array_filter(array_map('trim', explode(',', $kostum->ukuran ?? '')));
               @endphp
               @if(!empty($stokPerUkuran) && is_array($stokPerUkuran))
@@ -324,7 +324,7 @@
                   @endforeach
                 </div>
               @elseif(!empty($ukuranArr))
-                {{-- Fallback: show sizes without stock counts if stok_per_ukuran not set --}}
+                {{-- Fallback: show sizes without stock counts if stok_permanen_per_ukuran not set --}}
                 <div class="size-stock-grid">
                   @foreach($ukuranArr as $size)
                     <span class="size-stock-chip in-stock">
@@ -785,7 +785,7 @@
 
         // Set ukuran and generate per-size inputs with existing stock
         document.getElementById('editUkuranInput').value = kostum.ukuran || '';
-        const stokPerUkuran = kostum.stok_per_ukuran || {};
+        const stokPerUkuran = kostum.stok_permanen_per_ukuran || {};
         generateEditSizeInputs(stokPerUkuran);
 
         const previewImg = document.getElementById('edit_preview_img');
@@ -817,13 +817,13 @@
         const hargaFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(kostum.harga_sewa);
         document.getElementById('view_harga').innerHTML = hargaFormatted + ' <span style="font-size:12px;color:var(--text-3);font-family:\'Sora\',sans-serif;">/day</span>';
         
-        document.getElementById('view_stok').textContent = kostum.stok + ' Unit';
+        document.getElementById('view_stok').textContent = kostum.stok_permanen + ' Unit';
         document.getElementById('view_kelengkapan').textContent = kostum.kelengkapan || 'No special accessories/description.';
 
         // Render per-size stock table
         const tableContainer = document.getElementById('view_size_stock_table');
         tableContainer.innerHTML = '';
-        const stokPerUkuran = kostum.stok_per_ukuran || {};
+        const stokPerUkuran = kostum.stok_permanen_per_ukuran || {};
         const sizes = Object.keys(stokPerUkuran);
 
         if (sizes.length > 0) {

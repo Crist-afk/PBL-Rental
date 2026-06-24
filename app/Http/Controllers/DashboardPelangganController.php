@@ -135,34 +135,18 @@ class DashboardPelangganController extends Controller
         $stokPerUkuran = $kostum->stok_per_ukuran;
 
         // ================= NEW STOCK LOGIC =================
-        // Get permanent stock for the size
-        $stokPermanen = 0;
-        if (is_array($stokPerUkuran) && isset($stokPerUkuran[$size])) {
-            $stokPermanen = $stokPerUkuran[$size];
+        // Ambil stok aktual langsung dari database
+        $stokAktualPerUkuran = $kostum->stok_aktual_per_ukuran ?? [];
+        $stokAktual = 0;
+        
+        if (isset($stokAktualPerUkuran[$size])) {
+            $stokAktual = $stokAktualPerUkuran[$size];
         } else {
-            $stokPermanen = $kostum->stok;
+            $stokAktual = $kostum->stok_aktual;
         }
 
-        // Calculate booked count for overlapping dates
-        $bookedCount = DetailTransaksi::where('kostum_id', $request->kostum_id)
-            ->where('ukuran', $size)
-            ->whereHas('transaksi', function ($query) use ($request) {
-                // Cek konflik booking untuk semua status aktif
-                $query->whereIn('status', [
-                        'Menunggu Pembayaran',
-                        'Menunggu Verifikasi',
-                        'Sudah Dibayar',
-                        'Disewa',
-                    ])
-                    ->where('tanggal_mulai', '<=', $request->tanggal_kembali)
-                    ->where('tanggal_selesai', '>=', $request->tanggal_sewa);
-            })
-            ->count();
-
-        $stokAktual = $stokPermanen - $bookedCount;
-
         if ($stokAktual <= 0) {
-            return back()->with('error', 'Costume size ' . $size . ' is fully booked for those dates.')->withInput();
+            return back()->with('error', 'Costume size ' . $size . ' is out of stock.')->withInput();
         }
 
         try {
@@ -194,9 +178,9 @@ class DashboardPelangganController extends Controller
             ]);
 
             // ===============================================
-            // TIDAK ADA PENGURANGAN STOK DI DATABASE KARENA
-            // STOK ADALAH STOK PERMANEN (DICEK SECARA DINAMIS)
+            // Kurangi stok aktual karena berhasil dibooking
             // ===============================================
+            $kostum->decrementStokAktual($size, 1);
 
             \Illuminate\Support\Facades\DB::commit();
 

@@ -90,8 +90,8 @@ class AdminController extends Controller
             ->get();
 
         $stok_hampir_habis = Kostum::with('kategori')
-            ->where('stok', '<=', 1)
-            ->orderBy('stok', 'asc')
+            ->where('stok_aktual', '<=', 1)
+            ->orderBy('stok_aktual', 'asc')
             ->latest()
             ->limit(5)
             ->get();
@@ -143,7 +143,7 @@ class AdminController extends Controller
 
         $lowStockFilter = $request->boolean('low_stock');
         if ($lowStockFilter) {
-            $query->where('stok', '<=', 1);
+            $query->where('stok_aktual', '<=', 1);
         }
 
         $allSizes = Kostum::whereNotNull('ukuran')
@@ -191,14 +191,16 @@ class AdminController extends Controller
         $ukuranStr = implode(', ', array_keys($stokPerUkuran));
 
         Kostum::create([
-            'nama_kostum'     => $request->nama_kostum,
-            'kategori_id'     => $request->kategori_id,
-            'harga_sewa'      => $request->harga_sewa,
-            'stok'            => $totalStok,
-            'ukuran'          => $ukuranStr,
-            'stok_per_ukuran' => $stokPerUkuran,
-            'kelengkapan'     => $request->kelengkapan,
-            'gambar'          => $gambar,
+            'nama_kostum'              => $request->nama_kostum,
+            'kategori_id'              => $request->kategori_id,
+            'harga_sewa'               => $request->harga_sewa,
+            'stok_permanen'            => $totalStok,
+            'stok_aktual'              => $totalStok,
+            'ukuran'                   => $ukuranStr,
+            'stok_permanen_per_ukuran' => $stokPerUkuran,
+            'stok_aktual_per_ukuran'   => $stokPerUkuran,
+            'kelengkapan'              => $request->kelengkapan,
+            'gambar'                   => $gambar,
         ]);
 
         return redirect()->route('admin.kostum')->with('success', 'Costume added successfully!');
@@ -242,14 +244,42 @@ class AdminController extends Controller
         $ukuranStr = implode(', ', array_keys($stokPerUkuran));
 
         $kostum->update([
-            'nama_kostum'     => $request->nama_kostum,
-            'kategori_id'     => $request->kategori_id,
-            'harga_sewa'      => $request->harga_sewa,
-            'stok'            => $totalStok,
-            'ukuran'          => $ukuranStr,
-            'stok_per_ukuran' => $stokPerUkuran,
-            'kelengkapan'     => $request->kelengkapan,
-            'gambar'          => $gambar,
+            'nama_kostum'              => $request->nama_kostum,
+            'kategori_id'              => $request->kategori_id,
+            'harga_sewa'               => $request->harga_sewa,
+            'stok_permanen'            => $totalStok,
+            'ukuran'                   => $ukuranStr,
+            'stok_permanen_per_ukuran' => $stokPerUkuran,
+            'kelengkapan'              => $request->kelengkapan,
+            'gambar'                   => $gambar,
+        ]);
+
+        // Hitung ulang stok aktual berdasarkan stok permanen yang baru
+        $activeStatuses = \App\Models\Kostum::statusAktif();
+        $activeDetails = \App\Models\DetailTransaksi::join('transaksi', 'detail_transaksi.transaksi_id', '=', 'transaksi.id')
+            ->where('detail_transaksi.kostum_id', $kostum->id)
+            ->whereIn('transaksi.status', $activeStatuses)
+            ->select('detail_transaksi.ukuran')
+            ->get();
+        
+        $stokAktual = $totalStok;
+        $stokAktualPerUkuran = $stokPerUkuran;
+
+        foreach ($activeDetails as $detail) {
+            $stokAktual--;
+            if ($detail->ukuran && isset($stokAktualPerUkuran[$detail->ukuran])) {
+                $stokAktualPerUkuran[$detail->ukuran]--;
+            }
+        }
+        
+        $stokAktual = max(0, $stokAktual);
+        foreach ($stokAktualPerUkuran as $k => $v) {
+            $stokAktualPerUkuran[$k] = max(0, $v);
+        }
+
+        $kostum->update([
+            'stok_aktual' => $stokAktual,
+            'stok_aktual_per_ukuran' => $stokAktualPerUkuran,
         ]);
 
         return redirect()->route('admin.kostum')->with('success', 'Costume updated successfully!');
@@ -456,9 +486,15 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::beginTransaction();
 
             // ===============================================
-            // TIDAK ADA PENAMBAHAN STOK DI DATABASE KARENA
-            // STOK ADALAH STOK PERMANEN (DICEK SECARA DINAMIS)
+            // Tambahkan kembali stok_aktual karena transaksi dibatalkan
+            // (slot stok yang sebelumnya di-reserve menjadi bebas)
             // ===============================================
+            foreach ($transaksi->detailTransaksi as $detail) {
+                if ($detail->kostum) {
+                    $size = $detail->ukuran ?? '';
+                    $detail->kostum->incrementStokAktual($size, 1);
+                }
+            }
 
             $transaksi->update([
                 'status'        => 'Batal',
@@ -613,9 +649,14 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::beginTransaction();
 
             // ===============================================
-            // TIDAK ADA PENAMBAHAN STOK DI DATABASE KARENA
-            // STOK ADALAH STOK PERMANEN (DICEK SECARA DINAMIS)
+            // Tambahkan kembali stok_aktual karena kostum telah dikembalikan
             // ===============================================
+            foreach ($transaksi->detailTransaksi as $detail) {
+                if ($detail->kostum) {
+                    $size = $detail->ukuran ?? '';
+                    $detail->kostum->incrementStokAktual($size, 1);
+                }
+            }
 
             Pengembalian::create([
                 'transaksi_id'           => $transaksi->id,

@@ -11,8 +11,10 @@ class Kostum extends Model
     protected $fillable = [
         'kategori_id',
         'nama_kostum',
-        'stok',
-        'stok_per_ukuran',
+        'stok_permanen',
+        'stok_aktual',
+        'stok_permanen_per_ukuran',
+        'stok_aktual_per_ukuran',
         'harga_sewa',
         'ukuran',
         'kelengkapan',
@@ -20,7 +22,8 @@ class Kostum extends Model
     ];
 
     protected $casts = [
-        'stok_per_ukuran' => 'array',
+        'stok_permanen_per_ukuran' => 'array',
+        'stok_aktual_per_ukuran' => 'array',
     ];
 
     // Relasi: Satu kostum dimiliki oleh satu kategori (BelongsTo)
@@ -81,11 +84,19 @@ class Kostum extends Model
      */
     public function getStokAktualBySize(string $size, ?string $tanggalMulai = null, ?string $tanggalSelesai = null): int
     {
-        // Stok permanen per ukuran
-        $stokPerUkuran = $this->stok_per_ukuran ?? [];
+        // Jika tidak ada filter tanggal, kita bisa kembalikan nilai stok_aktual_per_ukuran langsung dari database
+        if (!$tanggalMulai && !$tanggalSelesai) {
+            $stokAktualPerUkuran = $this->stok_aktual_per_ukuran ?? [];
+            return (is_array($stokAktualPerUkuran) && isset($stokAktualPerUkuran[$size]))
+                ? (int) $stokAktualPerUkuran[$size]
+                : (int) $this->stok_aktual;
+        }
+
+        // Jika ada filter tanggal, hitung manual: Stok permanen - booking aktif yang overlap
+        $stokPerUkuran = $this->stok_permanen_per_ukuran ?? [];
         $stokPermanen = (is_array($stokPerUkuran) && isset($stokPerUkuran[$size]))
             ? (int) $stokPerUkuran[$size]
-            : (int) $this->stok;
+            : (int) $this->stok_permanen;
 
         // Hitung jumlah booking aktif yang overlap tanggal
         $query = DetailTransaksi::where('kostum_id', $this->id)
@@ -112,7 +123,11 @@ class Kostum extends Model
      */
     public function getStokAktualTotal(?string $tanggalMulai = null, ?string $tanggalSelesai = null): int
     {
-        $stokPermanen = (int) $this->stok;
+        if (!$tanggalMulai && !$tanggalSelesai) {
+            return (int) $this->stok_aktual;
+        }
+
+        $stokPermanen = (int) $this->stok_permanen;
 
         $query = DetailTransaksi::where('kostum_id', $this->id)
             ->whereHas('transaksi', function ($q) use ($tanggalMulai, $tanggalSelesai) {
@@ -126,5 +141,39 @@ class Kostum extends Model
         $bookedCount = $query->count();
 
         return max(0, $stokPermanen - $bookedCount);
+    }
+
+    /**
+     * Kurangi stok aktual dan stok aktual per ukuran sebesar $qty.
+     */
+    public function decrementStokAktual(string $size, int $qty = 1): void
+    {
+        $this->stok_aktual = max(0, $this->stok_aktual - $qty);
+        
+        $stokPerUkuran = $this->stok_aktual_per_ukuran ?? [];
+        if (isset($stokPerUkuran[$size])) {
+            $stokPerUkuran[$size] = max(0, $stokPerUkuran[$size] - $qty);
+        }
+        $this->stok_aktual_per_ukuran = $stokPerUkuran;
+        
+        $this->save();
+    }
+
+    /**
+     * Tambah stok aktual dan stok aktual per ukuran sebesar $qty (dibatasi oleh stok permanen).
+     */
+    public function incrementStokAktual(string $size, int $qty = 1): void
+    {
+        $this->stok_aktual = min($this->stok_permanen, $this->stok_aktual + $qty);
+        
+        $stokPerUkuran = $this->stok_aktual_per_ukuran ?? [];
+        $stokPermanenPerUkuran = $this->stok_permanen_per_ukuran ?? [];
+        if (isset($stokPerUkuran[$size])) {
+            $maxStok = isset($stokPermanenPerUkuran[$size]) ? $stokPermanenPerUkuran[$size] : $stokPerUkuran[$size] + $qty;
+            $stokPerUkuran[$size] = min($maxStok, $stokPerUkuran[$size] + $qty);
+        }
+        $this->stok_aktual_per_ukuran = $stokPerUkuran;
+        
+        $this->save();
     }
 }

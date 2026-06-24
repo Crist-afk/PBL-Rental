@@ -9,7 +9,7 @@ class HomeController extends Controller
     public function index()
     {
         $featuredKostums = Kostum::with('kategori')
-            ->where('stok', '>', 0)
+            ->where('stok_permanen', '>', 0)
             ->latest()
             ->take(4)
             ->get();

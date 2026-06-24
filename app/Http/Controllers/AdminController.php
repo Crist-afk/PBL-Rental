@@ -90,8 +90,8 @@ class AdminController extends Controller
             ->get();
 
         $stok_hampir_habis = Kostum::with('kategori')
-            ->where('stok_aktual', '<=', 1)
-            ->orderBy('stok_aktual', 'asc')
+            ->where('stok_permanen', '<=', 1)
+            ->orderBy('stok_permanen', 'asc')
             ->latest()
             ->limit(5)
             ->get();
@@ -143,7 +143,7 @@ class AdminController extends Controller
 
         $lowStockFilter = $request->boolean('low_stock');
         if ($lowStockFilter) {
-            $query->where('stok_aktual', '<=', 1);
+            $query->where('stok_permanen', '<=', 1);
         }
 
         $allSizes = Kostum::whereNotNull('ukuran')
@@ -446,8 +446,11 @@ class AdminController extends Controller
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($transaksi->bukti_pembayaran);
             }
 
-            // Set status ke 'Ditolak' — pelanggan bisa lihat alasan & upload ulang
-            // Stok TIDAK dikembalikan — slot tetap reserved, pelanggan masih bisa re-upload
+            // ── PR-2: Slot kalender otomatis terbuka saat status 'Ditolak' ─────
+            // Status 'Ditolak' tidak termasuk dalam statusAktif(), sehingga slot
+            // kalender untuk tanggal yang sama langsung dapat direbook oleh pelanggan lain.
+            // Pelanggan masih dapat upload ulang bukti pembayaran; jika diterima,
+            // transaksi akan kembali ke 'Menunggu Verifikasi' dan slot akan terkunci kembali.
             $transaksi->update([
                 'status'             => 'Ditolak',
                 'bukti_pembayaran'   => null,
@@ -467,7 +470,8 @@ class AdminController extends Controller
 
     /**
      * Admin batalkan transaksi sepenuhnya → status: Batal
-     * Stok dikembalikan. Digunakan untuk pembatalan permanen.
+     * Slot kalender otomatis terbuka karena status berubah ke Batal
+     * (tidak memblokir calendar availability).
      */
     public function pembayaranBatal(Request $request, $id)
     {
@@ -485,16 +489,10 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // ===============================================
-            // Tambahkan kembali stok_aktual karena transaksi dibatalkan
-            // (slot stok yang sebelumnya di-reserve menjadi bebas)
-            // ===============================================
-            foreach ($transaksi->detailTransaksi as $detail) {
-                if ($detail->kostum) {
-                    $size = $detail->ukuran ?? '';
-                    $detail->kostum->incrementStokAktual($size, 1);
-                }
-            }
+            // ── PR-2: Tidak ada increment stok ─────────────────────────────────
+            // Slot kalender terbuka otomatis karena status berubah ke 'Batal'.
+            // Status 'Batal' tidak termasuk dalam statusAktif() sehingga tidak
+            // memblokir ketersediaan pada tanggal yang sama.
 
             $transaksi->update([
                 'status'        => 'Batal',
@@ -504,7 +502,7 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('admin.pembayaran')
-                ->with('success', "Transaksi #TRX-{$id} berhasil dibatalkan. Slot stok otomatis tersedia kembali.");
+                ->with('success', "Transaksi #TRX-{$id} berhasil dibatalkan. Slot kalender otomatis tersedia kembali.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
@@ -648,15 +646,10 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // ===============================================
-            // Tambahkan kembali stok_aktual karena kostum telah dikembalikan
-            // ===============================================
-            foreach ($transaksi->detailTransaksi as $detail) {
-                if ($detail->kostum) {
-                    $size = $detail->ukuran ?? '';
-                    $detail->kostum->incrementStokAktual($size, 1);
-                }
-            }
+            // ── PR-2: Tidak ada increment stok ─────────────────────────────────
+            // Slot kalender terbuka otomatis karena status berubah ke 'Selesai'.
+            // Status 'Selesai' tidak termasuk dalam statusAktif() sehingga tidak
+            // memblokir ketersediaan pada tanggal kostum dikembalikan.
 
             Pengembalian::create([
                 'transaksi_id'           => $transaksi->id,

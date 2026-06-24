@@ -290,9 +290,9 @@
         @forelse($kostums as $kostum)
           <div class="costume-card">
             <div class="card-img" style="background: url('{{ $kostum->gambar_url }}') center/cover;">
-              @if($kostum->stok_aktual === 0)
+              @if($kostum->stok_permanen === 0)
                 <span class="status-badge tidak">Out of Stock</span>
-              @elseif($kostum->stok_aktual === 1)
+              @elseif($kostum->stok_permanen <= 1)
                 <span class="status-badge disewa" style="background: rgba(251, 146, 60, 0.15); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.3);">Low Stock</span>
               @else
                 <span class="status-badge tersedia">Available</span>

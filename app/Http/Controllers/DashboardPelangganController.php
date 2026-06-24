@@ -120,6 +120,9 @@ class DashboardPelangganController extends Controller
 
     /**
      * Menangani Pengiriman Form Booking
+     *
+     * PR-2: Availability dihitung dinamis dari calendar overlap — tidak membaca stok_aktual database.
+     * PR-3: Pessimistic lock (lockForUpdate) digunakan di dalam transaksi untuk mencegah double booking.
      */
     public function storeBooking(Request $request)
     {
@@ -130,63 +133,63 @@ class DashboardPelangganController extends Controller
             'tanggal_kembali' => 'required|date|after_or_equal:tanggal_sewa',
         ]);
 
-        $kostum = Kostum::findOrFail($request->kostum_id);
-        $size = $request->size;
-        $stokPerUkuran = $kostum->stok_per_ukuran;
-
-        // ================= NEW STOCK LOGIC =================
-        // Ambil stok aktual langsung dari database
-        $stokAktualPerUkuran = $kostum->stok_aktual_per_ukuran ?? [];
-        $stokAktual = 0;
-        
-        if (isset($stokAktualPerUkuran[$size])) {
-            $stokAktual = $stokAktualPerUkuran[$size];
-        } else {
-            $stokAktual = $kostum->stok_aktual;
-        }
-
-        if ($stokAktual <= 0) {
-            return back()->with('error', 'Costume size ' . $size . ' is out of stock.')->withInput();
-        }
+        $size           = $request->size;
+        $tanggalSewa    = $request->tanggal_sewa;
+        $tanggalKembali = $request->tanggal_kembali;
 
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            $start = Carbon::parse($request->tanggal_sewa);
-            $end   = Carbon::parse($request->tanggal_kembali);
-            $days  = max(1, $start->diffInDays($end));
+            // ── PR-3: Pessimistic Lock ──────────────────────────────────────────
+            // Kunci baris kostum ini agar tidak ada request lain yang bisa membaca
+            // nilai yang sama secara bersamaan hingga transaksi ini selesai.
+            $kostum = Kostum::lockForUpdate()->findOrFail($request->kostum_id);
 
+            // ── PR-2: Calendar Availability Check ─────────────────────────────
+            // Hitung ketersediaan dinamis berdasarkan overlap booking aktif.
+            // Tidak membaca stok_aktual atau stok_aktual_per_ukuran dari database.
+            $availability = $kostum->getStokAktualBySize($size, $tanggalSewa, $tanggalKembali);
+
+            if ($availability <= 0) {
+                \Illuminate\Support\Facades\DB::rollBack();
+                return back()
+                    ->with('error', 'Costume size ' . $size . ' is not available for the selected dates.')
+                    ->withInput();
+            }
+
+            // ── Hitung Total Biaya ─────────────────────────────────────────────
+            $start       = Carbon::parse($tanggalSewa);
+            $end         = Carbon::parse($tanggalKembali);
+            $days        = max(1, $start->diffInDays($end));
             $total_biaya = $kostum->harga_sewa * $days;
 
-            // Buat Transaksi Utama
-            $size = $request->size;
+            // ── Buat Transaksi Utama ───────────────────────────────────────────
             $transaksi = Transaksi::create([
                 'user_id'         => Auth::id(),
-                'tanggal_mulai'   => $request->tanggal_sewa,
-                'tanggal_selesai' => $request->tanggal_kembali,
+                'tanggal_mulai'   => $tanggalSewa,
+                'tanggal_selesai' => $tanggalKembali,
                 'total_biaya'     => $total_biaya,
                 'status'          => 'Menunggu Pembayaran',
                 'catatan'         => $request->catatan,
             ]);
 
-            // Buat Detail Transaksi
+            // ── Buat Detail Transaksi ──────────────────────────────────────────
             DetailTransaksi::create([
                 'transaksi_id'              => $transaksi->id,
-                'kostum_id'                 => $request->kostum_id,
+                'kostum_id'                 => $kostum->id,
                 'ukuran'                    => $size,
-                'harga_sewa_saat_transaksi' => $total_biaya
+                'harga_sewa_saat_transaksi' => $total_biaya,
             ]);
 
-            // ===============================================
-            // Kurangi stok aktual karena berhasil dibooking
-            // ===============================================
-            $kostum->decrementStokAktual($size, 1);
+            // ── TIDAK ADA decrement stok ───────────────────────────────────────
+            // Slot kalender otomatis terkunci karena transaksi berstatus
+            // 'Menunggu Pembayaran' sudah ada dengan tanggal yang overlap.
 
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('riwayat.index')->with([
-                'success' => 'Booking created successfully! Please upload your payment proof.',
-                'open_upload_modal' => $transaksi->id
+                'success'           => 'Booking created successfully! Please upload your payment proof.',
+                'open_upload_modal' => $transaksi->id,
             ]);
 
         } catch (\Exception $e) {

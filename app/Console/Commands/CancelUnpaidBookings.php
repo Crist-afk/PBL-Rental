@@ -40,15 +40,10 @@ class CancelUnpaidBookings extends Command
         foreach ($expiredTransactions as $transaksi) {
             DB::beginTransaction();
             try {
-                // ===============================================
-                // Tambahkan kembali stok_aktual karena transaksi auto-canceled
-                // ===============================================
-                foreach ($transaksi->detailTransaksi as $detail) {
-                    if ($detail->kostum) {
-                        $size = $detail->ukuran ?? '';
-                        $detail->kostum->incrementStokAktual($size, 1);
-                    }
-                }
+                // ── PR-2: Tidak ada increment stok ──────────────────────────────
+                // Slot kalender terbuka otomatis karena status berubah ke 'Batal'.
+                // Status 'Batal' tidak termasuk dalam statusAktif() sehingga tidak
+                // memblokir ketersediaan kalender untuk tanggal yang sama.
 
                 $transaksi->update([
                     'status'        => 'Batal',

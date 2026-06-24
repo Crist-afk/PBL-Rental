@@ -62,12 +62,13 @@ class Kostum extends Model
     }
 
     // =========================================================================
-    // STOK AKTUAL — Dihitung Dinamis (Stok Permanen − Booking Aktif yang Overlap)
+    // CALENDAR AVAILABILITY — Dihitung Dinamis dari Overlap Booking Aktif
+    // Kapasitas diambil dari stok_permanen_per_ukuran (tidak membaca stok_aktual).
     // =========================================================================
 
     /**
-     * Status transaksi yang dianggap "sedang memakai" slot stok.
-     * Transaksi Batal, Selesai, dan Ditolak tidak memblokir stok.
+     * Status transaksi yang mengunci slot kalender.
+     * Batal, Ditolak, dan Selesai TIDAK memblokir slot.
      */
     public static function statusAktif(): array
     {
@@ -75,105 +76,106 @@ class Kostum extends Model
     }
 
     /**
-     * Hitung stok aktual untuk ukuran tertentu pada rentang tanggal tertentu.
+     * Hitung ketersediaan untuk ukuran tertentu pada rentang tanggal tertentu.
      *
-     * @param  string      $size          Ukuran kostum (e.g. "M")
-     * @param  string|null $tanggalMulai  Format Y-m-d. Null = abaikan filter tanggal.
-     * @param  string|null $tanggalSelesai Format Y-m-d. Null = abaikan filter tanggal.
-     * @return int Stok aktual (≥ 0)
+     * Logika:
+     *   kapasitas = stok_permanen_per_ukuran[$size]  (kapasitas fisik kostum)
+     *   booking_overlap = detail_transaksi dengan status aktif yang tanggalnya
+     *                     tumpang tindih dengan rentang yang diminta
+     *   availability = max(0, kapasitas - booking_overlap)
+     *
+     * Overlap condition:
+     *   tanggal_mulai (existing) <= tanggalSelesai (requested)
+     *   AND tanggal_selesai (existing) >= tanggalMulai (requested)
+     *
+     * @param  string      $size           Ukuran kostum (e.g. "M")
+     * @param  string|null $tanggalMulai   Format Y-m-d. Null = default ke hari ini.
+     * @param  string|null $tanggalSelesai Format Y-m-d. Null = default ke hari ini.
+     * @return int Ketersediaan (≥ 0)
      */
     public function getStokAktualBySize(string $size, ?string $tanggalMulai = null, ?string $tanggalSelesai = null): int
     {
-        // Jika tidak ada filter tanggal, kita bisa kembalikan nilai stok_aktual_per_ukuran langsung dari database
-        if (!$tanggalMulai && !$tanggalSelesai) {
-            $stokAktualPerUkuran = $this->stok_aktual_per_ukuran ?? [];
-            return (is_array($stokAktualPerUkuran) && isset($stokAktualPerUkuran[$size]))
-                ? (int) $stokAktualPerUkuran[$size]
-                : (int) $this->stok_aktual;
+        // Default: gunakan hari ini jika tanggal tidak diberikan
+        $start = $tanggalMulai  ?? now()->toDateString();
+        $end   = $tanggalSelesai ?? now()->toDateString();
+
+        // Baca kapasitas dari stok_permanen_per_ukuran (BUKAN stok_aktual)
+        $kapasitasPerUkuran = $this->stok_permanen_per_ukuran ?? [];
+        $kapasitas = (is_array($kapasitasPerUkuran) && isset($kapasitasPerUkuran[$size]))
+            ? (int) $kapasitasPerUkuran[$size]
+            : 0;
+
+        if ($kapasitas <= 0) {
+            return 0;
         }
 
-        // Jika ada filter tanggal, hitung manual: Stok permanen - booking aktif yang overlap
-        $stokPerUkuran = $this->stok_permanen_per_ukuran ?? [];
-        $stokPermanen = (is_array($stokPerUkuran) && isset($stokPerUkuran[$size]))
-            ? (int) $stokPerUkuran[$size]
-            : (int) $this->stok_permanen;
-
-        // Hitung jumlah booking aktif yang overlap tanggal
-        $query = DetailTransaksi::where('kostum_id', $this->id)
+        // Hitung booking aktif yang overlap dengan rentang tanggal yang diminta
+        $bookedCount = DetailTransaksi::where('kostum_id', $this->id)
             ->where('ukuran', $size)
-            ->whereHas('transaksi', function ($q) use ($tanggalMulai, $tanggalSelesai) {
-                $q->whereIn('status', self::statusAktif());
-                if ($tanggalMulai && $tanggalSelesai) {
-                    $q->where('tanggal_mulai', '<=', $tanggalSelesai)
-                      ->where('tanggal_selesai', '>=', $tanggalMulai);
-                }
-            });
+            ->whereHas('transaksi', function ($q) use ($start, $end) {
+                $q->whereIn('status', self::statusAktif())
+                  ->where('tanggal_mulai', '<=', $end)
+                  ->where('tanggal_selesai', '>=', $start);
+            })
+            ->count();
 
-        $bookedCount = $query->count();
-
-        return max(0, $stokPermanen - $bookedCount);
+        return max(0, $kapasitas - $bookedCount);
     }
 
     /**
-     * Hitung stok aktual total (semua ukuran) pada rentang tanggal tertentu.
+     * Hitung ketersediaan total kostum ini (semua ukuran) pada rentang tanggal tertentu.
      *
-     * @param  string|null $tanggalMulai   Format Y-m-d. Null = abaikan filter tanggal.
-     * @param  string|null $tanggalSelesai Format Y-m-d. Null = abaikan filter tanggal.
-     * @return int Stok aktual total (≥ 0)
+     * Menjumlahkan hasil getStokAktualBySize() untuk setiap ukuran yang tersedia.
+     * Tidak membaca kolom stok_aktual dari database.
+     *
+     * @param  string|null $tanggalMulai   Format Y-m-d. Null = default ke hari ini.
+     * @param  string|null $tanggalSelesai Format Y-m-d. Null = default ke hari ini.
+     * @return int Ketersediaan total (≥ 0)
      */
     public function getStokAktualTotal(?string $tanggalMulai = null, ?string $tanggalSelesai = null): int
     {
-        if (!$tanggalMulai && !$tanggalSelesai) {
-            return (int) $this->stok_aktual;
+        $start = $tanggalMulai  ?? now()->toDateString();
+        $end   = $tanggalSelesai ?? now()->toDateString();
+
+        $kapasitasPerUkuran = $this->stok_permanen_per_ukuran ?? [];
+
+        if (empty($kapasitasPerUkuran) || !is_array($kapasitasPerUkuran)) {
+            return 0;
         }
 
-        $stokPermanen = (int) $this->stok_permanen;
+        $total = 0;
+        foreach (array_keys($kapasitasPerUkuran) as $size) {
+            $total += $this->getStokAktualBySize($size, $start, $end);
+        }
 
-        $query = DetailTransaksi::where('kostum_id', $this->id)
-            ->whereHas('transaksi', function ($q) use ($tanggalMulai, $tanggalSelesai) {
-                $q->whereIn('status', self::statusAktif());
-                if ($tanggalMulai && $tanggalSelesai) {
-                    $q->where('tanggal_mulai', '<=', $tanggalSelesai)
-                      ->where('tanggal_selesai', '>=', $tanggalMulai);
-                }
-            });
-
-        $bookedCount = $query->count();
-
-        return max(0, $stokPermanen - $bookedCount);
+        return $total;
     }
 
     /**
-     * Kurangi stok aktual dan stok aktual per ukuran sebesar $qty.
+     * [DEPRECATED — PR-2 Calendar Availability]
+     * Metode ini tidak lagi menulis ke database.
+     * Ketersediaan dihitung dinamis dari overlap kalender; tidak ada kolom stok yang diubah.
+     * Dipertahankan agar tidak merusak pemanggil yang belum di-cleanup (PR-1).
+     *
+     * @deprecated Gunakan getStokAktualBySize() untuk mengecek ketersediaan.
      */
     public function decrementStokAktual(string $size, int $qty = 1): void
     {
-        $this->stok_aktual = max(0, $this->stok_aktual - $qty);
-        
-        $stokPerUkuran = $this->stok_aktual_per_ukuran ?? [];
-        if (isset($stokPerUkuran[$size])) {
-            $stokPerUkuran[$size] = max(0, $stokPerUkuran[$size] - $qty);
-        }
-        $this->stok_aktual_per_ukuran = $stokPerUkuran;
-        
-        $this->save();
+        // NO-OP: Calendar availability tidak memerlukan decrement stok fisik.
+        // Ketersediaan dihitung otomatis dari status transaksi aktif.
     }
 
     /**
-     * Tambah stok aktual dan stok aktual per ukuran sebesar $qty (dibatasi oleh stok permanen).
+     * [DEPRECATED — PR-2 Calendar Availability]
+     * Metode ini tidak lagi menulis ke database.
+     * Ketersediaan dihitung dinamis dari overlap kalender; tidak ada kolom stok yang diubah.
+     * Dipertahankan agar tidak merusak pemanggil yang belum di-cleanup (PR-1).
+     *
+     * @deprecated Tidak perlu increment; slot terbuka otomatis saat status berubah ke Batal/Selesai/Ditolak.
      */
     public function incrementStokAktual(string $size, int $qty = 1): void
     {
-        $this->stok_aktual = min($this->stok_permanen, $this->stok_aktual + $qty);
-        
-        $stokPerUkuran = $this->stok_aktual_per_ukuran ?? [];
-        $stokPermanenPerUkuran = $this->stok_permanen_per_ukuran ?? [];
-        if (isset($stokPerUkuran[$size])) {
-            $maxStok = isset($stokPermanenPerUkuran[$size]) ? $stokPermanenPerUkuran[$size] : $stokPerUkuran[$size] + $qty;
-            $stokPerUkuran[$size] = min($maxStok, $stokPerUkuran[$size] + $qty);
-        }
-        $this->stok_aktual_per_ukuran = $stokPerUkuran;
-        
-        $this->save();
+        // NO-OP: Calendar availability tidak memerlukan increment stok fisik.
+        // Slot kalender terbuka otomatis ketika status transaksi berubah ke Batal/Selesai/Ditolak.
     }
 }

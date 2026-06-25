@@ -82,10 +82,10 @@
                                     <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(244,63,94,0.12);color:#f43f5e;border-color:rgba(244,63,94,0.3);">🚫 Proof Rejected</span>
                                 @elseif($rental['raw_status'] === 'Sudah Dibayar')
                                     <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">✅ Paid</span>
-                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.3);">🟡 Belum Diambil</span>
+                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.3);">🟡 Not Picked Up</span>
                                 @elseif($rental['raw_status'] === 'Disewa')
                                     <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.3);">🎭 Currently Rented</span>
-                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">🟢 Sudah Diambil</span>
+                                    <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">🟢 Picked Up</span>
                                 @endif
                             </div>
                             <p class="text-sm font-bold text-aloewood mt-1 uppercase tracking-wide">Size {{ $rental['size'] }}</p>

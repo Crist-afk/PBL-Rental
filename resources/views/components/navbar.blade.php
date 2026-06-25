@@ -59,7 +59,7 @@
                     <div class="social-icon">
                         <i class="fa-solid fa-book-open"></i>
                     </div>
-                    <span class="social-text">Panduan</span>
+                    <span class="social-text">Rental Guide</span>
                 </a>
                 <a href="{{ route('about') }}" class="social-btn {{ request()->routeIs('about') ? 'active' : '' }}">
                     <div class="social-icon">
@@ -96,7 +96,7 @@
                     <div class="social-icon">
                         <i class="fa-solid fa-book-open"></i>
                     </div>
-                    <span class="social-text">Panduan</span>
+                    <span class="social-text">Rental Guide</span>
                 </a>
                 <a href="{{ route('about') }}" class="social-btn {{ request()->routeIs('about') ? 'active' : '' }}">
                     <div class="social-icon">

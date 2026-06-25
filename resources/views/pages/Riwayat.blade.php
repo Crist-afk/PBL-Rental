@@ -94,9 +94,9 @@
                             </span>
                             {{-- Sub-badge: kejelasan status pengambilan --}}
                             @if($item->status === 'Sudah Dibayar')
-                                <span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider" style="background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.3);">🟡 Belum Diambil</span>
+                                <span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider" style="background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.3);">🟡 Not Picked Up</span>
                             @elseif($item->status === 'Disewa')
-                                <span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">🟢 Sudah Diambil</span>
+                                <span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">🟢 Picked Up</span>
                             @endif
                         </div>
                         
@@ -115,24 +115,24 @@
                         @if($item->status === 'Menunggu Pembayaran')
                             <div class="text-xs font-bold mt-2 p-3 rounded-xl border inline-block w-full" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);color:#ef4444;">
                                 <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-                                ⚠️ Upload bukti pembayaran sebelum <strong>{{ $paymentDeadline->format('d M Y, H:i') }}</strong>
+                                ⚠️ Upload payment proof before <strong>{{ $paymentDeadline->format('d M Y, H:i') }}</strong>
                                 @if($paymentDeadline->isPast())
-                                    — <span style="color:#dc2626;">Batas waktu lewat, hubungi admin.</span>
+                                    — <span style="color:#dc2626;">Deadline passed, please contact admin.</span>
                                 @endif
                             </div>
                         @elseif($item->status === 'Menunggu Verifikasi')
                             <div class="text-xs font-bold mt-2 p-3 rounded-xl border inline-block w-full" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2);color:#f59e0b;">
                                 <i class="fa-regular fa-clock mr-1"></i>
-                                ⏳ Bukti pembayaran sedang diverifikasi admin. Mohon tunggu.
+                                ⏳ Payment proof is being verified by admin. Please wait.
                             </div>
                         @elseif($item->status === 'Sudah Dibayar')
                             <div class="text-xs font-bold mt-2 p-3 rounded-xl border inline-block w-full" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.2);color:#10b981;">
                                 <i class="fa-solid fa-check-circle mr-1"></i>
-                                ✅ Pembayaran diterima! Silakan ambil kostum pada tanggal mulai sewa.
+                                ✅ Payment confirmed! Please pick up the costume on the rental start date.
                             </div>
                         @elseif($item->status === 'Batal' && !empty($item->catatan_admin))
                             <p class="text-xs font-bold text-red-500 mt-2 bg-red-50 p-3 rounded-lg border border-red-100 inline-block w-full">
-                                <i class="fa-solid fa-circle-exclamation mr-1"></i> Alasan: {{ $item->catatan_admin }}
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i> Reason: {{ $item->catatan_admin }}
                             </p>
                         @endif
                         
@@ -173,7 +173,7 @@
                             {{-- Tombol Upload: hanya untuk Menunggu Pembayaran --}}
                             @if($item->status === 'Menunggu Pembayaran')
                             <button onclick="openUploadModal({{ $item->id }})" class="flex-1 lg:flex-none px-6 py-3 bg-sakura text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-sakura/80 transition-all shadow-xl text-center flex items-center justify-center">
-                                <i class="fa-solid fa-upload mr-2"></i>{{ $hasPaymentProof ? 'Ganti Bukti' : 'Upload Bukti' }}
+                                <i class="fa-solid fa-upload mr-2"></i>{{ $hasPaymentProof ? 'Change Proof' : 'Upload Proof' }}
                             </button>
                             @endif
                         </div>

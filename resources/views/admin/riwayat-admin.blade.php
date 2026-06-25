@@ -182,7 +182,7 @@
                   <span class="cust-contact">📞 <span id="custPhone">0812-XXXX-XXXX</span></span>
                 </div>
                 <div class="cust-meta">
-                  <span class="cust-join">Joined: <span id="custJoin">Januari 2025</span></span>
+                  <span class="cust-join">Joined: <span id="custJoin">January 2025</span></span>
                   <span class="badge-aktif">ACTIVE CUSTOMER</span>
                 </div>
               </div>

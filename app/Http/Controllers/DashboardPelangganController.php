@@ -258,10 +258,10 @@ class DashboardPelangganController extends Controller
                 'catatan_admin'    => null,
             ]);
 
-            return back()->with('success', 'Bukti pembayaran berhasil diupload! Menunggu verifikasi admin.');
+            return back()->with('success', 'Payment proof uploaded successfully! Awaiting admin verification.');
         }
 
-        return back()->with('error', 'Gagal mengupload bukti pembayaran.');
+        return back()->with('error', 'Failed to upload payment proof.');
     }
 
     /**

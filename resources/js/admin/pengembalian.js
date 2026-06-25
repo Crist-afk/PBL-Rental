@@ -51,11 +51,11 @@ window.openKembaliFormModal = function(transaksi, kostumDesc) {
     form.action = `${baseUrl}/${transaksi.id}/kembali`;
 
     document.getElementById('kembali-order-id').textContent = '#TRX-' + transaksi.id;
-    document.getElementById('kembali-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
+    document.getElementById('kembali-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Customer';
     document.getElementById('kembali-kostum').textContent = kostumDesc;
 
     const tSelesai = new Date(transaksi.tanggal_selesai);
-    document.getElementById('kembali-wajib').textContent = tSelesai.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    document.getElementById('kembali-wajib').textContent = tSelesai.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 
     // Set tanggal kembali default = hari ini
     const todayStr = new Date().toISOString().split('T')[0];
@@ -110,7 +110,7 @@ window.hitungKembaliDenda = function() {
     if (diffDays < 0) {
         // Kembali lebih awal — tidak ada denda keterlambatan
         currentDendaKeterlambatan = 0;
-        document.getElementById('kembali-early-days').textContent = Math.abs(diffDays) + ' hari';
+        document.getElementById('kembali-early-days').textContent = Math.abs(diffDays) + ' day(s)';
         panelEarly.style.display = 'block';
     } else if (diffDays === 0) {
         // Tepat waktu
@@ -119,7 +119,7 @@ window.hitungKembaliDenda = function() {
     } else {
         // Terlambat — hitung denda otomatis
         currentDendaKeterlambatan = diffDays * 50000;
-        document.getElementById('kembali-hari').textContent = diffDays + ' HARI';
+        document.getElementById('kembali-hari').textContent = diffDays + ' DAY(S)';
         document.getElementById('kembali-denda-terlambat').textContent = fmt(currentDendaKeterlambatan);
         panelLate.style.display = 'block';
     }
@@ -130,16 +130,16 @@ window.hitungKembaliDenda = function() {
 
 window.openDetailFormModal = function(transaksi, kostumDesc, isTerlambat, hariTerlambat) {
     document.getElementById('detail-order-id').textContent = '#TRX-' + transaksi.id;
-    document.getElementById('detail-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
+    document.getElementById('detail-penyewa').textContent = transaksi.user ? transaksi.user.nama : 'Customer';
     document.getElementById('detail-kostum').textContent = kostumDesc;
 
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
 
     const tMulai = new Date(transaksi.tanggal_mulai);
-    document.getElementById('detail-tgl-mulai').textContent = tMulai.toLocaleDateString('id-ID', options);
+    document.getElementById('detail-tgl-mulai').textContent = tMulai.toLocaleDateString('en-US', options);
 
     const tWajib = new Date(transaksi.tanggal_selesai);
-    document.getElementById('detail-tgl-wajib').textContent = tWajib.toLocaleDateString('id-ID', options);
+    document.getElementById('detail-tgl-wajib').textContent = tWajib.toLocaleDateString('en-US', options);
 
     const pengembalian = transaksi.pengembalian || {};
     const tanggalAktual = pengembalian.tanggal_kembali_aktual;
@@ -150,14 +150,14 @@ window.openDetailFormModal = function(transaksi, kostumDesc, isTerlambat, hariTe
     const catatanQc = pengembalian.catatan_qc || transaksi.catatan_admin;
 
     const tAktual = tanggalAktual ? new Date(tanggalAktual) : null;
-    document.getElementById('detail-tgl-aktual').textContent = tAktual ? tAktual.toLocaleDateString('id-ID', options) : 'Belum Kembali';
+    document.getElementById('detail-tgl-aktual').textContent = tAktual ? tAktual.toLocaleDateString('en-US', options) : 'Not Returned';
 
     // Status badge
     const statusBadge = document.getElementById('detail-status-badge');
     if (transaksi.status === 'Selesai') {
-        statusBadge.innerHTML = '<span class="badge-status tepat"><span class="bico">✅</span>SELESAI</span>';
+        statusBadge.innerHTML = '<span class="badge-status tepat"><span class="bico">✅</span>COMPLETED</span>';
     } else {
-        statusBadge.innerHTML = '<span class="badge-status belum"><span class="bico">🟡</span>BELUM KEMBALI</span>';
+        statusBadge.innerHTML = '<span class="badge-status belum"><span class="bico">🟡</span>NOT RETURNED</span>';
     }
 
     // Kondisi badge
@@ -190,10 +190,10 @@ window.openDetailFormModal = function(transaksi, kostumDesc, isTerlambat, hariTe
     const terlambatVal = document.getElementById('detail-terlambat');
     if (isTerlambat || dendaKeterlambatan > 0) {
         const hari = hariTerlambat || Math.ceil(dendaKeterlambatan / 50000);
-        terlambatVal.textContent = `Terlambat ${hari} Hari`;
+        terlambatVal.textContent = `${hari} day(s) late`;
         terlambatVal.style.color = 'var(--red)';
     } else {
-        terlambatVal.textContent = 'Tepat Waktu';
+        terlambatVal.textContent = 'On Time';
         terlambatVal.style.color = 'var(--green)';
     }
 
@@ -205,7 +205,7 @@ window.openDetailFormModal = function(transaksi, kostumDesc, isTerlambat, hariTe
     document.getElementById('detail-total').textContent            = fmt(Number(transaksi.total_biaya) + totalDenda);
 
     // Notes
-    document.getElementById('detail-catatan-admin').textContent = catatanQc || 'Tidak ada catatan admin.';
+    document.getElementById('detail-catatan-admin').textContent = catatanQc || 'No admin notes.';
 
     const modal = document.getElementById('modalDetail');
     modal.classList.add('open');

@@ -30,13 +30,13 @@ class Transaksi extends Model
     public function getStatusLabelAttribute(): string
     {
         return match ($this->status) {
-            'Menunggu Pembayaran' => 'Menunggu Pembayaran',
-            'Menunggu Verifikasi' => 'Menunggu Verifikasi',
-            'Ditolak'             => 'Bukti Ditolak',
-            'Sudah Dibayar'       => 'Sudah Dibayar',
-            'Disewa'              => 'Sedang Disewa',
-            'Selesai'             => 'Selesai',
-            'Batal'               => 'Dibatalkan',
+            'Menunggu Pembayaran' => 'Awaiting Payment',
+            'Menunggu Verifikasi' => 'Awaiting Verification',
+            'Ditolak'             => 'Rejected',
+            'Sudah Dibayar'       => 'Payment Confirmed',
+            'Disewa'              => 'Rental Active',
+            'Selesai'             => 'Completed',
+            'Batal'               => 'Cancelled',
             default               => $this->status,
         };
     }

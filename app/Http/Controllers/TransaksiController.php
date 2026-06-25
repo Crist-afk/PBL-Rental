@@ -35,7 +35,7 @@ class TransaksiController extends Controller
             $kostum = Kostum::where('id', $kostumId)->lockForUpdate()->first();
 
             if (!$kostum) {
-                throw new \Exception('Kostum tidak ditemukan.');
+                throw new \Exception('Costume not found.');
             }
 
             // 4. VALIDASI IRISAN WAKTU (OVERLAPPING DATES)
@@ -49,7 +49,7 @@ class TransaksiController extends Controller
             })->exists();
 
             if ($isBooked) {
-                throw new \Exception('Kostum sudah di-booking pada tanggal tersebut. Silakan pilih tanggal lain.');
+                throw new \Exception('Costume is already booked for these dates. Please choose different dates.');
             }
 
             // 5. KALKULASI TOTAL BIAYA (Menggunakan Carbon untuk selisih hari)
@@ -80,7 +80,7 @@ class TransaksiController extends Controller
             DB::commit();
 
             // Arahkan Akbar untuk menangani route redirect ini, dan Rangga untuk menampilkan pesannya
-            return redirect()->route('transaksi.index')->with('success', 'Booking berhasil!');
+            return redirect()->route('transaksi.index')->with('success', 'Booking successful!');
 
         } catch (\Exception $e) {
             // JIKA TERJADI ERROR/BENTROK, BATALKAN SEMUA QUERY

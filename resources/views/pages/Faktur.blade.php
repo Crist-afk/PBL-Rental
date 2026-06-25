@@ -162,7 +162,7 @@
 
                 {{-- ── Metode Pembayaran ── --}}
                 <div class="pt-8 border-t border-dark-chocolate/5 print:border-t-2 print:border-dark-chocolate/20">
-                    <h4 class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-6">Metode Pembayaran</h4>
+                    <h4 class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-6">Payment Methods</h4>
 
                     {{-- Grid: 3 kolom --}}
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -216,14 +216,14 @@
 
                     {{-- Langkah Pembayaran --}}
                     <div class="rounded-2xl border border-dark-chocolate/10 bg-dark-chocolate/3 p-5 mb-4">
-                        <p class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-4">Cara Pembayaran</p>
+                        <p class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-4">Payment Instructions</p>
                         <ol class="space-y-2">
                             @foreach([
-                                ['icon' => 'fa-money-bill-transfer', 'text' => 'Transfer sesuai total tagihan di atas'],
-                                ['icon' => 'fa-camera',              'text' => 'Simpan / screenshot bukti pembayaran'],
-                                ['icon' => 'fa-upload',              'text' => 'Upload bukti pembayaran di halaman Riwayat'],
-                                ['icon' => 'fa-clock',               'text' => 'Tunggu verifikasi dari admin (maks 1×24 jam)'],
-                                ['icon' => 'fa-box-open',            'text' => 'Ambil kostum setelah pembayaran disetujui admin'],
+                                ['icon' => 'fa-money-bill-transfer', 'text' => 'Transfer according to the total bill above'],
+                                ['icon' => 'fa-camera',              'text' => 'Save or screenshot your payment proof'],
+                                ['icon' => 'fa-upload',              'text' => 'Upload payment proof on the History page'],
+                                ['icon' => 'fa-clock',               'text' => 'Wait for admin verification (max 24 hours)'],
+                                ['icon' => 'fa-box-open',            'text' => 'Pick up the costume after payment is approved by admin'],
                             ] as $idx => $step)
                             <li class="flex items-start gap-3">
                                 <span class="w-6 h-6 rounded-full bg-sakura/15 text-sakura flex items-center justify-center flex-shrink-0 text-[10px] font-black mt-0.5">{{ $idx + 1 }}</span>
@@ -240,7 +240,7 @@
                     <div class="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200">
                         <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5 flex-shrink-0"></i>
                         <p class="text-xs font-bold text-amber-700">
-                            Pembayaran yang tidak valid (jumlah tidak sesuai, bukti tidak terbaca, atau bukti palsu) dapat ditolak oleh admin. Pastikan jumlah transfer sesuai total tagihan.
+                            Invalid payments (incorrect amount, unreadable proof, or fake proof) will be rejected by the admin. Please ensure the transferred amount matches the total bill.
                         </p>
                     </div>
                 </div>

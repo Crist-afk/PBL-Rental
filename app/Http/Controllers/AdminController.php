@@ -389,11 +389,11 @@ class AdminController extends Controller
         $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
 
         if ($transaksi->status !== 'Menunggu Verifikasi') {
-            return back()->with('error', 'Hanya transaksi yang menunggu verifikasi yang bisa disetujui.');
+            return back()->with('error', 'Only transactions awaiting verification can be approved.');
         }
 
         if (empty($transaksi->bukti_pembayaran)) {
-            return back()->with('error', 'Bukti pembayaran diperlukan sebelum menyetujui transaksi ini.');
+            return back()->with('error', 'Payment proof is required before approving this transaction.');
         }
 
         $request->validate([
@@ -413,11 +413,11 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('admin.pembayaran')
-                ->with('success', "Pembayaran #TRX-{$id} berhasil diverifikasi! Silakan konfirmasi saat kostum diambil.");
+                ->with('success', "Payment for #TRX-{$id} verified successfully! Please confirm when the costume is picked up.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+            return back()->with('error', "An error occurred: " . $e->getMessage());
         }
     }
 
@@ -430,7 +430,7 @@ class AdminController extends Controller
         $transaksi = Transaksi::findOrFail($id);
 
         if ($transaksi->status !== 'Menunggu Verifikasi') {
-            return back()->with('error', 'Hanya transaksi yang menunggu verifikasi yang bisa ditolak.');
+            return back()->with('error', 'Only transactions awaiting verification can be rejected.');
         }
 
         $request->validate([
@@ -460,11 +460,11 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('admin.pembayaran', ['status' => 'ditolak'])
-                ->with('success', "Bukti pembayaran #TRX-{$id} ditolak. Pelanggan diminta upload ulang.");
+                ->with('success', "Payment proof for #TRX-{$id} rejected. Customer requested to re-upload.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+            return back()->with('error', "An error occurred: " . $e->getMessage());
         }
     }
 
@@ -477,9 +477,8 @@ class AdminController extends Controller
     {
         $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
 
-        // Hanya bisa batalkan jika belum disewa / belum diambil
         if (!in_array($transaksi->status, ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Sudah Dibayar'])) {
-            return back()->with('error', 'Transaksi tidak bisa dibatalkan dalam status ini.');
+            return back()->with('error', 'Transaction cannot be cancelled in this status.');
         }
 
         $request->validate([
@@ -489,24 +488,19 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // ── PR-2: Tidak ada increment stok ─────────────────────────────────
-            // Slot kalender terbuka otomatis karena status berubah ke 'Batal'.
-            // Status 'Batal' tidak termasuk dalam statusAktif() sehingga tidak
-            // memblokir ketersediaan pada tanggal yang sama.
-
             $transaksi->update([
                 'status'        => 'Batal',
-                'catatan_admin' => $request->catatan_admin ?? 'Transaksi dibatalkan oleh admin.',
+                'catatan_admin' => $request->catatan_admin ?? 'Transaction cancelled by admin.',
             ]);
 
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('admin.pembayaran')
-                ->with('success', "Transaksi #TRX-{$id} berhasil dibatalkan. Slot kalender otomatis tersedia kembali.");
+                ->with('success', "Transaction #TRX-{$id} has been cancelled successfully. Calendar slot is automatically available again.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+            return back()->with('error', "An error occurred: " . $e->getMessage());
         }
     }
 
@@ -519,7 +513,7 @@ class AdminController extends Controller
         $transaksi = Transaksi::findOrFail($id);
 
         if ($transaksi->status !== 'Sudah Dibayar') {
-            return back()->with('error', 'Hanya transaksi berstatus "Sudah Dibayar" yang bisa dikonfirmasi pengambilannya.');
+            return back()->with('error', 'Only transactions with status "Payment Confirmed" can have their pickup confirmed.');
         }
 
         $request->validate([
@@ -529,7 +523,6 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // Kostum diambil — status berubah ke Disewa
             $transaksi->update([
                 'status'        => 'Disewa',
                 'catatan_admin' => $request->catatan_admin,
@@ -538,11 +531,11 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('admin.pembayaran')
-                ->with('success', "Kostum #TRX-{$id} telah dikonfirmasi diambil oleh pelanggan. Status: Sedang Disewa.");
+                ->with('success', "Costume #TRX-{$id} pickup has been confirmed. Status: Rental Active.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+            return back()->with('error', "An error occurred: " . $e->getMessage());
         }
     }
 
@@ -610,11 +603,11 @@ class AdminController extends Controller
         $transaksi = Transaksi::with(['detailTransaksi.kostum', 'pengembalian'])->findOrFail($id);
 
         if ($transaksi->status !== 'Disewa') {
-            return back()->with('error', 'Hanya kostum yang sedang disewa yang bisa dicatat pengembaliannya.');
+            return back()->with('error', 'Only costumes currently rented can be recorded as returned.');
         }
 
         if ($transaksi->pengembalian) {
-            return back()->with('error', 'Transaksi ini sudah dicatat pengembaliannya.');
+            return back()->with('error', 'This transaction return has already been recorded.');
         }
 
         $request->validate([
@@ -646,11 +639,6 @@ class AdminController extends Controller
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            // ── PR-2: Tidak ada increment stok ─────────────────────────────────
-            // Slot kalender terbuka otomatis karena status berubah ke 'Selesai'.
-            // Status 'Selesai' tidak termasuk dalam statusAktif() sehingga tidak
-            // memblokir ketersediaan pada tanggal kostum dikembalikan.
-
             Pengembalian::create([
                 'transaksi_id'           => $transaksi->id,
                 'tanggal_kembali_aktual' => $request->tanggal_kembali_aktual,
@@ -668,17 +656,17 @@ class AdminController extends Controller
             \Illuminate\Support\Facades\DB::commit();
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
-            return back()->with('error', "Terjadi kesalahan: " . $e->getMessage());
+            return back()->with('error', "An error occurred: " . $e->getMessage());
         }
 
         // Pesan sukses dengan breakdown denda
-        $msg = "Pengembalian #TRX-{$id} berhasil dicatat.";
+        $msg = "Return #TRX-{$id} has been recorded successfully.";
         if ($dendaKeterlambatan > 0 || $dendaKerusakan > 0) {
-            $msg .= " | Denda Keterlambatan: Rp " . number_format($dendaKeterlambatan, 0, ',', '.');
-            $msg .= " + Denda Kerusakan: Rp " . number_format($dendaKerusakan, 0, ',', '.');
-            $msg .= " = Total: Rp " . number_format($totalDenda, 0, ',', '.');
+            $msg .= " | Late Fine: Rp " . number_format($dendaKeterlambatan, 0, ',', '.');
+            $msg .= " + Damage Fine: Rp " . number_format($dendaKerusakan, 0, ',', '.');
+            $msg .= " = Total Fine: Rp " . number_format($totalDenda, 0, ',', '.');
         } else {
-            $msg .= ' Tepat waktu & kondisi baik, tidak ada denda.';
+            $msg .= ' Returned on time and in good condition, no fines applied.';
         }
 
         return redirect()->route('admin.pengembalian')
@@ -716,7 +704,7 @@ class AdminController extends Controller
         $user = User::where('role', 'pelanggan')->findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.pengguna')->with('success', "Akun pengguna '{$user->nama}' berhasil dihapus.");
+        return redirect()->route('admin.pengguna')->with('success', "User account '{$user->nama}' has been deleted successfully.");
     }
 
     public function penggunaToggleActive($id)
@@ -725,8 +713,8 @@ class AdminController extends Controller
         $user->is_active = !$user->is_active;
         $user->save();
 
-        $status = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
-        return redirect()->route('admin.pengguna')->with('success', "Akun '{$user->nama}' berhasil {$status}.");
+        $status = $user->is_active ? 'activated' : 'deactivated';
+        return redirect()->route('admin.pengguna')->with('success', "User account '{$user->nama}' has been successfully {$status}.");
     }
 
     // =====================================================================

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'CosRent - Sewa Kostum Cosplay')</title>
+    <title>@yield('title', 'CosRent - Premium Cosplay Costume Rental')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

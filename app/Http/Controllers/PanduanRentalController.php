@@ -35,6 +35,6 @@ class PanduanRentalController extends Controller
         $user->save();
 
         return redirect()->route('dashboard.pelanggan')
-            ->with('success', 'Selamat datang di CosRent! Selamat menyewa kostum favoritmu. 🎉');
+            ->with('success', 'Welcome to CosRent! Enjoy renting your favorite costumes. 🎉');
     }
 }

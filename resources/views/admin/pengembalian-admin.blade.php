@@ -277,7 +277,7 @@
 <div class="modal-overlay" id="modalKembali">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">Catat Pengembalian Kostum</span>
+      <span class="modal-title">Record Costume Return</span>
       <button class="modal-close" onclick="closeModal('modalKembali')">✕</button>
     </div>
     <form action="" method="POST">
@@ -290,7 +290,7 @@
           </div>
           <div class="field">
             <label>Tenant</label>
-            <div class="field-val" id="kembali-penyewa">Pelanggan</div>
+            <div class="field-val" id="kembali-penyewa">Customer</div>
           </div>
         </div>
         <div class="field">
@@ -324,8 +324,8 @@
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 22px;">✅</span>
             <div>
-              <div style="font-weight: 700; color: #10b981; font-size: 13px;">KEMBALI LEBIH AWAL</div>
-              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Kostum dikembalikan <strong id="kembali-early-days">0 hari</strong> lebih awal dari jadwal. <strong style="color:#10b981;">Tidak ada denda keterlambatan.</strong></div>
+              <div style="font-weight: 700; color: #10b981; font-size: 13px;">RETURNED EARLY</div>
+              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Costume returned <strong id="kembali-early-days">0 days</strong> early. <strong style="color:#10b981;">No late fees.</strong></div>
             </div>
           </div>
         </div>
@@ -335,8 +335,8 @@
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 22px;">🎯</span>
             <div>
-              <div style="font-weight: 700; color: var(--blue); font-size: 13px;">TEPAT WAKTU</div>
-              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Kostum dikembalikan tepat pada jadwal. <strong style="color:var(--blue);">Tidak ada denda keterlambatan.</strong></div>
+              <div style="font-weight: 700; color: var(--blue); font-size: 13px;">ON TIME</div>
+              <div style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Costume returned on schedule. <strong style="color:var(--blue);">No late fees.</strong></div>
             </div>
           </div>
         </div>
@@ -345,18 +345,18 @@
         <div class="kalkulasi" id="kembali-kalk" style="display:none; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 14px 16px; margin-top: 16px;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
             <span style="font-size:18px;">⚠️</span>
-            <span style="font-weight:700; color: var(--red); font-size:13px;">TERLAMBAT</span>
+            <span style="font-weight:700; color: var(--red); font-size:13px;">LATE</span>
           </div>
           <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
-            <span style="color:var(--text-2);">Hari Terlambat</span>
-            <span id="kembali-hari" style="color: var(--red); font-weight: 700;">0 HARI</span>
+            <span style="color:var(--text-2);">Days Late</span>
+            <span id="kembali-hari" style="color: var(--red); font-weight: 700;">0 DAYS</span>
           </div>
           <div class="kalk-row" style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 13px; color: var(--text-3);">
-            <span>Denda per Hari</span>
-            <span>Rp 50.000</span>
+            <span>Fine per Day</span>
+            <span>Rp 50,000</span>
           </div>
           <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(239,68,68,0.2); padding-top: 8px; font-size: 13px;">
-            <span style="color:var(--text-2);">Denda Keterlambatan</span>
+            <span style="color:var(--text-2);">Late Fee</span>
             <span id="kembali-denda-terlambat" style="color: var(--red); font-weight: 700;">Rp 0</span>
           </div>
         </div>
@@ -365,17 +365,17 @@
         <div style="margin-top: 16px; background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.2); border-radius: 10px; padding: 14px 16px;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
             <span style="font-size:16px;">🔧</span>
-            <span style="font-weight:700; color:#8b5cf6; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">Denda Kerusakan (Input Manual)</span>
+            <span style="font-weight:700; color:#8b5cf6; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">Damage Fine (Manual Input)</span>
           </div>
-          <div style="font-size:11px; color:var(--text-3); margin-bottom:10px;">Sistem tidak bisa menilai kerusakan fisik. Admin yang menentukan nominal berdasarkan kondisi kostum yang diperiksa.</div>
+          <div style="font-size:11px; color:var(--text-3); margin-bottom:10px;">The system cannot evaluate physical damage. The admin determines the amount based on the inspected costume condition.</div>
           <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">
-            <button type="button" onclick="setDendaKerusakan(0)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(16,185,129,0.3);background:rgba(16,185,129,0.1);color:#10b981;font-size:11px;font-weight:700;cursor:pointer;">✅ Baik (Rp 0)</button>
-            <button type="button" onclick="setDendaKerusakan(25000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1);color:#f59e0b;font-size:11px;font-weight:700;cursor:pointer;">⚠️ Ringan (Rp 25.000)</button>
-            <button type="button" onclick="setDendaKerusakan(100000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.1);color:#ef4444;font-size:11px;font-weight:700;cursor:pointer;">🔴 Berat (Rp 100.000)</button>
-            <button type="button" onclick="setDendaKerusakan(75000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(139,92,246,0.3);background:rgba(139,92,246,0.1);color:#8b5cf6;font-size:11px;font-weight:700;cursor:pointer;">💔 Aksesoris (Rp 75.000)</button>
+            <button type="button" onclick="setDendaKerusakan(0)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(16,185,129,0.3);background:rgba(16,185,129,0.1);color:#10b981;font-size:11px;font-weight:700;cursor:pointer;">✅ Good (Rp 0)</button>
+            <button type="button" onclick="setDendaKerusakan(25000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.1);color:#f59e0b;font-size:11px;font-weight:700;cursor:pointer;">⚠️ Minor (Rp 25.000)</button>
+            <button type="button" onclick="setDendaKerusakan(100000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.1);color:#ef4444;font-size:11px;font-weight:700;cursor:pointer;">🔴 Severe (Rp 100.000)</button>
+            <button type="button" onclick="setDendaKerusakan(75000)" class="preset-denda-btn" style="padding:5px 10px;border-radius:6px;border:1px solid rgba(139,92,246,0.3);background:rgba(139,92,246,0.1);color:#8b5cf6;font-size:11px;font-weight:700;cursor:pointer;">💔 Accessories (Rp 75.000)</button>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:12px; color:var(--text-3); white-space:nowrap;">Nominal (Rp):</span>
+            <span style="font-size:12px; color:var(--text-3); white-space:nowrap;">Amount (Rp):</span>
             <input type="number" name="denda_kerusakan" id="kembali_denda_kerusakan" value="0" min="0" step="1000"
               oninput="hitungTotalDenda()"
               style="flex:1;background:var(--bg-body);border:1px solid rgba(139,92,246,0.4);border-radius:8px;padding:8px 12px;color:var(--text-1);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;outline:none;">
@@ -384,18 +384,18 @@
 
         <!-- Total Denda Keseluruhan -->
         <div id="kembali-total-denda-row" style="margin-top: 12px; background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:13px; font-weight:700; color:var(--text-2);">⚡ TOTAL DENDA</span>
+          <span style="font-size:13px; font-weight:700; color:var(--text-2);">⚡ TOTAL FINE</span>
           <span id="kembali-grand-total" style="font-size:16px; font-weight:900; color:var(--red); font-family:'JetBrains Mono',monospace;">Rp 0</span>
         </div>
 
         <div class="field" style="margin-top: 14px;">
-          <label>Catatan Admin</label>
-          <textarea class="form-textarea" name="catatan_admin" id="kembali_catatan" placeholder="Opsional: deskripsi kondisi kostum saat dikembalikan, bagian yang rusak, dll..." style="width: 100%; height: 60px; box-sizing: border-box;"></textarea>
+          <label>Admin Notes</label>
+          <textarea class="form-textarea" name="catatan_admin" id="kembali_catatan" placeholder="Optional: description of the costume condition upon return, damaged parts, etc..." style="width: 100%; height: 60px; box-sizing: border-box;"></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn-batal" onclick="closeModal('modalKembali')">BATAL</button>
-        <button type="submit" class="btn-simpan" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">✓ Konfirmasi Kostum Kembali</button>
+        <button type="button" class="btn-batal" onclick="closeModal('modalKembali')">CANCEL</button>
+        <button type="submit" class="btn-simpan" style="background: var(--blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">✓ Confirm Costume Returned</button>
       </div>
     </form>
   </div>
@@ -464,37 +464,37 @@
 
       <!-- SECTION: Kondisi & Denda -->
       <div class="detail-section" style="margin-bottom: 20px;">
-        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">🎭 Kondisi & Biaya</div>
+        <div class="detail-section-title" style="font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">🎭 Condition & Cost</div>
         <div class="field-row" style="display: flex; gap: 16px; margin-bottom: 12px;">
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Kondisi Saat Dikembalikan</label>
-            <div id="detail-kondisi-badge" style="display: inline-block; margin-top: 4px;">BAIK</div>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Condition Upon Return</label>
+            <div id="detail-kondisi-badge" style="display: inline-block; margin-top: 4px;">GOOD</div>
           </div>
           <div class="field" style="flex: 1;">
-            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Keterlambatan</label>
-            <div class="field-val" id="detail-terlambat" style="font-size: 13px; font-weight: 700; color: var(--text-1); margin-top: 4px;">Tepat Waktu</div>
+            <label style="font-size: 11px; color: var(--text-3); text-transform: uppercase;">Delay</label>
+            <div class="field-val" id="detail-terlambat" style="font-size: 13px; font-weight: 700; color: var(--text-1); margin-top: 4px;">On Time</div>
           </div>
         </div>
         {{-- Breakdown biaya: 5 kolom --}}
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 8px; margin-top: 10px;">
           <div class="biaya-card" style="background: var(--bg-body); padding: 8px; border-radius: 8px; border: 1px solid var(--border); text-align: center;">
-            <div class="biaya-label" style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Biaya Sewa</div>
+            <div class="biaya-label" style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Rental Fee</div>
             <div class="biaya-val" id="detail-biaya-sewa" style="font-size: 12px; font-weight: 700; color: var(--text-1); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
           <div style="background: rgba(239,68,68,0.05); padding: 8px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.2); text-align: center;">
-            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">⏰ Terlambat</div>
+            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">⏰ Delay</div>
             <div id="detail-denda-terlambat" style="font-size: 12px; font-weight: 700; color: var(--red); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
           <div style="background: rgba(139,92,246,0.05); padding: 8px; border-radius: 8px; border: 1px solid rgba(139,92,246,0.2); text-align: center;">
-            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">🔧 Kerusakan</div>
+            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">🔧 Damage</div>
             <div id="detail-denda-kerusakan" style="font-size: 12px; font-weight: 700; color: #8b5cf6; margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
           <div style="background: rgba(239,68,68,0.08); padding: 8px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.25); text-align: center;">
-            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Total Denda</div>
+            <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Total Fine</div>
             <div class="biaya-val denda" id="detail-denda" style="font-size: 12px; font-weight: 700; color: var(--red); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
           <div class="biaya-card total" style="background: rgba(59,130,246,0.06); padding: 8px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.15); text-align: center;">
-            <div class="biaya-label" style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Total Bayar</div>
+            <div class="biaya-label" style="font-size: 9px; color: var(--text-3); text-transform: uppercase;">Total Paid</div>
             <div class="biaya-val total" id="detail-total" style="font-size: 12px; font-weight: 700; color: var(--blue); margin-top: 4px; font-family: 'JetBrains Mono', monospace;">Rp 0</div>
           </div>
         </div>

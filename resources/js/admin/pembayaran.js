@@ -111,14 +111,14 @@ window.openValidationModal = function(transaksi, kostumDesc, durasi) {
     if (!modal) return;
 
     document.getElementById('mOrderId').textContent = '#TRX-' + transaksi.id;
-    document.getElementById('mCustName').textContent = transaksi.user ? transaksi.user.nama : 'Pelanggan';
+    document.getElementById('mCustName').textContent = transaksi.user ? transaksi.user.nama : 'Customer';
     document.getElementById('mKostum').textContent = kostumDesc;
 
     const tMulai  = new Date(transaksi.tanggal_mulai);
     const tSelesai = new Date(transaksi.tanggal_selesai);
     const opts = { day: 'numeric', month: 'short', year: 'numeric' };
     document.getElementById('mDate').textContent =
-        tMulai.toLocaleDateString('id-ID', opts) + ' - ' + tSelesai.toLocaleDateString('id-ID', opts) + ' (' + durasi + ')';
+        tMulai.toLocaleDateString('en-US', opts) + ' - ' + tSelesai.toLocaleDateString('en-US', opts) + ' (' + durasi + ')';
 
     const totalFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(transaksi.total_biaya);
     document.getElementById('mTotal').textContent = totalFormatted;
@@ -171,7 +171,7 @@ window.openValidationModal = function(transaksi, kostumDesc, durasi) {
         formContainer.style.display    = 'none';
         readOnlyContainer.style.display = 'block';
         document.getElementById('mSavedCatatanAdmin').textContent =
-            transaksi.catatan_admin || 'Tidak ada catatan admin.';
+            transaksi.catatan_admin || 'No admin notes.';
         if (btnApprove) btnApprove.style.display = 'none';
         if (btnReject)  btnReject.style.display  = 'none';
     }
@@ -188,7 +188,7 @@ window.closeValidationModal = function() {
 window.submitRejectWithReason = function() {
     // Pastikan _rejectUrl sudah di-set
     if (!window._rejectUrl) {
-        alert('URL penolakan tidak ditemukan. Silakan coba buka modal lagi.');
+        alert('Rejection URL not found. Please try opening the modal again.');
         return;
     }
 
@@ -234,7 +234,7 @@ window.cancelReject = function() {
 // ── APPROVE: submit form konfirmasi pembayaran ──
 window.submitApproveForm = function() {
     if (!window._approveUrl) {
-        alert('URL approve tidak ditemukan. Silakan coba buka modal lagi.');
+        alert('Approval URL not found. Please try opening the modal again.');
         return;
     }
     const form = document.getElementById('confirmPaymentForm');

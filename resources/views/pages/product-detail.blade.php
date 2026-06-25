@@ -113,7 +113,10 @@
 
                 {{-- ── Booking Form ── --}}
                 @if($stokAktualTotal > 0)
-                    <form action="{{ route('booking.index') }}" method="GET"
+                    {{-- Inject kostum_id for JS --}}
+                    <script>window.kostumId = {{ $kostum->id }};</script>
+
+                    <form id="booking-form" action="{{ route('booking.index') }}" method="GET"
                           class="space-y-6 bg-white/40 p-5 md:p-6 rounded-[2rem] border-2 border-dark-chocolate/10">
 
                         {{-- Pass the real DB id --}}
@@ -132,10 +135,10 @@
                                     $availableSizes = $kostum->ukuran ? array_map('trim', explode(',', $kostum->ukuran)) : ['All Size'];
                                 @endphp
                                 @foreach($availableSizes as $size)
-                                    <label class="{{ auth()->check() ? 'cursor-pointer' : 'cursor-not-allowed opacity-50' }}">
+                                    <label class="{{ auth()->check() ? 'cursor-pointer' : 'cursor-pointer' }}">
                                         <input type="radio" name="size" value="{{ $size }}" class="peer sr-only size-radio"
-                                               {{ $loop->first ? 'required' : '' }} {{ auth()->check() ? '' : 'disabled' }}>
-                                        <div class="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-xl border-2 border-dark-chocolate/20 font-bold text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition shadow-sm {{ auth()->check() ? 'hover:border-sakura' : '' }}">
+                                               {{ $loop->first ? 'required' : '' }}>
+                                        <div class="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-xl border-2 border-dark-chocolate/20 font-bold text-dark-chocolate peer-checked:border-sakura peer-checked:bg-sakura peer-checked:text-dark-chocolate transition shadow-sm hover:border-sakura">
                                             {{ $size }}
                                         </div>
                                     </label>
@@ -162,8 +165,8 @@
                                 </label>
                                 <input type="date" id="tanggal_sewa" name="tanggal_sewa"
                                        min="{{ date('Y-m-d') }}"
-                                       class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate outline-none transition {{ auth()->check() ? 'focus:border-sakura focus:ring-sakura' : 'opacity-50 cursor-not-allowed' }}"
-                                       required {{ auth()->check() ? '' : 'disabled' }}>
+                                       class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate outline-none transition focus:border-sakura focus:ring-sakura"
+                                       required>
                             </div>
                             <div>
                                 <label for="tanggal_kembali" class="block text-sm font-bold text-dark-chocolate mb-2">
@@ -171,9 +174,20 @@
                                 </label>
                                 <input type="date" id="tanggal_kembali" name="tanggal_kembali"
                                        min="{{ date('Y-m-d') }}"
-                                       class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate outline-none transition {{ auth()->check() ? 'focus:border-sakura focus:ring-sakura' : 'opacity-50 cursor-not-allowed' }}"
-                                       required {{ auth()->check() ? '' : 'disabled' }}>
+                                       class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate outline-none transition focus:border-sakura focus:ring-sakura"
+                                       required>
                             </div>
+                        </div>
+
+                        {{-- Catatan --}}
+                        <div>
+                            <label for="catatan_guest" class="block text-sm font-bold text-dark-chocolate mb-2">
+                                Notes <span class="font-normal text-dark-chocolate/40">(optional)</span>
+                            </label>
+                            <textarea id="catatan_guest" name="catatan"
+                                      rows="2"
+                                      placeholder="Any special requests or notes..."
+                                      class="w-full rounded-xl border-2 border-dark-chocolate/10 bg-white px-4 py-3 font-medium text-dark-chocolate outline-none transition focus:border-sakura resize-none"></textarea>
                         </div>
 
                         {{-- CTA Button --}}
@@ -183,10 +197,34 @@
                                 <i class="fa-solid fa-cart-shopping"></i> Rent Now
                             </button>
                         @else
-                            <a href="{{ route('login') }}"
-                               class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
+                            {{-- Guest: simpan form ke localStorage sebelum redirect login --}}
+                            <button type="button" id="btn-login-to-rent"
+                                    onclick="saveBookingAndLogin()"
+                                    class="w-full rounded-full bg-dark-chocolate px-6 py-4 text-center font-bold text-misty-rose shadow-lg transition hover:bg-black hover:shadow-xl hover:-translate-y-0.5 text-lg flex justify-center items-center gap-2">
                                 <i class="fa-solid fa-right-to-bracket"></i> Login to Rent
-                            </a>
+                            </button>
+                            <p class="text-center text-xs font-medium text-dark-chocolate/40">
+                                Your selection will be remembered after login.
+                            </p>
+                            <script>
+                            function saveBookingAndLogin() {
+                                try {
+                                    var size = '';
+                                    var sizeRadios = document.querySelectorAll('input[name="size"]');
+                                    sizeRadios.forEach(function(r) { if (r.checked) size = r.value; });
+
+                                    var data = {
+                                        kostum_id:      '{{ $kostum->id }}',
+                                        size:           size,
+                                        tanggal_sewa:   document.getElementById('tanggal_sewa')?.value || '',
+                                        tanggal_kembali:document.getElementById('tanggal_kembali')?.value || '',
+                                        catatan:        document.getElementById('catatan_guest')?.value || '',
+                                    };
+                                    localStorage.setItem('cosrent_booking_intent', JSON.stringify(data));
+                                } catch(e) {}
+                                window.location.href = '{{ route('login') }}';
+                            }
+                            </script>
                         @endauth
                     </form>
                 @else

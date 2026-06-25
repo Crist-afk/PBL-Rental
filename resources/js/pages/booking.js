@@ -1,4 +1,7 @@
 if (window.bookingSuccessMessage) {
+    // ── REVISI 3: Hapus booking intent dari localStorage setelah booking berhasil ──
+    try { localStorage.removeItem('cosrent_booking_intent'); } catch(e) {}
+
     Swal.fire({
         title: 'Success!',
         text: window.bookingSuccessMessage,

@@ -30,15 +30,20 @@ class AuthController extends Controller
 
         // Membuat user baru di database. Pastikan password di-hash agar aman
         // (tidak disimpan dalam bentuk teks biasa).
-        User::create([
+        $user = User::create([
             'nama' => $request->nama,
             'email' => $request->email,
             'password' => Hash::make($request->password), // INI WAJIB AGAR BISA LOGIN
             'role' => 'pelanggan', // Default role untuk pendaftar baru
+            'has_seen_guide' => false, // Onboarding: user baru belum baca panduan
         ]);
 
-        // Lempar ke halaman login dengan pesan sukses
-        return redirect()->route('login')->with('success', 'Account created successfully! Please log in.');
+        // Auto-login user baru setelah registrasi
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        // Redirect ke halaman Panduan Rental untuk onboarding
+        return redirect()->route('panduan.index');
     }
 
     // === BAGIAN LOGIN ===
@@ -73,6 +78,11 @@ class AuthController extends Controller
             if (Auth::user()->role === 'admin') {
                 session()->flash('admin_login', true);
                 return redirect()->intended(route('admin.dashboard'));
+            }
+
+            // Cek onboarding: jika pelanggan belum membaca panduan, arahkan ke panduan
+            if (Auth::user()->role === 'pelanggan' && !Auth::user()->has_seen_guide) {
+                return redirect()->route('panduan.index');
             }
 
             // Arahkan pelanggan ke halaman Dashboard Pelanggan

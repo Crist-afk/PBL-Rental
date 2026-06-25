@@ -224,10 +224,12 @@
                   <span class="status-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
                     ✅ Sudah Dibayar
                   </span>
+                  <span style="display:block;margin-top:3px;font-size:10px;font-weight:700;color:#f59e0b;">🟡 Belum Diambil</span>
                 @elseif($t->status === 'Disewa')
                   <span class="status-badge" style="background:rgba(59,130,246,0.12);color:#3b82f6;border:1px solid rgba(59,130,246,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
                     🎭 Sedang Disewa
                   </span>
+                  <span style="display:block;margin-top:3px;font-size:10px;font-weight:700;color:#10b981;">🟢 Sudah Diambil</span>
                 @elseif($t->status === 'Ditolak')
                   <span class="status-badge" style="background:rgba(244,63,94,0.12);color:#f43f5e;border:1px solid rgba(244,63,94,0.3);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
                     🚫 Bukti Ditolak

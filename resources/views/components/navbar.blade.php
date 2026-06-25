@@ -55,6 +55,12 @@
                     </div>
                     <span class="social-text">Forum</span>
                 </a>
+                <a href="{{ route('panduan.index') }}" class="social-btn {{ request()->routeIs('panduan.*') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <span class="social-text">Panduan</span>
+                </a>
                 <a href="{{ route('about') }}" class="social-btn {{ request()->routeIs('about') ? 'active' : '' }}">
                     <div class="social-icon">
                         <i class="fa-solid fa-circle-info"></i>
@@ -85,6 +91,12 @@
                         <i class="fa-solid fa-comments"></i>
                     </div>
                     <span class="social-text">Forum</span>
+                </a>
+                <a href="{{ route('panduan.index') }}" class="social-btn {{ request()->routeIs('panduan.*') ? 'active' : '' }}">
+                    <div class="social-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <span class="social-text">Panduan</span>
                 </a>
                 <a href="{{ route('about') }}" class="social-btn {{ request()->routeIs('about') ? 'active' : '' }}">
                     <div class="social-icon">
@@ -224,6 +236,7 @@
             <a href="{{ route('home') }}" class="py-2 {{ request()->routeIs('home') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Home</a>
             <a href="{{ route('products.index') }}" class="py-2 {{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Products</a>
             <a href="{{ route('forum') }}" class="py-2 {{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
+            <a href="{{ route('panduan.index') }}" class="py-2 {{ request()->routeIs('panduan.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Panduan Rental</a>
             <a href="{{ route('about') }}" class="py-2 {{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About Us</a>
             <a href="{{ route('contact') }}" class="py-2 {{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact Us</a>
             <div class="border-t border-misty-rose/20 mt-2 pt-3 flex gap-3">
@@ -234,6 +247,7 @@
             <a href="{{ route($homeRoute) }}" class="py-2 {{ request()->routeIs($homeRoute) ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">{{ $homeLabel }}</a>
             <a href="{{ route('products.index') }}" class="py-2 {{ request()->routeIs('products.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Products</a>
             <a href="{{ route('forum') }}" class="py-2 {{ request()->routeIs('forum') || request()->routeIs('forum.show') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Forum</a>
+            <a href="{{ route('panduan.index') }}" class="py-2 {{ request()->routeIs('panduan.*') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Panduan Rental</a>
             <a href="{{ route('about') }}" class="py-2 {{ request()->routeIs('about') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">About Us</a>
             <a href="{{ route('contact') }}" class="py-2 {{ request()->routeIs('contact') ? 'text-sakura font-bold' : 'hover:text-sakura transition' }}">Contact Us</a>
 

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'cover_photo',
         'bio', // Kolom tambahan untuk profil
         'no_hp',
+        'has_seen_guide', // Onboarding: sudah membaca panduan rental?
     ];
 
     // HIDDEN: Menyembunyikan atribut sensitif agar tidak bocor saat data diubah ke array/JSON
@@ -32,6 +33,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'is_active' => 'boolean',
+        'has_seen_guide' => 'boolean',
         'deleted_at' => 'datetime',
     ];
 

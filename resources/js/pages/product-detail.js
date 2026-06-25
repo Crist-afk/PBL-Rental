@@ -106,3 +106,70 @@
             radio.addEventListener('change', checkAvailability);
         });
     }
+
+    // ── REVISI 3: Restore booking intent dari localStorage ──────────────────────
+    // Restore hanya jika: (1) user sudah login (sewaBtn ada), (2) kostum_id cocok
+    (function restoreBookingIntent() {
+        try {
+            const raw = localStorage.getItem('cosrent_booking_intent');
+            if (!raw) return;
+
+            const intent = JSON.parse(raw);
+            if (!intent) return;
+
+            // Pastikan intent untuk kostum yang sama
+            const currentKostumId = window.kostumId ? String(window.kostumId) : null;
+            if (!currentKostumId || String(intent.kostum_id) !== currentKostumId) return;
+
+            // Hanya restore jika user sudah login (form submit button ada)
+            if (!sewaBtn) return;
+
+            let restored = false;
+
+            // Restore size — hanya jika ukuran tersebut masih tersedia
+            if (intent.size) {
+                sizeRadios.forEach(radio => {
+                    if (radio.value === intent.size) {
+                        radio.checked = true;
+                        restored = true;
+                    }
+                });
+            }
+
+            // Restore tanggal
+            const today = new Date().toISOString().split('T')[0];
+            if (intent.tanggal_sewa && intent.tanggal_sewa >= today && tglSewa) {
+                tglSewa.value = intent.tanggal_sewa;
+                if (tglKembali) tglKembali.min = intent.tanggal_sewa;
+            }
+            if (intent.tanggal_kembali && tglKembali) {
+                const minDate = tglSewa?.value || today;
+                if (intent.tanggal_kembali >= minDate) {
+                    tglKembali.value = intent.tanggal_kembali;
+                }
+            }
+
+            // Restore catatan
+            const catatanField = document.getElementById('catatan_guest');
+            if (catatanField && intent.catatan) {
+                catatanField.value = intent.catatan;
+            }
+
+            // Trigger availability check jika ada size & tanggal
+            if (restored) {
+                checkAvailability();
+            }
+
+            // Tampilkan notifikasi restore yang tidak mengganggu
+            if (restored || intent.tanggal_sewa) {
+                const notif = document.createElement('div');
+                notif.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl shadow-2xl text-sm font-bold text-white flex items-center gap-2 transition-all duration-500';
+                notif.style.cssText = 'background:rgba(68,48,37,0.95);backdrop-filter:blur(8px);';
+                notif.innerHTML = '<i class="fa-solid fa-rotate-left text-sakura"></i> Booking form restored from your previous selection.';
+                document.body.appendChild(notif);
+                setTimeout(() => { notif.style.opacity = '0'; setTimeout(() => notif.remove(), 500); }, 3500);
+            }
+        } catch (e) {
+            // localStorage unavailable atau data corrupt — silent fail
+        }
+    })();

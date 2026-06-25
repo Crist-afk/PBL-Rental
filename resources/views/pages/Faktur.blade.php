@@ -160,6 +160,91 @@
                 </div>
                 @endif
 
+                {{-- ── Metode Pembayaran ── --}}
+                <div class="pt-8 border-t border-dark-chocolate/5 print:border-t-2 print:border-dark-chocolate/20">
+                    <h4 class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-6">Metode Pembayaran</h4>
+
+                    {{-- Grid: 3 kolom --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+
+                        {{-- BCA Bank Transfer --}}
+                        <div class="rounded-2xl border-2 border-dark-chocolate/10 p-5 bg-white/60 flex flex-col gap-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 bg-blue-500/10 text-blue-600 rounded-xl flex items-center justify-center text-sm font-black">🏦</span>
+                                <span class="text-[10px] font-black text-aloewood uppercase tracking-widest">Bank Transfer</span>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-xs font-black text-dark-chocolate uppercase tracking-wide">BCA</p>
+                                <p class="text-lg font-black text-dark-chocolate tracking-widest">1234567890</p>
+                                <p class="text-[10px] font-bold text-dark-chocolate/50 uppercase tracking-widest">a.n CosRent</p>
+                            </div>
+                        </div>
+
+                        {{-- DANA E-Wallet --}}
+                        <div class="rounded-2xl border-2 border-dark-chocolate/10 p-5 bg-white/60 flex flex-col gap-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 bg-blue-400/10 text-blue-500 rounded-xl flex items-center justify-center text-sm font-black">📱</span>
+                                <span class="text-[10px] font-black text-aloewood uppercase tracking-widest">E-Wallet</span>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-xs font-black text-dark-chocolate uppercase tracking-wide">DANA</p>
+                                <p class="text-lg font-black text-dark-chocolate tracking-widest">081234567890</p>
+                                <p class="text-[10px] font-bold text-dark-chocolate/50 uppercase tracking-widest">a.n CosRent</p>
+                            </div>
+                        </div>
+
+                        {{-- QRIS --}}
+                        <div class="rounded-2xl border-2 border-dark-chocolate/10 p-5 bg-white/60 flex flex-col gap-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 bg-sakura/10 text-sakura rounded-xl flex items-center justify-center text-sm font-black">⚡</span>
+                                <span class="text-[10px] font-black text-aloewood uppercase tracking-widest">QRIS</span>
+                            </div>
+                            <div class="flex-1 flex items-center justify-center">
+                                @if(file_exists(public_path('images/qris-placeholder.png')))
+                                    <img src="{{ asset('images/qris-placeholder.png') }}"
+                                         alt="QRIS CosRent"
+                                         class="w-full max-w-[120px] h-auto object-contain mx-auto rounded-xl border border-dark-chocolate/10">
+                                @else
+                                    <div class="w-full max-w-[120px] h-[120px] mx-auto rounded-xl border-2 border-dashed border-dark-chocolate/20 bg-dark-chocolate/5 flex flex-col items-center justify-center text-center p-2">
+                                        <i class="fa-solid fa-qrcode text-2xl text-dark-chocolate/30 mb-2"></i>
+                                        <p class="text-[9px] font-black text-dark-chocolate/40 uppercase tracking-wider leading-tight">QRIS IMAGE<br>PLACEHOLDER</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Langkah Pembayaran --}}
+                    <div class="rounded-2xl border border-dark-chocolate/10 bg-dark-chocolate/3 p-5 mb-4">
+                        <p class="text-[10px] font-black text-aloewood uppercase tracking-[0.3em] mb-4">Cara Pembayaran</p>
+                        <ol class="space-y-2">
+                            @foreach([
+                                ['icon' => 'fa-money-bill-transfer', 'text' => 'Transfer sesuai total tagihan di atas'],
+                                ['icon' => 'fa-camera',              'text' => 'Simpan / screenshot bukti pembayaran'],
+                                ['icon' => 'fa-upload',              'text' => 'Upload bukti pembayaran di halaman Riwayat'],
+                                ['icon' => 'fa-clock',               'text' => 'Tunggu verifikasi dari admin (maks 1×24 jam)'],
+                                ['icon' => 'fa-box-open',            'text' => 'Ambil kostum setelah pembayaran disetujui admin'],
+                            ] as $idx => $step)
+                            <li class="flex items-start gap-3">
+                                <span class="w-6 h-6 rounded-full bg-sakura/15 text-sakura flex items-center justify-center flex-shrink-0 text-[10px] font-black mt-0.5">{{ $idx + 1 }}</span>
+                                <div class="flex items-center gap-2 text-sm font-medium text-dark-chocolate/80">
+                                    <i class="fa-solid {{ $step['icon'] }} text-sakura/70 w-4 text-center text-xs"></i>
+                                    {{ $step['text'] }}
+                                </div>
+                            </li>
+                            @endforeach
+                        </ol>
+                    </div>
+
+                    {{-- Catatan Peringatan --}}
+                    <div class="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5 flex-shrink-0"></i>
+                        <p class="text-xs font-bold text-amber-700">
+                            Pembayaran yang tidak valid (jumlah tidak sesuai, bukti tidak terbaca, atau bukti palsu) dapat ditolak oleh admin. Pastikan jumlah transfer sesuai total tagihan.
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Footer Note -->
                 <div class="pt-12 mt-12 border-t border-dark-chocolate/5 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
                     <div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PanduanRentalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,12 @@ use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/contact', 'pages.contact')->name('contact');
+
+// ==================== ROUTE PANDUAN RENTAL ====================
+Route::get('/panduan-rental', [PanduanRentalController::class, 'index'])->name('panduan.index');
+Route::post('/panduan-rental/mark-seen', [PanduanRentalController::class, 'markAsSeen'])
+    ->middleware('auth')
+    ->name('panduan.mark-seen');
 
 // ==================== ROUTE PRODUK ====================
 Route::get('/product', [ProductController::class, 'index'])->name('products.index');

@@ -92,6 +92,12 @@
                                     {{ $item->status_label }}
                                 @endif
                             </span>
+                            {{-- Sub-badge: kejelasan status pengambilan --}}
+                            @if($item->status === 'Sudah Dibayar')
+                                <span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider" style="background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.3);">🟡 Belum Diambil</span>
+                            @elseif($item->status === 'Disewa')
+                                <span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">🟢 Sudah Diambil</span>
+                            @endif
                         </div>
                         
                         <h3 class="text-2xl md:text-4xl font-black text-dark-chocolate leading-tight tracking-tight">

@@ -289,13 +289,9 @@ class AdminController extends Controller
     {
         $kostum = Kostum::findOrFail($id);
 
-        if ($kostum->gambar && !filter_var($kostum->gambar, FILTER_VALIDATE_URL)) {
-            Storage::disk('public')->delete($kostum->gambar);
-        }
-
         $kostum->delete();
 
-        return redirect()->route('admin.kostum')->with('success', 'Costume deleted successfully!');
+        return redirect()->route('admin.kostum')->with('success', 'Costume archived successfully!');
     }
 
     // =====================================================================

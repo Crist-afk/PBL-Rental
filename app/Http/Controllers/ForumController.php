@@ -125,13 +125,9 @@ class ForumController extends Controller
     {
         $this->authorizePostOwner($request, $forumPost);
 
-        if ($forumPost->image_path) {
-            Storage::disk('public')->delete($forumPost->image_path);
-        }
-
         $forumPost->delete();
 
-        return redirect()->route('forum')->with('forum_success', 'Discussion deleted successfully.');
+        return redirect()->route('forum')->with('forum_success', 'Discussion archived successfully.');
     }
 
     public function show(ForumPost $forumPost)
@@ -218,7 +214,7 @@ class ForumController extends Controller
         $forumComment->replies()->delete();
         $forumComment->delete();
 
-        return redirect()->route('forum.show', $forumPost)->with('forum_success', 'Comment deleted successfully.');
+        return redirect()->route('forum.show', $forumPost)->with('forum_success', 'Comment archived successfully.');
     }
 
     private function generateUniqueSlug(string $title): string

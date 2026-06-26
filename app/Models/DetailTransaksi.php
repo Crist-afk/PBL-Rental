@@ -20,6 +20,6 @@ class DetailTransaksi extends Model
     // Relasi ke tabel Kostum
     public function kostum()
     {
-        return $this->belongsTo(Kostum::class, 'kostum_id');
+        return $this->belongsTo(Kostum::class, 'kostum_id')->withTrashed();
     }
 }

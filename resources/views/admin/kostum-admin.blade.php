@@ -290,9 +290,13 @@
         @forelse($kostums as $kostum)
           <div class="costume-card">
             <div class="card-img" style="background: url('{{ $kostum->gambar_url }}') center/cover;">
-              @if($kostum->stok_permanen === 0)
+              @php
+                $totalPermanen = $kostum->units->sum('stok_permanen');
+                $totalAktual   = $kostum->units->sum('stok_aktual');
+              @endphp
+              @if($totalPermanen === 0)
                 <span class="status-badge tidak">Out of Stock</span>
-              @elseif($kostum->stok_permanen <= 1)
+              @elseif($totalAktual <= 1)
                 <span class="status-badge disewa" style="background: rgba(251, 146, 60, 0.15); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.3);">Low Stock</span>
               @else
                 <span class="status-badge tersedia">Available</span>
@@ -309,27 +313,13 @@
                 <span class="price-unit"> /day</span>
               </div>
 
-              {{-- Per-size stock chips --}}
-              @php
-                $stokPerUkuran = $kostum->stok_permanen_per_ukuran;
-                $ukuranArr = array_filter(array_map('trim', explode(',', $kostum->ukuran ?? '')));
-              @endphp
-              @if(!empty($stokPerUkuran) && is_array($stokPerUkuran))
+              {{-- Per-size stock chips from kostum_unit rows --}}
+              @if($kostum->units->isNotEmpty())
                 <div class="size-stock-grid">
-                  @foreach($stokPerUkuran as $size => $qty)
-                    <span class="size-stock-chip {{ $qty > 0 ? 'in-stock' : 'out-stock' }}">
-                      <span class="chip-size">{{ strtoupper($size) }}</span>
-                      <span class="chip-count">: {{ $qty }}</span>
-                    </span>
-                  @endforeach
-                </div>
-              @elseif(!empty($ukuranArr))
-                {{-- Fallback: show sizes without stock counts if stok_permanen_per_ukuran not set --}}
-                <div class="size-stock-grid">
-                  @foreach($ukuranArr as $size)
-                    <span class="size-stock-chip in-stock">
-                      <span class="chip-size">{{ strtoupper($size) }}</span>
-                      <span class="chip-count">: ?</span>
+                  @foreach($kostum->units as $unit)
+                    <span class="size-stock-chip {{ $unit->stok_aktual > 0 ? 'in-stock' : 'out-stock' }}">
+                      <span class="chip-size">{{ strtoupper($unit->ukuran) }}</span>
+                      <span class="chip-count">: {{ $unit->stok_aktual }}/{{ $unit->stok_permanen }}</span>
                     </span>
                   @endforeach
                 </div>
@@ -783,9 +773,11 @@
         document.getElementById('edit_harga_sewa').value = kostum.harga_sewa;
         document.getElementById('edit_kelengkapan').value = kostum.kelengkapan || '';
 
-        // Set ukuran and generate per-size inputs with existing stock
+        // Set ukuran and generate per-size inputs with existing stock from units
         document.getElementById('editUkuranInput').value = kostum.ukuran || '';
-        const stokPerUkuran = kostum.stok_permanen_per_ukuran || {};
+        // Build stokPerUkuran map from units array
+        const stokPerUkuran = {};
+        (kostum.units || []).forEach(u => { stokPerUkuran[u.ukuran] = u.stok_permanen; });
         generateEditSizeInputs(stokPerUkuran);
 
         const previewImg = document.getElementById('edit_preview_img');
@@ -817,19 +809,17 @@
         const hargaFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(kostum.harga_sewa);
         document.getElementById('view_harga').innerHTML = hargaFormatted + ' <span style="font-size:12px;color:var(--text-3);font-family:\'Sora\',sans-serif;">/day</span>';
         
-        document.getElementById('view_stok').textContent = kostum.stok_permanen + ' Unit';
+        document.getElementById('view_stok').textContent = (kostum.units ? kostum.units.reduce((s, u) => s + u.stok_permanen, 0) : 0) + ' Unit';
         document.getElementById('view_kelengkapan').textContent = kostum.kelengkapan || 'No special accessories/description.';
 
-        // Render per-size stock table
+        // Render per-size stock table with stok_permanen + stok_aktual
         const tableContainer = document.getElementById('view_size_stock_table');
         tableContainer.innerHTML = '';
-        const stokPerUkuran = kostum.stok_permanen_per_ukuran || {};
-        const sizes = Object.keys(stokPerUkuran);
+        const units = kostum.units || [];
 
-        if (sizes.length > 0) {
-            sizes.forEach(size => {
-                const qty = stokPerUkuran[size];
-                const isAvail = qty > 0;
+        if (units.length > 0) {
+            units.forEach(unit => {
+                const isAvail = unit.stok_aktual > 0;
                 const chip = document.createElement('div');
                 chip.style.cssText = `
                     display:inline-flex; align-items:center; gap:8px;
@@ -838,10 +828,12 @@
                     border-color:${isAvail ? 'rgba(34,197,94,0.3)' : 'rgba(248,113,113,0.3)'};
                 `;
                 chip.innerHTML = `
-                    <span style="font-size:14px;font-weight:800;color:${isAvail ? 'var(--green)' : 'var(--red)'};">${size.toUpperCase()}</span>
+                    <span style="font-size:14px;font-weight:800;color:${isAvail ? 'var(--green)' : 'var(--red)'};">${unit.ukuran.toUpperCase()}</span>
                     <span style="font-size:11px;color:var(--text-3);font-weight:600;">—</span>
-                    <span style="font-size:14px;font-weight:700;color:var(--text-1);font-family:'JetBrains Mono',monospace;">${qty}</span>
-                    <span style="font-size:11px;color:var(--text-3);">unit${qty !== 1 ? 's' : ''}</span>
+                    <span style="font-size:11px;color:var(--text-3);">Available:</span>
+                    <span style="font-size:14px;font-weight:700;color:var(--text-1);font-family:'JetBrains Mono',monospace;">${unit.stok_aktual}</span>
+                    <span style="font-size:11px;color:var(--text-3);">/ Capacity:</span>
+                    <span style="font-size:13px;font-weight:600;color:var(--text-2);font-family:'JetBrains Mono',monospace;">${unit.stok_permanen}</span>
                 `;
                 tableContainer.appendChild(chip);
             });

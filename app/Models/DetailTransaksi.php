@@ -6,20 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetailTransaksi extends Model
 {
-    // Pastikan nama tabel di database menggunakan snake_case
     protected $table = 'detail_transaksi';
 
     protected $guarded = ['id'];
 
-    // Relasi ke tabel Transaksi Induk
+    // Relation to parent Transaksi
     public function transaksi()
     {
         return $this->belongsTo(Transaksi::class, 'transaksi_id');
     }
 
-    // Relasi ke tabel Kostum
+    // Relation to parent Kostum
     public function kostum()
     {
         return $this->belongsTo(Kostum::class, 'kostum_id')->withTrashed();
+    }
+
+    // Relation to specific KostumUnit (costume + size combination)
+    public function kostumUnit()
+    {
+        return $this->belongsTo(KostumUnit::class, 'kostum_unit_id');
     }
 }

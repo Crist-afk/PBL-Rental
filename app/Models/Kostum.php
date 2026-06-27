@@ -14,64 +14,59 @@ class Kostum extends Model
     protected $fillable = [
         'kategori_id',
         'nama_kostum',
-        'stok_permanen',
-        'stok_aktual',
-        'stok_permanen_per_ukuran',
-        'stok_aktual_per_ukuran',
         'harga_sewa',
-        'ukuran',
+        'ukuran',       // denormalised comma-separated string: "L, XL, XXL"
         'kelengkapan',
-        'gambar'
+        'gambar',
     ];
 
-    protected $casts = [
-        'stok_permanen_per_ukuran' => 'array',
-        'stok_aktual_per_ukuran' => 'array',
-    ];
+    // ── Relationships ──────────────────────────────────────────────────────
 
-    // Relasi: Satu kostum dimiliki oleh satu kategori (BelongsTo)
+    /** One costume belongs to one category. */
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 
-    // Relasi: Satu kostum bisa memiliki banyak detail transaksi
+    /** One costume has many booking detail lines. */
     public function detailTransaksi()
     {
         return $this->hasMany(DetailTransaksi::class, 'kostum_id');
     }
 
+    /** One costume has many size-unit rows (kostum_unit). */
+    public function units()
+    {
+        return $this->hasMany(KostumUnit::class, 'kostum_id');
+    }
+
+    /** One costume has many extra gallery images. */
+    public function images()
+    {
+        return $this->hasMany(KostumImage::class, 'kostum_id');
+    }
+
+    // ── Accessors ──────────────────────────────────────────────────────────
+
     /**
-     * Accessor untuk mendapatkan URL gambar yang valid.
-     * Mendukung link eksternal (http/https) maupun file lokal di storage.
+     * Returns a valid image URL (external link or local storage).
      */
     public function getGambarUrlAttribute()
     {
         if (!$this->gambar) {
             return 'https://via.placeholder.com/400x500.png?text=No+Image';
         }
-
         if (filter_var($this->gambar, FILTER_VALIDATE_URL)) {
             return $this->gambar;
         }
-
         return asset('storage/' . $this->gambar);
     }
 
-    // Relasi: Satu kostum bisa memiliki banyak gambar tambahan
-    public function images()
-    {
-        return $this->hasMany(KostumImage::class, 'kostum_id');
-    }
-
-    // =========================================================================
-    // CALENDAR AVAILABILITY — Dihitung Dinamis dari Overlap Booking Aktif
-    // Kapasitas diambil dari stok_permanen_per_ukuran (tidak membaca stok_aktual).
-    // =========================================================================
+    // ── Stock Helpers ──────────────────────────────────────────────────────
 
     /**
-     * Status transaksi yang mengunci slot kalender.
-     * Batal, Ditolak, dan Selesai TIDAK memblokir slot.
+     * Status values that occupy a calendar slot / lock stock.
+     * Cancelled, Rejected, and Completed statuses do NOT block availability.
      */
     public static function statusAktif(): array
     {
@@ -79,40 +74,42 @@ class Kostum extends Model
     }
 
     /**
-     * Hitung ketersediaan untuk ukuran tertentu pada rentang tanggal tertentu.
+     * Get the KostumUnit row for a specific size (or null if not found).
+     */
+    public function getUnit(string $size): ?KostumUnit
+    {
+        return $this->units->firstWhere('ukuran', trim($size));
+    }
+
+    /**
+     * Returns stok_aktual for a given size from the kostum_unit table.
      *
-     * Logika:
-     *   kapasitas = stok_permanen_per_ukuran[$size]  (kapasitas fisik kostum)
-     *   booking_overlap = detail_transaksi dengan status aktif yang tanggalnya
-     *                     tumpang tindih dengan rentang yang diminta
-     *   availability = max(0, kapasitas - booking_overlap)
+     * If $tanggalMulai / $tanggalSelesai are provided, availability is
+     * computed dynamically from calendar overlap — same logic as before but
+     * now reads stok_permanen from kostum_unit rather than a JSON column.
      *
-     * Overlap condition:
-     *   tanggal_mulai (existing) <= tanggalSelesai (requested)
-     *   AND tanggal_selesai (existing) >= tanggalMulai (requested)
-     *
-     * @param  string      $size           Ukuran kostum (e.g. "M")
-     * @param  string|null $tanggalMulai   Format Y-m-d. Null = default ke hari ini.
-     * @param  string|null $tanggalSelesai Format Y-m-d. Null = default ke hari ini.
-     * @return int Ketersediaan (≥ 0)
+     * @param  string      $size
+     * @param  string|null $tanggalMulai   Y-m-d  (null = today)
+     * @param  string|null $tanggalSelesai Y-m-d  (null = today)
+     * @return int  available stock (≥ 0)
      */
     public function getStokAktualBySize(string $size, ?string $tanggalMulai = null, ?string $tanggalSelesai = null): int
     {
-        // Default: gunakan hari ini jika tanggal tidak diberikan
         $start = $tanggalMulai  ?? now()->toDateString();
         $end   = $tanggalSelesai ?? now()->toDateString();
 
-        // Baca kapasitas dari stok_permanen_per_ukuran (BUKAN stok_aktual)
-        $kapasitasPerUkuran = $this->stok_permanen_per_ukuran ?? [];
-        $kapasitas = (is_array($kapasitasPerUkuran) && isset($kapasitasPerUkuran[$size]))
-            ? (int) $kapasitasPerUkuran[$size]
-            : 0;
+        // Read capacity from kostum_unit
+        $unit = KostumUnit::where('kostum_id', $this->id)
+            ->where('ukuran', $size)
+            ->first();
 
-        if ($kapasitas <= 0) {
+        if (!$unit || $unit->stok_permanen <= 0) {
             return 0;
         }
 
-        // Hitung booking aktif yang overlap dengan rentang tanggal yang diminta
+        $kapasitas = $unit->stok_permanen;
+
+        // Count active bookings that overlap the requested date range
         $bookedCount = DetailTransaksi::where('kostum_id', $this->id)
             ->where('ukuran', $size)
             ->whereHas('transaksi', function ($q) use ($start, $end) {
@@ -126,59 +123,66 @@ class Kostum extends Model
     }
 
     /**
-     * Hitung ketersediaan total kostum ini (semua ukuran) pada rentang tanggal tertentu.
+     * Returns total stok_aktual across all sizes for a given date range.
      *
-     * Menjumlahkan hasil getStokAktualBySize() untuk setiap ukuran yang tersedia.
-     * Tidak membaca kolom stok_aktual dari database.
-     *
-     * @param  string|null $tanggalMulai   Format Y-m-d. Null = default ke hari ini.
-     * @param  string|null $tanggalSelesai Format Y-m-d. Null = default ke hari ini.
-     * @return int Ketersediaan total (≥ 0)
+     * @param  string|null $tanggalMulai
+     * @param  string|null $tanggalSelesai
+     * @return int
      */
     public function getStokAktualTotal(?string $tanggalMulai = null, ?string $tanggalSelesai = null): int
     {
         $start = $tanggalMulai  ?? now()->toDateString();
         $end   = $tanggalSelesai ?? now()->toDateString();
 
-        $kapasitasPerUkuran = $this->stok_permanen_per_ukuran ?? [];
+        $units = KostumUnit::where('kostum_id', $this->id)->get();
 
-        if (empty($kapasitasPerUkuran) || !is_array($kapasitasPerUkuran)) {
+        if ($units->isEmpty()) {
             return 0;
         }
 
         $total = 0;
-        foreach (array_keys($kapasitasPerUkuran) as $size) {
-            $total += $this->getStokAktualBySize($size, $start, $end);
+        foreach ($units as $unit) {
+            $total += $this->getStokAktualBySize($unit->ukuran, $start, $end);
         }
 
         return $total;
     }
 
     /**
-     * [DEPRECATED — PR-2 Calendar Availability]
-     * Metode ini tidak lagi menulis ke database.
-     * Ketersediaan dihitung dinamis dari overlap kalender; tidak ada kolom stok yang diubah.
-     * Dipertahankan agar tidak merusak pemanggil yang belum di-cleanup (PR-1).
-     *
-     * @deprecated Gunakan getStokAktualBySize() untuk mengecek ketersediaan.
+     * Returns the total stok_permanen across all sizes (sum of kostum_unit rows).
+     * This acts as an accessor for $kostum->stok_permanen
      */
-    public function decrementStokAktual(string $size, int $qty = 1): void
+    public function getStokPermanenAttribute(): int
     {
-        // NO-OP: Calendar availability tidak memerlukan decrement stok fisik.
-        // Ketersediaan dihitung otomatis dari status transaksi aktif.
+        return $this->units->sum('stok_permanen');
     }
 
     /**
-     * [DEPRECATED — PR-2 Calendar Availability]
-     * Metode ini tidak lagi menulis ke database.
-     * Ketersediaan dihitung dinamis dari overlap kalender; tidak ada kolom stok yang diubah.
-     * Dipertahankan agar tidak merusak pemanggil yang belum di-cleanup (PR-1).
-     *
-     * @deprecated Tidak perlu increment; slot terbuka otomatis saat status berubah ke Batal/Selesai/Ditolak.
+     * Returns the total stok_aktual across all sizes (sum of kostum_unit rows).
+     * This acts as an accessor for $kostum->stok_aktual
      */
+    public function getStokAktualAttribute(): int
+    {
+        return $this->units->sum('stok_aktual');
+    }
+
+    // ── Deprecated stubs (kept for backward-compat, now no-ops) ───────────
+
+    /** @deprecated Use getStokAktualBySize() */
+    public function decrementStokAktual(string $size, int $qty = 1): void
+    {
+        $unit = KostumUnit::where('kostum_id', $this->id)
+            ->where('ukuran', $size)
+            ->first();
+        $unit?->decrementStok($qty);
+    }
+
+    /** @deprecated Use getStokAktualBySize() */
     public function incrementStokAktual(string $size, int $qty = 1): void
     {
-        // NO-OP: Calendar availability tidak memerlukan increment stok fisik.
-        // Slot kalender terbuka otomatis ketika status transaksi berubah ke Batal/Selesai/Ditolak.
+        $unit = KostumUnit::where('kostum_id', $this->id)
+            ->where('ukuran', $size)
+            ->first();
+        $unit?->incrementStok($qty);
     }
 }

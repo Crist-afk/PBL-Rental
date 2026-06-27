@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Kostum::with('kategori');
+        $query = Kostum::with(['kategori', 'units']);
 
         // Filter by Search Keyword
         if ($request->filled('search')) {
@@ -49,22 +49,25 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        // Eager-load relasi 'kategori' untuk menampilkan nama kategori di detail page
-        $kostum = Kostum::with('kategori')->findOrFail($id);
+        // Eager-load kategori and kostum_unit rows for this costume
+        $kostum = Kostum::with(['kategori', 'units'])->findOrFail($id);
 
-        // Hitung stok aktual per ukuran (tanpa filter tanggal = berdasarkan booking aktif hari ini)
-        // Tanggal tidak difilter di sini karena user belum memilih tanggal.
-        // Stok aktual realtime akan diperbarui via AJAX saat user memilih tanggal.
+        // Build stokAktualPerUkuran from kostum_unit rows
+        // (calendar-based: counts active bookings for today)
         $stokAktualPerUkuran = [];
-        $availableSizes = $kostum->ukuran
-            ? array_map('trim', explode(',', $kostum->ukuran))
-            : ['All Size'];
-
-        foreach ($availableSizes as $size) {
-            $stokAktualPerUkuran[$size] = $kostum->getStokAktualBySize($size);
+        foreach ($kostum->units as $unit) {
+            $stokAktualPerUkuran[$unit->ukuran] = $kostum->getStokAktualBySize($unit->ukuran);
         }
 
-        // Stok aktual total (untuk badge ketersediaan di header)
+        // Fallback: if no units configured, build from ukuran string
+        if (empty($stokAktualPerUkuran) && $kostum->ukuran) {
+            $sizes = array_map('trim', explode(',', $kostum->ukuran));
+            foreach ($sizes as $size) {
+                $stokAktualPerUkuran[$size] = 0;
+            }
+        }
+
+        // Total available stock across all sizes
         $stokAktualTotal = $kostum->getStokAktualTotal();
 
         return view('pages.product-detail', compact('kostum', 'stokAktualPerUkuran', 'stokAktualTotal'));

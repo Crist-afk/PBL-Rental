@@ -54,9 +54,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $anime->id,
                 'stok_permanen'            => 31,
-                'stok_aktual'              => 31,
                 'stok_permanen_per_ukuran' => ['L' => 11, 'XL' => 10, 'XXL' => 10],
-                'stok_aktual_per_ukuran'   => ['L' => 11, 'XL' => 10, 'XXL' => 10],
                 'harga_sewa'               => 150000,
                 'ukuran'                   => 'L, XL, XXL',
                 'kelengkapan'              => 'Wig, Eye Patch, Jujutsu High Uniform',
@@ -69,9 +67,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $game->id,
                 'stok_permanen'            => 2,
-                'stok_aktual'              => 2,
                 'stok_permanen_per_ukuran' => ['M' => 1, 'L' => 1],
-                'stok_aktual_per_ukuran'   => ['M' => 1, 'L' => 1],
                 'harga_sewa'               => 200000,
                 'ukuran'                   => 'M, L',
                 'kelengkapan'              => 'Wig, Coat, Shirt, Trousers, Accessories',
@@ -84,9 +80,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $anime->id,
                 'stok_permanen'            => 5,
-                'stok_aktual'              => 5,
                 'stok_permanen_per_ukuran' => ['S' => 1, 'M' => 2, 'L' => 2],
-                'stok_aktual_per_ukuran'   => ['S' => 1, 'M' => 2, 'L' => 2],
                 'harga_sewa'               => 100000,
                 'ukuran'                   => 'S, M, L',
                 'kelengkapan'              => 'Straw Hat, Red Vest, Shorts, Waist Sash',
@@ -99,9 +93,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $game->id,
                 'stok_permanen'            => 4,
-                'stok_aktual'              => 4,
                 'stok_permanen_per_ukuran' => ['M' => 1, 'L' => 1, 'XL' => 2],
-                'stok_aktual_per_ukuran'   => ['M' => 1, 'L' => 1, 'XL' => 2],
                 'harga_sewa'               => 250000,
                 'ukuran'                   => 'M, L, XL',
                 'kelengkapan'              => 'Wig, Kimono, Obi, Hairpiece, Tabi',
@@ -114,9 +106,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $superhero->id,
                 'stok_permanen'            => 4,
-                'stok_aktual'              => 4,
                 'stok_permanen_per_ukuran' => ['M' => 2, 'L' => 2],
-                'stok_aktual_per_ukuran'   => ['M' => 2, 'L' => 2],
                 'harga_sewa'               => 125000,
                 'ukuran'                   => 'M, L',
                 'kelengkapan'              => 'Full Body Suit, Mask',
@@ -129,9 +119,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $game->id,
                 'stok_permanen'            => 2,
-                'stok_aktual'              => 2,
                 'stok_permanen_per_ukuran' => ['M' => 1, 'L' => 1],
-                'stok_aktual_per_ukuran'   => ['M' => 1, 'L' => 1],
                 'harga_sewa'               => 225000,
                 'ukuran'                   => 'M, L',
                 'kelengkapan'              => 'Wig, Shrine Maiden Outfit, Accessories',
@@ -144,9 +132,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $anime->id,
                 'stok_permanen'            => 4,
-                'stok_aktual'              => 4,
                 'stok_permanen_per_ukuran' => ['M' => 1, 'L' => 2, 'XL' => 1],
-                'stok_aktual_per_ukuran'   => ['M' => 1, 'L' => 2, 'XL' => 1],
                 'harga_sewa'               => 180000,
                 'ukuran'                   => 'M, L, XL',
                 'kelengkapan'              => 'Full Set',
@@ -159,9 +145,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $anime->id,
                 'stok_permanen'            => 6,
-                'stok_aktual'              => 6,
                 'stok_permanen_per_ukuran' => ['M' => 2, 'L' => 2, 'XL' => 2],
-                'stok_aktual_per_ukuran'   => ['M' => 2, 'L' => 2, 'XL' => 2],
                 'harga_sewa'               => 150000,
                 'ukuran'                   => 'M, L, XL',
                 'kelengkapan'              => 'Eden Academy Uniform Dress, Detachable White Collar with Red Ribbon Tie, Character Pink Wig, Pair of Anya\'s Signature Hair Ornaments, Pair of Over-Knee White Socks',
@@ -174,9 +158,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $anime->id,
                 'stok_permanen'            => 3,
-                'stok_aktual'              => 3,
                 'stok_permanen_per_ukuran' => ['M' => 1, 'L' => 1, 'XL' => 1],
-                'stok_aktual_per_ukuran'   => ['M' => 1, 'L' => 1, 'XL' => 1],
                 'harga_sewa'               => 160000,
                 'ukuran'                   => 'M, L, XL',
                 'kelengkapan'              => 'Jujutsu High School Uniform Jacket, Matching Baggy Hakama-style Pants, Character Black Wig',
@@ -189,9 +171,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $anime->id,
                 'stok_permanen'            => 4,
-                'stok_aktual'              => 4,
                 'stok_permanen_per_ukuran' => ['L' => 2, 'XL' => 2],
-                'stok_aktual_per_ukuran'   => ['L' => 2, 'XL' => 2],
                 'harga_sewa'               => 200000,
                 'ukuran'                   => 'L, XL',
                 'kelengkapan'              => 'Orange Gi Top, Blue Inner Undershirt, Matching Orange Baggy Pants, Blue Waist Sash Tie, Pair of Blue Wristbands',
@@ -204,9 +184,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $anime->id,
                 'stok_permanen'            => 3,
-                'stok_aktual'              => 3,
                 'stok_permanen_per_ukuran' => ['M' => 1, 'L' => 1, 'XL' => 1],
-                'stok_aktual_per_ukuran'   => ['M' => 1, 'L' => 1, 'XL' => 1],
                 'harga_sewa'               => 150000,
                 'ukuran'                   => 'M, L, XL',
                 'kelengkapan'              => 'Blue Team Z Soccer Jersey, Matching Blue Soccer Shorts, Full-Body Black Bodysuit',
@@ -219,9 +197,7 @@ class DatabaseSeeder extends Seeder
             [
                 'kategori_id'              => $anime->id,
                 'stok_permanen'            => 4,
-                'stok_aktual'              => 4,
                 'stok_permanen_per_ukuran' => ['M' => 1, 'L' => 2, 'XL' => 1],
-                'stok_aktual_per_ukuran'   => ['M' => 1, 'L' => 2, 'XL' => 1],
                 'harga_sewa'               => 150000,
                 'ukuran'                   => 'M, L, XL',
                 'kelengkapan'              => 'Bastard München Soccer Jersey (with "KAISER 10" print on the back and gold trim details), Matching Black Soccer Shorts (with number 10 print)',

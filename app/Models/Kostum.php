@@ -15,9 +15,7 @@ class Kostum extends Model
         'kategori_id',
         'nama_kostum',
         'stok_permanen',
-        'stok_aktual',
         'stok_permanen_per_ukuran',
-        'stok_aktual_per_ukuran',
         'harga_sewa',
         'ukuran',
         'kelengkapan',
@@ -26,7 +24,6 @@ class Kostum extends Model
 
     protected $casts = [
         'stok_permanen_per_ukuran' => 'array',
-        'stok_aktual_per_ukuran' => 'array',
     ];
 
     // Relasi: Satu kostum dimiliki oleh satu kategori (BelongsTo)
@@ -154,31 +151,4 @@ class Kostum extends Model
         return $total;
     }
 
-    /**
-     * [DEPRECATED — PR-2 Calendar Availability]
-     * Metode ini tidak lagi menulis ke database.
-     * Ketersediaan dihitung dinamis dari overlap kalender; tidak ada kolom stok yang diubah.
-     * Dipertahankan agar tidak merusak pemanggil yang belum di-cleanup (PR-1).
-     *
-     * @deprecated Gunakan getStokAktualBySize() untuk mengecek ketersediaan.
-     */
-    public function decrementStokAktual(string $size, int $qty = 1): void
-    {
-        // NO-OP: Calendar availability tidak memerlukan decrement stok fisik.
-        // Ketersediaan dihitung otomatis dari status transaksi aktif.
-    }
-
-    /**
-     * [DEPRECATED — PR-2 Calendar Availability]
-     * Metode ini tidak lagi menulis ke database.
-     * Ketersediaan dihitung dinamis dari overlap kalender; tidak ada kolom stok yang diubah.
-     * Dipertahankan agar tidak merusak pemanggil yang belum di-cleanup (PR-1).
-     *
-     * @deprecated Tidak perlu increment; slot terbuka otomatis saat status berubah ke Batal/Selesai/Ditolak.
-     */
-    public function incrementStokAktual(string $size, int $qty = 1): void
-    {
-        // NO-OP: Calendar availability tidak memerlukan increment stok fisik.
-        // Slot kalender terbuka otomatis ketika status transaksi berubah ke Batal/Selesai/Ditolak.
-    }
 }

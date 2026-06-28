@@ -195,10 +195,8 @@ class AdminController extends Controller
             'kategori_id'              => $request->kategori_id,
             'harga_sewa'               => $request->harga_sewa,
             'stok_permanen'            => $totalStok,
-            'stok_aktual'              => $totalStok,
             'ukuran'                   => $ukuranStr,
             'stok_permanen_per_ukuran' => $stokPerUkuran,
-            'stok_aktual_per_ukuran'   => $stokPerUkuran,
             'kelengkapan'              => $request->kelengkapan,
             'gambar'                   => $gambar,
         ]);
@@ -254,33 +252,7 @@ class AdminController extends Controller
             'gambar'                   => $gambar,
         ]);
 
-        // Hitung ulang stok aktual berdasarkan stok permanen yang baru
-        $activeStatuses = \App\Models\Kostum::statusAktif();
-        $activeDetails = \App\Models\DetailTransaksi::join('transaksi', 'detail_transaksi.transaksi_id', '=', 'transaksi.id')
-            ->where('detail_transaksi.kostum_id', $kostum->id)
-            ->whereIn('transaksi.status', $activeStatuses)
-            ->select('detail_transaksi.ukuran')
-            ->get();
-        
-        $stokAktual = $totalStok;
-        $stokAktualPerUkuran = $stokPerUkuran;
 
-        foreach ($activeDetails as $detail) {
-            $stokAktual--;
-            if ($detail->ukuran && isset($stokAktualPerUkuran[$detail->ukuran])) {
-                $stokAktualPerUkuran[$detail->ukuran]--;
-            }
-        }
-        
-        $stokAktual = max(0, $stokAktual);
-        foreach ($stokAktualPerUkuran as $k => $v) {
-            $stokAktualPerUkuran[$k] = max(0, $v);
-        }
-
-        $kostum->update([
-            'stok_aktual' => $stokAktual,
-            'stok_aktual_per_ukuran' => $stokAktualPerUkuran,
-        ]);
 
         return redirect()->route('admin.kostum')->with('success', 'Costume updated successfully!');
     }

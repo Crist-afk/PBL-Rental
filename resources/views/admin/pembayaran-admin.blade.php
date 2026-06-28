@@ -2,25 +2,29 @@
 
 @section('title', 'CosRent — Payment Validation')
 
+@push('styles')
+    @vite(['resources/css/admin/pembayaran.css', 'resources/js/admin/pembayaran.js'])
+@endpush
+
 @section('content')
   <main class="main" style="padding-top: 24px;">
 
     {{-- FLASH MESSAGES --}}
     @if(session('success'))
-      <div class="alert alert-success" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#10b981;padding:12px 16px;border-radius:8px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-weight:500;animation:fadeIn 0.4s;">
+      <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#10b981;padding:12px 16px;border-radius:8px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-weight:500;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         <span>{{ session('success') }}</span>
       </div>
     @endif
     @if(session('error'))
-      <div class="alert alert-error" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#ef4444;padding:12px 16px;border-radius:8px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-weight:500;animation:fadeIn 0.4s;">
+      <div style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#ef4444;padding:12px 16px;border-radius:8px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-weight:500;">
         <span style="font-size:18px;">⚠️</span>
         <span>{{ session('error') }}</span>
       </div>
     @endif
-    
+
     @if ($errors->any())
-      <div class="alert alert-error" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#ef4444;padding:12px 16px;border-radius:8px;margin-bottom:20px;display:flex;flex-direction:column;gap:5px;font-weight:500;animation:fadeIn 0.4s;">
+      <div style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#ef4444;padding:12px 16px;border-radius:8px;margin-bottom:20px;display:flex;flex-direction:column;gap:5px;font-weight:500;">
         <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:18px;">⚠️</span> <strong>Errors occurred:</strong></div>
         <ul style="padding-left: 20px;">
             @foreach ($errors->all() as $err)
@@ -60,25 +64,25 @@
     {{-- TABS --}}
     <div class="tabs">
       <a href="{{ route('admin.pembayaran', ['status'=>'semua','q'=>request('q')]) }}" class="tab {{ $filter==='semua'?'active':'' }}" style="text-decoration:none;">All</a>
-      <a href="{{ route('admin.pembayaran', ['status'=>'belum_upload','q'=>request('q')]) }}" class="tab {{ $filter==='belum_upload'?'active':'' }}" style="text-decoration:none;display:flex;align-items:center;">
+      <a href="{{ route('admin.pembayaran', ['status'=>'belum_upload','q'=>request('q')]) }}" class="tab {{ $filter==='belum_upload'?'active':'' }}" style="text-decoration:none;">
         🔴 No Proof
-        @if($stats['belum_upload']>0)<span class="tab-badge-count red">{{ $stats['belum_upload'] }}</span>@endif
+        @if($stats['belum_upload']>0)<span class="tab-badge">{{ $stats['belum_upload'] }}</span>@endif
       </a>
-      <a href="{{ route('admin.pembayaran', ['status'=>'menunggu_verifikasi','q'=>request('q')]) }}" class="tab {{ $filter==='menunggu_verifikasi'?'active':'' }}" style="text-decoration:none;display:flex;align-items:center;">
+      <a href="{{ route('admin.pembayaran', ['status'=>'menunggu_verifikasi','q'=>request('q')]) }}" class="tab {{ $filter==='menunggu_verifikasi'?'active':'' }}" style="text-decoration:none;">
         ⏳ Awaiting Verification
-        @if($stats['menunggu_verifikasi']>0)<span class="tab-badge-count">{{ $stats['menunggu_verifikasi'] }}</span>@endif
+        @if($stats['menunggu_verifikasi']>0)<span class="tab-badge">{{ $stats['menunggu_verifikasi'] }}</span>@endif
       </a>
-      <a href="{{ route('admin.pembayaran', ['status'=>'sudah_dibayar','q'=>request('q')]) }}" class="tab {{ $filter==='sudah_dibayar'?'active':'' }}" style="text-decoration:none;display:flex;align-items:center;">
+      <a href="{{ route('admin.pembayaran', ['status'=>'sudah_dibayar','q'=>request('q')]) }}" class="tab {{ $filter==='sudah_dibayar'?'active':'' }}" style="text-decoration:none;">
         ✅ Payment Confirmed
-        @if($stats['sudah_dibayar']>0)<span class="tab-badge-count green">{{ $stats['sudah_dibayar'] }}</span>@endif
+        @if($stats['sudah_dibayar']>0)<span class="tab-badge">{{ $stats['sudah_dibayar'] }}</span>@endif
       </a>
-      <a href="{{ route('admin.pembayaran', ['status'=>'disewa','q'=>request('q')]) }}" class="tab {{ $filter==='disewa'?'active':'' }}" style="text-decoration:none;display:flex;align-items:center;">
+      <a href="{{ route('admin.pembayaran', ['status'=>'disewa','q'=>request('q')]) }}" class="tab {{ $filter==='disewa'?'active':'' }}" style="text-decoration:none;">
         🎭 Rental Active
-        @if($stats['disewa']>0)<span class="tab-badge-count blue">{{ $stats['disewa'] }}</span>@endif
+        @if($stats['disewa']>0)<span class="tab-badge">{{ $stats['disewa'] }}</span>@endif
       </a>
-      <a href="{{ route('admin.pembayaran', ['status'=>'ditolak','q'=>request('q')]) }}" class="tab {{ $filter==='ditolak'?'active':'' }}" style="text-decoration:none;display:flex;align-items:center;">
+      <a href="{{ route('admin.pembayaran', ['status'=>'ditolak','q'=>request('q')]) }}" class="tab {{ $filter==='ditolak'?'active':'' }}" style="text-decoration:none;">
         🚫 Proof Rejected
-        @if($stats['ditolak']>0)<span class="tab-badge-count red">{{ $stats['ditolak'] }}</span>@endif
+        @if($stats['ditolak']>0)<span class="tab-badge">{{ $stats['ditolak'] }}</span>@endif
       </a>
     </div>
 
@@ -86,7 +90,7 @@
     <div class="toolbar">
       <form action="{{ route('admin.pembayaran') }}" method="GET" style="display:flex;flex:1;align-items:center;gap:12px;">
         <input type="hidden" name="status" value="{{ $filter }}">
-        <div class="search-wrap" style="width:100%;">
+        <div class="search-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input class="search-input" type="text" name="q" value="{{ request('q') }}" placeholder="Search customer name or order ID..."/>
         </div>
@@ -98,21 +102,21 @@
       <table>
         <thead>
           <tr>
-            <th>ORDER<br>ID</th>
-            <th>CUSTOMER</th>
-            <th>RENTED<br>COSTUME</th>
-            <th>RENTAL<br>DATE</th>
-            <th>DURATION</th>
-            <th>TOTAL<br>BILL</th>
-            <th>TRANSFER<br>RECEIPT</th>
-            <th>STATUS</th>
-            <th>ACTION</th>
+            <th style="width:80px;">ORDER<br>ID</th>
+            <th style="width:180px;">CUSTOMER</th>
+            <th style="width:200px;">RENTED<br>COSTUME</th>
+            <th style="width:100px;">RENTAL<br>DATE</th>
+            <th style="width:90px;">DURATION</th>
+            <th style="width:120px;">TOTAL<br>BILL</th>
+            <th style="width:110px;text-align:center;">TRANSFER<br>RECEIPT</th>
+            <th style="width:150px;">STATUS</th>
+            <th style="width:140px;">ACTION</th>
           </tr>
         </thead>
         <tbody>
           @forelse($transaksis as $t)
             @php
-              $custName  = $t->user?->nama ?? 'Customer';
+              $custName    = $t->user?->nama ?? 'Customer';
               $firstLetter = strtoupper(substr($custName, 0, 1));
               $kostumNames = [];
               foreach($t->detailTransaksi as $dt) {
@@ -126,7 +130,12 @@
               $avColor = $colors[$t->user_id % count($colors)];
             @endphp
             <tr>
-              <td><span class="order-id-stacked">#TRX-<br>{{ $t->id }}</span></td>
+              {{-- ORDER ID --}}
+              <td>
+                <span class="order-id-stacked">#TRX-{{ $t->id }}</span>
+              </td>
+
+              {{-- CUSTOMER --}}
               <td>
                 <div class="cust-wrap">
                   <div class="cust-av" style="background:{{ $avColor }}">
@@ -137,71 +146,97 @@
                     @endif
                   </div>
                   <div>
-                    <span class="cust-name" style="font-weight:600;">{{ $custName }}</span><br>
+                    <span class="cust-name">{{ $custName }}</span><br>
                     <span style="font-size:11px;color:var(--text-3);">{{ $t->user?->no_hp ?? '-' }}</span>
                   </div>
                 </div>
               </td>
-              <td><span class="kostum-name" title="{{ $kostumDesc }}">{{ \Illuminate\Support\Str::limit($kostumDesc, 30) }}</span></td>
+
+              {{-- COSTUME --}}
+              <td>
+                <span class="kostum-name" title="{{ $kostumDesc }}">{{ \Illuminate\Support\Str::limit($kostumDesc, 35) }}</span>
+              </td>
+
+              {{-- RENTAL DATE --}}
               <td>
                 <span class="date-stacked">
                   <span class="date-day">{{ $t->tanggal_mulai?->format('d M') }}</span><br>
                   <span class="date-year">{{ $t->tanggal_mulai?->format('Y') }}</span>
                 </span>
               </td>
-              <td><span class="durasi-text">{{ $durasi }}</span></td>
+
+              {{-- DURATION --}}
+              <td>
+                <span class="durasi-text">{{ $durasi }}</span>
+              </td>
+
+              {{-- TOTAL BILL --}}
               <td>
                 <div class="payment-wrap">
                   <span class="payment-rp">Rp</span>
                   <span class="payment-val">{{ number_format($t->total_biaya, 0, ',', '.') }}</span>
                 </div>
               </td>
-              <td>
+
+              {{-- TRANSFER RECEIPT --}}
+              <td style="text-align:center;">
                 @if($t->bukti_pembayaran)
                   <button class="btn-bukti" onclick="openValidationModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }}, {{ json_encode($durasi) }})">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     View Proof
                   </button>
                 @else
-                  <span style="color:var(--red);font-size:11px;font-weight:700;">⚠ Not Uploaded</span>
+                  <span style="color:var(--red);font-size:11px;font-weight:700;white-space:nowrap;">⚠ Not Uploaded</span>
                 @endif
               </td>
-              <td>
+
+              {{-- STATUS --}}
+              <td style="white-space:nowrap;">
                 @if($t->status === 'Menunggu Pembayaran')
-                  <span class="status-badge" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
-                    🔴 Not Uploaded
+                  <span class="status-badge" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1.5px solid rgba(239,68,68,0.25);border-radius:99px;padding:5px 12px;font-size:10px;font-weight:800;letter-spacing:0.5px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
+                    <span class="status-dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> NOT UPLOADED
                   </span>
                 @elseif($t->status === 'Menunggu Verifikasi')
-                  <span class="status-badge" style="background:rgba(245,158,11,0.12);color:#f59e0b;border:1px solid rgba(245,158,11,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
-                    ⏳ Awaiting Verification
+                  <span class="status-badge waiting" style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
+                    <span class="status-dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> AWAITING VERIFICATION
                   </span>
                 @elseif($t->status === 'Sudah Dibayar')
-                  <span class="status-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
-                    ✅ Payment Confirmed
-                  </span>
-                  <span style="display:block;margin-top:3px;font-size:10px;font-weight:700;color:#f59e0b;">🟡 Not Picked Up</span>
+                  <div>
+                    <span class="status-badge confirmed" style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
+                      <span class="status-dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> PAYMENT CONFIRMED
+                    </span>
+                    <div style="margin-top:5px;">
+                      <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#f59e0b;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:99px;padding:3px 9px;white-space:nowrap;">🟡 Not Picked Up</span>
+                    </div>
+                  </div>
                 @elseif($t->status === 'Disewa')
-                  <span class="status-badge" style="background:rgba(59,130,246,0.12);color:#3b82f6;border:1px solid rgba(59,130,246,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
-                    🎭 Rental Active
-                  </span>
-                  <span style="display:block;margin-top:3px;font-size:10px;font-weight:700;color:#10b981;">🟢 Picked Up</span>
+                  <div>
+                    <span class="status-badge" style="background:rgba(59,130,246,0.12);color:#60a5fa;border:1.5px solid rgba(59,130,246,0.25);border-radius:99px;padding:5px 12px;font-size:10px;font-weight:800;letter-spacing:0.5px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
+                      <span class="status-dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> RENTAL ACTIVE
+                    </span>
+                    <div style="margin-top:5px;">
+                      <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#10b981;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:99px;padding:3px 9px;white-space:nowrap;">🟢 Picked Up</span>
+                    </div>
+                  </div>
                 @elseif($t->status === 'Ditolak')
-                  <span class="status-badge" style="background:rgba(244,63,94,0.12);color:#f43f5e;border:1px solid rgba(244,63,94,0.3);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
-                    🚫 Proof Rejected
+                  <span class="status-badge rejected" style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
+                    <span class="status-dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> PROOF REJECTED
                   </span>
                 @elseif($t->status === 'Selesai')
-                  <span class="status-badge" style="background:rgba(107,114,128,0.1);color:#6b7280;border:1px solid rgba(107,114,128,0.2);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;white-space:nowrap;">
-                    ✔ Completed
+                  <span class="status-badge" style="background:rgba(107,114,128,0.1);color:#9ca3af;border:1.5px solid rgba(107,114,128,0.2);border-radius:99px;padding:5px 12px;font-size:10px;font-weight:800;letter-spacing:0.5px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
+                    <span class="status-dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> COMPLETED
                   </span>
                 @else
-                  <span class="status-badge rejected">
-                    <span class="status-dot"></span> CANCELLED
+                  <span class="status-badge rejected" style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;">
+                    <span class="status-dot" style="width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> CANCELLED
                   </span>
                 @endif
               </td>
+
+              {{-- ACTION --}}
               <td>
-                <div class="act-btns" style="display:flex;flex-direction:column;gap:6px;min-width:140px;">
-                  {{-- Menunggu Verifikasi: tampilkan Approve + Reject --}}
+                <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;">
+                  {{-- Menunggu Verifikasi: tampilkan Verify --}}
                   @if($t->status === 'Menunggu Verifikasi')
                     <button class="btn-approve" onclick="openValidationModal({{ json_encode($t) }}, {{ json_encode($kostumDesc) }}, {{ json_encode($durasi) }})">
                       🟢 Verify
@@ -234,9 +269,11 @@
     </div>
 
     {{-- PAGINATION --}}
-    <div class="pagination-bar" style="margin-top:16px;">
-      <span class="pagination-info">Showing {{ $transaksis->firstItem() ?? 0 }}-{{ $transaksis->lastItem() ?? 0 }} of {{ $transaksis->total() }} orders</span>
-      <div class="pagination-container">{{ $transaksis->links() }}</div>
+    <div class="pagination-bar" style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <span style="font-size:13px;color:var(--text-3);font-weight:500;">
+        Showing {{ $transaksis->firstItem() ?? 0 }}–{{ $transaksis->lastItem() ?? 0 }} of {{ $transaksis->total() }} orders
+      </span>
+      <div>{{ $transaksis->links() }}</div>
     </div>
 
   </main>
@@ -308,12 +345,12 @@
     {{-- FOOTER --}}
     <div class="modal-footer" id="validationModalFooter">
       <button type="button" class="btn btn-ghost" onclick="closeValidationModal()">Close</button>
-      {{-- Reject: kembalikan ke Menunggu Pembayaran --}}
+      {{-- Reject --}}
       <button type="button" id="mBtnReject" class="btn" style="display:none;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#f87171;font-weight:700;padding:10px 22px;border-radius:10px;cursor:pointer;"
         onclick="submitRejectWithReason()">
         🔴 Reject Proof
       </button>
-      {{-- Approve: verifikasi pembayaran → Sudah Dibayar --}}
+      {{-- Approve --}}
       <button type="button" id="mBtnApprove" class="btn btn-primary" style="display:none;background:linear-gradient(135deg,#10b981,#059669);border-color:#059669;padding:10px 22px;font-weight:700;border-radius:10px;"
         onclick="document.getElementById('confirmPaymentForm').action = window._approveUrl; document.getElementById('confirmPaymentForm').submit();">
         🟢 Verify &amp; Approve
@@ -395,10 +432,9 @@
 @push('scripts')
 <script>
   // Konfigurasi URL dasar untuk digunakan oleh pembayaran.js
-  // Menggunakan url() Laravel agar kompatibel dengan subdirectory hosting
   window._adminPembayaranBase = '{{ url('/admin/pembayaran') }}';
 
-  // Pasang event listener setelah DOM siap (pembayaran.js sudah diload via Vite)
+  // Pasang event listener setelah DOM siap
   document.addEventListener('DOMContentLoaded', function() {
     var validationOverlay = document.getElementById('validationModalOverlay');
     if (validationOverlay) {

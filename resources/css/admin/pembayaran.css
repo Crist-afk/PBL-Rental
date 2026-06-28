@@ -265,3 +265,96 @@ tbody tr:hover td { background: rgba(236,156,157,0.08); }
 .tabs { animation: fadeUp 0.5s ease both; animation-delay: 0.25s; }
 .toolbar { animation: fadeUp 0.5s ease both; animation-delay: 0.3s; }
 .table-wrap { animation: fadeUp 0.5s ease both; animation-delay: 0.35s; }
+
+/* ── STATS: 5-column grid for pembayaran ── */
+.stats-grid { grid-template-columns: repeat(5, 1fr); }
+
+/* ── BTN KONFIRMASI AMBIL (in-table) ── */
+.btn-konfirmasi-ambil {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all var(--tr);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-family: 'Sora', sans-serif;
+}
+.btn-konfirmasi-ambil:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+/* ── BTN TOLAK BUKTI (in-modal) ── */
+.btn-tolak-bukti {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all var(--tr);
+    font-family: 'Sora', sans-serif;
+}
+.btn-tolak-bukti:hover {
+    background: #ef4444;
+    color: #fff;
+    border-color: #ef4444;
+}
+
+/* ── PAGINATION ── */
+.pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-3);
+    font-weight: 500;
+}
+.pagination-bar nav {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+.pagination-bar nav span,
+.pagination-bar nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--tr);
+}
+.pagination-bar nav a:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    background: rgba(236, 156, 157, 0.08);
+}
+.pagination-bar nav .active span {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+}
+.pagination-bar nav .disabled span {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

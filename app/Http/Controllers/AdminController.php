@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kostum;
-use App\Models\KostumUnit;
 use App\Models\Kategori;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
@@ -90,11 +89,9 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
-        // Costumes that have at least one size with stok_aktual <= 1
-        $stok_hampir_habis = Kostum::with(['kategori', 'units'])
-            ->whereHas('units', function ($q) {
-                $q->where('stok_aktual', '<=', 1);
-            })
+        $stok_hampir_habis = Kostum::with('kategori')
+            ->where('stok_permanen', '<=', 1)
+            ->orderBy('stok_permanen', 'asc')
             ->latest()
             ->limit(5)
             ->get();
@@ -129,7 +126,7 @@ class AdminController extends Controller
     public function kostum(Request $request)
     {
         $kategoris  = Kategori::orderBy('nama_kategori')->get();
-        $query      = Kostum::with(['kategori', 'units'])->latest();
+        $query      = Kostum::with('kategori')->latest();
 
         if ($request->has('kategori_id') && $request->kategori_id) {
             $query->where('kategori_id', $request->kategori_id);
@@ -146,9 +143,7 @@ class AdminController extends Controller
 
         $lowStockFilter = $request->boolean('low_stock');
         if ($lowStockFilter) {
-            $query->whereHas('units', function ($q) {
-                $q->where('stok_aktual', '<=', 1);
-            });
+            $query->where('stok_permanen', '<=', 1);
         }
 
         $allSizes = Kostum::whereNotNull('ukuran')
@@ -184,33 +179,29 @@ class AdminController extends Controller
 
         $rawStokPerUkuran = $request->input('stok_per_ukuran', []);
         $stokPerUkuran = [];
+        $totalStok = 0;
         foreach ($rawStokPerUkuran as $size => $qty) {
             $size = trim($size);
             if ($size !== '') {
                 $stokPerUkuran[$size] = (int) $qty;
+                $totalStok += (int) $qty;
             }
         }
 
         $ukuranStr = implode(', ', array_keys($stokPerUkuran));
 
-        $kostum = Kostum::create([
-            'nama_kostum'  => $request->nama_kostum,
-            'kategori_id'  => $request->kategori_id,
-            'harga_sewa'   => $request->harga_sewa,
-            'ukuran'       => $ukuranStr,
-            'kelengkapan'  => $request->kelengkapan,
-            'gambar'       => $gambar,
+        Kostum::create([
+            'nama_kostum'              => $request->nama_kostum,
+            'kategori_id'              => $request->kategori_id,
+            'harga_sewa'               => $request->harga_sewa,
+            'stok_permanen'            => $totalStok,
+            'stok_aktual'              => $totalStok,
+            'ukuran'                   => $ukuranStr,
+            'stok_permanen_per_ukuran' => $stokPerUkuran,
+            'stok_aktual_per_ukuran'   => $stokPerUkuran,
+            'kelengkapan'              => $request->kelengkapan,
+            'gambar'                   => $gambar,
         ]);
-
-        // Create one kostum_unit row per size
-        foreach ($stokPerUkuran as $size => $qty) {
-            KostumUnit::create([
-                'kostum_id'     => $kostum->id,
-                'ukuran'        => $size,
-                'stok_permanen' => $qty,
-                'stok_aktual'   => $qty,
-            ]);
-        }
 
         return redirect()->route('admin.kostum')->with('success', 'Costume added successfully!');
     }
@@ -241,48 +232,55 @@ class AdminController extends Controller
 
         $rawStokPerUkuran = $request->input('stok_per_ukuran', []);
         $stokPerUkuran = [];
+        $totalStok = 0;
         foreach ($rawStokPerUkuran as $size => $qty) {
             $size = trim($size);
             if ($size !== '') {
                 $stokPerUkuran[$size] = (int) $qty;
+                $totalStok += (int) $qty;
             }
         }
 
         $ukuranStr = implode(', ', array_keys($stokPerUkuran));
 
         $kostum->update([
-            'nama_kostum'  => $request->nama_kostum,
-            'kategori_id'  => $request->kategori_id,
-            'harga_sewa'   => $request->harga_sewa,
-            'ukuran'       => $ukuranStr,
-            'kelengkapan'  => $request->kelengkapan,
-            'gambar'       => $gambar,
+            'nama_kostum'              => $request->nama_kostum,
+            'kategori_id'              => $request->kategori_id,
+            'harga_sewa'               => $request->harga_sewa,
+            'stok_permanen'            => $totalStok,
+            'ukuran'                   => $ukuranStr,
+            'stok_permanen_per_ukuran' => $stokPerUkuran,
+            'kelengkapan'              => $request->kelengkapan,
+            'gambar'                   => $gambar,
         ]);
 
-        // ── Sync kostum_unit rows ────────────────────────────────────────
-        // Count active bookings per size to compute stok_aktual
-        $activeStatuses = Kostum::statusAktif();
+        // Hitung ulang stok aktual berdasarkan stok permanen yang baru
+        $activeStatuses = \App\Models\Kostum::statusAktif();
+        $activeDetails = \App\Models\DetailTransaksi::join('transaksi', 'detail_transaksi.transaksi_id', '=', 'transaksi.id')
+            ->where('detail_transaksi.kostum_id', $kostum->id)
+            ->whereIn('transaksi.status', $activeStatuses)
+            ->select('detail_transaksi.ukuran')
+            ->get();
+        
+        $stokAktual = $totalStok;
+        $stokAktualPerUkuran = $stokPerUkuran;
 
-        foreach ($stokPerUkuran as $size => $stokPermanen) {
-            // Count active bookings for this size
-            $bookedCount = DetailTransaksi::join('transaksi', 'detail_transaksi.transaksi_id', '=', 'transaksi.id')
-                ->where('detail_transaksi.kostum_id', $kostum->id)
-                ->where('detail_transaksi.ukuran', $size)
-                ->whereIn('transaksi.status', $activeStatuses)
-                ->count();
-
-            $stokAktual = max(0, $stokPermanen - $bookedCount);
-
-            KostumUnit::updateOrCreate(
-                ['kostum_id' => $kostum->id, 'ukuran' => $size],
-                ['stok_permanen' => $stokPermanen, 'stok_aktual' => $stokAktual]
-            );
+        foreach ($activeDetails as $detail) {
+            $stokAktual--;
+            if ($detail->ukuran && isset($stokAktualPerUkuran[$detail->ukuran])) {
+                $stokAktualPerUkuran[$detail->ukuran]--;
+            }
+        }
+        
+        $stokAktual = max(0, $stokAktual);
+        foreach ($stokAktualPerUkuran as $k => $v) {
+            $stokAktualPerUkuran[$k] = max(0, $v);
         }
 
-        // Remove units for sizes that were deleted from the form
-        KostumUnit::where('kostum_id', $kostum->id)
-            ->whereNotIn('ukuran', array_keys($stokPerUkuran))
-            ->delete();
+        $kostum->update([
+            'stok_aktual' => $stokAktual,
+            'stok_aktual_per_ukuran' => $stokAktualPerUkuran,
+        ]);
 
         return redirect()->route('admin.kostum')->with('success', 'Costume updated successfully!');
     }
@@ -473,7 +471,7 @@ class AdminController extends Controller
      */
     public function pembayaranBatal(Request $request, $id)
     {
-        $transaksi = Transaksi::with('detailTransaksi.kostumUnit')->findOrFail($id);
+        $transaksi = Transaksi::with('detailTransaksi.kostum')->findOrFail($id);
 
         if (!in_array($transaksi->status, ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Sudah Dibayar'])) {
             return back()->with('error', 'Transaction cannot be cancelled in this status.');
@@ -491,15 +489,10 @@ class AdminController extends Controller
                 'catatan_admin' => $request->catatan_admin ?? 'Transaction cancelled by admin.',
             ]);
 
-            // Restore stok_aktual for each cancelled detail line
-            foreach ($transaksi->detailTransaksi as $detail) {
-                $detail->kostumUnit?->incrementStok(1);
-            }
-
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('admin.pembayaran')
-                ->with('success', "Transaction #TRX-{$id} has been cancelled successfully. Stock has been restored.");
+                ->with('success', "Transaction #TRX-{$id} has been cancelled successfully. Calendar slot is automatically available again.");
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
@@ -655,12 +648,6 @@ class AdminController extends Controller
             $transaksi->update([
                 'status' => 'Selesai',
             ]);
-
-            // Restore stok_aktual for each returned costume unit
-            $transaksi->load('detailTransaksi.kostumUnit');
-            foreach ($transaksi->detailTransaksi as $detail) {
-                $detail->kostumUnit?->incrementStok(1);
-            }
 
             \Illuminate\Support\Facades\DB::commit();
         } catch (\Exception $e) {

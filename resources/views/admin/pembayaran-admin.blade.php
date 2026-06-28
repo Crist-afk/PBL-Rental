@@ -2,10 +2,6 @@
 
 @section('title', 'CosRent — Payment Validation')
 
-@push('styles')
-    @vite(['resources/css/admin/pembayaran.css', 'resources/js/admin/pembayaran.js'])
-@endpush
-
 @section('content')
   <main class="main" style="padding-top: 24px;">
 

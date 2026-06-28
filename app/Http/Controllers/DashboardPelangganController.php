@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
 use App\Models\Kostum;
-use App\Models\KostumUnit;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -142,25 +141,16 @@ class DashboardPelangganController extends Controller
             \Illuminate\Support\Facades\DB::beginTransaction();
 
             // ── PR-3: Pessimistic Lock ──────────────────────────────────────────
+            // Kunci baris kostum ini agar tidak ada request lain yang bisa membaca
+            // nilai yang sama secara bersamaan hingga transaksi ini selesai.
             $kostum = Kostum::lockForUpdate()->findOrFail($request->kostum_id);
 
             // ── PR-2: Calendar Availability Check ─────────────────────────────
+            // Hitung ketersediaan dinamis berdasarkan overlap booking aktif.
+            // Tidak membaca stok_aktual atau stok_aktual_per_ukuran dari database.
             $availability = $kostum->getStokAktualBySize($size, $tanggalSewa, $tanggalKembali);
 
             if ($availability <= 0) {
-                \Illuminate\Support\Facades\DB::rollBack();
-                return back()
-                    ->with('error', 'Costume size ' . $size . ' is not available for the selected dates.')
-                    ->withInput();
-            }
-
-            // ── Find the KostumUnit row for this size ──────────────────────────
-            $kostumUnit = KostumUnit::where('kostum_id', $kostum->id)
-                ->where('ukuran', $size)
-                ->lockForUpdate()
-                ->first();
-
-            if (!$kostumUnit || $kostumUnit->stok_aktual <= 0) {
                 \Illuminate\Support\Facades\DB::rollBack();
                 return back()
                     ->with('error', 'Costume size ' . $size . ' is not available for the selected dates.')
@@ -183,17 +173,17 @@ class DashboardPelangganController extends Controller
                 'catatan'         => $request->catatan,
             ]);
 
-            // ── Buat Detail Transaksi with kostum_unit_id ─────────────────────
+            // ── Buat Detail Transaksi ──────────────────────────────────────────
             DetailTransaksi::create([
                 'transaksi_id'              => $transaksi->id,
                 'kostum_id'                 => $kostum->id,
-                'kostum_unit_id'            => $kostumUnit->id,
                 'ukuran'                    => $size,
                 'harga_sewa_saat_transaksi' => $total_biaya,
             ]);
 
-            // ── Decrement stok_aktual on the kostum_unit row ──────────────────
-            $kostumUnit->decrementStok(1);
+            // ── TIDAK ADA decrement stok ───────────────────────────────────────
+            // Slot kalender otomatis terkunci karena transaksi berstatus
+            // 'Menunggu Pembayaran' sudah ada dengan tanggal yang overlap.
 
             \Illuminate\Support\Facades\DB::commit();
 

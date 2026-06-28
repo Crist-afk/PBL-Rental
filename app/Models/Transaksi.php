@@ -41,19 +41,6 @@ class Transaksi extends Model
         };
     }
 
-    public function getStatusLabelEnAttribute(): string
-    {
-        return match ($this->status) {
-            'Menunggu Pembayaran' => 'Waiting for Payment',
-            'Menunggu Verifikasi' => 'Awaiting Verification',
-            'Ditolak'             => 'Proof Rejected',
-            'Sudah Dibayar'       => 'Payment Confirmed',
-            'Disewa'              => 'Rented',
-            'Selesai'             => 'Returned',
-            'Batal'               => 'Canceled',
-            default               => $this->status,
-        };
-    }
 
     public function getStatusColorAttribute(): string
     {

@@ -37,17 +37,9 @@ class DashboardPelangganController extends Controller
                 $kostum = $firstDetail ? $firstDetail->kostum : null;
                 $size = $firstDetail?->ukuran ?? 'N/A';
 
-                // Hitung denda otomatis — hanya untuk status Disewa yang sudah lewat tanggal
-                $denda = 0;
-                $daysLate = 0;
-                if ($t->status === 'Disewa') {
-                    $today      = \Carbon\Carbon::now()->startOfDay();
-                    $tglSelesai = \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay();
-                    if ($today->greaterThan($tglSelesai)) {
-                        $daysLate = $tglSelesai->diffInDays($today);
-                        $denda    = $daysLate * 50000;
-                    }
-                }
+                // Hitung denda otomatis — diambil dari model Transaksi (DRY)
+                $denda = $t->denda_otomatis;
+                $daysLate = $t->days_late;
 
                 // Deadline upload pembayaran (12 jam sejak booking)
                 $paymentDeadline = \Carbon\Carbon::parse($t->created_at)->addHours(12);
@@ -286,9 +278,8 @@ class DashboardPelangganController extends Controller
                 $kostum = $firstDetail ? $firstDetail->kostum : null;
                 $size = $firstDetail?->ukuran ?? 'N/A';
 
-                $daysLate = \Carbon\Carbon::parse($t->tanggal_selesai)->startOfDay()
-                    ->diffInDays(\Carbon\Carbon::now()->startOfDay());
-                $denda = $daysLate * 50000;
+                $daysLate = $t->days_late;
+                $denda = $t->denda_otomatis;
 
                 return [
                     'id'          => $t->id,

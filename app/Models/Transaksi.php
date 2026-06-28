@@ -57,40 +57,45 @@ class Transaksi extends Model
     }
 
     /**
+     * Hitung hari terlambat berdasarkan tanggal pengembalian.
+     */
+    public function calculateDaysLate(Carbon $actualReturnDate): int
+    {
+        if ($this->status !== 'Disewa') {
+            return 0;
+        }
+
+        $tglSelesai = Carbon::parse($this->tanggal_selesai)->startOfDay();
+        $actualReturnDate = $actualReturnDate->startOfDay();
+
+        if ($actualReturnDate->lte($tglSelesai)) {
+            return 0;
+        }
+
+        return (int) $tglSelesai->diffInDays($actualReturnDate);
+    }
+
+    /**
+     * Hitung denda keterlambatan berdasarkan tanggal pengembalian.
+     */
+    public function calculateDenda(Carbon $actualReturnDate): int
+    {
+        $daysLate = $this->calculateDaysLate($actualReturnDate);
+        return $daysLate * 50000;
+    }
+
+    /**
      * Hitung denda otomatis berdasarkan hari ini.
      * Hanya berlaku untuk transaksi 'Disewa' yang melewati tanggal_selesai.
      */
     public function getDendaOtomatisAttribute(): int
     {
-        if ($this->status !== 'Disewa') {
-            return 0;
-        }
-
-        $today       = Carbon::today();
-        $tglSelesai  = Carbon::parse($this->tanggal_selesai)->startOfDay();
-
-        if ($today->lte($tglSelesai)) {
-            return 0;
-        }
-
-        $hariTerlambat = (int) $tglSelesai->diffInDays($today);
-        return max(0, $hariTerlambat * 50000);
+        return $this->calculateDenda(Carbon::today());
     }
 
     public function getDaysLateAttribute(): int
     {
-        if ($this->status !== 'Disewa') {
-            return 0;
-        }
-
-        $today      = Carbon::today();
-        $tglSelesai = Carbon::parse($this->tanggal_selesai)->startOfDay();
-
-        if ($today->lte($tglSelesai)) {
-            return 0;
-        }
-
-        return (int) $tglSelesai->diffInDays($today);
+        return $this->calculateDaysLate(Carbon::today());
     }
 
     // ── Relasi ──────────────────────────────────────────────────────────

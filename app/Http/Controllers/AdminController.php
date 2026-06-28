@@ -585,18 +585,9 @@ class AdminController extends Controller
             'catatan_admin'          => 'nullable|string|max:1000',
         ]);
 
-        $tanggalSelesai = Carbon::parse($transaksi->tanggal_selesai)->startOfDay();
-        $tanggalKembali = Carbon::parse($request->tanggal_kembali_aktual)->startOfDay();
-        $dendaPerHari   = 50000;
-
-        // Hitung denda keterlambatan OTOMATIS berdasarkan selisih tanggal
-        if ($tanggalKembali->lte($tanggalSelesai)) {
-            $hariTerlambat      = 0;
-            $dendaKeterlambatan = 0;
-        } else {
-            $hariTerlambat      = (int) abs($tanggalSelesai->diffInDays($tanggalKembali));
-            $dendaKeterlambatan = $hariTerlambat * $dendaPerHari;
-        }
+        $tanggalKembali = Carbon::parse($request->tanggal_kembali_aktual);
+        $hariTerlambat      = $transaksi->calculateDaysLate($tanggalKembali);
+        $dendaKeterlambatan = $transaksi->calculateDenda($tanggalKembali);
 
         // Denda kerusakan diinput MANUAL oleh admin berdasarkan kondisi fisik kostum
         $dendaKerusakan = max(0, (int) ($request->denda_kerusakan ?? 0));
